@@ -16,7 +16,7 @@ import Feature from "../Feature"
 import {
   createBlankGame, createFireGame, testGAC, testGCrew, testGFT, testGGun, testGInf, testGLdr,
   testGMC, testGMG, testGMortar, testGRadio, testGSC, testGTank, testGTruck, testITank, testPill,
-  testRGun, testRHT, testRInf, testRLdr, testRMG, testRRadio, testRTank, testRTD,
+  testRGun, testRHT, testRInf, testRLdr, testRMG, testRRadio, testRSPG, testRTank, testRTD,
   testRTruck, testSmoke, testWire
 } from "./testHelpers"
 import FireState from "./state/FireState"
@@ -1303,6 +1303,51 @@ describe("ranged fire attacks", () => {
         target: { type: "map", xy: tloc }
       }, () => {})
       expect(target.targetSelected).toBe(false)
+    })
+
+    test("infantry can target partially armored", () => {
+      const game = createBlankGame()
+      const map = game.scenario.map
+      const firing = new Unit(testGInf)
+      firing.id = "firing1"
+      const floc = new Coordinate(4, 2)
+      map.addCounter(floc, firing)
+      map.select(firing)
+
+      const target = new Unit(testRSPG)
+      target.id = "target1"
+      target.facing = 4
+      const tloc = new Coordinate(2, 2)
+      map.addCounter(tloc, target)
+
+      const target2 = new Unit(testRSPG)
+      target2.id = "target2"
+      target2.facing = 1
+      map.addCounter(tloc, target2)
+
+      game.setGameState(new FireState(game, false))
+
+      const fire = game.gameState as FireState
+      expect(fire.type).toBe(stateType.Fire)
+      expect(fire.selection[0].id).toBe("firing1")
+
+      expect(fire.doneSelect).toBe(true)
+
+      select(map, {
+        counter: map.countersAt(tloc)[0],
+        target: { type: "map", xy: tloc }
+      }, () => {})
+      expect(fire.targetSelection.length).toBe(0)
+      expect(target.targetSelected).toBe(false)
+      expect(target2.targetSelected).toBe(false)
+
+      select(map, {
+        counter: map.countersAt(tloc)[1],
+        target: { type: "map", xy: tloc }
+      }, () => {})
+      expect(fire.targetSelection.length).toBe(1)
+      expect(target.targetSelected).toBe(false)
+      expect(target2.targetSelected).toBe(true)
     })
 
     test("attack against unarmored vehicle", () => {

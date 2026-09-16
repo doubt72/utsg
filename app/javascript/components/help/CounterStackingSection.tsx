@@ -74,7 +74,7 @@ export default function CounterStackingSection({ section }: SectionProps) {
       <div className="help-section-image" >
         <svg width={504} height={134} viewBox='0 0 720 192' style={{ minWidth: 504 }}>
           <MapCounterOverlay map={map} setOverlay={() => {}} selectionCallback={() => {}} mapUpdate={1}
-                             xx={0} yy={0} mapScale={1} shiftX={0} shiftY={44} maxX={0} maxY={0}
+                             xx={0} yy={0} mapScale={1} shiftX={0} shiftY={44} maxX={752} maxY={0}
                              counters={map.countersAt(new Coordinate(0,0))} scale={1} updateCallback={() => {}}
                              svgRef={svgRef as React.MutableRefObject<HTMLElement>} />
           <path d={roundedRectangle(0,0,736,192,0)}
@@ -87,9 +87,9 @@ export default function CounterStackingSection({ section }: SectionProps) {
     )
     setStack2(
       <div className="help-section-image" >
-        <svg width={627} height={134} viewBox='0 0 896 192' style={{ minWidth: 627 }}>
+        <svg width={627} height={134} viewBox='56 0 896 192' style={{ minWidth: 627 }}>
           <MapCounterOverlay map={map} setOverlay={() => {}} selectionCallback={() => {}} mapUpdate={1}
-                             xx={0} yy={0} mapScale={1} shiftX={0} shiftY={44} maxX={0} maxY={0}
+                             xx={0} yy={0} mapScale={1} shiftX={0} shiftY={44} maxX={928} maxY={0}
                              counters={map.countersAt(new Coordinate(1,1))} scale={1} updateCallback={() => {}}
                              svgRef={svgRef as React.MutableRefObject<HTMLElement>} />
           <path d={roundedRectangle(0,0,896,192,0)}

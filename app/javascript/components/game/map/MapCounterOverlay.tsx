@@ -220,6 +220,9 @@ export default function MapCounterOverlay({
     const helpOverlays: JSX.Element[] = []
     const selectionOverlays: JSX.Element[] = []
     const buttons: JSX.Element[] = []
+    const outwidth = 6
+    const dblwidth = outwidth*2
+    const ls = layout.scale as number
     setOverlayDisplay(
       <g>
         <path d={layout.path} style={layout.style as object} />
@@ -235,9 +238,7 @@ export default function MapCounterOverlay({
           const transport = counter.unit.transport && (counter.children.length > 1 ||
             (counter.children.length === 1 && !counter.children[0].unit.crewed)) ?
             getLength(counter.unit, true) : undefined
-          const outwidth = 6
-          const dblwidth = outwidth*2
-          const x = layout.x + i*(160+dblwidth) + dblwidth*2
+          const x = layout.x + i*(160+dblwidth)*ls + dblwidth*2
           let thisButtons = false
           if ((counter.hasUnit || (counter.hasFeature && map.game?.phase === gamePhaseType.Deploy)) &&
               (counter.targetUF.selected || counter.targetUF.targetSelected) && yy !== undefined) {
@@ -287,11 +288,13 @@ export default function MapCounterOverlay({
               </g>
             )
           })
-          helpOverlays.push(
-            <MapCounterOverlayHelp key={i} xx={x + 167 - dblwidth*2} yy={layout.y - 20 + dblwidth*2}
-                                   maxX={maxX} maxY={maxY} map={map} scale={scale} counter={cd}
-                                   setHelpDisplay={setHelpDisplay} />
-          )
+          if (ls === 1) {
+            helpOverlays.push(
+              <MapCounterOverlayHelp key={i} xx={x + 167 - dblwidth*2} yy={layout.y - 20 + dblwidth*2}
+                                    maxX={maxX} maxY={maxY} map={map} scale={scale} counter={cd}
+                                    setHelpDisplay={setHelpDisplay} />
+            )
+          }
           let target: CounterSelectionTarget | undefined = undefined
           if (xx !== undefined && yy !== undefined) {
             target = { target: { type: "map", xy: new Coordinate(xx, yy) }, counter: cd, }
@@ -305,7 +308,7 @@ export default function MapCounterOverlay({
               }, counter: cd,
             }
           }
-          const ox = layout.x/2 + i*(80 + outwidth) - 5.5 + outwidth
+          const ox = layout.x/2 + i*(80+outwidth)*ls - 5.5 + outwidth
           const oy = layout.y/2 - 5 + outwidth
           selectionOverlays.push(
             <g key={i} transform={`scale(2) translate(${ox} ${oy})`}>
@@ -334,12 +337,12 @@ export default function MapCounterOverlay({
             unit = counter.unit
           }
           const outerLine = transport ?
-            <path d={counterOutline(cd, transport, 4)}
+            <path d={counterOutline(cd, transport, 4, ls)}
                   style={{ fill: clearColor, stroke: "#FFF", strokeWidth: 1.5, strokeDasharray: "5 4" }} />  : ""
           return (
             <g key={i} >
               <g transform={`scale(2) translate(${ox} ${oy})`}>
-                { unit ? <path d={counterOutline(cd, getLength(unit, false), 1)}
+                { unit ? <path d={counterOutline(cd, getLength(unit, false), 1, ls)}
                                 style={{ fill: "#FFF", stroke: "#FFF", strokeWidth: 1.5 }} /> : "" }
                 { outerLine }
                 <MapCounter counter={cd} ovCallback={() => {}} firingSmoke={firingSmoke} />
@@ -351,7 +354,7 @@ export default function MapCounterOverlay({
         <g onMouseLeave={() => setOverlay({ show: false, x: 0, y: 0 })} >
           <path d={layout.path} style={{ fill: clearColor}} />
           {selectionOverlays}
-          {helpOverlays.reverse()}
+          {helpOverlays}
           {actionControls}
           {helpDisplay}
           {actionHelpDisplay}

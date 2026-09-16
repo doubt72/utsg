@@ -51,6 +51,12 @@ export const testGTank: UnitData = {
   o: { t: 1, p: 1, ha: { f: 2, s: 1, r: 1, }, ta: { f: 2, s: 1, r: 2, }, j: 3, f: 18, u: 1, k: 1 },
 }
 
+// Pretend it's captured
+export const testRSPG: UnitData = {
+  id: "g_marder", t: "spg", c: "ussr", n: "Marder I", y: 42, s: 3, v: 4, f: 40, r: 32, i: "spat",
+  o: { ha: { f: 1, s: 1, r: -1 }, k: 1, t: 1, p: 1, j: 3, f: 18 },
+}
+
 export const testGTCrew: UnitData = unitDataForTankCrew("g_crew", "ger")
 
 // Pretend it's captured

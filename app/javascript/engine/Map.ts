@@ -18,6 +18,7 @@ import StackingActionError from "./actions/StackingActionError";
 import Unit from "./Unit";
 import Feature from "./Feature";
 import Marker from "./Marker";
+import { armorAtArc } from "./control/fire";
 
 export type DeployHexes = [string | number, string | number][]
 
@@ -625,9 +626,14 @@ export default class Map {
       y1 += diff
       y2 += diff
     }
+    let scale = 1
+    if (x2 - x1 > max.x - 32) {
+      scale = (max.x - 74) / (x2 - x1)
+      x2 = x2 * scale + 74
+    }
     return {
       path: roundedRectangle(x1, y1, x2 - x1, y2 - y1, outwidth+4), x: x1 + 5, y: y1 + 7.5, y2: y2,
-      style: { fill: "rgba(0,0,0,0.25" },
+      style: { fill: "rgba(0,0,0,0.25" }, scale,
     }
   }
 
@@ -872,13 +878,23 @@ export default class Map {
     }
   }
 
-  targetSelectAllAt(x: number, y: number, vehicles: boolean, armored: boolean) {
+  targetSelectAllAt(
+    x: number, y: number, vehicles: boolean, armored: boolean, from?: Coordinate, to?: Coordinate
+  ) {
     const counters = this.countersAt(new Coordinate(x, y))
     for (const c of counters) {
       if (!c.hasUnit || c.unit.parent) { continue }
       if (c.unit.operated || c.unit.isWreck) { continue }
       if (c.unit.armored) {
         if (armored && !c.unit.targetSelected) { this.targetSelect(c.unit) }
+        if (!armored && vehicles && !c.unit.targetSelected && this.game && from && to &&
+            armorAtArc(this.game, c.unit, from, to, false)[1] < 0) {
+          this.targetSelect(c.unit)
+        }
+        if (!armored && vehicles && !c.unit.targetSelected && this.game && from && to &&
+            c.unit.turreted && armorAtArc(this.game, c.unit, from, to, true)[1] < 0) {
+          this.targetSelect(c.unit)
+        }
       } else if (c.unit.isVehicle) {
         if (vehicles && !c.unit.targetSelected) { this.targetSelect(c.unit) }
       } else {

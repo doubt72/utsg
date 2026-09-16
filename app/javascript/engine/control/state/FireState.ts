@@ -6,7 +6,7 @@ import Game from "../../Game";
 import GameAction, { GameActionPath } from "../../GameAction";
 import Unit from "../../Unit";
 import { observe } from "../decoy";
-import { areaFire, canMultiSelectFire, canToggleSponson, inRange, leadershipRange, rapidFire, refreshTargetSelection, unTargetSelectExceptChain } from "../fire";
+import { areaFire, armorAtArc, canMultiSelectFire, canToggleSponson, inRange, leadershipRange, rapidFire, refreshTargetSelection, unTargetSelectExceptChain } from "../fire";
 import { placeReactionFireGhosts, reactionFireHexes, reactionFireInRange } from "../reactionFire";
 import { clearUnrangedSelection, removeStateSelection } from "../select";
 import BaseState, { StateSelection, stateType } from "./BaseState";
@@ -95,7 +95,8 @@ export default class FireState extends BaseState {
     const x = selection.target.xy.x
     const y = selection.target.xy.y
     const id = selection.counter.target.id
-    const counter = this.map.unitAtId(new Coordinate(x, y), id) as Counter
+    const to = new Coordinate(x, y)
+    const counter = this.map.unitAtId(to, id) as Counter
     const selected = counter?.unit?.selected
     if (counter) { this.map.select(counter.unit) }
     if (!this.doneSelect && this.samePlayer(counter.unit)) {
@@ -115,7 +116,9 @@ export default class FireState extends BaseState {
       } else {
         const rapid = rapidFire(this.game)
         if (rapid || areaFire(this.game)) {
-          this.map.targetSelectAllAt(x, y, true, this.initialSelection[0].counter.unit.areaFire)
+          const sel = this.initialSelection[0]
+          const from = new Coordinate(sel.x, sel.y)
+          this.map.targetSelectAllAt(x, y, true, sel.counter.unit.areaFire, from, to)
           if (rapid) {
             unTargetSelectExceptChain(this.game, x, y)
           } else {
@@ -163,8 +166,15 @@ export default class FireState extends BaseState {
       }
     } else {
       if ((sc.unit.canCarrySupport || sc.unit.rapidFire) && tc.unit.armored && !this.sponson) {
-        this.game.addMessage("light weapons can't damage armored units")
-        return false
+        const from = new Coordinate(select.x, select.y)
+        let open = false
+        if (armorAtArc(this.game, tc.unit, from, tc.hex as Coordinate, false)[1] < 0) { open = true }
+        if (tc.unit.turreted &&
+            armorAtArc(this.game, tc.unit, from, tc.hex as Coordinate, true)[1] < 0) { open = true }
+        if (!open) {
+          this.game.addMessage("light weapons can't damage armored units")
+          return false
+        }
       }
       if (target.operated) {
         if (!target.parent || !this.samePlayer(target.parent)) {

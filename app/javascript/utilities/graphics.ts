@@ -30,7 +30,7 @@ export type TextArrayLayout = {
   value: string[], size: number, x: number, y: number[], style: SVGStyle
 }
 export type OverlayLayout = {
-  path: string, x: number, y: number, y2: number, style: SVGStyle
+  path: string, x: number, y: number, y2: number, style: SVGStyle, scale?: number,
 }
 export type BadgeLayout = {
   text: string, color: string, tColor: string, arrow?: Direction,
@@ -384,11 +384,13 @@ export function hexPath(loc: Coordinate, r: number, rotated: boolean): string {
   return path.join(" ")
 }
 
-export function counterOutline(counter: Counter, width: number, outline: number): string {
+export function counterOutline(
+  counter: Counter, width: number, outline: number, scale: number
+): string {
   const outwidth = 6
   const x = counter.unit.turreted ? counter.x - 80 - outwidth : counter.x
   const y = counter.y
-  const xWidth = width * (80+outwidth) - outwidth
+  const xWidth = (width-1) * (80+outwidth)*scale + 80
   const corner = 4 + outline
   return [
     "M", x+xWidth-corner+outline, y-outline,
