@@ -590,7 +590,8 @@ export default class Map {
   }
 
   overlayLayout(
-    loc: Coordinate, size: number, max: Coordinate, shift: Coordinate, mapScale: number, absolute = false
+    loc: Coordinate, size: number, max: Coordinate, shift: Coordinate, mapScale: number,
+    absolute = false
   ): OverlayLayout {
     let x1 = (this.xOffset(loc.x, loc.y) - shift.x) * mapScale - 90
     let y1 = (this.yOffset(loc.y) - shift.y) * mapScale - 90 + yMapOffset
@@ -628,8 +629,9 @@ export default class Map {
     }
     let scale = 1
     if (x2 - x1 > max.x - 32) {
-      scale = (max.x - 74) / (x2 - x1)
-      x2 = x2 * scale + 74
+      scale = (max.x - 10*(size-1) + 34) / (x2 - x1)
+      const x2scale = max.x / (x2 - x1)
+      x2 = x2 * x2scale
     }
     return {
       path: roundedRectangle(x1, y1, x2 - x1, y2 - y1, outwidth+4), x: x1 + 5, y: y1 + 7.5, y2: y2,

@@ -645,10 +645,11 @@ export default class Game {
     for (const u of this.eliminatedUnits) {
       if (u.isFeature || u.playerNation === this.playerOneNation) { continue }
       const unit = u as Unit
+      const bonzai = this.scenario.specialRules.includes("axis_bonzai")
       if (unit.leader && !unit.decoy) {
-        points += 6
+        points += bonzai ? 1 : 6
       } else if (!unit.operated && !unit.tankCrew && !unit.decoy) {
-        points += unit.size
+        points += bonzai ? 1 : unit.size
       }
     }
     return points

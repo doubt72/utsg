@@ -25,8 +25,8 @@ module Scenarios
         :usa_radio_155mm,
         [2, :usa_ft],
         [2, :usa_sc],
-        [2, :usa_m4_sherman_flame],
         [2, :usa_m20_greyhound],
+        [2, :usa_m3a1_stuart_ft],
       ] },
     }.freeze
 

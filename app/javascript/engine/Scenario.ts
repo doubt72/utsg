@@ -293,6 +293,8 @@ export default class Scenario {
         return `${allied} infantry units start unobserved`
       } else if (r === "axis_hidden_units") {
         return `${axis} infantry units start unobserved`
+      } else if (r === "axis_bonzai") {
+        return `Elminited ${axis} units only award one victory point`
       } else if (r === "winter") {
         return `Winter: no digging in, treat water/river hexes as open for infantry`
       } else if (r === "retreat_301") {

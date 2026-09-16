@@ -275,6 +275,7 @@ export default function DesignerDataTab({ designStack, setDesignStack }: Designe
             <option value={"axis_hidden_units"}>axis hidden units</option>
             <option value={"allied_random_drop_0"}>allied random drop deploy setup</option>
             <option value={"allied_random_drop_2"}>allied random drop deploy turn 2</option>
+            <option value={"axis_bonzai"}>axis_bonzai</option>
             <option value={"winter"}>winter: no digging in, water as open for infantry</option>
             <option value={"retreat_301"}>allies rout up below 5, otherwise down, reverse for axis</option>
           </select>
