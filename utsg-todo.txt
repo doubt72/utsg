@@ -1,7 +1,5 @@
 Features/Bug Fixes
-  + Should be able to fire into unarmored side of vehicles
-  + Figure out how to compress super big stacks
-  - Show help / full counter on mouseover (and selection still works)
+  + Show help / full counter on mouseover (and selection still works)
   ? Initiative check wrong with hidden units/morale check
   - 516 Special cavalry rules (single morale check, mounted but not weapon fire)
   - 523 Hidden cavalry

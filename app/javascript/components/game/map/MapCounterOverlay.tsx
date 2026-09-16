@@ -44,6 +44,7 @@ export default function MapCounterOverlay({
   map, setOverlay, selectionCallback, updateCallback, xx, yy, mapScale, scale,
   shiftX, shiftY, maxX, maxY, counters, svgRef, mapUpdate, firingSmoke = false,
 }: MapCounterOverlayProps) {
+  const [currentCounter, setCurrentCounter] = useState<JSX.Element | undefined>()
   const [overlayDisplay, setOverlayDisplay] = useState<JSX.Element | undefined>()
   const [helpDisplay, setHelpDisplay] = useState<JSX.Element | undefined>()
   const [actionHelpDisplay, setActionHelpDisplay] = useState<JSX.Element | undefined>()
@@ -208,6 +209,41 @@ export default function MapCounterOverlay({
     map.selection?.target.id, xx, yy, map.game?.gameState, map.targetSelection?.target.id
   ])
 
+  const setCC = (
+    x: number, y: number, hx: number, hy: number, counter: Counter, cd: Counter,
+    target?: CounterSelectionTarget
+  ) => {
+    const key = update + 1
+    setCurrentCounter(
+      <g key={key} onMouseLeave={() => {
+           setActionHelpDisplay(undefined)
+           setCurrentCounter(undefined)
+           setHelpDisplay(undefined)
+         }}>
+        <g transform={`scale(2) translate(${x} ${y})`}
+          onMouseMove={(e: React.MouseEvent) => { showActionHelp(e, cd) }}
+          onClick={(e: React.MouseEvent) => {
+            if (xx !== undefined && yy !== undefined) {
+              selectionCallback(target as CounterSelectionTarget)
+              showActionHelp(e, cd)
+            } else if (counter.reinforcement) {
+              selectionCallback(target as CounterSelectionTarget)
+            }
+            setCC(x, y, hx, hy, counter, cd, target)
+          }}
+          onContextMenu={e => { rightClick(e, target) }} >
+          <MapCounter counter={cd} ovCallback={() => {}} firingSmoke={firingSmoke} />
+        </g>
+        <g onMouseEnter={() => setActionHelpDisplay(undefined) }>
+          <MapCounterOverlayHelp xx={hx} yy={hy} maxX={maxX} maxY={maxY} map={map}
+                                 scale={scale} counter={cd}
+                                 setHelpDisplay={setHelpDisplay} />
+        </g>
+      </g>
+    )
+    setUpdate(s => s + 1)
+  }
+
   useEffect(() => {
     // Either counters or a number makes for iffy typing
     const displayCounters = counters ? counters :
@@ -217,7 +253,7 @@ export default function MapCounterOverlay({
       coord, displayCounters.length, new Coordinate(maxX, maxY),
       new Coordinate(shiftX, shiftY), mapScale, !!counters
     )
-    const helpOverlays: JSX.Element[] = []
+    // const helpOverlays: JSX.Element[] = []
     const selectionOverlays: JSX.Element[] = []
     const buttons: JSX.Element[] = []
     const outwidth = 6
@@ -288,13 +324,6 @@ export default function MapCounterOverlay({
               </g>
             )
           })
-          if (ls === 1) {
-            helpOverlays.push(
-              <MapCounterOverlayHelp key={i} xx={x + 167 - dblwidth*2} yy={layout.y - 20 + dblwidth*2}
-                                    maxX={maxX} maxY={maxY} map={map} scale={scale} counter={cd}
-                                    setHelpDisplay={setHelpDisplay} />
-            )
-          }
           let target: CounterSelectionTarget | undefined = undefined
           if (xx !== undefined && yy !== undefined) {
             target = { target: { type: "map", xy: new Coordinate(xx, yy) }, counter: cd, }
@@ -310,21 +339,22 @@ export default function MapCounterOverlay({
           }
           const ox = layout.x/2 + i*(80+outwidth)*ls - 5.5 + outwidth
           const oy = layout.y/2 - 5 + outwidth
+          const hx = x + 167 - dblwidth*2
+          const hy = layout.y - 20 + dblwidth*2
           selectionOverlays.push(
-            <g key={i} transform={`scale(2) translate(${ox} ${oy})`}>
-              <path d={counterPath(cd)} style={{ fill: clearColor }}
-                    onClick={(e: React.MouseEvent) => {
-                      if (xx !== undefined && yy !== undefined) {
-                        selectionCallback(target as CounterSelectionTarget)
-                        showActionHelp(e, cd)
-                      } else if (counter.reinforcement) {
-                        selectionCallback(target as CounterSelectionTarget)
-                      }
-                      setUpdate(s => s + 1)
-                    }}
-                    onMouseMove={(e: React.MouseEvent) => { showActionHelp(e, cd) }}
-                    onMouseLeave={() => { setActionHelpDisplay(undefined) }}
-                    onContextMenu={e => { rightClick(e, target) }} />
+            <g key={i} transform={`scale(2) translate(${ox} ${oy})`}
+               onMouseEnter={() => setCC(ox, oy, hx, hy, counter, cd, target)}
+               onClick={(e: React.MouseEvent) => {
+                 if (xx !== undefined && yy !== undefined) {
+                   selectionCallback(target as CounterSelectionTarget)
+                   showActionHelp(e, cd)
+                 } else if (counter.reinforcement) {
+                   selectionCallback(target as CounterSelectionTarget)
+                 }
+                 setCC(ox, oy, hx, hy, counter, cd, target)
+               }}
+               onMouseMove={() => setCC(ox, oy, hx, hy, counter, cd, target)}>
+              <path d={counterPath(cd)} style={{ fill: clearColor }} />
             </g>
           )
           let unit: Unit | undefined = undefined
@@ -351,10 +381,13 @@ export default function MapCounterOverlay({
             </g>
           )
         })}
-        <g onMouseLeave={() => setOverlay({ show: false, x: 0, y: 0 })} >
+        <g onMouseLeave={() => {
+            setCurrentCounter(undefined)
+            setOverlay({ show: false, x: 0, y: 0 })
+          }} >
           <path d={layout.path} style={{ fill: clearColor}} />
           {selectionOverlays}
-          {helpOverlays}
+          {currentCounter}
           {actionControls}
           {helpDisplay}
           {actionHelpDisplay}
