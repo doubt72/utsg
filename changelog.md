@@ -3,9 +3,10 @@
 - Allow infantry fire into unarmored side of vehicle
 - Compress stacks too big for display
 - Bonzai rules for 417
+- Changed name of Japanese guns to have consistent order
 - Updated/promoted 315
 - Promoted 010, 307, 504 to beta
-- Added prototype 419, 424
+- Added prototype 419, 420, 424
 
 # 0.145
 

@@ -1,6 +1,4 @@
 Features/Bug Fixes
-  + Show help / full counter on mouseover (and selection still works)
-  + (417) Bonzai special rules (no VP from casualties)
   - (420), (425) Cave special rules
   - 516 Special cavalry rules (single morale check, mounted but not weapon fire)
   - 523 Hidden cavalry

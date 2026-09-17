@@ -34,7 +34,7 @@ module Scenarios
         [2, :jap_type_92_hmg],
         [4, :jap_type_99_lmg],
         [2, :jap_type_97_81mm],
-        [2, :jap_70mm_type_92],
+        [2, :jap_type_92_70mm],
         [2, :jap_ft],
         [4, :jap_sc],
         :jap_radio_10cm,

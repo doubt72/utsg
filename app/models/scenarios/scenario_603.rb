@@ -31,7 +31,7 @@ module Scenarios
           [6, :jap_b_division_s],
           :jap_type_99_lmg,
           :jap_type_89_gren_l,
-          :jap_70mm_type_92,
+          :jap_type_92_70mm,
         ],
       },
     }.freeze

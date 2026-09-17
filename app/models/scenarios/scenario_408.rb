@@ -31,7 +31,7 @@ module Scenarios
           :jap_leader_4_1,
           [6, :jap_b_division_s],
           [2, :jap_type_92_hmg],
-          :jap_70mm_type_92,
+          :jap_type_92_70mm,
           :jap_radio_7_5cm,
         ],
       },

@@ -32,7 +32,7 @@ module Scenarios
         [6, :jap_a_division_s],
         [2, :jap_type_96_lmg],
         [2, :jap_elite_crew_t],
-        [2, :jap_70mm_type_92],
+        [2, :jap_type_92_70mm],
       ] },
     }.freeze
 

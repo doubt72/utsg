@@ -31,8 +31,8 @@ module Utility
               ["ita", "Cannone da 65/17", 13, { sn: 2 }], ["ita", "Obice da 75/18", 34],
               ["ita", "Obice da 100/17", 14, { sn: 1 }],
 
-              ["jap", "70mm Type 92", 32], ["jap", "75mm Type 94", 35],
-              ["jap", "10cm Type 92", 32], ["jap", "15cm Type 89", 29],
+              ["jap", "Type 92 70mm", 32], ["jap", "Type 94 75mm", 35],
+              ["jap", "Type 92 10cm", 32], ["jap", "Type 89 15cm", 29],
 
               ["uk", "QF 25-Pounder", 40], ["uk", "QF 25Pdr Short", 43], ["uk", "QF 4.5inch", 8],
 
@@ -77,8 +77,8 @@ module Utility
               ["ita", "Cannone da 75/46", 34, { sn: 3 }],
               ["ita", "Cannone da 90/53", 39, { sn: 3 }],
 
-              ["jap", "37mm Type 94", 36], ["jap", "37mm Type 1", 41], ["jap", "47mm Type 1", 42],
-              ["jap", "75mm Type 90", 42],
+              ["jap", "Type 94 37mm", 36], ["jap", "Type 1 37mm", 41], ["jap", "Type 1 47mm", 42],
+              ["jap", "Type 90 75mm", 42],
 
               ["uk", "QF 2-Pounder", 36], ["uk", "QF 6Pdr Mk II", 41], ["uk", "QF 6Pdr Mk IV", 41],
               ["uk", "QF 17-Pounder", 43],

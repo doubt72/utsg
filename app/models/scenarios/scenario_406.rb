@@ -46,7 +46,7 @@ module Scenarios
         [12, :jap_snlf_s],
         [2, :jap_crew_t],
         [4, :jap_type_92_hmg],
-        [2, :jap_70mm_type_92],
+        [2, :jap_type_92_70mm],
         [4, :bunker],
       ] },
       "3": { list: [

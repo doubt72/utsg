@@ -49,7 +49,7 @@ module Scenarios
         [2, :jap_type_89_gren_l],
         [2, :jap_type_96_lmg],
         :jap_crew_t,
-        :jap_70mm_type_92,
+        :jap_type_92_70mm,
         [2, :jap_type_92_hmg],
         :sniper4,
       ] },

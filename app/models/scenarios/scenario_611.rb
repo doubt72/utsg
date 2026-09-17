@@ -31,8 +31,8 @@ module Scenarios
         [4, :jap_b_division_s],
         :jap_type_92_hmg,
         [2, :jap_crew_t],
-        :jap_37mm_type_94,
-        :jap_75mm_type_94,
+        :jap_type_94_37mm,
+        :jap_type_94_75mm,
         [2, :jap_type_95_ha_go],
       ] },
     }.freeze

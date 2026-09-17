@@ -29,7 +29,7 @@ module Scenarios
         :jap_leader_4_1,
         [4, :jap_a_division_s],
         :jap_type_92_hmg,
-        [2, :jap_37mm_type_94],
+        [2, :jap_type_94_37mm],
         [2, :jap_type_89_i_go],
         [3, :jap_type_95_ha_go],
       ] },

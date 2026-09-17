@@ -48,7 +48,7 @@ module Scenarios
         [10, :jap_snlf_s],
         [2, :jap_elite_crew_t],
         [4, :jap_type_92_hmg],
-        [2, :jap_70mm_type_92],
+        [2, :jap_type_92_70mm],
         :jap_radio_15cm,
         :jap_chiyoda_ac,
         [6, :wire],

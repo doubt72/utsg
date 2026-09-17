@@ -29,7 +29,7 @@ module Scenarios
         [7, :jap_conscript_s],
         :jap_type_92_hmg,
         [4, :jap_sc],
-        [2, :jap_70mm_type_92],
+        [2, :jap_type_92_70mm],
       ] },
     }.freeze
 

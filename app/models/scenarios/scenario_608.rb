@@ -41,7 +41,7 @@ module Scenarios
         :jap_leader_5_1,
         [4, :jap_a_division_s],
         :jap_crew_t,
-        :jap_70mm_type_92,
+        :jap_type_92_70mm,
         :jap_type_92_hmg,
       ] },
     }.freeze

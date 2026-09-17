@@ -32,7 +32,7 @@ module Scenarios
           [5, :jap_b_division_s],
           [2, :jap_crew_t],
           [2, :jap_type_92_hmg],
-          [2, :jap_70mm_type_92],
+          [2, :jap_type_92_70mm],
           [4, :bunker],
         ],
       },
