@@ -3,7 +3,7 @@
 module Scenarios
   class Scenario421 < Base
     ID = "421"
-    NAME = "Tarakan"
+    NAME = "Amal River"
     ALLIES = ["dut"].freeze
     AXIS = ["jap"].freeze
     STATUS = "p"
@@ -27,7 +27,7 @@ module Scenarios
       "0": { list: [
         [2, :jap_leader_5_1],
         [6, :jap_snlf_s],
-        :jap_betsudotai_s,
+        :jap_kohei_ka_s,
         [2, :jap_type_96_lmg],
         [2, :jap_type_89_gren_l],
       ] },
@@ -86,7 +86,7 @@ module Scenarios
           allied_dir: 4,
           axis_dir: 1,
           victory_hexes: [
-            [7, 16, 1], [9, 9, 1], [3, 19, 1], [11, 18, 1], [9, 22, 1],
+            [7, 16, 1], [9, 9, 1], [11, 18, 1], [9, 22, 1], [4, 19, 1],
           ],
           allied_setup: {
             "0" => [
@@ -98,6 +98,7 @@ module Scenarios
           axis_setup: {
             "0" => [["13-14", "0-1"], [14, 2], ["13-14", 3], [14, "4-10"], ["13-14", 11], [14, 12]],
           },
+          base_terrain: "",
         }
       end
 
@@ -321,7 +322,7 @@ module Scenarios
             { t: "o", r: { t: "d", d: [3, 5] } },
             { t: "o" },
             { t: "s" },
-            { t: "s" },
+            { t: "y" },
             { t: "y" },
           ],
           [
@@ -337,8 +338,8 @@ module Scenarios
             { t: "o", s: { t: "s", d: [1, 5] } },
             { t: "o", r: { t: "d", d: [2, 5] } },
             { t: "s" },
-            { t: "s", s: { t: "s", d: [4, 6] } },
-            { t: "y", s: { t: "s", d: [1, 4] } },
+            { t: "y", s: { t: "s", d: [4, 6] } },
+            { t: "y" },
             { t: "y" },
           ],
           [
@@ -355,7 +356,7 @@ module Scenarios
             { t: "o", s: { t: "s", d: [2, 4] } },
             { t: "o", s: { t: "s", d: [1, 4] }, r: { t: "d", d: [2, 6] } },
             { t: "s", s: { t: "s", d: [1, 3] } },
-            { t: "s" },
+            { t: "y" },
             { t: "y" },
           ],
           [
@@ -389,7 +390,7 @@ module Scenarios
             { t: "o", st: { sh: "l2", s: "f" }, d: 3 },
             { t: "o", r: { t: "d", d: [2, 6] } },
             { t: "s" },
-            { t: "s" },
+            { t: "y" },
             { t: "y" },
           ],
           [
@@ -423,7 +424,7 @@ module Scenarios
             { t: "o", r: { t: "d", d: [1, 3, 6] } },
             { t: "o", st: { sh: "l2", s: "f" }, d: 3 },
             { t: "s" },
-            { t: "s" },
+            { t: "y" },
             { t: "y" },
           ],
           [

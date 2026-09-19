@@ -25,6 +25,7 @@ import FireStartState from "./state/FireStartState"
 import { deHTML } from "../../utilities/graphics"
 import { fireHelpText, moraleHelpText } from "../support/help"
 import MoraleCheckState from "./state/MoraleCheckState"
+import { HexData } from "../Hex"
 
 describe("ranged fire attacks", () => {
   describe("probability checks", () => {
@@ -5038,6 +5039,560 @@ describe("ranged fire attacks", () => {
       Math.random = original
 
       expect(game.sniperNeeded).toStrictEqual([])
+    })
+  })
+
+  describe("edge cover", () => {
+    const hexes: HexData[][] = [
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o", b: "b", be: [5, 6] }, { t: "o", b: "w", be: [4] }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o", b: "w", be: [3] }, { t: "o" }],
+      [
+        { t: "o", b: "b", be: [2] },
+        { t: "o" },
+        { t: "o", b: "b", be: [2, 3] },
+        { t: "o" },
+        { t: "o", b: "b", be: [2] },
+      ],
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+    ]
+
+    const xFromCoord = (c: string): Coordinate => {
+      const x = { A: 0, B: 1, C: 2, D: 3, E: 4 }[c.substring(0, 1)] as number
+      const y = Number(c.substring(1, 2)) - 1
+      return new Coordinate(x, y)
+    }
+
+    test("cover B2->C4", () => {
+      const game = createBlankGame(hexes)
+      const map = game.scenario.map
+      const firing = new Unit(testGInf)
+      firing.id = "firing1"
+      const floc = xFromCoord("B2")
+      map.addCounter(floc, firing)
+      map.select(firing)
+
+      const target = new Unit(testRInf)
+      target.id = "target1"
+      const tloc = xFromCoord("C4")
+      map.addCounter(tloc, target)
+      organizeStacks(map)
+
+      game.setGameState(new FireState(game, false))
+
+      select(map, {
+        counter: map.countersAt(tloc)[0],
+        target: { type: "map", xy: tloc }
+      }, () => {})
+      expect(target.targetSelected).toBe(true)
+
+      const mod = moraleModifiers(game, target, [floc], tloc, false)
+      expect(mod.mod).toBe(-5)
+      expect(mod.why.length).toBe(2)
+      expect(mod.why[0]).toBe("- minus morale 3")
+      expect(mod.why[1]).toBe("- minus cover 2")
+    })
+
+    test("cover C2->C4", () => {
+      const game = createBlankGame(hexes)
+      const map = game.scenario.map
+      const firing = new Unit(testGInf)
+      firing.id = "firing1"
+      const floc = xFromCoord("C2")
+      map.addCounter(floc, firing)
+      map.select(firing)
+
+      const target = new Unit(testRInf)
+      target.id = "target1"
+      const tloc = xFromCoord("C4")
+      map.addCounter(tloc, target)
+      organizeStacks(map)
+
+      game.setGameState(new FireState(game, false))
+
+      select(map, {
+        counter: map.countersAt(tloc)[0],
+        target: { type: "map", xy: tloc }
+      }, () => {})
+      expect(target.targetSelected).toBe(true)
+
+      const mod = moraleModifiers(game, target, [floc], tloc, false)
+      expect(mod.mod).toBe(-5)
+      expect(mod.why.length).toBe(2)
+      expect(mod.why[0]).toBe("- minus morale 3")
+      expect(mod.why[1]).toBe("- minus cover 2")
+    })
+
+    test("cover D2->C4", () => {
+      const game = createBlankGame(hexes)
+      const map = game.scenario.map
+      const firing = new Unit(testGInf)
+      firing.id = "firing1"
+      const floc = xFromCoord("D2")
+      map.addCounter(floc, firing)
+      map.select(firing)
+
+      const target = new Unit(testRInf)
+      target.id = "target1"
+      const tloc = xFromCoord("C4")
+      map.addCounter(tloc, target)
+      organizeStacks(map)
+
+      game.setGameState(new FireState(game, false))
+
+      select(map, {
+        counter: map.countersAt(tloc)[0],
+        target: { type: "map", xy: tloc }
+      }, () => {})
+      expect(target.targetSelected).toBe(true)
+
+      const mod = moraleModifiers(game, target, [floc], tloc, false)
+      expect(mod.mod).toBe(-5)
+      expect(mod.why.length).toBe(2)
+      expect(mod.why[0]).toBe("- minus morale 3")
+      expect(mod.why[1]).toBe("- minus cover 2")
+    })
+
+    test("cover D2->E4", () => {
+      const game = createBlankGame(hexes)
+      const map = game.scenario.map
+      const firing = new Unit(testGInf)
+      firing.id = "firing1"
+      const floc = xFromCoord("D2")
+      map.addCounter(floc, firing)
+      map.select(firing)
+
+      const target = new Unit(testRInf)
+      target.id = "target1"
+      const tloc = xFromCoord("E4")
+      map.addCounter(tloc, target)
+      organizeStacks(map)
+
+      game.setGameState(new FireState(game, false))
+
+      select(map, {
+        counter: map.countersAt(tloc)[0],
+        target: { type: "map", xy: tloc }
+      }, () => {})
+      expect(target.targetSelected).toBe(true)
+
+      const mod = moraleModifiers(game, target, [floc], tloc, false)
+      expect(mod.mod).toBe(-5)
+      expect(mod.why.length).toBe(2)
+      expect(mod.why[0]).toBe("- minus morale 3")
+      expect(mod.why[1]).toBe("- minus cover 2")
+    })
+
+    test("cover D2->A4", () => {
+      const game = createBlankGame(hexes)
+      const map = game.scenario.map
+      const firing = new Unit(testGInf)
+      firing.id = "firing1"
+      const floc = xFromCoord("D2")
+      map.addCounter(floc, firing)
+      map.select(firing)
+
+      const target = new Unit(testRInf)
+      target.id = "target1"
+      const tloc = xFromCoord("A4")
+      map.addCounter(tloc, target)
+      organizeStacks(map)
+
+      game.setGameState(new FireState(game, false))
+
+      select(map, {
+        counter: map.countersAt(tloc)[0],
+        target: { type: "map", xy: tloc }
+      }, () => {})
+      expect(target.targetSelected).toBe(true)
+
+      const mod = moraleModifiers(game, target, [floc], tloc, false)
+      expect(mod.mod).toBe(-3)
+      expect(mod.why.length).toBe(1)
+      expect(mod.why[0]).toBe("- minus morale 3")
+    })
+
+    test("cover E2->E4", () => {
+      const game = createBlankGame(hexes)
+      const map = game.scenario.map
+      const firing = new Unit(testGInf)
+      firing.id = "firing1"
+      const floc = xFromCoord("E2")
+      map.addCounter(floc, firing)
+      map.select(firing)
+
+      const target = new Unit(testRInf)
+      target.id = "target1"
+      const tloc = xFromCoord("E4")
+      map.addCounter(tloc, target)
+      organizeStacks(map)
+
+      game.setGameState(new FireState(game, false))
+
+      select(map, {
+        counter: map.countersAt(tloc)[0],
+        target: { type: "map", xy: tloc }
+      }, () => {})
+      expect(target.targetSelected).toBe(true)
+
+      const mod = moraleModifiers(game, target, [floc], tloc, false)
+      expect(mod.mod).toBe(-5)
+      expect(mod.why.length).toBe(2)
+      expect(mod.why[0]).toBe("- minus morale 3")
+      expect(mod.why[1]).toBe("- minus cover 2")
+    })
+
+    test("cover B2->B4", () => {
+      const game = createBlankGame(hexes)
+      const map = game.scenario.map
+      const firing = new Unit(testGInf)
+      firing.id = "firing1"
+      const floc = xFromCoord("B2")
+      map.addCounter(floc, firing)
+      map.select(firing)
+
+      const target = new Unit(testRInf)
+      target.id = "target1"
+      const tloc = xFromCoord("B4")
+      map.addCounter(tloc, target)
+      organizeStacks(map)
+
+      game.setGameState(new FireState(game, false))
+
+      select(map, {
+        counter: map.countersAt(tloc)[0],
+        target: { type: "map", xy: tloc }
+      }, () => {})
+      expect(target.targetSelected).toBe(true)
+
+      const mod = moraleModifiers(game, target, [floc], tloc, false)
+      expect(mod.mod).toBe(-3)
+      expect(mod.why.length).toBe(1)
+      expect(mod.why[0]).toBe("- minus morale 3")
+    })
+
+    test("cover A3->A5", () => {
+      const game = createBlankGame(hexes)
+      const map = game.scenario.map
+      const firing = new Unit(testGInf)
+      firing.id = "firing1"
+      const floc = xFromCoord("A3")
+      map.addCounter(floc, firing)
+      map.select(firing)
+
+      const target = new Unit(testRInf)
+      target.id = "target1"
+      const tloc = xFromCoord("A5")
+      map.addCounter(tloc, target)
+      organizeStacks(map)
+
+      game.setGameState(new FireState(game, false))
+
+      select(map, {
+        counter: map.countersAt(tloc)[0],
+        target: { type: "map", xy: tloc }
+      }, () => {})
+      expect(target.targetSelected).toBe(true)
+
+      const mod = moraleModifiers(game, target, [floc], tloc, false)
+      expect(mod.mod).toBe(-3)
+      expect(mod.why.length).toBe(1)
+      expect(mod.why[0]).toBe("- minus morale 3")
+    })
+
+    test("cover C1->C5", () => {
+      const game = createBlankGame(hexes)
+      const map = game.scenario.map
+      const firing = new Unit(testGInf)
+      firing.id = "firing1"
+      const floc = xFromCoord("C1")
+      map.addCounter(floc, firing)
+      map.select(firing)
+
+      const target = new Unit(testRInf)
+      target.id = "target1"
+      const tloc = xFromCoord("C5")
+      map.addCounter(tloc, target)
+      organizeStacks(map)
+
+      game.setGameState(new FireState(game, false))
+
+      select(map, {
+        counter: map.countersAt(tloc)[0],
+        target: { type: "map", xy: tloc }
+      }, () => {})
+      expect(target.targetSelected).toBe(true)
+
+      const mod = moraleModifiers(game, target, [floc], tloc, false)
+      expect(mod.mod).toBe(-3)
+      expect(mod.why.length).toBe(1)
+      expect(mod.why[0]).toBe("- minus morale 3")
+    })
+
+    test("cover C4->B2", () => {
+      const game = createBlankGame(hexes)
+      const map = game.scenario.map
+      const firing = new Unit(testGInf)
+      firing.id = "firing1"
+      const floc = xFromCoord("C4")
+      map.addCounter(floc, firing)
+      map.select(firing)
+
+      const target = new Unit(testRInf)
+      target.id = "target1"
+      const tloc = xFromCoord("B2")
+      map.addCounter(tloc, target)
+      organizeStacks(map)
+
+      game.setGameState(new FireState(game, false))
+
+      select(map, {
+        counter: map.countersAt(tloc)[0],
+        target: { type: "map", xy: tloc }
+      }, () => {})
+      expect(target.targetSelected).toBe(true)
+
+      const mod = moraleModifiers(game, target, [floc], tloc, false)
+      expect(mod.mod).toBe(-5)
+      expect(mod.why.length).toBe(2)
+      expect(mod.why[0]).toBe("- minus morale 3")
+      expect(mod.why[1]).toBe("- minus cover 2")
+    })
+
+    test("cover C4->C2", () => {
+      const game = createBlankGame(hexes)
+      const map = game.scenario.map
+      const firing = new Unit(testGInf)
+      firing.id = "firing1"
+      const floc = xFromCoord("C4")
+      map.addCounter(floc, firing)
+      map.select(firing)
+
+      const target = new Unit(testRInf)
+      target.id = "target1"
+      const tloc = xFromCoord("C2")
+      map.addCounter(tloc, target)
+      organizeStacks(map)
+
+      game.setGameState(new FireState(game, false))
+
+      select(map, {
+        counter: map.countersAt(tloc)[0],
+        target: { type: "map", xy: tloc }
+      }, () => {})
+      expect(target.targetSelected).toBe(true)
+
+      const mod = moraleModifiers(game, target, [floc], tloc, false)
+      expect(mod.mod).toBe(-3)
+      expect(mod.why.length).toBe(1)
+      expect(mod.why[0]).toBe("- minus morale 3")
+    })
+
+    test("cover C4->D2", () => {
+      const game = createBlankGame(hexes)
+      const map = game.scenario.map
+      const firing = new Unit(testGInf)
+      firing.id = "firing1"
+      const floc = xFromCoord("C4")
+      map.addCounter(floc, firing)
+      map.select(firing)
+
+      const target = new Unit(testRInf)
+      target.id = "target1"
+      const tloc = xFromCoord("D2")
+      map.addCounter(tloc, target)
+      organizeStacks(map)
+
+      game.setGameState(new FireState(game, false))
+
+      select(map, {
+        counter: map.countersAt(tloc)[0],
+        target: { type: "map", xy: tloc }
+      }, () => {})
+      expect(target.targetSelected).toBe(true)
+
+      const mod = moraleModifiers(game, target, [floc], tloc, false)
+      expect(mod.mod).toBe(-5)
+      expect(mod.why.length).toBe(2)
+      expect(mod.why[0]).toBe("- minus morale 3")
+      expect(mod.why[1]).toBe("- minus cover 2")
+    })
+
+    test("cover E4->D2", () => {
+      const game = createBlankGame(hexes)
+      const map = game.scenario.map
+      const firing = new Unit(testGInf)
+      firing.id = "firing1"
+      const floc = xFromCoord("E4")
+      map.addCounter(floc, firing)
+      map.select(firing)
+
+      const target = new Unit(testRInf)
+      target.id = "target1"
+      const tloc = xFromCoord("D2")
+      map.addCounter(tloc, target)
+      organizeStacks(map)
+
+      game.setGameState(new FireState(game, false))
+
+      select(map, {
+        counter: map.countersAt(tloc)[0],
+        target: { type: "map", xy: tloc }
+      }, () => {})
+      expect(target.targetSelected).toBe(true)
+
+      const mod = moraleModifiers(game, target, [floc], tloc, false)
+      expect(mod.mod).toBe(-3)
+      expect(mod.why.length).toBe(1)
+      expect(mod.why[0]).toBe("- minus morale 3")
+    })
+
+    test("cover A4->D2", () => {
+      const game = createBlankGame(hexes)
+      const map = game.scenario.map
+      const firing = new Unit(testGInf)
+      firing.id = "firing1"
+      const floc = xFromCoord("A4")
+      map.addCounter(floc, firing)
+      map.select(firing)
+
+      const target = new Unit(testRInf)
+      target.id = "target1"
+      const tloc = xFromCoord("D2")
+      map.addCounter(tloc, target)
+      organizeStacks(map)
+
+      game.setGameState(new FireState(game, false))
+
+      select(map, {
+        counter: map.countersAt(tloc)[0],
+        target: { type: "map", xy: tloc }
+      }, () => {})
+      expect(target.targetSelected).toBe(true)
+
+      const mod = moraleModifiers(game, target, [floc], tloc, false)
+      expect(mod.mod).toBe(-5)
+      expect(mod.why.length).toBe(2)
+      expect(mod.why[0]).toBe("- minus morale 3")
+      expect(mod.why[1]).toBe("- minus cover 2")
+    })
+
+    test("cover E4->E2", () => {
+      const game = createBlankGame(hexes)
+      const map = game.scenario.map
+      const firing = new Unit(testGInf)
+      firing.id = "firing1"
+      const floc = xFromCoord("E4")
+      map.addCounter(floc, firing)
+      map.select(firing)
+
+      const target = new Unit(testRInf)
+      target.id = "target1"
+      const tloc = xFromCoord("E2")
+      map.addCounter(tloc, target)
+      organizeStacks(map)
+
+      game.setGameState(new FireState(game, false))
+
+      select(map, {
+        counter: map.countersAt(tloc)[0],
+        target: { type: "map", xy: tloc }
+      }, () => {})
+      expect(target.targetSelected).toBe(true)
+
+      const mod = moraleModifiers(game, target, [floc], tloc, false)
+      expect(mod.mod).toBe(-3)
+      expect(mod.why.length).toBe(1)
+      expect(mod.why[0]).toBe("- minus morale 3")
+    })
+
+    test("cover B4->B2", () => {
+      const game = createBlankGame(hexes)
+      const map = game.scenario.map
+      const firing = new Unit(testGInf)
+      firing.id = "firing1"
+      const floc = xFromCoord("B4")
+      map.addCounter(floc, firing)
+      map.select(firing)
+
+      const target = new Unit(testRInf)
+      target.id = "target1"
+      const tloc = xFromCoord("B2")
+      map.addCounter(tloc, target)
+      organizeStacks(map)
+
+      game.setGameState(new FireState(game, false))
+
+      select(map, {
+        counter: map.countersAt(tloc)[0],
+        target: { type: "map", xy: tloc }
+      }, () => {})
+      expect(target.targetSelected).toBe(true)
+
+      const mod = moraleModifiers(game, target, [floc], tloc, false)
+      expect(mod.mod).toBe(-5)
+      expect(mod.why.length).toBe(2)
+      expect(mod.why[0]).toBe("- minus morale 3")
+      expect(mod.why[1]).toBe("- minus cover 2")
+    })
+
+    test("cover A5->A3", () => {
+      const game = createBlankGame(hexes)
+      const map = game.scenario.map
+      const firing = new Unit(testGInf)
+      firing.id = "firing1"
+      const floc = xFromCoord("A5")
+      map.addCounter(floc, firing)
+      map.select(firing)
+
+      const target = new Unit(testRInf)
+      target.id = "target1"
+      const tloc = xFromCoord("A3")
+      map.addCounter(tloc, target)
+      organizeStacks(map)
+
+      game.setGameState(new FireState(game, false))
+
+      select(map, {
+        counter: map.countersAt(tloc)[0],
+        target: { type: "map", xy: tloc }
+      }, () => {})
+      expect(target.targetSelected).toBe(true)
+
+      const mod = moraleModifiers(game, target, [floc], tloc, false)
+      expect(mod.mod).toBe(-5)
+      expect(mod.why.length).toBe(2)
+      expect(mod.why[0]).toBe("- minus morale 3")
+      expect(mod.why[1]).toBe("- minus cover 2")
+    })
+
+    test("cover C5->C1", () => {
+      const game = createBlankGame(hexes)
+      const map = game.scenario.map
+      const firing = new Unit(testGInf)
+      firing.id = "firing1"
+      const floc = xFromCoord("C5")
+      map.addCounter(floc, firing)
+      map.select(firing)
+
+      const target = new Unit(testRInf)
+      target.id = "target1"
+      const tloc = xFromCoord("C1")
+      map.addCounter(tloc, target)
+      organizeStacks(map)
+
+      game.setGameState(new FireState(game, false))
+
+      select(map, {
+        counter: map.countersAt(tloc)[0],
+        target: { type: "map", xy: tloc }
+      }, () => {})
+      expect(target.targetSelected).toBe(true)
+
+      const mod = moraleModifiers(game, target, [floc], tloc, false)
+      expect(mod.mod).toBe(-3)
+      expect(mod.why.length).toBe(1)
+      expect(mod.why[0]).toBe("- minus morale 3")
     })
   })
 })

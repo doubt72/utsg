@@ -153,7 +153,7 @@ export default class Map {
 
   get narrow(): number { return 115 }
   get radius(): number { return this.narrow / 2 / Math.sin(1/3 * Math.PI) }
-  xOffset(x: number, y: number): number { return this.narrow * (x + y%2/2 + 0.5) + 1 }
+  xOffset(x: number, y: number): number { return this.narrow * (x + Math.abs(y%2)/2 + 0.5) + 1 }
   yOffset(y: number): number { return this.radius * (y*1.5 + 1) + 1 }
   get xSize(): number { return this.narrow * (this.width + 0.5) + 2 + this.xStatusSize }
   get previewXSize(): number { return this.narrow * (this.width + 0.5) + 2 }
@@ -243,7 +243,7 @@ export default class Map {
   }
 
   hexNeighbors(loc: Coordinate): (Hex | undefined)[] {
-    const offset = loc.y%2
+    const offset = Math.abs(loc.y%2)
     return [
       this.hexAt(new Coordinate(loc.x - 1, loc.y)),
       this.hexAt(new Coordinate(loc.x - 1 + offset, loc.y - 1)),
@@ -272,7 +272,7 @@ export default class Map {
   }
 
   relativeDirection(from: Coordinate, to: Coordinate): Direction | undefined {
-    const offset = from.y%2
+    const offset = Math.abs(from.y%2)
     if (from.x - 1 === to.x && from.y === to.y) { return 1 }
     if (from.x - 1 + offset === to.x && from.y - 1 === to.y) { return 2 }
     if (from.x + offset === to.x && from.y - 1 === to.y) { return 3 }

@@ -1,3 +1,11 @@
+# 0.147
+
+- Don't show entrench/clear button on carried weapons on counter overlay
+- Bug fix: some issues with display of offboard drift tracks
+- Bug fix: cover through hex corner with cover on both sides (and exhaustive tests)
+- Updated 421
+- Updated/promoted 307
+
 # 0.146
 
 - Allow infantry fire into unarmored side of vehicle

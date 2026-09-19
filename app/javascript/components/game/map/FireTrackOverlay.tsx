@@ -44,7 +44,7 @@ export default function FireTrackOverlay({ map }: FireTrackOverlayProps) {
         let current = hexS
         let last = current
         let off = false
-        for (let i = 0; i <= hexDistance(hexS, hexE); i++) {
+        for (let i = 0; i < hexDistance(hexS, hexE); i++) {
           last = current
           current = neightborCoordinate(current, dir)
           if (current.x < 0 || current.y < 0 || current.x >= map.width || current.y >= map.height) {

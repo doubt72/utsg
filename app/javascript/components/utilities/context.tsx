@@ -55,8 +55,6 @@ export function executeContextAction(
     if (game.gameState?.type === stateType.Move) { game.moveState.doneSelect = true }
     if (game.gameState?.type === stateType.Assault) { game.assaultState.doneSelect = true }
     game.closeOverlay = true
-  } else if (type === "finish_rotation") {
-    game.fireState.doneRotating = true
   } else if (type === "cancel_action") {
     game.cancelAction()
   } else if (type === "rout") {

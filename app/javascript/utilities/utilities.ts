@@ -140,13 +140,13 @@ export function hexDirection(hex0: Coordinate, hex1: Coordinate): Direction | un
     return hex0.x > hex1.x ? 1 : 4
   } else if (x00 === x11) {
     return hex0.y > hex1.y ? 2 : 5
-  } else if (z0 == z1) {
+  } else if (z0 === z1) {
     return hex0.y > hex1.y ? 3 : 6
   }
 }
 
 export function neightborCoordinate(hex: Coordinate, dir: Direction): Coordinate {
-  const offset = hex.y%2
+  const offset = Math.abs(hex.y%2)
   return [
     new Coordinate(hex.x - 1, hex.y),
     new Coordinate(hex.x - 1 + offset, hex.y - 1),
@@ -385,4 +385,4 @@ export const critHitDiff = 8
 export const critMorale = 4
 export const titleName = "A Hex Too Far"
 export const subtitleName = "Light Tactical Battle System"
-export const serverVersion = "0.146"
+export const serverVersion = "0.147"

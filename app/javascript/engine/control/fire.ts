@@ -1,4 +1,4 @@
-import { baseTerrainType, Coordinate, featureType, sponsonType, terrainType, unitType, weatherType } from "../../utilities/commonTypes";
+import { baseTerrainType, Coordinate, Direction, featureType, sponsonType, terrainType, unitType, weatherType } from "../../utilities/commonTypes";
 import { los, losHexPath } from "../../utilities/los";
 import { hexDistance, normalDir } from "../../utilities/utilities";
 import Counter from "../Counter";
@@ -533,22 +533,69 @@ function fireCover(
     for (const c of from) {
       if (c.x !== to.x || c.y !== to.y) {
         const fromHex = map.hexAt(c) as Hex
-        const path = losHexPath(map, toHex, fromHex)
-        if (path[0].edgeHex?.border && path[0].edgeHex.borderEdges?.includes(path[0].edge ?? 1)) {
-          const coverCheck = path[0].edgeHex.terrain.borderAttr.cover
-          found = true
-          if (coverCheck < minCover) { minCover = coverCheck }
-        }
-        if (path[1].hex?.border && path[1].hex.borderEdges?.includes(normalDir((path[0].edge ?? 1) + 3))) {
-          const coverCheck = path[1].hex.terrain.borderAttr.cover
-          found = true
+        const [min, check] = edgeCover(map, toHex, fromHex)
+        if (check) { found = true }
+        if (min < minCover) { minCover = min }
+      }
+    }
+    if (found) { cover += minCover }
+  }
+  return cover
+}
+
+function edgeCover(
+  map: Map, from: Hex, to: Hex
+): [number, boolean] {
+  let check = false
+  let minCover = 99
+  const path = losHexPath(map, from, to)
+  const hex0 = path[0].edgeHex
+  if (hex0) {
+    if (path[0].long === false) {
+      if (hex0.border) {
+        if (hex0.borderEdges?.includes(path[0].edge ?? 1)) {
+          const coverCheck = hex0.terrain.borderAttr.cover
+          check = true
           if (coverCheck < minCover) { minCover = coverCheck }
         }
       }
+    } else {
+      const left = normalDir((path[0].edge ?? 1) - 1)
+      const right = normalDir(left - 1)
+      const leftLoc = hex0.coord
+      const sHex = map.neighborAt(leftLoc, left)
+      const rHex = map.neighborAt(leftLoc, path[0].edge as Direction)
+      let leftCheck = 0
+      let rightCheck = 0
+      if (hex0.borderEdges?.includes(left)) {
+        leftCheck = hex0.terrain.borderAttr.cover
+      } else if (sHex?.borderEdges?.includes(normalDir(left + 3))) {
+        leftCheck = sHex.terrain.borderAttr.cover
+      }
+      if (rHex?.borderEdges?.includes(right)) {
+        rightCheck = rHex.terrain.borderAttr.cover
+      } else if (sHex?.borderEdges?.includes(normalDir(right + 3))) {
+        rightCheck = sHex.terrain.borderAttr.cover
+      }
+      if (!map.hexAt(hex0.coord)) {
+        if (rightCheck < minCover) { minCover = rightCheck }
+        if (minCover > 0) { check = true }
+      } else if (!rHex) {
+        if (leftCheck < minCover) { minCover = leftCheck }
+        if (minCover > 0) { check = true }
+      } else {
+        const cover = leftCheck > rightCheck ? rightCheck : leftCheck
+        if (cover < minCover) { minCover = cover }
+        if (minCover > 0) { check = true }
+      }
     }
-    if (found) cover += minCover
   }
-  return cover
+  if (path[1].hex?.border && path[1].hex.borderEdges?.includes(normalDir((path[0].edge ?? 1) + 3))) {
+    const coverCheck = path[1].hex.terrain.borderAttr.cover
+    check = true
+    if (coverCheck < minCover) { minCover = coverCheck }
+  }
+  return [minCover, check]
 }
 
 export function hitFromArc(

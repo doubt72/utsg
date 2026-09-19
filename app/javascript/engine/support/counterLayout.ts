@@ -229,7 +229,7 @@ export function counterActionButtons(
         rc.push({ x, color: markerYellow(), text: smoke, tColor: "#000", action: "move_smoke_toggle" })
       }
     } else if (map.game.gameState?.type === stateType.Assault) {
-      if (counter.unit.selected) {
+      if (counter.unit.selected && counter.unit.canCarrySupport) {
         const clear = iconSymbols("clear")
         const entrench = iconSymbols("entrench")
         if (showClearObstacles(map.game)) {

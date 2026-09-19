@@ -80,6 +80,7 @@ module Utility
               ["ita", "Blackshirt", 23, 2, 5, 3, 3, {}],
               ["ita", "Bande", 0, 2, 5, 3, 3, {}],
 
+              ["jap", "Kohei-ka", 0, 4, 8, 3, 5, { a: 1, eng: 1 }],
               ["jap", "Betsudotai", 0, 5, 7, 3, 5, { a: 1 }],
               ["jap", "Konoehen", 0, 4, 6, 4, 5, { a: 1 }],
               ["jap", "A Division", 0, 4, 6, 4, 5, { a: 1 }],

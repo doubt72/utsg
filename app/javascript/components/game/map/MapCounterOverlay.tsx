@@ -253,7 +253,6 @@ export default function MapCounterOverlay({
       coord, displayCounters.length, new Coordinate(maxX, maxY),
       new Coordinate(shiftX, shiftY), mapScale, !!counters
     )
-    // const helpOverlays: JSX.Element[] = []
     const selectionOverlays: JSX.Element[] = []
     const buttons: JSX.Element[] = []
     const outwidth = 6

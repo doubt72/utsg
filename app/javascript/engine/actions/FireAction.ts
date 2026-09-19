@@ -231,17 +231,17 @@ export default class FireAction extends BaseAction {
             dirRoll.description = `direction roll: ${formatDieResult(dirRoll.result)}`
             drift.description = `distance roll: ${formatDieResult(drift.result)} for ${formatTarget(dist)} hexes`
           }
-          const loc = this.map.driftHex(to, dirRoll.result.result, dist)
-          this.fireHex.final = [{ x: loc.x, y: loc.y, smoke }]
+          const driftTo = this.map.driftHex(to, dirRoll.result.result, dist)
+          this.fireHex.final = [{ x: driftTo.x, y: driftTo.y, smoke }]
           if (this.data.fire_data) { this.data.fire_data.drift = true }
-          if (loc.x < 0 || loc.y < 0 || loc.x >= this.map.width || loc.y >= this.map.height) {
+          if (driftTo.x < 0 || driftTo.y < 0 || driftTo.x >= this.map.width || driftTo.y >= this.map.height) {
             dHexes = []
             drift.description += ", drifted off map"
           } else {
-            anims.push({ loc: loc, type: "drift" })
-            dHexes = [loc]
-            for (const h of this.map.hexNeighbors(loc)) { if (h) { dHexes.push(h.coord)} }
-            drift.description += `, drifted to ${formatCoordinate(loc)}`
+            anims.push({ loc: driftTo, type: "drift" })
+            dHexes = [driftTo]
+            for (const h of this.map.hexNeighbors(driftTo)) { if (h) { dHexes.push(h.coord)} }
+            drift.description += `, drifted to ${formatCoordinate(driftTo)}`
             let hit = false
             for (const d of dHexes) {
               fsHexes.push({ x: d.x, y: d.y })
