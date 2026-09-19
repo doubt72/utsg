@@ -35,7 +35,7 @@ export default function FireHindranceOverlay({ map }: FireHindranceOverlayProps)
 
   const track = () => {
     return (
-      <g>
+      <g className={"tracking-fho-cp"}>
         { hindrance() }
       </g>
     )

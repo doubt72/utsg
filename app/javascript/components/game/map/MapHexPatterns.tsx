@@ -156,7 +156,7 @@ export default function MapHexPatterns({ map, rotated }: MapHexPatternProps) {
                patternTransform={ rotated ? "rotate(90)" : "" }
                width="5.5" height="9.9" viewBox="0 0 10 18">
         <rect width="10" height="18" opacity="0.7" style={{ fill: "#FFA" }}/>
-        <g id="grain-component">
+        <g className={"tracking-mhp-grain"} id="grain-component">
           <path d="M0 0l5 3v5l-5 -3z" style={darkStyle} />
           <path d="M10 0l-5 3v5l5 -3" style={darkStyle} />
         </g>

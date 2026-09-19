@@ -75,10 +75,10 @@ export default function MiniMap(
 
     setWidth(xSize)
     setMinimap(
-      <g>
+      <g className={"tracking-mm-mm"}>
         <path d={roundedRectangle(xx, yy + extraShift, xSize + 6, ySize + 6)}
               style={{ fill: "#EEE", strokeWidth: 4, stroke: "#670", fillRule: "evenodd" }} />
-        <g transform={`translate(${xShift} ${yShift + extraShift})`}>
+        <g className={"tracking-mm-mmi"} transform={`translate(${xShift} ${yShift + extraShift})`}>
           <MapDisplay map={map} scale={miniScale} preview={true} forceUpdate={0} />
         </g>
         <path d={roundedRectangleHole(xO, yO, wO, hO, xI, yI, wI, hI, 5)}
@@ -121,7 +121,7 @@ export default function MiniMap(
   }, [width])
 
   return (
-    <g>
+    <g className={"tracking-mm-cp"}>
      { minimap }
      { helpDisplay }
     </g>

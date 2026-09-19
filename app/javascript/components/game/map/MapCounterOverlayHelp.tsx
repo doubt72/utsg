@@ -28,7 +28,7 @@ export default function MapCounterOverlayHelp({
     const bl = map.counterHelpButtonLayout(new Coordinate(xx, yy), counter) as HelpButtonLayout
     const textColor = "white"
     setHelpButton(
-      <g onMouseOver={() => showHelp()} onMouseLeave={() => hideHelp()} onClick = {() => {
+      <g className={"tracking-mcoh-hb"} onMouseOver={() => showHelp()} onMouseLeave={() => hideHelp()} onClick = {() => {
           const url = `/help/${helpIndexByName("Counters")}`
           window.open(url)
         }}>
@@ -54,7 +54,7 @@ export default function MapCounterOverlayHelp({
   }
 
   return (
-    <g>
+    <g className={"tracking-mcoh-cp"} >
       {helpButton}
     </g>
   )

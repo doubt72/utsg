@@ -97,7 +97,7 @@ export default function MapCounterOverlay({
       const buttons = filtered.map((o, i) => {
         const text = translateAction(map.game as Game, target, o)
         return (
-          <g key={`context-${i}`} >
+          <g className={`tracking-mco-ctx-${i}`} key={`context-${i}`} >
             <path d={roundedRectangle(x + 8, y + 8 + i*36, width, 32, 5)} style={{ fill: "#EEE" }}
                   onClick={() => contextAction(o, target)}
                   onContextMenu={e => e.preventDefault()} />
@@ -113,7 +113,7 @@ export default function MapCounterOverlay({
       })
       const height = filtered.length * 36 + 12
       setContextMenu(
-        <g onMouseLeave={() => setContextMenu(undefined)} >
+        <g className={"tracking-mco-ctx"} onMouseLeave={() => setContextMenu(undefined)} >
           <path d={roundedRectangle(x, y, width + 16, height)} style={{ fill: "rgba(0,0,0,0.2)" }} />
           { buttons }
         </g>
@@ -215,12 +215,12 @@ export default function MapCounterOverlay({
   ) => {
     const key = update + 1
     setCurrentCounter(
-      <g key={key} onMouseLeave={() => {
+      <g className={`tracking-mco-cc-${key}`} key={key} onMouseLeave={() => {
            setActionHelpDisplay(undefined)
            setCurrentCounter(undefined)
            setHelpDisplay(undefined)
          }}>
-        <g transform={`scale(2) translate(${x} ${y})`}
+        <g className={"tracking-mco-cci1"} transform={`scale(2) translate(${x} ${y})`}
           onMouseMove={(e: React.MouseEvent) => { showActionHelp(e, cd) }}
           onClick={(e: React.MouseEvent) => {
             if (xx !== undefined && yy !== undefined) {
@@ -234,7 +234,7 @@ export default function MapCounterOverlay({
           onContextMenu={e => { rightClick(e, target) }} >
           <MapCounter counter={cd} ovCallback={() => {}} firingSmoke={firingSmoke} />
         </g>
-        <g onMouseEnter={() => setActionHelpDisplay(undefined) }>
+        <g className={"tracking-mco-cci2"} onMouseEnter={() => setActionHelpDisplay(undefined) }>
           <MapCounterOverlayHelp xx={hx} yy={hy} maxX={maxX} maxY={maxY} map={map}
                                  scale={scale} counter={cd}
                                  setHelpDisplay={setHelpDisplay} />
@@ -259,7 +259,7 @@ export default function MapCounterOverlay({
     const dblwidth = outwidth*2
     const ls = layout.scale as number
     setOverlayDisplay(
-      <g>
+      <g className={"tracking-mco-o"}>
         <path d={layout.path} style={layout.style as object} />
         { displayCounters.map((counter, i) => {
           const cd = new Counter(undefined, counter.target, map)
@@ -281,7 +281,7 @@ export default function MapCounterOverlay({
             for (const c of controls) {
               thisButtons = true
               buttons.push(
-                <g key={`${c.text}-${counter.unit.id}`}
+                <g className={`tracking-mco-c-${c.text}-${counter.unit.id}`} key={`${c.text}-${counter.unit.id}`}
                     onClick={() => buttonAction(c.action, {
                       target: { type: "map", xy: counter.hex as Coordinate }, counter
                     })}
@@ -308,14 +308,14 @@ export default function MapCounterOverlay({
             map, x, layout.y2 + 20 - dblwidth + (shiftBadges ? 6 : 0), maxY, cd, (shiftBadges ? 6 : 3)
           ).map((b, i) => {
             const arrow = b.arrow ?
-              <g opacity={thisButtons ? 0.33 : 1} transform={ map.rotated ? `rotate(-90, ${b.dx} ${b.dy as number})` : "" }>
+              <g className={"tracking-mco-a1"} opacity={thisButtons ? 0.33 : 1} transform={ map.rotated ? `rotate(-90, ${b.dx} ${b.dy as number})` : "" }>
                 <path d={b.dirpath} style={{ fill: b.color, stroke: b.tColor, strokeWidth: 2 }} />
                 <text x={b.dx} y={b.y as number+1} fontSize={b.size} textAnchor="middle"
                       style={{ fill: b.tColor }}
                       transform={`rotate(${b.arrow*60-60} ${b.dx} ${b.dy})`}>←</text>
               </g> : "" 
             return (
-              <g key={i} opacity={thisButtons ? 0.33 : 1} >
+              <g className={"tracking-mco-a2"} key={i} opacity={thisButtons ? 0.33 : 1} >
                 <path d={b.path} style={{ fill: b.color, stroke: b.tColor, strokeWidth: 2 }} />
                 <text x={b.x} y={b.y} fontSize={b.size} textAnchor="start" fontFamily="'Courier Prime', monospace"
                       style={{ fill: b.tColor }}>{b.text}</text>
@@ -341,7 +341,7 @@ export default function MapCounterOverlay({
           const hx = x + 167 - dblwidth*2
           const hy = layout.y - 20 + dblwidth*2
           selectionOverlays.push(
-            <g key={i} transform={`scale(2) translate(${ox} ${oy})`}
+            <g className={`tracking-mco-so-${i}`} key={i} transform={`scale(2) translate(${ox} ${oy})`}
                onMouseEnter={() => setCC(ox, oy, hx, hy, counter, cd, target)}
                onClick={(e: React.MouseEvent) => {
                  if (xx !== undefined && yy !== undefined) {
@@ -369,8 +369,8 @@ export default function MapCounterOverlay({
             <path d={counterOutline(cd, transport, 4, ls)}
                   style={{ fill: clearColor, stroke: "#FFF", strokeWidth: 1.5, strokeDasharray: "5 4" }} />  : ""
           return (
-            <g key={i} >
-              <g transform={`scale(2) translate(${ox} ${oy})`}>
+            <g className={`tracking-mco-ol-${i}`} key={i} >
+              <g className={"tracking-mco-oli"} transform={`scale(2) translate(${ox} ${oy})`}>
                 { unit ? <path d={counterOutline(cd, getLength(unit, false), 1, ls)}
                                 style={{ fill: "#FFF", stroke: "#FFF", strokeWidth: 1.5 }} /> : "" }
                 { outerLine }
@@ -380,7 +380,7 @@ export default function MapCounterOverlay({
             </g>
           )
         })}
-        <g onMouseLeave={() => {
+        <g className={"tracking-mco-all"} onMouseLeave={() => {
             setCurrentCounter(undefined)
             setOverlay({ show: false, x: 0, y: 0 })
           }} >
@@ -415,7 +415,7 @@ export default function MapCounterOverlay({
   }, [])
 
   return (
-    <g>
+    <g className={"tracking-mco-cp"}>
       {overlayDisplay}
     </g>
   )

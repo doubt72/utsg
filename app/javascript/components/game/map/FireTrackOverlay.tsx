@@ -82,7 +82,7 @@ export default function FireTrackOverlay({ map }: FireTrackOverlayProps) {
 
   const track = () => {
     return (
-      <g>
+      <g className={"tracking-fto-cp"}>
         { hexTracks() }
       </g>
     )

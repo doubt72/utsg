@@ -85,7 +85,7 @@ export default function MapCounter({ counter, ovCallback, onClick, firingSmoke =
     const layout = weaponBreakLayout(counter)
     if (layout) {
       return (
-        <g>
+        <g className={"tracking-mc-wb"}>
           <path d={layout.path} style={layout.style as object} />
           <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
                 fontFamily="'Courier Prime', monospace"
@@ -99,7 +99,7 @@ export default function MapCounter({ counter, ovCallback, onClick, firingSmoke =
     const layout = weaponFixLayout(counter)
     if (layout) {
       return (
-        <g>
+        <g className={"tracking-mc-wf"}>
           <path d={layout.path} style={layout.style as object} />
           <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
                 fontFamily="'Courier Prime', monospace"
@@ -113,7 +113,7 @@ export default function MapCounter({ counter, ovCallback, onClick, firingSmoke =
     const layout = markerBreakLayout(counter)
     if (layout) {
       return (
-        <g>
+        <g className={"tracking-mc-mb"}>
           <path d={layout.path} style={layout.style as object} />
           <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
                 fontFamily="'Courier Prime', monospace"
@@ -127,7 +127,7 @@ export default function MapCounter({ counter, ovCallback, onClick, firingSmoke =
     const layout = markerFixLayout(counter)
     if (layout) {
       return (
-        <g>
+        <g className={"tracking-mc-mf"}>
           <path d={layout.path} style={layout.style as object} />
           <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
                 fontFamily="'Courier Prime', monospace"
@@ -141,7 +141,7 @@ export default function MapCounter({ counter, ovCallback, onClick, firingSmoke =
     const layout = sizeLayout(counter)
     if (layout) {
       return (
-        <g>
+        <g className={"tracking-mc-sz"}>
           <path d={layout.path} style={layout.style as object} />
           <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
                 fontFamily="'Courier Prime', monospace"
@@ -155,7 +155,7 @@ export default function MapCounter({ counter, ovCallback, onClick, firingSmoke =
     const layout = towLayout(counter)
     if (layout) {
       return (
-        <g>
+        <g className={"tracking-mc-tw"}>
           <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
                 fontFamily="'Courier Prime', monospace"
                 style={layout.tStyle as object}>{layout.value}</text>
@@ -168,7 +168,7 @@ export default function MapCounter({ counter, ovCallback, onClick, firingSmoke =
     const layout = canTowLayout(counter)
     if (layout) {
       return (
-        <g>
+        <g className={"tracking-mc-ct"}>
           <path d={layout.path} style={layout.style as object} />
         </g>
       )
@@ -193,7 +193,7 @@ export default function MapCounter({ counter, ovCallback, onClick, firingSmoke =
     const layout = leadershipLayout(counter)
     if (layout) {
       return (
-        <g>
+        <g className={"tracking-mc-ldr"}>
           <path d={layout.path} style={layout.style as object} />
           <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
                 fontFamily="'Courier Prime', monospace"
@@ -207,7 +207,7 @@ export default function MapCounter({ counter, ovCallback, onClick, firingSmoke =
     const layout = handlingLayout(counter)
     if (layout) {
       return (
-        <g>
+        <g className={"tracking-mc-hnd"}>
           <path d={layout.path} style={layout.style as object} />
           <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
                 fontFamily="'Courier Prime', monospace"
@@ -221,7 +221,7 @@ export default function MapCounter({ counter, ovCallback, onClick, firingSmoke =
     const layout = tankCrewLayout(counter)
     if (layout) {
       return (
-        <g>
+        <g className={"tracking-mc-tc"}>
           <path d={layout.path} style={layout.style as object} />
           <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
                 fontFamily="'Courier Prime', monospace"
@@ -235,7 +235,7 @@ export default function MapCounter({ counter, ovCallback, onClick, firingSmoke =
     const layout = breakdownLayout(counter)
     if (layout) {
       return (
-        <g>
+        <g className={"tracking-mc-bd"}>
           <path d={layout.path} style={layout.style as object} />
           <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
                 fontFamily="'Courier Prime', monospace"
@@ -270,7 +270,7 @@ export default function MapCounter({ counter, ovCallback, onClick, firingSmoke =
     const layout = sponsonLayout(counter)
     if (layout) {
       return (
-        <g>
+        <g className={"tracking-mc-sp"}>
           <path d={layout.path} style={layout.style as object} />
           <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
                 fontFamily="sans-serif" style={layout.tStyle as object} >{layout.value}</text>
@@ -303,7 +303,7 @@ export default function MapCounter({ counter, ovCallback, onClick, firingSmoke =
     const layout = firepowerLayout(counter)
     if (layout) {
       return (
-        <g>
+        <g className={"tracking-mc-fp"}>
           <path d={layout.path} style={layout.style as object} />
           <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
                 fontFamily="'Courier Prime', monospace"
@@ -331,7 +331,7 @@ export default function MapCounter({ counter, ovCallback, onClick, firingSmoke =
     const layout = rangeLayout(counter)
     if (layout) {
       return (
-        <g>
+        <g className={"tracking-mc-rng"}>
           <path d={layout.path} style={layout.style as object} />
           <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
                 fontFamily="'Courier Prime', monospace"
@@ -359,7 +359,7 @@ export default function MapCounter({ counter, ovCallback, onClick, firingSmoke =
     const layout = movementLayout(counter)
     if (layout) {
       return (
-        <g>
+        <g className={"tracking-mc-mv"}>
           <path d={layout.path} style={layout.style as object} />
           <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
                 fontFamily="'Courier Prime', monospace"
@@ -387,7 +387,7 @@ export default function MapCounter({ counter, ovCallback, onClick, firingSmoke =
     const layout = markerMoraleLayout(counter)
     if (layout) {
       return (
-        <g>
+        <g className={"tracking-mc-mrl"}>
           <path d={layout.path} style={layout.style as object} />
           <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
                 fontFamily="'Courier Prime', monospace"
@@ -401,7 +401,7 @@ export default function MapCounter({ counter, ovCallback, onClick, firingSmoke =
     const layout = markerFirepowerLayout(counter)
     if (layout) {
       return (
-        <g>
+        <g className={"tracking-mc-mfp"}>
           <path d={layout.path} style={layout.style as object} />
           <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
                 fontFamily="'Courier Prime', monospace"
@@ -415,7 +415,7 @@ export default function MapCounter({ counter, ovCallback, onClick, firingSmoke =
     const layout = markerRangeLayout(counter)
     if (layout) {
       return (
-        <g>
+        <g className={"tracking-mc-mrng"}>
           <path d={layout.path} style={layout.style as object} />
           <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
                 fontFamily="'Courier Prime', monospace"
@@ -429,7 +429,7 @@ export default function MapCounter({ counter, ovCallback, onClick, firingSmoke =
     const layout = markerMovementLayout(counter)
     if (layout) {
       return (
-        <g>
+        <g className={"tracking-mc-mmv"}>
           <path d={layout.path} style={layout.style as object} />
           <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
                 fontFamily="'Courier Prime', monospace"
@@ -443,7 +443,7 @@ export default function MapCounter({ counter, ovCallback, onClick, firingSmoke =
     const layout = eliteLayout(counter)
     if (layout) {
       return (
-        <g>
+        <g className={"tracking-mc-eli"}>
           <path d={layout.path} style={layout.style as object} />
           <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
                 fontFamily="'Courier Prime', monospace"
@@ -457,7 +457,7 @@ export default function MapCounter({ counter, ovCallback, onClick, firingSmoke =
     const layout = spottingLayout(counter)
     if (layout) {
       return (
-        <g>
+        <g className={"tracking-mc-spt"}>
           <path d={layout.path} style={layout.style as object} />
           <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
                 fontFamily="'Courier Prime', monospace"
@@ -471,7 +471,7 @@ export default function MapCounter({ counter, ovCallback, onClick, firingSmoke =
     const layout = sponsonSpottingLayout(counter)
     if (layout) {
       return (
-        <g>
+        <g className={"tracking-mc-sspt"}>
           <path d={layout.path} style={layout.style as object} />
           <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
                 fontFamily="'Courier Prime', monospace"
@@ -485,7 +485,7 @@ export default function MapCounter({ counter, ovCallback, onClick, firingSmoke =
     const layout = markerLayout(counter)
     if (layout) {
       return (
-        <g>
+        <g className={"tracking-mc-mk"}>
           {layout.path ? <path d={layout.path} style={layout.style as object}/> : ""}
           {
             layout.text.map((t, i) =>
@@ -503,7 +503,7 @@ export default function MapCounter({ counter, ovCallback, onClick, firingSmoke =
     const layout = turnLayout(counter)
     if (layout) {
       return (
-        <g>
+        <g className={"tracking-mc-tb"}>
           <MapHexPatterns />
           {layout.map((c, i) => <circle key={i} cx={c.x} cy={c.y} r={c.r}
                                         style={c.style as object}/>)}
@@ -516,7 +516,7 @@ export default function MapCounter({ counter, ovCallback, onClick, firingSmoke =
     const layout = spotLetterLayout(counter)
     if (layout) {
       return (
-        <g>
+        <g className={"tracking-mc-sptl"}>
           <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
                 fontFamily="'Courier Prime', monospace"
                 style={layout.tStyle as object}>{layout.value}</text>
@@ -529,7 +529,7 @@ export default function MapCounter({ counter, ovCallback, onClick, firingSmoke =
     const layout = spotPlusLayout(counter)
     if (layout) {
       return (
-        <g>
+        <g className={"tracking-mc-sptp"}>
           <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
                 fontFamily="'Courier Prime', monospace"
                 style={layout.tStyle as object}>{layout.value}</text>
@@ -548,7 +548,7 @@ export default function MapCounter({ counter, ovCallback, onClick, firingSmoke =
   const markerSub = () => {
     const layout = markerSubLayout(counter)
     if (layout) return (
-      <g>
+      <g className={"tracking-mc-ms"}>
         <text x={layout.x} y={layout.y[0]} fontSize={layout.size} textAnchor="middle"
               fontFamily="'Courier Prime', monospace"
               style={layout.style as object}>{layout.value[0]}</text>
@@ -567,7 +567,7 @@ export default function MapCounter({ counter, ovCallback, onClick, firingSmoke =
     if (layoutSrc) {
       const layout = layoutSrc as CounterLayout
       return (
-        <g>
+        <g className={"tracking-mc-ft"}>
           <path d={layout.path} style={layout.style as object} />
           <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
                 fontFamily="'Courier Prime', monospace"
@@ -589,8 +589,8 @@ export default function MapCounter({ counter, ovCallback, onClick, firingSmoke =
       const c = counter
       const r = c.rotation
       return (
-        <g transform={ counter.map?.rotated ? `rotate(90 ${c.x+40} ${c.y+40})` : "" }>
-          <g transform={`rotate(${r ? `${-r.a} ${c.x+40} ${c.y+40}` : "0"})`}>
+        <g className={"tracking-mc-st"} transform={ counter.map?.rotated ? `rotate(90 ${c.x+40} ${c.y+40})` : "" }>
+          <g className={"tracking-mc-sti"} transform={`rotate(${r ? `${-r.a} ${c.x+40} ${c.y+40}` : "0"})`}>
             <path d={layout.path} style={layout.style as object} />
             {text}
           </g>
@@ -600,17 +600,19 @@ export default function MapCounter({ counter, ovCallback, onClick, firingSmoke =
   }
   
   const overlay = () => {
+    const x = counter.hex?.x
+    const y = counter.hex?.y
     return (
       <path d={counterPath(counter)} style={{ fill: clearColor }}
             onMouseEnter={(e: React.MouseEvent) => {
               setMouseInside(true)
               if (e.ctrlKey) { return }
-              ovCallback({ show: true, x: counter.hex?.x, y: counter.hex?.y })
+              ovCallback({ show: true, x, y })
             }}
             onMouseLeave={() => setMouseInside(false) }
             onMouseMove={(e: React.MouseEvent) => {
               if (e.ctrlKey) { return }
-              ovCallback({ show: true, x: counter.hex?.x, y: counter.hex?.y })
+              ovCallback({ show: true, x, y })
             }}
             onContextMenu={e => {
               if (onClick) {
@@ -623,7 +625,9 @@ export default function MapCounter({ counter, ovCallback, onClick, firingSmoke =
   }
 
   const listener = useCallback((e: KeyboardEvent) => {
-    if (e.key === "Control") { ovCallback({ show: true, x: counter.hex?.x, y: counter.hex?.y }) }
+    const x = counter.hex?.x
+    const y = counter.hex?.y
+    if (e.key === "Control") { ovCallback({ show: true, x, y }) }
   }, [])
 
   useEffect(() => {
@@ -632,6 +636,9 @@ export default function MapCounter({ counter, ovCallback, onClick, firingSmoke =
       return
     }
     document.addEventListener("keyup", listener)
+    return () => {
+      document.removeEventListener("keyup", listener)
+    }
   }, [mouseInside])
 
   const rotation = () => {
@@ -640,7 +647,8 @@ export default function MapCounter({ counter, ovCallback, onClick, firingSmoke =
   }
 
   return (
-    <g transform={`rotate(${rotation()})`} opacity={counter.target.ghost ? 0.7 : 1}>
+    <g className={"tracking-mc-cp"} transform={`rotate(${rotation()})`}
+       opacity={counter.target.ghost ? 0.7 : 1}>
       {shadow()}
       {counterBack}
       {nameBackground()}{name()}

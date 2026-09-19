@@ -37,7 +37,7 @@ export default function SniperDisplay({
 
   useEffect(() => {
     setBase(
-      <g>
+      <g className={"tracking-sd-b"}>
         <path d={roundedRectangle(xx, yy, 272, 100)}
               style={{ fill: "#EEE", stroke: "#D5D5D5", strokeWidth: 1 }} />
         <circle cx={xx + 26} cy={yy + 50} r={16} style={nationOne()}/>
@@ -90,7 +90,7 @@ export default function SniperDisplay({
   }, [xx, yy, hideCounters])
 
   return (
-    <g>
+    <g className={"tracking-sd-cp"}>
       {base}
       {sniperOne}
       {sniperTwo}

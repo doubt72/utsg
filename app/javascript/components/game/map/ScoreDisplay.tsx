@@ -62,7 +62,7 @@ export default function ScoreDisplay({ map, xx, yy, maxX, maxY, scale }: ScoreDi
     const s1 = map.game?.playerOneScore
     const s2 = map.game?.playerTwoScore
     setBase(
-      <g>
+      <g className={"tracking-sd-b"}>
         <path d={roundedRectangle(xx, yy, 190, 52)}
               style={{ fill: "#EEE", stroke: "#D5D5D5", strokeWidth: 1 }} />
         <text x={xx + 50} y={yy + 33} fontSize={s1 > 99 ? 22 : 24} textAnchor="start"
@@ -74,25 +74,25 @@ export default function ScoreDisplay({ map, xx, yy, maxX, maxY, scale }: ScoreDi
           {s2}
         </text>
         { game.scenario.specialRules.includes("retreat_301") ?
-          <g>
-            <g transform={`rotate(${(alliedDir - 1)*60} ${xl} ${yd})`}>
+          <g className={"tracking-sd-sr1"}>
+            <g className={"tracking-sd-sri1"} transform={`rotate(${(alliedDir - 1)*60} ${xl} ${yd})`}>
               <path d={`M ${xl - radius + size} ${yd - size} L ${xl - radius} ${yd} ` +
                         `L ${xl - radius + size} ${yd + size} M ${xl - radius} ${yd} L ${xl} ${yd}`}
                     style={{ fill: clearColor, stroke: "#444", strokeWidth: 2 }}/>
             </g>
-            <g transform={`rotate(${(axisDir - 1)*60} ${xl} ${yd})`}>
+            <g className={"tracking-sd-sri2"} transform={`rotate(${(axisDir - 1)*60} ${xl} ${yd})`}>
               <path d={`M ${xl - radius + size} ${yd - size} L ${xl - radius} ${yd} ` +
                         `L ${xl - radius + size} ${yd + size} M ${xl - radius} ${yd} L ${xl} ${yd}`}
                     style={{ fill: clearColor, stroke: "#444", strokeWidth: 2 }}/>
             </g>
           </g> :
-          <g>
-            <g transform={`rotate(${(alliedDir - 1)*60} ${xl} ${yd})`}>
+          <g className={"tracking-sd-sr2"}>
+            <g className={"tracking-sd-sri3"} transform={`rotate(${(alliedDir - 1)*60} ${xl} ${yd})`}>
               <path d={`M ${xl - radius + size} ${yd - size} L ${xl - radius} ${yd} ` +
                         `L ${xl - radius + size} ${yd + size} M ${xl - radius} ${yd} L ${xl} ${yd}`}
                     style={{ fill: clearColor, stroke: "#444", strokeWidth: 2 }}/>
             </g>
-            <g transform={`rotate(${(axisDir - 1)*60} ${xr} ${yd})`}>
+            <g className={"tracking-sd-sri4"} transform={`rotate(${(axisDir - 1)*60} ${xr} ${yd})`}>
               <path d={`M ${xr - radius + size} ${yd - size} L ${xr - radius} ${yd} ` +
                         `L ${xr - radius + size} ${yd + size} M ${xr - radius} ${yd} L ${xr} ${yd}`}
                     style={{ fill: clearColor, stroke: "#444", strokeWidth: 2 }}/>
@@ -110,7 +110,7 @@ export default function ScoreDisplay({ map, xx, yy, maxX, maxY, scale }: ScoreDi
   }, [xx, yy, map.game?.playerOneScore, map.game?.playerTwoScore, map.rotated, map.alliedDir, map.axisDir])
 
   return (
-    <g>
+    <g className={"tracking-sd-cp"}>
       {base}
       {helpDisplay}
     </g>

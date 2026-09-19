@@ -31,10 +31,10 @@ export default function MapTargetHexSelection({ hex, target, active, offboard }:
   }
 
   return (
-    <g>
+    <g className={"tracking-mths-cp"}>
       <polygon points={hexCoords(hex, offset)}
                style={{ fill: clearColor, stroke: color, strokeWidth: 4 }} />
-      { target ? <g>
+      { target ? <g className={"tracking-mths-t"}>
           <path d={circlePath(new Coordinate(x, y), center)}
                 style={{ fill: tColor, stroke: tColor, strokeWidth }} />
           <path d={circlePath(new Coordinate(x, y), inside)}
@@ -46,7 +46,7 @@ export default function MapTargetHexSelection({ hex, target, active, offboard }:
           <line x1={x-short} x2={x-length} y1={y} y2={y} style={{ stroke: tColor, strokeWidth }} />
           <line x1={x} x2={x} y1={y-short} y2={y-length} style={{ stroke: tColor, strokeWidth }} />
         </g> : "" }
-      { offboard ? <g>
+      { offboard ? <g className={"tracking-mths-o"}>
           { [1, 2, 3, 4, 5, 6].map((d, i) => {
             const dd = normalDir(d)
             const h = hex.map.neighborAt(hex.coord, dd)

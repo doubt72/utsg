@@ -40,7 +40,7 @@ export default function Reinforcements(
             onMouseMove={e => updateHelpOverlay(e, faction)} />
     )
     return (
-      <g>
+      <g className={`tracking-p-n-${n}`}>
         <path d={baseCounterPath(x, y)}
               style={{ fill: nationalColorLookup(n), stroke: "black", strokeWidth: 2 }}/>
         <image width={80} height={80} x={x} y={y} href={`/assets/units/${n}.svg`}/>
@@ -84,12 +84,12 @@ export default function Reinforcements(
     const deploy = map.game?.phase === gamePhaseType.Deploy &&
       localStorage.getItem("username") === map.game.currentUser
     setBase(
-      <g>
+      <g className={"tracking-r-b"}>
         <path d={roundedRectangle(xx, yy, deploy ? 265 : 190 , 100)}
               style={{ fill: "#EEE", stroke: "#D5D5D5", strokeWidth: 1 }} />
         { deploy ?
           (
-            <g>
+            <g className={"tracking-r-bb"}>
               <text x={xx + 190} y={yy + 22} fontSize={16} textAnchor="start"
                     fontFamily="'Courier Prime', monospace" style={{ fill: "#000" }}>
                 select
@@ -121,7 +121,7 @@ export default function Reinforcements(
   }, [xx, yy, update, map.game?.lastActionIndex])
 
   return (
-    <g>
+    <g className={"tracking-rp-cp"}>
       {base}
       {helpDisplay}
     </g>

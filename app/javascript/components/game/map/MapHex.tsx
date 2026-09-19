@@ -31,7 +31,7 @@ export default function MapHex({ hex }: MapHexProps) {
     const orchard = orchardDisplay(hex)
     if (orchard) {
       return (
-        <g>
+        <g className={"tracking-mh-o"} >
           {orchard.map((c, i) => {
             return <circle key={i} cx={c.x} cy={c.y} r={c.r} style={c.style as object} />
           })}
@@ -78,7 +78,7 @@ export default function MapHex({ hex }: MapHexProps) {
   )
 
   return (
-    <g>
+    <g className={"tracking-mh-cp"}>
       {background}
       {elevation()}
       {terrain()}

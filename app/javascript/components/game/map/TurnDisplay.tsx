@@ -86,7 +86,7 @@ export default function TurnDisplay({
     const opacity = 0.66
     const width = small === 0 ? 100 + map.game.scenario.turns * 90 : 460 + 15 * shifts(4) - totalOffset()
     setBase(
-      <g>
+      <g className={"tracking-td-b"}>
         <path d={roundedRectangle(xx, yy, width, 100)}
               style={{ fill: "#EEE", stroke: "#D5D5D5", strokeWidth: 1 }} />
         {
@@ -97,7 +97,7 @@ export default function TurnDisplay({
             const r1 = map.game?.availableReinforcements(1)[n] !== undefined && fut
             const r2 = map.game?.availableReinforcements(2)[n] !== undefined && fut
             return (
-              <g key={n}>
+              <g className={`tracking-td-bi-${n}`} key={n}>
                 <path d={roundedRectangle(x, y, 80, 80, 4)}
                       style={{ fill: "white", stroke: "black", strokeWidth: 1.5 }} />
                 <text x={x + 40} y={y + (n ? 52 : 46)} fontSize={n ? 40 : 20} textAnchor="middle"
@@ -123,7 +123,7 @@ export default function TurnDisplay({
             let spacer = undefined
             if (shifts(i) > oldShift) {
               oldShift = shifts(i)
-              spacer = <g>
+              spacer = <g className={"tracking-td-spacer"}>
                 <path d={circlePath(new Coordinate(x - 12.5, y + 30), 3)} style={{ fill: "#777" }} />
                 <path d={circlePath(new Coordinate(x - 12.5, y + 40), 3)} style={{ fill: "#777" }} />
                 <path d={circlePath(new Coordinate(x - 12.5, y + 50), 3)} style={{ fill: "#777" }} />
@@ -138,7 +138,7 @@ export default function TurnDisplay({
             const bottom = small === 1 ? 65 : 68
             const left = small === 1 ? 15 : 10
             return (
-              <g key={i}>
+              <g className={`tracking-td-bi-${i}`} key={i}>
                 { spacer }
                 <path d={roundedRectangle(x, y, shrink(map.game, n) ? 20 : 80, 80, 4)}
                       style={{ fill: "white", stroke: "black", strokeWidth: 1.5 }} />
@@ -190,7 +190,7 @@ export default function TurnDisplay({
   }, [xx, yy, hideCounters, map.game?.scenario.turns, map.game?.turn, small])
 
   return (
-    <g>
+    <g className={"tracking-td-cp"}>
       {base}
       {turn}
     </g>

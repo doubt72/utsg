@@ -23,7 +23,7 @@ export default function MapLosOverlay({
 
   useEffect(() => {
     setOverlayDisplay(
-      <g>
+      <g className={"tracking-mlo-od"}>
         {
           map.mapHexes.map((row, y) =>
             row.map((hex, x) => {
@@ -74,7 +74,7 @@ export default function MapLosOverlay({
                 const xd = hex.xOffset + offset
                 const yd = hex.yOffset + 20 - (map.rotated ? -offset : offset)
                 return (
-                  <g key={key}>
+                  <g className={`tracking-mlo-odi-${key}`} key={key}>
                     <text x={xd} y={yd} fontSize={80}
                           textAnchor="middle" fontFamily="'Courier Prime', monospace"
                           style={{ fill: "rgba(0,0,0,0.2)" }}>
@@ -86,7 +86,7 @@ export default function MapLosOverlay({
                 )
               }
               return (
-                <g key={key}>
+                <g className={`tracking-mlo-odi-${key}`} key={key}>
                   <path d={circlePath(new Coordinate(value.x, value.y), 30)}
                         style={{ fill: "rgba(0,0,0,0.3)" }}/>
                   <text x={value.x} y={value.y + 15} fontSize={value.size}
@@ -107,7 +107,7 @@ export default function MapLosOverlay({
           const fl2 = facingLayout(c, !!c.unit.sponson)
           if (!fl || !fl2) { return "" }
           return (
-            <g key={i}>
+            <g className={`tracking-mlo-ca-${i}`} key={i}>
               <defs>
                 <clipPath id="map-clip-firing-arc">
                   <rect x="0" y="0" width={map.previewXSize} height={map.ySize}></rect>
@@ -127,7 +127,7 @@ export default function MapLosOverlay({
   }, [xx, yy])
 
   return (
-    <g>
+    <g className={"tracking-mlo-cp"}>
       {overlayDisplay}
     </g>
   )

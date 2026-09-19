@@ -71,7 +71,7 @@ export default function MoveTrackOverlay({
     const buttons = filtered.map((o, i) => {
       const text = translateAction(map.game as Game, undefined, o)
       return (
-        <g key={`context-${i}`} >
+        <g className={`tracking-mto-ctx-${i}`} key={`context-${i}`} >
           <path d={roundedRectangle(x + 8, y + 8 + i*36, width, 32, 5)} style={{ fill: "#EEE" }}
                 onClick={() => contextAction(o)}
                 onContextMenu={e => e.preventDefault()} />
@@ -87,7 +87,7 @@ export default function MoveTrackOverlay({
     })
     const height = filtered.length * 36 + 12
     menuCallback(
-      <g onMouseLeave={() => menuCallback(undefined)} >
+      <g className={"tracking-mto-mcb"} onMouseLeave={() => menuCallback(undefined)} >
         <path d={roundedRectangle(x, y, width + 16, height)} style={{ fill: "rgba(0,0,0,0.2)" }} />
         { buttons }
       </g>
@@ -132,7 +132,7 @@ export default function MoveTrackOverlay({
       const x2 = hx[i].xOffset + offset2
       const y2 = hx[i].yOffset - (map.rotated ? -offset2 : offset2)
       track.push(
-        <g key={`${i}-g`}>
+        <g className={`tracking-mto-ht-${i}`} key={`${i}-g`}>
           <line key={`${i}-la`} x1={x1} y1={y1} x2={x2} y2={y2}
                 style={{ stroke: "#DDD", strokeWidth: 4 }} />
           <line key={`${i}-lb`} x1={x1} y1={y1} x2={x2} y2={y2}
@@ -166,11 +166,12 @@ export default function MoveTrackOverlay({
         const controls = mapActionButtons(map, x, y + 10, loc)
         for (const c of controls) {
           buttons.push(
-            <g key={`${c.text}`} transform={ map.rotated ? `rotate(90 ${h.xOffset} ${h.yOffset})` : "" }
-                onClick={() => buttonAction(c.action)}
-                onMouseMove={(e: React.MouseEvent) => { showButtonHelp(e, c.action) }}
-                onMouseLeave={() => { tooltipCallback(undefined) }}
-                onContextMenu={e => e.preventDefault()} >
+            <g className={`tracking-mto-hc-${c.text}`} key={`${c.text}`}
+               transform={ map.rotated ? `rotate(90 ${h.xOffset} ${h.yOffset})` : "" }
+               onClick={() => buttonAction(c.action)}
+               onMouseMove={(e: React.MouseEvent) => { showButtonHelp(e, c.action) }}
+               onMouseLeave={() => { tooltipCallback(undefined) }}
+               onContextMenu={e => e.preventDefault()} >
               <path d={c.path} style={{ fill: c.color, strokeWidth: 2, stroke: "#000" }} />
               <text textAnchor="middle" fontFamily="'Courier Prime', monospace" x={c.tX} y={c.tY}
                     fontSize={c.size} style={{ fill: c.tColor }}>
@@ -187,7 +188,7 @@ export default function MoveTrackOverlay({
                      style={{ fill, stroke: "#777", strokeWidth: 4 }} />
       } else if (map.game?.gameState?.type === stateType.Move) {
         return (
-          <g key={`${i}-c`} >
+          <g className={`tracking-mto-c-${i}`} key={`${i}-c`} >
             <path d={circlePath(new Coordinate(x, y), 12)}
                   style={{ fill, stroke: "#777", strokeWidth: 4 }}
                   onClick={() => selectCallback(loc.x, loc.y)}
@@ -196,7 +197,7 @@ export default function MoveTrackOverlay({
         )
       } else {
         return (
-          <g key={`${i}-c`} >
+          <g className={`tracking-mto-c2-${i}`} key={`${i}-c`} >
             <path d={circlePath(new Coordinate(x, y), 12)}
                   style={{ fill, stroke: "#777", strokeWidth: 4 }}
                   onContextMenu={e => rightClick(e)}/>
@@ -212,7 +213,7 @@ export default function MoveTrackOverlay({
   const track = () => {
     if (hexes().length < 2) { return }
     return (
-      <g>
+      <g className={"tracking-mto-tr"}>
         { hexTrack }
         { hexCenters }
         { actionControls }

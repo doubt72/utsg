@@ -77,7 +77,7 @@ export default function DirectionSelector({ hex, selectCallback }: DirectionSele
         callback = () => {}
       }
       return (
-        <g key={v}>
+        <g className={`tracking-ds-d-${v}`} key={v}>
           <path d={points[0]} style={style} />
           <text x={points[1][0]} y={points[1][1]} fontSize={22.5} textAnchor="middle"
                 transform={`rotate(${v * 60 - 150} ${points[1][0]} ${points[1][1]}) translate(0 6)`}
@@ -106,7 +106,7 @@ export default function DirectionSelector({ hex, selectCallback }: DirectionSele
   }
 
   return (
-    <g>
+    <g className={"tracking-ds-cp"}>
       { text() }
       { overlay() }
       { directions() }

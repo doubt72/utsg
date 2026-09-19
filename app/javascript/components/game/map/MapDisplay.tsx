@@ -234,12 +234,10 @@ export default function MapDisplay({
     const fontSize = 24
     const height = fontSize * 1.5
     const twidth = error.length * fontSize * 0.6 + fontSize
-    // const x = (map.previewXSize * (mapScale ?? 1) - 76 < width / scale - 216 ?
-    //           map.previewXSize * (mapScale ?? 1) - 76 : width / scale - 216) - twidth
     const x = 75
     const y = 50 + map.yStatusSize + 50 / scale - 50
     setNotification(
-      <g>
+      <g className={"tracking-md-n"} >
         <path d={roundedRectangle(x, y, twidth, height)} style={{ fill: `rgba(221,221,221,${alpha})` }}/>
         <text x={x + 12} y={y + fontSize*1.05} fontSize={fontSize} fontFamily="'Courier Prime', monospace"
                   textAnchor="start" style={{ fill: `rgba(0,0,0,${alpha})` }}>{error}</text>
@@ -365,9 +363,10 @@ export default function MapDisplay({
     if (yScale > 1) { yScale = 1}
     if (xOffset > 1 - xScale) { setXOffset(1 - xScale) }
     if (yOffset > 1 - yScale) { setYOffset(1 - yScale) }
-
+    const scaleWidth = width / scale
+    const scaleHeight = height / scale
     setMinimap(
-      <MiniMap map={map} xx={2} yy={5} maxX={width / scale} maxY={height / scale}
+      <MiniMap map={map} xx={2} yy={5} maxX={scaleWidth} maxY={scaleHeight}
                 scale={scale} mapScale={mapScale ?? 1} svgRef={svgRef as React.MutableRefObject<HTMLElement>}
                 xScale={xScale} yScale={yScale}
                 xOffset={xOffset} yOffset={yOffset} callback={minimapCallback}
@@ -404,20 +403,24 @@ export default function MapDisplay({
     map.showAllCounters = showStatusCounters
     map.hideCounters = hideCounters
     let firingSmoke = false
+    const scaleWidth = width / scale
+    const scaleHeight = height / scale
+    const st = showTerrain
+    const sc = scale
     if (map.game?.gameState?.type === stateType.Fire && map.game.fireState.smoke) { firingSmoke = true }
     if (map.game?.gameState?.type === stateType.Move && map.game.moveState.smoke) { firingSmoke = true }
     map.mapHexes.forEach((row, y) => {
       row.forEach((hex, x) => {
         hexLoader.push(<MapHex key={`${x}-${y}`} hex={hex} />)
-        detailLoader.push(<MapHexDetail key={`${x}-${y}-d`} hex={hex} maxX={width / scale} maxY={height / scale}
-                                        selectCallback={hexSelection} showTerrain={showTerrain}
-                                        terrainCallback={showTerrain ?
+        detailLoader.push(<MapHexDetail key={`${x}-${y}-d`} hex={hex} maxX={scaleWidth} maxY={scaleHeight}
+                                        selectCallback={hexSelection} showTerrain={st}
+                                        terrainCallback={st ?
                                           setTerrainInfoOverlay : () => setTerrainInfoOverlay(undefined) }
                                         svgRef={svgRef as React.MutableRefObject<HTMLElement>}
                                         scale={scale} />)
         nightLoader.push(
-          <MapHexNight key={`${x}-${y}-n`} hex={hex} maxX={width / scale} maxY={height / scale} scale={scale}
-                       showTerrain={showTerrain} terrainCallback={showTerrain ?
+          <MapHexNight key={`${x}-${y}-n`} hex={hex} maxX={scaleWidth} maxY={scaleHeight} scale={sc}
+                       showTerrain={st} terrainCallback={st ?
                          setTerrainInfoOverlay : () => setTerrainInfoOverlay(undefined) }
                        svgRef={svgRef as React.MutableRefObject<HTMLElement>} />
         )
@@ -522,21 +525,21 @@ export default function MapDisplay({
     setWeather(() =>
       map.preview || preview ? undefined :
         <WeatherDisplay preview={false} map={map} hideCounters={hideCounters}
-                        xx={width / scale - 192} yy={52 + 50 / scale - 50}
+                        xx={scaleWidth - 192} yy={52 + 50 / scale - 50}
                         ovCallback={setOverlay} />
     )
     setScore(() =>
       map.preview || preview ? undefined :
-        <ScoreDisplay map={map} xx={width / scale - 192} yy={330 + 50 / scale - 50}
-                      maxX={width / scale} maxY={height / scale} scale={scale} />
+        <ScoreDisplay map={map} xx={scaleWidth - 192} yy={330 + 50 / scale - 50}
+                      maxX={scaleWidth} maxY={scaleHeight} scale={scale} />
     )
     setInitiative(() =>
       map.preview || preview ? undefined :
         <InitiativeDisplay map={map} ovCallback={setOverlay} hideCounters={hideCounters}
-                           small={iShrink} xx={width / scale - 192} yy={392 + 50 / scale - 50} />
+                           small={iShrink} xx={scaleWidth - 192} yy={392 + 50 / scale - 50} />
     )
-    let xx = width / scale - 677 - (checkMin(map) ? 15 : 0) + (tShrink === 2 ? 240 : 0)
-    if (map.game && tShrink === 0) { xx = width / scale - map.game?.scenario.turns*88 - 316 }
+    let xx = scaleWidth - 677 - (checkMin(map) ? 15 : 0) + (tShrink === 2 ? 240 : 0)
+    if (map.game && tShrink === 0) { xx = scaleWidth - map.game?.scenario.turns*88 - 316 }
     setTurn(() =>
       map.preview || preview ? undefined :
         <TurnDisplay xx={xx} small={tShrink}
@@ -544,8 +547,8 @@ export default function MapDisplay({
                      ovCallback={setOverlay}/>
     )
     setSniper(() => {
-      let xx = width / scale - 959 - (checkMin(map) ? 15 : 0) + (tShrink === 2 ? 240 : 0)
-      if (map.game && tShrink === 0) { xx = width / scale - map.game?.scenario.turns*88 - 598 }
+      let xx = scaleWidth - 959 - (checkMin(map) ? 15 : 0) + (tShrink === 2 ? 240 : 0)
+      if (map.game && tShrink === 0) { xx = scaleWidth - map.game?.scenario.turns*88 - 598 }
       return map.preview || preview || (!map.game?.alliedSniper && !map.game?.axisSniper) ?
         undefined :
         <SniperDisplay xx={xx} yy={52 + 50 / scale - 50}
@@ -555,7 +558,7 @@ export default function MapDisplay({
       setReinforcements(() =>
         map.preview || preview ? undefined :
           <Reinforcements map={map} xx={reinforcementOffset} yy={52 + 50 / scale - 50}
-                          maxX={width / scale} maxY={height / scale} scale={scale}
+                          maxX={scaleWidth} maxY={scaleHeight} scale={scale}
                           svgRef={svgRef as React.MutableRefObject<HTMLElement>}
                           callback={displayReinforcements} update={{key: true}}/>
       )
@@ -611,6 +614,8 @@ export default function MapDisplay({
       setCounterOverlay(undefined)
       return
     }
+    const scaleWidth = width / scale
+    const scaleHeight = height / scale
     let firingSmoke = false
     if (map.game?.gameState?.type === stateType.Fire && map.game.fireState.smoke) { firingSmoke = true }
     if (map.game?.gameState?.type === stateType.Move && map.game.moveState.smoke) { firingSmoke = true }
@@ -643,7 +648,7 @@ export default function MapDisplay({
         <MapCounterOverlay xx={overlay.x} yy={overlay.y} map={map} setOverlay={setOverlay}
                            selectionCallback={unitSelection} updateCallback={
                               () => { counterCallback(); updateCallback() }}
-                           maxX={width / scale} maxY={height / scale}
+                           maxX={scaleWidth} maxY={scaleHeight}
                            shiftX={xShift / reshift} shiftY={yShift * reshift} mapScale={mapScale ?? 1}
                            scale={scale} svgRef={svgRef as React.MutableRefObject<HTMLElement>}
                            mapUpdate={mapUpdate} firingSmoke={firingSmoke} />
@@ -653,7 +658,7 @@ export default function MapDisplay({
         <MapCounterOverlay counters={overlay.counters} map={map} setOverlay={setOverlay}
                            selectionCallback={unitSelection} updateCallback={
                               () => { counterCallback(); updateCallback() }}
-                           maxX={width / scale} maxY={height / scale}
+                           maxX={scaleWidth} maxY={scaleHeight}
                            shiftX={xShift} shiftY={yShift} mapScale={mapScale ?? 1} scale={scale}
                            svgRef={svgRef as React.MutableRefObject<HTMLElement>}
                            mapUpdate={mapUpdate} firingSmoke={firingSmoke} />
@@ -865,7 +870,7 @@ export default function MapDisplay({
   const mapDisplay = () => {
     if (map.preview || preview) {
       return (
-        <g transform={rotateTransform}>
+        <g className={"tracking-md-pv"} transform={rotateTransform}>
           {hexDisplay}
           {hexDisplayDetail}
           { map.night ? hexNightOverlay : 0 }
@@ -901,7 +906,7 @@ export default function MapDisplay({
               } />
             </clipPath>
           </defs>
-          <g clipPath="url(#map-clip" transform={rotateTransform}>
+          <g className={"tracking-md-cp"} clipPath="url(#map-clip" transform={rotateTransform}>
             {hexDisplay}
             {hexDisplayDetail}
             { map.night ? hexNightOverlay : "" }
@@ -925,14 +930,14 @@ export default function MapDisplay({
 
   const background = () => {
     if (map.preview || preview) {
-      return <g></g>
+      return <g className={"tracking-md-bg0"}></g>
     }
     const x = 0
     const y = 110 + 50/scale
     const bWidth = width/scale - 202
     const bHeight = height/scale - 110 - 50/scale
     return (
-      <g>
+      <g className={"tracking-md-bg"}>
         <path d={roundedRectangle(x, y, bWidth, bHeight, 10)}
               style={{ fill: map.mapBackgroundColor }} />
         { map.baseTerrain === baseTerrainType.Grass ?

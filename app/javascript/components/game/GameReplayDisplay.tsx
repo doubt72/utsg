@@ -414,7 +414,7 @@ export default function GameReplayDisplay() {
   const myRatingStars = (rating: number) => {
     return (
       <svg className="scenario-row-rating" width={80} height={16} viewBox="0 0 500 100">
-        { [0, 1, 2, 3, 4].map(s => <g key={s}>
+        { [0, 1, 2, 3, 4].map(s => <g className={`tracking-grd-${s}`} key={s}>
           <mask id={`star-mask-${s}`}>
             <path d={starPath(new Coordinate(50 + 100*s, 55), 50)} style={{ fill: "#FFF" }}/>
           </mask>

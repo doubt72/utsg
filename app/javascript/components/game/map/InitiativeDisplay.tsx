@@ -131,7 +131,7 @@ export default function InitiativeDisplay({
   useEffect(() => {
     const arrowColor = "#DDD"
     setBase(
-      <g>
+      <g className={"tracking-id-b"}>
         <path d={roundedRectangle(xx, yy, 190, small === 0 ? 752 : (small === 1 ? 512 : 392 ))}
               style={{ fill: "#EEE", stroke: "#D5D5D5", strokeWidth: 1 }} />
         <text x={xx + 10} y={yy + 20} fontSize={16} textAnchor="start"
@@ -140,14 +140,14 @@ export default function InitiativeDisplay({
         </text>
         {
           [...Array(15).keys()].map(i => {
-            if (!map) { return <g key={i}></g> }
+            if (!map) { return <g className={`tracking-id-in-${i}`} key={i}></g> }
             const game = map.game as Game
             const x = xOffset(i - 7)
             const y = yOffset(game, i - 7)
             const arrowUp = showArrow(i - 7, i > 7)
             const arrowDown = showArrow(i - 7, i <= 7)
             return shrink(game, i) ? (
-              <g key={i}>
+              <g className={`tracking-id-i1-${i}`} key={i}>
                 <path d={roundedRectangle(x, y, 80, 20, 4)}
                       style={{ fill: "white", stroke: "black", strokeWidth: 1.5 }} />
                 { arrowUp ? <path d={`M ${x+25} ${y+16} L ${x+55} ${y+16} L ${x+40} ${y+8} z`}
@@ -162,7 +162,7 @@ export default function InitiativeDisplay({
                 </text>
               </g>
             ) : (
-              <g key={i}>
+              <g className={`tracking-id-i2-${i}`} key={i}>
                 <path d={baseCounterPath(x, y)}
                       style={{ fill: "white", stroke: "black", strokeWidth: 1.5 }} />
                 { arrowUp && i !== 7 ? <path d={`M ${x+15} ${y+76} L ${x+65} ${y+76} L ${x+40} ${y+60} z`}
@@ -223,7 +223,7 @@ export default function InitiativeDisplay({
     const x = xx + (map.game.currentPlayer === 1 ? 26 : 164)
     if (!map.game.replay) {
       setPLayerPointer(
-        <g>
+        <g className={"tracking-id-pp"}>
           <path d={`M ${x} ${y1} L ${x-8.5} ${y1-12} L ${x+8.5} ${y1-12} L ${x} ${y1}`}
                 style={{ fill: "black", strokeWidth: 0, stroke: "black" }} />
           <path d={`M ${x} ${y2} L ${x-8.5} ${y2+12} L ${x+8.5} ${y2+12} L ${x} ${y2}`}
@@ -236,7 +236,7 @@ export default function InitiativeDisplay({
   }, [xx, yy, map.game?.currentPlayer, map.game?.state, map.game?.replayIndex])
 
   return (
-    <g>
+    <g className={"tracking-id-cp"}>
       {base}
       {initiative}
       {playerPointer}

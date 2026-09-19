@@ -36,7 +36,7 @@ export default function MapHexDetail({
     const bridge = (hex.river && hex.riverType !== streamType.Trench) ||
       [terrainType.Water, terrainType.Shallow].includes(hex.baseTerrain)
     return (
-      <g>
+      <g className={"tracking-mhd-rd"}>
         <path d={path} style={roadOutlineStyle(hex) as object} transform={roadRotate(hex)} />
         { bridge ? <path d={path} style={bridgeStyle(hex) as object} transform={roadRotate(hex)} /> : "" }
         <path d={path} style={roadEdgeStyle(hex) as object} transform={roadRotate(hex)} />
@@ -50,7 +50,7 @@ export default function MapHexDetail({
     const path = railroadPath(hex)
     const bridge = hex.river || hex.baseTerrain === terrainType.Water || hex.baseTerrain == terrainType.Shallow
     return (
-      <g>        
+      <g className={"tracking-mhd-rr"}>
         { bridge ? <path d={path} style={railroadBridgeStyle() as object} /> :
             <path d={path} style={railroadBedStyle() as object} /> }
         <path d={path} style={railroadtieStyle() as object} />
@@ -62,7 +62,7 @@ export default function MapHexDetail({
     if (!hex.railroad) { return "" }
     const path = railroadPath(hex)
     return (
-      <g>
+      <g className={"tracking-mhd-rr2"}>
         <path d={path} style={railroadTrackStyle() as object} />
       </g>
     )
@@ -72,7 +72,7 @@ export default function MapHexDetail({
     const path = hexEdgePath(hex)
     if (!path) { return "" }
     return (
-      <g>
+      <g className={"tracking-mhd-e"}>
         <path d={path} style={hexEdgeCoreStyle(hex) as object} />
         <path d={path} style={hexEdgeDecorationStyle(hex) as object} />
       </g>
@@ -116,7 +116,7 @@ export default function MapHexDetail({
   )
 
   return (
-    <g>
+    <g className={"tracking-mhd-cp"}>
       {river()}
       {railroadBottom()}
       {road()}

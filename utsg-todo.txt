@@ -1,7 +1,9 @@
 Features/Bug Fixes
-  + Entrench (etc) doesn't show up on carried
-  + Check offboard lines for artillery all edges
-  + Cover through hedge edges is wrong
+  - Show overstack/enemy
+  - 504
+    - Accelerate reinforcements 2, 3, 4
+    - Add French tank
+    - Change setup
   - Monitor memory usage
     - Any variables being held unnecessarily
       - Closues? Detached dom?

@@ -83,7 +83,7 @@ export default function ReinforcementPanel({
     const cStroke = closeButtonHover ? "#F77" : "#F55"
     const cFill = closeButtonHover ? "#EEE" : "#CCC"
     const closeButton = (
-      <g onClick={(e) => { setShiftX(0); setShiftY(0); closeCallback(e) }}
+      <g className={"tracking-rp-cb"} onClick={(e) => { setShiftX(0); setShiftY(0); closeCallback(e) }}
          onMouseEnter={() => setCloseButtonHover(true)}
          onMouseLeave={() => setCloseButtonHover(false)}>
         <circle cx={closeX} cy={closeY} r={8} style={{ fill: cFill, stroke: cStroke, strokeWidth: 2 }} />
@@ -97,7 +97,7 @@ export default function ReinforcementPanel({
     const mainFill = "rgba(143,143,143,0.95)"
     if (!units || Object.keys(units).length === 0) {
       setBase(
-        <g>
+        <g className={"tracking-rp-b1"}>
           <path d={roundedRectangle(x, y, 225, 100)}
                 style={{ fill: mainFill, stroke: "#777", strokeWidth: 1 }}/>
           <text x={x + 10} y={y + 22} fontSize={16} textAnchor="start"
@@ -116,7 +116,8 @@ export default function ReinforcementPanel({
     const width = maxWidth(units)
     const height = Object.keys(units).length * 106 + 64
     setBase(
-      <g onMouseDown={() => setMouseDown(true)}
+      <g className={"tracking-rp-b2"}
+         onMouseDown={() => setMouseDown(true)}
          onMouseUp={() => setMouseDown(false)}
          onMouseLeave={() => setMouseDown(false)}
          onMouseMove={(event) => {
@@ -138,7 +139,7 @@ export default function ReinforcementPanel({
             const turn = Number(pair[0])
             const label = turn > 98 ? "losses" : (turn > 0 ? `turn ${turn}` : "setup")
             return (
-              <g key={i}>
+              <g className={`tracking-rp-e-${i}`} key={i}>
                 <text x={x + 10} y={y + 120 + 106*i} fontSize={16} textAnchor="start"
                       fontFamily="'Courier Prime', monospace" style={{ fill: "#FFF" }}>
                   {label}
@@ -184,7 +185,7 @@ export default function ReinforcementPanel({
                         map.select(counter.targetUF)
                       }
                       return (
-                        <g key={j}>
+                        <g className={`tracking-rp-ee1-${j}`} key={j}>
                           <text x={x0} y={y0} fontSize={16} textAnchor="start"
                                 fontFamily="'Courier Prime', monospace" style={{ fill: "#555" }}>
                             {data.x}x
@@ -194,7 +195,7 @@ export default function ReinforcementPanel({
                       )
                     } else {
                       return (
-                        <g key={j}>
+                        <g className={`tracking-rp-ee2-${j}`} key={j}>
                           <text x={x0} y={y0} fontSize={16} textAnchor="start"
                                 fontFamily="'Courier Prime', monospace" style={{ fill: "#FFF" }}>
                             {data.used > 0 && show ? `${data.used}/${data.x}` : count}x
@@ -221,7 +222,7 @@ export default function ReinforcementPanel({
   ])
 
   return (
-    <g>
+    <g className={"tracking-rp-cp"}>
       {base}
     </g>
   )

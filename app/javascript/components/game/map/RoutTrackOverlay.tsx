@@ -26,7 +26,7 @@ export default function RoutTrackOverlay({ map, callback }: RoutTrackOverlayProp
         const x2 = map.xOffset(next.x, next.y) + offset2
         const y2 = map.yOffset(next.y) - (map.rotated ? -offset2 : offset2)
         rc.push(
-          <g key={`${i}-${j}-line`}>
+          <g className={`tracking-rto-ln-${i}-${j}`} key={`${i}-${j}-line`}>
             <line x1={x1} y1={y1} x2={x2} y2={y2} style={{ stroke: "#DDD", strokeWidth: 4 }} />
             <line x1={x1} y1={y1} x2={x2} y2={y2}
                   style={{ stroke: "#333", strokeWidth: 4, strokeDasharray: "5, 5" }} />
@@ -63,7 +63,7 @@ export default function RoutTrackOverlay({ map, callback }: RoutTrackOverlayProp
 
   const track = () => {
     return (
-      <g>
+      <g className={"tracking-rto-cp"}>
         { hexTracks() }
         { hexEnds() }
       </g>

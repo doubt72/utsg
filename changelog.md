@@ -1,3 +1,8 @@
+# 0.148
+
+- Add tracking IDs to find detached elements
+- Updated 504
+
 # 0.147
 
 - Don't show entrench/clear button on carried weapons on counter overlay

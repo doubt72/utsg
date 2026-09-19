@@ -7,7 +7,7 @@ export interface HelpSectionProps {
 
 export function HelpOverlay(layout: HelpLayout): JSX.Element | undefined {
   return (
-    <g>
+    <g className={"tracking-ho-cp"}>
       <path d={layout.path} style={layout.style as object} opacity={layout.opacity} />
       {
         layout.texts.map((t, i) => 

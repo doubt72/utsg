@@ -39,7 +39,7 @@ export default function MapHexOverlay({
       let decoration = shaded === hexOpenType.All ? "A" : shaded
       if (decoration === 0.5) { decoration = "½" }
       circle = (
-        <g transform={ hex.map.rotated ? `rotate(90 ${x + xoffset} ${y - yoffset})` : "" } >
+        <g className={"tracking-mho-c"} transform={ hex.map.rotated ? `rotate(90 ${x + xoffset} ${y - yoffset})` : "" } >
           <path d={circlePath(new Coordinate(x + xoffset, y - yoffset), 30)}
                 style={{ fill: "rgba(0,0,0,0.3)" }} />
           <text x={x + xoffset} y={y - yoffset + 15} fontSize={56} textAnchor="middle"
@@ -50,7 +50,7 @@ export default function MapHexOverlay({
       )
     }
     return (
-      <g className={firingSmoke ? "smoke-cursor" : ""} >
+      <g className={firingSmoke ? "tracking-mho-sc smoke-cursor" : "tracking-mho-sc"} >
         { circle }
         <polygon points={hex.hexCoords} style={style}
                  onClick={() => open ? selectCallback(hex.coord.x, hex.coord.y) : {}}
@@ -63,7 +63,7 @@ export default function MapHexOverlay({
   }
 
   return (
-    <g>
+    <g className={"tracking-mho-cp"}>
       {overlay()}
     </g>
   )

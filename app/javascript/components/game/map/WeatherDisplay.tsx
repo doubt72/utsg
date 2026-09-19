@@ -49,7 +49,7 @@ export default function WeatherDisplay({
 
   useEffect(() => {
     const prev = preview
-    const hex = <g>
+    const hex = <g className={"tracking-wd-h"}>
       <polygon points={baseHexCoords(map || { radius: 0 }, x.hex, y.hex)}
                style={{ fill: "white", stroke: "black", strokeWidth: 1.5 }}
                transform={ map.rotated ? `rotate(30 ${x.hex} ${y.hex})` : "" }/>
@@ -78,7 +78,7 @@ export default function WeatherDisplay({
 
     const xTextOffset = prev ? 40 : 5
     const yTextOffset = prev ? -6 : 15
-    const current = <g>
+    const current = <g className={"tracking-wd-c"}>
       <path d={baseCounterPath(x.current, y.current)}
             style={{ fill: "white", stroke: "black", strokeWidth: 1.5 }} />
       <text x={x.current + xTextOffset} y={y.current + yTextOffset} fontSize={16}
@@ -88,7 +88,7 @@ export default function WeatherDisplay({
       </text>
     </g>
 
-    const precip = <g>
+    const precip = <g className={"tracking-wd-p"}>
       <path d={baseCounterPath(x.precip, y.precip)}
             style={{ fill: "white", stroke: "black", strokeWidth: 1.5 }} />
       <text x={x.precip + xTextOffset} y={y.precip + yTextOffset} fontSize={16}
@@ -99,7 +99,7 @@ export default function WeatherDisplay({
     </g>
 
     if (prev) {
-      const base = <g>
+      const base = <g className={"tracking-wd-b1"}>
         <path d={baseCounterPath(x.base, y.base)}
               style={{ fill: "white", stroke: "black", strokeWidth: 1.5 }} />
         <text x={x.base + xTextOffset} y={y.base + yTextOffset} fontSize={16}
@@ -109,7 +109,7 @@ export default function WeatherDisplay({
         </text>
       </g>
       setBase(
-        <g>
+        <g className={"tracking-wd-b2"}>
           <path d={roundedRectangle(xx, yy, 190, 456)}
                 style={{ fill: map?.baseTerrainColor, stroke: "#CCC", strokeWidth: 2 }} />
           {
@@ -137,7 +137,7 @@ export default function WeatherDisplay({
       )
     } else {
       setBase(
-        <g>
+        <g className={"tracking-wd-b3"}>
           <path d={roundedRectangle(xx, yy, 190, 268)}
                 style={{ fill: map?.baseTerrainColor, stroke: "#D5D5D5", strokeWidth: 1 }} />
           {
@@ -239,7 +239,7 @@ export default function WeatherDisplay({
   ])
 
   return (
-    <g>
+    <g className={"tracking-wd-cp"}>
       {base}
       {currentWeather}
       {baseWeather}

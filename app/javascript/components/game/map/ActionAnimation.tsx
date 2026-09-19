@@ -27,8 +27,8 @@ export default function ActionAnimation({map, timer, details, animate}: ActionAn
   const size = 1 + (2000 - iTimer) / 4000
 
   return (
-    <g transform={ map.rotated ? `rotate(90 ${x} ${y})` : "" }>
-      <g opacity={alpha} transform={`translate(${(1 - size)*x} ${(1 - size)*y}) scale(${size})`}>
+    <g className={`tracking-aa-t`} transform={ map.rotated ? `rotate(90 ${x} ${y})` : "" }>
+      <g className={`tracking-aa-i`} opacity={alpha} transform={`translate(${(1 - size)*x} ${(1 - size)*y}) scale(${size})`}>
         { message.map((m, i) => {
             return <text key={i} x={x} y={y + i*yInterval - size*80 + 80} fontSize={textSize}
                          fontFamily="'Courier Prime', monospace"

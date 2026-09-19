@@ -27,10 +27,10 @@ export default function MapLosDebugOverlay({
     const losPath = losHexPath(map, start, lastHex)
     const lastLos = map.hexLos(new Coordinate(xx, yy), new Coordinate(target.x, target.y))
     setTargetPath(
-      <g>
+      <g className={"tracking-mldo-tp"}>
         {
           !lastLos ?
-            <g>
+            <g className={"tracking-mldo-ll"}>
               <text x={lastHex.xOffset} y={lastHex.yOffset+20} fontSize={80}
                     textAnchor="middle" fontFamily="'Courier Prime', monospace" style={{ fill: "black" }}>
                 &#8416;
@@ -60,7 +60,7 @@ export default function MapLosDebugOverlay({
   useEffect(() => {
     setTarget({ x: xx, y: yy })
     setOverlayDisplay(
-      <g>
+      <g className={"tracking-mldo-od"}>
         {
           map.mapHexes.map((row, y) =>
             row.map((hex, x) => {
@@ -76,7 +76,7 @@ export default function MapLosDebugOverlay({
   }, [xx, yy])
 
   return (
-    <g>
+    <g className={"tracking-mldo-cp"}>
       {targetPath}
       {overlayDisplay}
     </g>
