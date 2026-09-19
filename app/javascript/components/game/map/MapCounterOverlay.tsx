@@ -213,9 +213,8 @@ export default function MapCounterOverlay({
     x: number, y: number, hx: number, hy: number, counter: Counter, cd: Counter,
     target?: CounterSelectionTarget
   ) => {
-    const key = update + 1
     setCurrentCounter(
-      <g className={`tracking-mco-cc-${key}`} key={key} onMouseLeave={() => {
+      <g className={"tracking-mco-cc"} onMouseLeave={() => {
            setActionHelpDisplay(undefined)
            setCurrentCounter(undefined)
            setHelpDisplay(undefined)

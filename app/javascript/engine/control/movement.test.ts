@@ -609,9 +609,9 @@ describe("movement", () => {
     expect(game.gameState?.selection.length).toBe(2)
     expect(game.moveState.doneSelect).toBe(false)
 
-    expect(game.gameState?.openHex(3, 2)).toBe(hexOpenType.Closed)
+    expect(game.gameState?.openHex(3, 2)).toBe(hexOpenType.Enemy)
     expect(game.gameState?.openHex(4, 3)).toBe(1)
-    expect(game.gameState?.openHex(3, 3)).toBe(hexOpenType.Closed)
+    expect(game.gameState?.openHex(3, 3)).toBe(hexOpenType.Overstack)
   })
 
   test("can't move into blaze", () => {

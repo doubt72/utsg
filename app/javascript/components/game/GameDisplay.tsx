@@ -92,6 +92,18 @@ export default function GameDisplay() {
   }, []);
 
   useEffect(() => {
+    if (game.k) {
+      const store = localStorage.getItem("gameturn")
+      if (game.k.turn > Number(store)) {
+        localStorage.setItem("gameturn", String(game.k.turn))
+        if (!game.k.initialLoad) {
+          window.location.reload()
+        }
+      }
+    }
+  }, [game.k?.turn])
+
+  useEffect(() => {
     setControlClasses(`game-control${horizontalControls ? "" : "-vertical"}`)
   }, [horizontalControls])
 
@@ -205,6 +217,7 @@ export default function GameDisplay() {
           ok: response => response.json().then(scenario => {
             json.scenario = scenario
             const g = new Game(json, gameNotification)
+            localStorage.setItem("gameturn", "0")
             setGame({k: g, turn: g.turn, state: g.state})
             setControls(<GameControls game={g} callback={setUpdate} update={updateControls}
                                       vertical={!horizontalControls} />)

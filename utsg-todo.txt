@@ -1,16 +1,6 @@
 Features/Bug Fixes
-  - Show overstack/enemy
-  - 504
-    - Accelerate reinforcements 2, 3, 4
-    - Add French tank
-    - Change setup
+  + Show overstack/enemy
   - Monitor memory usage
-    - Any variables being held unnecessarily
-      - Closues? Detached dom?
-    - Any event listeners not being cleared
-    - Timers? Intervals?
-    - Maybe force reloads?
-    - Caches?
   - (420), (425) Cave special rules
   - 516 Special cavalry rules (single morale check, mounted but not weapon fire)
   - 523 Hidden cavalry

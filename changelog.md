@@ -1,5 +1,7 @@
 # 0.148
 
+- Add special hex overlays for moves/assualt prevented by overstack or enemy units
+- Reload page on new turn (stop-gap memory management)
 - Add tracking IDs to find detached elements
 - Updated 504
 

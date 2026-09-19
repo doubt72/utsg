@@ -162,6 +162,8 @@ export default class Game {
   replay1Score?: number;
   replay2Score?: number;
 
+  initialLoad: boolean = true;
+
   constructor(data: GameData, refreshCallback: (g: Game, error?: [string, string, string?]) => void = () => {}) {
     this.id = data.id
     this.name = data.name
@@ -242,6 +244,7 @@ export default class Game {
           this.executeAction(action, true)
           this.suppressNetwork = false
         }
+        this.initialLoad = false
       })
     })
   }

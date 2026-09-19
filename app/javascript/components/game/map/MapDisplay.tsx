@@ -418,12 +418,14 @@ export default function MapDisplay({
                                           setTerrainInfoOverlay : () => setTerrainInfoOverlay(undefined) }
                                         svgRef={svgRef as React.MutableRefObject<HTMLElement>}
                                         scale={scale} />)
-        nightLoader.push(
-          <MapHexNight key={`${x}-${y}-n`} hex={hex} maxX={scaleWidth} maxY={scaleHeight} scale={sc}
-                       showTerrain={st} terrainCallback={st ?
-                         setTerrainInfoOverlay : () => setTerrainInfoOverlay(undefined) }
-                       svgRef={svgRef as React.MutableRefObject<HTMLElement>} />
-        )
+        if (map.night) {
+          nightLoader.push(
+            <MapHexNight key={`${x}-${y}-n`} hex={hex} maxX={scaleWidth} maxY={scaleHeight} scale={sc}
+                         showTerrain={st} terrainCallback={st ?
+                           setTerrainInfoOverlay : () => setTerrainInfoOverlay(undefined) }
+                         svgRef={svgRef as React.MutableRefObject<HTMLElement>} />
+          )
+        }
         const state = map.game?.gameState
         if (state && map.game?.currentUser === user) {
           const shaded = state.openHex(x, y)
@@ -873,7 +875,7 @@ export default function MapDisplay({
         <g className={"tracking-md-pv"} transform={rotateTransform}>
           {hexDisplay}
           {hexDisplayDetail}
-          { map.night ? hexNightOverlay : 0 }
+          { map.night ? hexNightOverlay : "" }
           {counterDisplay}
         </g>
       )

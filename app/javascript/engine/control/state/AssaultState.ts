@@ -137,9 +137,9 @@ export default class AssaultState extends BaseState {
       if (c.hasUnit && selection.unit.playerNation !== c.unit.playerNation && !c.unit.isWreck &&
           !c.unit.operated) { check = true }
     }
-    if (moveSize + toSize > stackLimit && !check) { return hexOpenType.Closed }
     if (this.path.length + this.addActions.length > 1) { return hexOpenType.Closed }
     if (assaultMovement(this.game) === 0) { return hexOpenType.Closed }
+    if (moveSize + toSize > stackLimit && !check) { return hexOpenType.Overstack }
     return hexOpenType.All
   }
 

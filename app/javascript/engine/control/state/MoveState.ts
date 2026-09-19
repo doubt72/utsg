@@ -123,9 +123,7 @@ export default class MoveState extends BaseState {
     const moveSize = this.selection.filter(u => !u.counter.unit.parent).reduce(
       (sum, u) => sum + u.counter.unit.size + u.counter.unit.children.reduce((sum, u) => u.size, 0), 0
     )
-    const toSize = this.map.sizeAt(to)
     const countersAt = this.map.countersAt(to)
-    if (moveSize + toSize > stackLimit) { return hexOpenType.Closed }
     for (const c of countersAt) {
       if (selection.unit.decoy && c.hasFeature && c.feature.type === featureType.Mines) {
         return hexOpenType.Closed
@@ -133,9 +131,10 @@ export default class MoveState extends BaseState {
       if (c.hasFeature && c.feature.type === featureType.Fire) { return hexOpenType.Closed }
       if (c.hasUnit && selection.unit.playerNation !== c.unit.playerNation && !c.unit.isWreck &&
           !c.unit.operated) {
-        return hexOpenType.Closed
+        return hexOpenType.Enemy
       }
     }
+    const toSize = this.map.sizeAt(to)
   
     if (selection.unit.isVehicle) {
       if (!terrTo.vehicle && !roadMove) { return hexOpenType.Closed }
@@ -183,6 +182,7 @@ export default class MoveState extends BaseState {
         return hexOpenType.All
       }
     }
+    if (moveSize + toSize > stackLimit) { return hexOpenType.Overstack }
     return move >= cost + pastCost ? cost : hexOpenType.All
   }
 

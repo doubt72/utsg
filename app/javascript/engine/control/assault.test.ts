@@ -300,7 +300,7 @@ describe("assault movement", () => {
 
     expect(game.gameState?.openHex(3, 2)).toBe(hexOpenType.All)
     expect(game.gameState?.openHex(4, 3)).toBe(hexOpenType.All)
-    expect(game.gameState?.openHex(3, 3)).toBe(hexOpenType.Closed)
+    expect(game.gameState?.openHex(3, 3)).toBe(hexOpenType.Overstack)
   })
 
   test("assault into abandoned vehicle removes it", () => {
