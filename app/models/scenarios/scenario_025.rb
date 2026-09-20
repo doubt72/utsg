@@ -59,7 +59,6 @@ module Scenarios
           map_data:,
           allied_units:,
           axis_units:,
-          special_rules: ["winter"],
         }
       end
 

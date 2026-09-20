@@ -95,13 +95,13 @@ export function movementCost(
   const terrTo = hexTo.terrain
   let cost = terrTo.move as number
   const dir = map.relativeDirection(from, to) as Direction
-  if (!terrTo.move && alongRailroad(hexFrom, hexTo, dir)) { cost = 2 }
-  const roadMove = alongRoad(hexFrom, hexTo, dir)
+  if (!terrTo.move && dir && alongRailroad(hexFrom, hexTo, dir)) { cost = 2 }
+  const roadMove = dir ? alongRoad(hexFrom, hexTo, dir) : false
   if (target.isWheeled && roadMove) {
     cost = 0.5
   } else if (target.isTracked && roadMove) {
     cost = 1
-  } else if (alongRoad(hexFrom, hexTo, dir, true)) {
+  } else if (dir && alongRoad(hexFrom, hexTo, dir, true)) {
     cost = 1
   }
   if (allAlongRoad(map, index) && (map.game?.moveState.path.length ?? 0) > 1 && !roadMove) {
@@ -111,25 +111,27 @@ export function movementCost(
       }
     }
   }
-  if (hexFrom.border && hexFrom.borderEdges?.includes(dir)) {
+  if (hexFrom.border && dir && hexFrom.borderEdges?.includes(dir)) {
     cost += terrFrom.borderMove as number
   }
-  if (hexTo.border && hexTo.borderEdges?.includes(normalDir(dir+3))) {
+  if (hexTo.border && dir && hexTo.borderEdges?.includes(normalDir(dir+3))) {
     cost += terrTo.borderMove as number
   }
-  if (hexFrom.river && !alongStream(hexFrom, hexTo, dir) && !roadMove) {
-    cost += hexTo.terrain.streamAttr.outMove
+  if (hexFrom.river && dir && !alongStream(hexFrom, hexTo, dir) && !roadMove) {
+    cost += hexFrom.terrain.outMove
   }
-  if (hexTo.river && !alongStream(hexFrom, hexTo, dir) && !roadMove) {
-    cost += hexTo.terrain.streamAttr.inMove
+  if (hexTo.river && dir && !alongStream(hexFrom, hexTo, dir) && !roadMove) {
+    cost += hexTo.terrain.inMove
   }
-  if (alongStream(hexFrom, hexTo, dir)) {
-    cost += hexTo.terrain.streamAttr.alongMove
+  if (dir && alongStream(hexFrom, hexTo, dir)) {
+    cost += hexTo.terrain.alongMove
   }
-  if (hexTo.elevation > hexFrom.elevation) {
+  if (dir && hexTo.elevation > hexFrom.elevation) {
     cost += 1
   }
-  if (target.rotates && normalDir(dir + 3) === map.game?.moveState.lastPath?.facing) { cost *= 2 }
+  if (dir && target.rotates && normalDir(dir + 3) === map.game?.moveState.lastPath?.facing) {
+    cost *= 2
+  }
   return cost
 }
 

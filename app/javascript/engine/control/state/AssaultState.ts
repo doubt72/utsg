@@ -1,4 +1,4 @@
-import { Coordinate, CounterSelectionTarget, Direction, featureType, hexOpenType } from "../../../utilities/commonTypes";
+import { Coordinate, CounterSelectionTarget, Direction, featureType, hexOpenType, terrainType } from "../../../utilities/commonTypes";
 import { formatDieResult, passBlue, passGreen } from "../../../utilities/graphics";
 import { normalDir, roll2d10, stackLimit } from "../../../utilities/utilities";
 import Counter from "../../Counter";
@@ -85,14 +85,20 @@ export default class AssaultState extends BaseState {
     const hexFrom = this.map.hexAt(from) as Hex;
     const hexTo = this.map.hexAt(to) as Hex;
     const dir = this.map.relativeDirection(from, to)
-    if (!dir) { return hexOpenType.Closed }
+    if (!dir) {
+      if (this.game.currentPlayer !== 2  || hexFrom.baseTerrain !== terrainType.Cave ||
+          hexTo.baseTerrain !== terrainType.Cave ||
+          !this.game.scenario.specialRules.includes("axis_cave_movement")) {
+        return hexOpenType.Closed
+      }
+    }
 
     const selection = this.selection[0].counter
     if (selection.unit.decoy && this.map.victoryAt(to)) { return hexOpenType.Closed }
     const terrFrom = hexFrom.terrain
     const terrTo = hexTo.terrain
-    const roadMove = alongRoad(hexFrom, hexTo, dir)
-    const railroadMove = alongRailroad(hexFrom, hexTo, dir)
+    const roadMove = dir ? alongRoad(hexFrom, hexTo, dir) : false
+    const railroadMove = dir ? alongRailroad(hexFrom, hexTo, dir) : false
 
     if (!terrTo.move && !roadMove && !railroadMove) { return hexOpenType.Closed }
     if (!terrTo.move && railroadMove) {
@@ -115,13 +121,13 @@ export default class AssaultState extends BaseState {
         }
       }
     }
-    if (hexFrom.border && hexFrom.borderEdges?.includes(dir)) {
+    if (hexFrom.border && dir && hexFrom.borderEdges?.includes(dir)) {
       if (!terrFrom.borderMove) { return hexOpenType.Closed }
       if (selection.unit.isVehicle && !terrFrom.borderVehicle) {
         return hexOpenType.Closed
       }
     }
-    if (hexTo.border && hexTo.borderEdges?.includes(normalDir(dir+3))) {
+    if (hexTo.border && dir && hexTo.borderEdges?.includes(normalDir(dir+3))) {
       if (!terrTo.borderMove) { return hexOpenType.Closed }
       if (selection.unit.isVehicle && !terrTo.borderVehicle) {
         return hexOpenType.Closed

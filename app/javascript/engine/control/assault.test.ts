@@ -10,6 +10,7 @@ import Feature from "../Feature"
 import {
   createBlankGame,
   createMoveGame, testGCrew, testGGun, testGInf, testGLdr, testGMG, testGTank, testGTCrew, testGTruck,
+  testJapSNLF,
   testMine,
   testMineAT, testRInf, testRTank, testWire
 } from "./testHelpers"
@@ -1381,5 +1382,27 @@ describe("assault movement", () => {
     expect(all[2].hex?.x).toBe(2)
     expect(all[2].hex?.y).toBe(2)
     expect(all[2].unit.id).toBe("tank1")
+  })
+
+  test("cave movement", () => {
+    const game = createBlankGame([
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "v" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "v" }],
+    ])
+    const map = game.scenario.map
+    const unit = new Unit(testJapSNLF)
+    unit.id = "test1"
+    unit.baseMovement = 4
+    unit.facing = 2
+    map.addCounter(new Coordinate(1, 1), unit)
+    map.select(unit)
+
+    game.setGameState(new AssaultState(game))
+    expect(game.moveState.openHex(4, 4)).toBe(hexOpenType.Closed)
+    game.scenario.specialRules.push("axis_cave_movement")
+    expect(game.moveState.openHex(4, 4)).toBe(hexOpenType.All)
   })
 });

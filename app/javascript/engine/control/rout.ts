@@ -119,13 +119,13 @@ function movementCost(map: Map, from: Coordinate, to: Coordinate, unit: Unit): n
     cost += move
   }
   if (hexFrom.river && !alongStream(hexFrom, hexTo, dir)) {
-    cost += hexTo.terrain.streamAttr.outMove
+    cost += hexFrom.terrain.outMove
   }
   if (hexTo.river && !alongStream(hexFrom, hexTo, dir)) {
-    cost += hexTo.terrain.streamAttr.inMove
+    cost += hexTo.terrain.inMove
   }
   if (alongStream(hexFrom, hexTo, dir)) {
-    cost += hexTo.terrain.streamAttr.alongMove
+    cost += hexFrom.terrain.alongMove
   }
   if (alongRoad(hexFrom, hexTo, dir, true)) { cost = 1 }
   if (hexTo.elevation > hexFrom.elevation) {

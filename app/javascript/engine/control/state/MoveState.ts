@@ -1,5 +1,6 @@
 import {
-  Coordinate, CounterSelectionTarget, Direction, featureType, HexOpenType, hexOpenType
+  Coordinate, CounterSelectionTarget, Direction, featureType, HexOpenType, hexOpenType,
+  terrainType
 } from "../../../utilities/commonTypes";
 import { normalDir, roll2d10, rolld10, stackLimit } from "../../../utilities/utilities";
 import Counter from "../../Counter";
@@ -109,9 +110,15 @@ export default class MoveState extends BaseState {
     const terrFrom = hexFrom.terrain
     const terrTo = hexTo.terrain
     const dir = this.map.relativeDirection(from, to)
-    if (!dir) { return hexOpenType.Closed }
-    const roadMove = alongRoad(hexFrom, hexTo, dir)
-    const railroadMove = alongRailroad(hexFrom, hexTo, dir)
+    if (!dir) {
+      if (this.game.currentPlayer !== 2  || hexFrom.baseTerrain !== terrainType.Cave ||
+          hexTo.baseTerrain !== terrainType.Cave ||
+          !this.game.scenario.specialRules.includes("axis_cave_movement")) {
+        return hexOpenType.Closed
+      }
+    }
+    const roadMove = dir ? alongRoad(hexFrom, hexTo, dir) : false
+    const railroadMove = dir ? alongRailroad(hexFrom, hexTo, dir) : false
     if (!terrTo.move && !roadMove && !railroadMove) { return hexOpenType.Closed }
     if (!terrFrom.move && !roadMove && !railroadMove) { return hexOpenType.Closed }
     const next = selection.children[0]
@@ -145,26 +152,26 @@ export default class MoveState extends BaseState {
       if (!terrTo.gun && !roadMove) { return hexOpenType.Closed }
       if (terrTo.gun === "back" && dir !== normalDir(facing + 3)) { return hexOpenType.Closed }
     }
-    if (hexFrom.border && hexFrom.borderEdges?.includes(dir)) {
+    if (hexFrom.border && dir && hexFrom.borderEdges?.includes(dir)) {
       if (!terrFrom.borderMove) { return hexOpenType.Closed }
       if (selection.unit.isVehicle && !terrFrom.borderVehicle) {
         return hexOpenType.Closed
       }
       if (next && next.unit.crewed && !terrFrom.borderGun) { return hexOpenType.Closed }
     }
-    if (hexTo.border && hexTo.borderEdges?.includes(normalDir(dir+3))) {
+    if (hexTo.border && dir && hexTo.borderEdges?.includes(normalDir(dir+3))) {
       if (!terrTo.borderMove) { return hexOpenType.Closed }
       if (selection.unit.isVehicle && !terrTo.borderVehicle) {
         return hexOpenType.Closed
       }
       if (next && next.unit.crewed && !terrTo.borderGun) { return hexOpenType.Closed }
     }
-    if (selection.unit.canHandle && (next && next.unit.crewed)) {
+    if (selection.unit.canHandle && (next && next.unit.crewed) && dir) {
       if (this.addActions.filter(a => a.id === next.unit.id).length < 1) {
         if (normalDir(dir + 3) !== facing && dir !== facing) { return hexOpenType.Closed }
       }
     }
-    if (selection.unit.rotates) {
+    if (selection.unit.rotates && dir) {
       if (normalDir(dir + 3) !== facing && dir !== facing) { return hexOpenType.Closed }
     }
   

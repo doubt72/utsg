@@ -1,15 +1,13 @@
 Features/Bug Fixes
-  + Check assault into hex with abandoned tank destroys vehicle
   - Monitor memory usage
-  - (420), (425) Cave special rules
+  + (420), (425) Cave special rules
+  + 025, 519, 522 Check if winter needed for snow
+  - 037, (043), 521 Special escape rules
   - 516 Special cavalry rules (single morale check, mounted but not weapon fire)
   - 523 Hidden cavalry
-  - 025, 519, 522 Check if winter needed for snow
-  - 037, (043), 521 Special escape rules
   - (046) Special partisan rules
   - 319 Test playing multiple factions
   - 524 Finns on the other side
-  - Consider better way of doing animations
   ? Initiative check wrong with hidden units/morale check
   ? Test two-player stopping short (think something might be wrong with it)
   - Save/play user scenarios / limit 1 - 3 - 5

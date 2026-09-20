@@ -50,7 +50,7 @@ module Scenarios
           map_data:,
           allied_units:,
           axis_units:,
-          special_rules: ["axis_ignore_snow", "winter", "axis_hidden_units"],
+          special_rules: ["axis_ignore_snow", "axis_hidden_units"],
         }
       end
 

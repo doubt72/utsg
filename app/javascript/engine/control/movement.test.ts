@@ -13,7 +13,7 @@ import organizeStacks from "../support/organizeStacks"
 import IllegalActionError from "../actions/IllegalActionError"
 import {
   createBlankGame, createMoveGame, testGCrew, testGGun, testGInf, testGLdr, testGMG,
-  testGTank, testGTruck, testMine, testMineAP, testMineAT, testRInf, testRMG, testRTank,
+  testGTank, testGTruck, testJapSNLF, testMine, testMineAP, testMineAT, testRInf, testRMG, testRTank,
   testSmoke, testWire
 } from "./testHelpers"
 import Feature from "../Feature"
@@ -3551,5 +3551,105 @@ describe("movement", () => {
     expect(movementPastCost(map, unit)).toBe(3)
     expect(game.moveState.openHex(4, 2)).toBe(1)
     expect(game.moveState.rotatePossible).toBe(true)
+  })
+
+  test("cave movement", () => {
+    const game = createBlankGame([
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "v" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "v" }],
+    ])
+    const map = game.scenario.map
+    const unit = new Unit(testJapSNLF)
+    unit.id = "test1"
+    unit.baseMovement = 4
+    unit.facing = 2
+    map.addCounter(new Coordinate(1, 1), unit)
+    map.select(unit)
+
+    game.setGameState(new MoveState(game))
+    expect(movementPastCost(map, unit)).toBe(0)
+    expect(game.moveState.openHex(4, 4)).toBe(hexOpenType.Closed)
+    game.scenario.specialRules.push("axis_cave_movement")
+    expect(game.moveState.openHex(4, 4)).toBe(2)
+
+    game.moveState.move(4, 4)
+    expect(movementPastCost(map, unit)).toBe(2)
+  })
+
+  test("winter movement", () => {
+    const game = createBlankGame([
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "y" }, { t: "o" }, { t: "o" }],
+      [
+        { t: "o", s: { t: "s", d: [1, 4] } },
+        { t: "o", s: { t: "s", d: [1, 4] } },
+        { t: "o", s: { t: "s", d: [1, 4] } },
+        { t: "o", s: { t: "s", d: [1, 4] } },
+        { t: "o", s: { t: "s", d: [1, 4] } },
+      ],
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+    ])
+    const map = game.scenario.map
+    const unit = new Unit(testJapSNLF)
+    unit.id = "test1"
+    unit.baseMovement = 4
+    unit.facing = 2
+    map.addCounter(new Coordinate(1, 1), unit)
+    map.select(unit)
+
+    game.setGameState(new MoveState(game))
+    expect(movementPastCost(map, unit)).toBe(0)
+    expect(game.moveState.openHex(2, 1)).toBe(3)
+    expect(game.moveState.openHex(1, 2)).toBe(2)
+    expect(game.moveState.openHex(2, 2)).toBe(2)
+
+    game.scenario.specialRules.push("winter")
+    expect(game.moveState.openHex(2, 1)).toBe(1)
+    expect(game.moveState.openHex(1, 2)).toBe(1)
+    expect(game.moveState.openHex(2, 2)).toBe(1)
+
+    game.moveState.move(2, 2)
+    expect(movementPastCost(map, unit)).toBe(1)
+  })
+
+  test("snow movement", () => {
+    const game = createBlankGame([
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "y" }, { t: "o" }, { t: "o" }],
+      [
+        { t: "o", s: { t: "s", d: [1, 4] } },
+        { t: "o", s: { t: "s", d: [1, 4] } },
+        { t: "o", s: { t: "s", d: [1, 4] } },
+        { t: "o", s: { t: "s", d: [1, 4] } },
+        { t: "o", s: { t: "s", d: [1, 4] } },
+      ],
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+    ])
+    const map = game.scenario.map
+    const unit = new Unit(testJapSNLF)
+    unit.id = "test1"
+    unit.baseMovement = 4
+    unit.facing = 2
+    map.addCounter(new Coordinate(1, 1), unit)
+    map.select(unit)
+
+    game.setGameState(new MoveState(game))
+    expect(movementPastCost(map, unit)).toBe(0)
+    expect(game.moveState.openHex(2, 1)).toBe(3)
+    expect(game.moveState.openHex(1, 2)).toBe(2)
+    expect(game.moveState.openHex(2, 2)).toBe(2)
+
+    map.baseTerrain = baseTerrainType.Snow
+    expect(game.moveState.openHex(2, 1)).toBe(2)
+    expect(game.moveState.openHex(1, 2)).toBe(2)
+    expect(game.moveState.openHex(2, 2)).toBe(2)
+
+    game.moveState.move(2, 2)
+    expect(movementPastCost(map, unit)).toBe(2)
   })
 });

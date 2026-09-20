@@ -1,4 +1,4 @@
-import { BorderType, Direction, StreamAttributes, TerrainAttributes } from "../utilities/commonTypes";
+import { baseTerrainType, BorderType, Direction, StreamAttributes, streamType, TerrainAttributes, terrainType } from "../utilities/commonTypes";
 import { normalDir } from "../utilities/utilities";
 import Hex from "./Hex"
 
@@ -93,10 +93,45 @@ export default class Terrain {
     let move = this.baseAttr.move
     if (move === 0) { return false }
     if (this.hex.building) { move = 2 }
-    if (["s", "m"].includes(this.hex.map.baseTerrain) && !this.hex.map.game?.specialRulesNegateTerrain) {
+    if (this.hex.map.baseTerrain === baseTerrainType.Snow ||
+        this.hex.map.game?.scenario.specialRules.includes("winter")) {
+      if (this.hex.baseTerrain === terrainType.Shallow) { move = 1 }
+    }
+    if (["s", "m"].includes(this.hex.map.baseTerrain) &&
+        !this.hex.map.game?.specialRulesNegateTerrain) {
       move += 1
     }
     return move
+  }
+
+  get inMove(): number {
+    if (!this.hex.river) { return 0 }
+    if (this.hex.riverType === streamType.Stream &&
+        (this.hex.map.baseTerrain === baseTerrainType.Snow ||
+         this.hex.map.game?.scenario.specialRules.includes("winter"))) {
+      return 0
+    }
+    return this.streamAttr.inMove
+  }
+
+  get outMove(): number {
+    if (!this.hex.river) { return 0 }
+    if (this.hex.riverType === streamType.Stream &&
+        (this.hex.map.baseTerrain === baseTerrainType.Snow ||
+         this.hex.map.game?.scenario.specialRules.includes("winter"))) {
+      return 0
+    }
+    return this.streamAttr.outMove
+  }
+
+  get alongMove(): number {
+    if (!this.hex.river) { return 0 }
+    if (this.hex.riverType === streamType.Stream &&
+        (this.hex.map.baseTerrain === baseTerrainType.Snow ||
+         this.hex.map.game?.scenario.specialRules.includes("winter"))) {
+      return 0
+    }
+    return this.streamAttr.alongMove
   }
 
   get borderMove(): number | false {

@@ -108,11 +108,11 @@ function hexHelpText(hex: Hex): string[] {
     if (hex.map.baseTerrain === baseTerrainType.Snow && hex.riverType === streamType.Stream) {
       text.push("- frozen, no movement effects")
     } else {
-      let cost = hex.terrain.streamAttr.inMove
+      let cost = hex.terrain.inMove
       if (cost > 0) { text.push(`- movement cost +${cost} when entering`) }
-      cost = hex.terrain.streamAttr.outMove
+      cost = hex.terrain.outMove
       if (cost > 0) { text.push(`- movement cost +${cost} when leaving`) }
-      cost = hex.terrain.streamAttr.alongMove
+      cost = hex.terrain.alongMove
       if (cost > 0) { text.push(`- movement cost +${cost} when moving along`) }
       if (hex.road) {
         text.push("- unless following road")
