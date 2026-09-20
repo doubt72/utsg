@@ -295,6 +295,8 @@ export default class Scenario {
         return `${axis} infantry units start unobserved`
       } else if (r === "axis_bonzai") {
         return `Elminited ${axis} units only award one victory point`
+      } else if (r === "axis_cave_movement") {
+        return `${axis} units may consider any caves to be adjacent to other caves`
       } else if (r === "winter") {
         return `Winter: no digging in, treat water/river hexes as open for infantry`
       } else if (r === "retreat_301") {

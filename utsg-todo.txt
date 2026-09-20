@@ -1,5 +1,4 @@
 Features/Bug Fixes
-  + Show overstack/enemy
   - Monitor memory usage
   - (420), (425) Cave special rules
   - 516 Special cavalry rules (single morale check, mounted but not weapon fire)

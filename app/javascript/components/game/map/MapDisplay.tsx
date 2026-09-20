@@ -394,38 +394,55 @@ export default function MapDisplay({
     setReinforcementsOverlay(undefined)
   }, [checkCancelTerrain])
 
+  // (semi-)static elements
   useEffect(() => {
     const hexLoader: JSX.Element[] = []
     const detailLoader: JSX.Element[] = []
-    const overlayLoader: JSX.Element[] = []
     const nightLoader: JSX.Element[] = []
+    map.showCoords = showCoords
+    map.showAllCounters = showStatusCounters
+    map.hideCounters = hideCounters
+    const scaleWidth = width / scale
+    const scaleHeight = height / scale
+    const st = showTerrain
+    const sc = scale
+    map.mapHexes.forEach((row, y) => {
+      row.forEach((hex, x) => {
+        hexLoader.push(<MapHex key={`${x}-${y}`} hex={hex} />)
+        detailLoader.push(<MapHexDetail key={`${x}-${y}-d`} hex={hex} maxX={scaleWidth} maxY={scaleHeight}
+                                        selectCallback={(hx, hy) => hexSelection(hx, hy)} showTerrain={st}
+                                        terrainCallback={st ? a => setTerrainInfoOverlay(a) :
+                                          () => setTerrainInfoOverlay(undefined) }
+                                        svgRef={svgRef as React.MutableRefObject<HTMLElement>}
+                                        scale={sc} />)
+        if (map.night) {
+          nightLoader.push(
+            <MapHexNight key={`${x}-${y}-n`} hex={hex} maxX={scaleWidth} maxY={scaleHeight} scale={sc}
+                        showTerrain={st} terrainCallback={st ?
+                          setTerrainInfoOverlay : () => setTerrainInfoOverlay(undefined) }
+                        svgRef={svgRef as React.MutableRefObject<HTMLElement>} />
+          )
+        }
+      })
+    })
+    setHexDisplay(hexLoader)
+    setHexDisplayDetail(detailLoader)
+    setHexNightOverlay(nightLoader)
+  }, [map, showTerrain, showCoords, scale])
+
+  // dynamic elements
+  useEffect(() => {
+    const overlayLoader: JSX.Element[] = []
     map.showCoords = showCoords
     map.showAllCounters = showStatusCounters
     map.hideCounters = hideCounters
     let firingSmoke = false
     const scaleWidth = width / scale
     const scaleHeight = height / scale
-    const st = showTerrain
-    const sc = scale
     if (map.game?.gameState?.type === stateType.Fire && map.game.fireState.smoke) { firingSmoke = true }
     if (map.game?.gameState?.type === stateType.Move && map.game.moveState.smoke) { firingSmoke = true }
     map.mapHexes.forEach((row, y) => {
       row.forEach((hex, x) => {
-        hexLoader.push(<MapHex key={`${x}-${y}`} hex={hex} />)
-        detailLoader.push(<MapHexDetail key={`${x}-${y}-d`} hex={hex} maxX={scaleWidth} maxY={scaleHeight}
-                                        selectCallback={hexSelection} showTerrain={st}
-                                        terrainCallback={st ?
-                                          setTerrainInfoOverlay : () => setTerrainInfoOverlay(undefined) }
-                                        svgRef={svgRef as React.MutableRefObject<HTMLElement>}
-                                        scale={scale} />)
-        if (map.night) {
-          nightLoader.push(
-            <MapHexNight key={`${x}-${y}-n`} hex={hex} maxX={scaleWidth} maxY={scaleHeight} scale={sc}
-                         showTerrain={st} terrainCallback={st ?
-                           setTerrainInfoOverlay : () => setTerrainInfoOverlay(undefined) }
-                         svgRef={svgRef as React.MutableRefObject<HTMLElement>} />
-          )
-        }
         const state = map.game?.gameState
         if (state && map.game?.currentUser === user) {
           const shaded = state.openHex(x, y)
@@ -435,9 +452,6 @@ export default function MapDisplay({
         }
       })
     })
-    setHexDisplay(hexLoader)
-    setHexDisplayDetail(detailLoader)
-    setHexNightOverlay(nightLoader)
     setHexDisplayOverlays(overlayLoader)
     const action = map.game?.lastSignificantAction
     if (map.game?.gameState?.type === stateType.Fire) {
@@ -605,7 +619,6 @@ export default function MapDisplay({
     map.game?.initiative, map.game?.currentPlayer, map.game?.turn, iShrink, tShrink,
     map.game?.playerOneScore, map.game?.playerTwoScore, forceUpdate,
     map.game?.closeReinforcementPanel, map.game?.gameState?.type, reinforcementOffset,
-    map.baseTerrain, map.night // debugging only, don't change in actual games
   ])
 
   useEffect(() => {

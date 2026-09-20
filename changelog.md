@@ -1,9 +1,11 @@
 # 0.148
 
 - Add special hex overlays for moves/assualt prevented by overstack or enemy units
+- Split off semi-static and dynamic element rendering on map to mitigate memory leaks
 - Reload page on new turn (stop-gap memory management)
 - Add tracking IDs to find detached elements
-- Updated 504
+- Updated 420, 504
+- Added prototype 422, 429
 
 # 0.147
 
@@ -21,7 +23,7 @@
 - Changed name of Japanese guns to have consistent order
 - Updated/promoted 315
 - Promoted 010, 307, 504 to beta
-- Added prototype 419, 420, 424
+- Added prototype 419, 420, 421, 424
 
 # 0.145
 
