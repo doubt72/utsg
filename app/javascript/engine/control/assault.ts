@@ -8,6 +8,7 @@ import Hex from "../Hex"
 export function showClearObstacles(game: Game): boolean {
   if (!showCommon(game, false)) { return false }
   const selection = game.assaultState.selection
+  if (selection[0].counter.unit.currentMovement === 0) { return false }
   if (selection.filter(s => s.counter.unit.parent === undefined).length > 1) { return false }
   const unit = selection[0].counter.unit
   if (!unit.engineer) { return false }
@@ -23,10 +24,12 @@ export function showClearObstacles(game: Game): boolean {
 export function showEntrench(game: Game): boolean {
   if (!showCommon(game, false)) { return false }
   const selection = game.assaultState.selection
+  const unit = selection[0].counter.unit
   if (selection.filter(s => s.counter.unit.parent === undefined).length > 1) { return false }
   if (game.scenario.specialRules.includes("winter")) { return false }
-  if (![unitType.Squad, unitType.Team].includes(selection[0].counter.unit.type)) { return false }
-  if (selection[0].counter.unit.decoy) { return false }
+  if (![unitType.Squad, unitType.Team].includes(unit.type)) { return false }
+  if (unit.currentMovement === 0) { return false }
+  if (unit.decoy) { return false }
   if ([baseTerrainType.Snow, baseTerrainType.Mud].includes(game.scenario.map.baseTerrain)) { return false }
   const loc = new Coordinate(selection[0].x, selection[0].y)
   const hex = game.scenario.map.hexAt(loc) as Hex

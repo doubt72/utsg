@@ -1,5 +1,7 @@
 Features/Bug Fixes
-  - Remove reload trigger (unecessary)
+  + Can't abandon immobilized tank
+  + Morale-size bonus to CC
+  - Check  assault into hex with abandoned tank destroys vehicle
   - 010
     - 5 turns
     - Russian BA-20

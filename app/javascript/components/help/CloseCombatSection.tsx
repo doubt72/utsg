@@ -42,6 +42,15 @@ export default function CloseCombatSection({ section }: SectionProps) {
         an assault bonus, otherwise 0.
       </p>
       <p>
+        A morale bonus is then added to the total firepower, if applicable: whichever side has
+        a higher total when adding up the product of each unit&apos;s morale and size gets an
+        additional +2 added to their firepower.
+      </p>
+      <div className="example">
+        For instance, in the example below, the American units&apos; total is 29 (4x6 + 5x1 = 29)
+        and the Japanese total is 18 (3x6), so the Americans get a +2 bonus.
+      </div>
+      <p>
         Each player multiplies their FP by two, then adds the result of 1d10, then multiplies that
         total by 1d10. For every multiple of 80 in the result, their opponent takes one hit (reduces
         one unit). A reduction either breaks an unbroken infantry unit (or eliminates a vehicle), or
@@ -73,9 +82,9 @@ export default function CloseCombatSection({ section }: SectionProps) {
           <CounterDisplay unit={two} />
         </div>
       </div>
-      For instance, if player one has a total combat power of 13 and rolls a 6 and a 4, and player two has
+      For instance, if player one has a total combat power of 15 and rolls a 6 and a 4, and player two has
       a total combat power of 8 and rolls a 4 and a 3, the total result for player one is
-      128 <span className="inline-monospace">[(2x13 + 6)x4]</span>, and the total result for player
+      144 <span className="inline-monospace">[(2x15 + 6)x4]</span>, and the total result for player
       two is 60 <span className="inline-monospace">[(2x8 + 4)x3]</span>.  Player two must take one hit (reduce
       one unit &mdash; player one&apos;s total result is between 80 and 159), and because player two&apos;s total result is
       below 80, player takes no hits.  Since player two only has one unit and must perform a reduction, the unit

@@ -7,7 +7,7 @@ module Scenarios
     ALLIES = ["ussr"].freeze
     AXIS = ["hun"].freeze
     STATUS = "b"
-    VERSION = "0.3"
+    VERSION = "0.4"
 
     DATE = [1941, 8, 1].freeze
     LAYOUT = [15, 23, "x"].freeze
@@ -20,6 +20,7 @@ module Scenarios
           :ussr_pm_m1910,
           [2, :ussr_t_26_m39],
           [2, :ussr_bt_7],
+          :ussr_ba_20,
         ],
       },
     }.freeze
@@ -28,7 +29,7 @@ module Scenarios
       "0": {
         list: [
           [2, :axm_leader_3_1],
-          [10, :axm_conscript_s],
+          [8, :axm_conscript_s],
           [2, :axm_mg_30],
           [2, :axm_3_7cm_pak_36],
           [3, :axm_38m_toldi_i],
@@ -40,7 +41,7 @@ module Scenarios
     class << self
       def generate
         {
-          turns: 6,
+          turns: 5,
           first_deploy: 1,
           first_action: 2,
           date:,
@@ -84,7 +85,7 @@ module Scenarios
           allied_dir: 5.5,
           axis_dir: 2.5,
           victory_hexes: [
-            [13, 2, 1], [5, 5, 1], [8, 7, 1], [12, 7, 1], [10, 18, 2],
+            [13, 2, 1], [5, 5, 1], [8, 7, 1], [12, 7, 1], [7, 11, 1],
           ],
           allied_setup: { "0" => [["*", "0-8"]] },
           axis_setup: { "0" => [["*", "14-22"]] },

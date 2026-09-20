@@ -3,7 +3,7 @@ import {
 } from "../../utilities/commonTypes"
 import { HelpLayout, roundedRectangle } from "../../utilities/graphics"
 import { alliedCodeToName, axisCodeToName, baseMorale, baseRally, baseToHit, chance2D10, chanceCC, chanceD10x10, critHitDiff, critMorale, exact2D10, hexDistance, normalDir } from "../../utilities/utilities"
-import { closeCombatFirepower, maxCCCasualties } from "../control/closeCombat"
+import { closeCombatFirepower, closeCombatMoraleBonus, maxCCCasualties } from "../control/closeCombat"
 import {
   armorAtArc, armorHitModifiers, fireHindrance, firepower, leadershipAt, moraleModifiers, rangeMultiplier,
   untargetedModifiers
@@ -589,6 +589,13 @@ export function closeCombatHelpText(game: Game, loc: Coordinate): string[] {
   const fp2 = closeCombatFirepower(game, loc, 2)
   rc.push(`${game.alliedName} firepower ${fp1}`)
   rc.push(`${game.axisName} firepower ${fp2}`)
+  const m1 = closeCombatMoraleBonus(game, loc, 1)
+  const m2 = closeCombatMoraleBonus(game, loc, 2)
+  if (m1) {
+    rc.push(`[${game.alliedName} +2 morale bonus]`)
+  } else if (m2) {
+    rc.push(`[${game.axisName} +2 morale bonus]`)
+  } else { rc.push("[no morale bonus]") }
   rc.push("")
   const max1 = maxCCCasualties(game.scenario.map, loc, game.playerTwoNation)
   const odds1 = chanceCC(fp1, game.axisName, max1)

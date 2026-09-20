@@ -604,7 +604,6 @@ export function canReactionIntensiveFire(unit: Unit | undefined, map: Map): bool
 
 function canMoveAny(unit: Unit): boolean {
   if (unit.type === unitType.SupportWeapon || unit.type === unitType.Gun) { return false }
-  if (unit.currentMovement === 0) { return false }
   if (unit.parent) { return false }
   return true
 }
@@ -618,6 +617,7 @@ function contact(unit: Unit, map: Map): boolean {
 export function canMove(unit: Unit | undefined, map: Map): boolean {
   if (unit === undefined) { return false }
   if (!canMoveAny(unit)) { return false }
+  if (unit.currentMovement === 0) { return false }
   if (unit.encumberedMovement(false) <= 0) { return false }
   if (contact(unit, map)) { return false }
   if (unit.isActivated || unit.isExhausted || unit.isBroken) { return false }
@@ -627,6 +627,7 @@ export function canMove(unit: Unit | undefined, map: Map): boolean {
 export function canRush(unit: Unit | undefined, map: Map): boolean {
   if (unit === undefined) { return false }
   if (!canMoveAny(unit)) { return false }
+  if (unit.currentMovement === 0) { return false }
   if (unit.encumberedMovement(true) <= 0) { return false }
   if (contact(unit, map)) { return false }
   if (!unit.isActivated) { return false }
