@@ -100,7 +100,7 @@ module Scenarios
           thousand yards. The ridge was honeycombed with tunnels and
           interconnected bunkers. It took two weeks for the Americans to clear
           the ridge as they repeatedly scaled and assaulted Japanese position,
-          only to be repulsed with heavy casualties before the position was
+          only to be repulsed with heavy casualties, before the position was
           finally taken.",
         ]
       end
@@ -156,8 +156,8 @@ module Scenarios
             { t: "o" },
             { t: "o" },
             { t: "o" },
-            { t: "b" },
-            { t: "o" },
+            { t: "f" },
+            { t: "f" },
             { t: "o", r: { t: "d", d: [3, 6] } },
             { t: "o" },
             { t: "o" },
@@ -181,7 +181,7 @@ module Scenarios
             { t: "t" },
             { t: "o" },
             { t: "o" },
-            { t: "o" },
+            { t: "f" },
             { t: "o", r: { t: "d", d: [3, 6] } },
             { t: "x" },
             { t: "o" },
@@ -299,7 +299,7 @@ module Scenarios
             { t: "v", h: 4 },
             { t: "f", h: 4 },
             { t: "r", h: 4 },
-            { t: "o", h: 4 },
+            { t: "v", h: 4 },
             { t: "o", h: 4 },
             { t: "o", h: 4, b: "c", be: [3, 4] },
             { t: "f", h: 1 },
@@ -308,7 +308,7 @@ module Scenarios
             { t: "o", r: { t: "d", d: [4, 6] } },
             { t: "o", r: { t: "d", d: [1, 3] } },
             { t: "t" },
-            { t: "o" },
+            { t: "t" },
             { t: "o" },
             { t: "b" },
             { t: "b" },
@@ -412,8 +412,8 @@ module Scenarios
             { t: "o" },
             { t: "o" },
             { t: "o", h: 1 },
-            { t: "o", h: 1 },
-            { t: "o", h: 1 },
+            { t: "f", h: 1 },
+            { t: "f", h: 1 },
           ],
           [
             { t: "r", h: 4 },
@@ -435,9 +435,9 @@ module Scenarios
             { t: "t" },
             { t: "o" },
             { t: "o", h: 1 },
-            { t: "o", h: 1 },
-            { t: "o", h: 1 },
-            { t: "o", h: 2 },
+            { t: "f", h: 1 },
+            { t: "f", h: 1 },
+            { t: "f", h: 2 },
             { t: "r", h: 2 },
           ],
           [
@@ -476,8 +476,8 @@ module Scenarios
             { t: "o", h: 4 },
             { t: "r", h: 4 },
             { t: "o", h: 4 },
-            { t: "v", h: 3 },
             { t: "o", h: 3 },
+            { t: "v", h: 3 },
             { t: "o", h: 3, b: "c", be: [4, 5] },
             { t: "o", h: 1 },
             { t: "o", r: { t: "d", d: [2, 6] } },
@@ -662,8 +662,8 @@ module Scenarios
             { t: "o" },
             { t: "o", h: 1 },
             { t: "r", h: 1 },
-            { t: "o", h: 1 },
-            { t: "o" },
+            { t: "f", h: 1 },
+            { t: "f" },
           ],
           [
             { t: "o", h: 2 },
@@ -687,8 +687,8 @@ module Scenarios
             { t: "o", h: 1 },
             { t: "o", h: 2 },
             { t: "r", h: 2 },
-            { t: "o", h: 1 },
-            { t: "o" },
+            { t: "f", h: 1 },
+            { t: "f" },
           ],
           [
             { t: "o", h: 2 },
@@ -712,8 +712,8 @@ module Scenarios
             { t: "o", h: 1 },
             { t: "o", h: 2 },
             { t: "r", h: 2 },
-            { t: "o", h: 1 },
-            { t: "o" },
+            { t: "f", h: 1 },
+            { t: "f" },
           ],
         ]
       end

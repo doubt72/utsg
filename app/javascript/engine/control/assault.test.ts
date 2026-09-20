@@ -10,6 +10,7 @@ import Feature from "../Feature"
 import {
   createBlankGame,
   createMoveGame, testGCrew, testGGun, testGInf, testGLdr, testGMG, testGTank, testGTCrew, testGTruck,
+  testMine,
   testMineAT, testRInf, testRTank, testWire
 } from "./testHelpers"
 import AssaultState from "./state/AssaultState"
@@ -687,6 +688,48 @@ describe("assault movement", () => {
     expect(game.gameState?.openHex(3, 3)).toBe(hexOpenType.Closed)
   })
 
+  test("assaulting into mines", () => {
+    const game = createMoveGame()
+    const map = game.scenario.map
+    const unit = new Unit(testGInf)
+    unit.id = "test1"
+    map.addCounter(new Coordinate(3, 2), unit)
+    map.select(unit)
+
+    const mine = new Feature(testMine)
+    mine.id = "mine1"
+    map.addCounter(new Coordinate(2, 2), mine)
+
+    game.setGameState(new AssaultState(game))
+
+    expect(game.gameState?.openHex(2, 2)).toBe(hexOpenType.All)
+
+    game.assaultState.move(2, 2)
+
+    game.gameState?.finish()
+
+    let all = map.allCounters
+    expect(all.length).toBe(2)
+    expect(all[0].hex?.x).toBe(2)
+    expect(all[0].hex?.y).toBe(2)
+    expect(all[0].feature.id).toBe("mine1")
+    expect(all[1].hex?.x).toBe(2)
+    expect(all[1].hex?.y).toBe(2)
+    expect(all[1].unit.id).toBe("test1")
+
+    expect(game.actions[0].stringValue).toBe("German Rifle assault moved from D3 to C3")
+
+    game.executeUndo(false)
+    all = map.allCounters
+    expect(all.length).toBe(2)
+    expect(all[0].hex?.x).toBe(3)
+    expect(all[0].hex?.y).toBe(2)
+    expect(all[0].feature.id).toBe("test1")
+    expect(all[1].hex?.x).toBe(2)
+    expect(all[1].hex?.y).toBe(2)
+    expect(all[1].unit.id).toBe("mine1")
+  })
+
   test("tank can't assault from impassible terrain without road", () => {
     const game = createMoveGame([
       [{ t: "o" }, { t: "o" }, { t: "o", b: "f", be: [4] }, { t: "o" }, { t: "o" }],
@@ -1291,7 +1334,52 @@ describe("assault movement", () => {
     expect(counters2[4].unit.isAbandoned).toBe(true)
   })
 
-  test("assaulting into mines", () => {
-    // TODO: implement fire first
+  test("assault move destroys abandoned vehicle", () => {
+    const game = createMoveGame()
+    const map = game.scenario.map
+    const unit = new Unit(testGInf)
+    unit.id = "test1"
+    map.addCounter(new Coordinate(3, 2), unit)
+    map.select(unit)
+
+    const tank = new Unit(testRTank)
+    tank.id = "tank1"
+    tank.abandon()
+    map.addCounter(new Coordinate(2, 2), tank)
+
+    game.setGameState(new AssaultState(game))
+
+    expect(game.gameState?.openHex(2, 2)).toBe(hexOpenType.All)
+
+    game.assaultState.move(2, 2)
+
+    game.gameState?.finish()
+
+    let all = map.allCounters
+    expect(all.length).toBe(2)
+    expect(all[0].hex?.x).toBe(2)
+    expect(all[0].hex?.y).toBe(2)
+    expect(all[0].unit.id).toBe("tank1")
+    expect(all[0].unit.isWreck).toBe(true)
+    expect(all[1].hex?.x).toBe(2)
+    expect(all[1].hex?.y).toBe(2)
+    expect(all[1].unit.id).toBe("test1")
+
+    expect(game.actions[0].stringValue).toBe(
+      "German Rifle assault moved from D3 to C3, Soviet T-34 M40 destroyed"
+    )
+
+    game.executeUndo(false)
+    all = map.allCounters
+    expect(all.length).toBe(3)
+    expect(all[0].hex?.x).toBe(3)
+    expect(all[0].hex?.y).toBe(2)
+    expect(all[0].feature.id).toBe("test1")
+    expect(all[1].hex?.x).toBe(2)
+    expect(all[1].hex?.y).toBe(2)
+    expect(all[1].marker.type).toBe("tracked_hull")
+    expect(all[2].hex?.x).toBe(2)
+    expect(all[2].hex?.y).toBe(2)
+    expect(all[2].unit.id).toBe("tank1")
   })
 });

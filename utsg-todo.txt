@@ -1,12 +1,5 @@
 Features/Bug Fixes
-  + Can't abandon immobilized tank
-  + Morale-size bonus to CC
-  - Check  assault into hex with abandoned tank destroys vehicle
-  - 010
-    - 5 turns
-    - Russian BA-20
-    - Minus 2 Hungarian infantry
-    - Move 1VP
+  + Check assault into hex with abandoned tank destroys vehicle
   - Monitor memory usage
   - (420), (425) Cave special rules
   - 516 Special cavalry rules (single morale check, mounted but not weapon fire)

@@ -2,7 +2,8 @@
 
 - Add CC moral-size bonus
 - Bug fix: allow crews to abandon immobilized tanks
-- Updated 010
+- Updated 010, 429
+- Added prototype 423
 
 # 0.149
 
