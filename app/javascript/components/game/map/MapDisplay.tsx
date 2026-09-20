@@ -428,7 +428,7 @@ export default function MapDisplay({
     setHexDisplay(hexLoader)
     setHexDisplayDetail(detailLoader)
     setHexNightOverlay(nightLoader)
-  }, [map, showTerrain, showCoords, scale])
+  }, [map, showTerrain, showCoords, scale, map.game?.playerOneScore, map.game?.playerTwoScore])
 
   // dynamic elements
   useEffect(() => {

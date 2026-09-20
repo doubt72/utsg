@@ -1,3 +1,8 @@
+# 0.149
+
+- Bug fix: VP not flipping on map due to memory changes
+- Remove reload (seems to be unecessary)
+
 # 0.148
 
 - Add special hex overlays for moves/assualt prevented by overstack or enemy units

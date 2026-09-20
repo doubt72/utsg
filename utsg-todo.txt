@@ -1,4 +1,10 @@
 Features/Bug Fixes
+  - Remove reload trigger (unecessary)
+  - 010
+    - 5 turns
+    - Russian BA-20
+    - Minus 2 Hungarian infantry
+    - Move 1VP
   - Monitor memory usage
   - (420), (425) Cave special rules
   - 516 Special cavalry rules (single morale check, mounted but not weapon fire)

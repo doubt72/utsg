@@ -34,7 +34,7 @@ export default function GameDisplay() {
     const handlePopState = () => { history.pushState(null, "", location.pathname) }
     window.addEventListener('popstate', handlePopState)
     return () => {
-      window.removeEventListener("popstate", handlePopState)
+      // window.removeEventListener("popstate", handlePopState)
     }
   }, [navigate, location])
 
