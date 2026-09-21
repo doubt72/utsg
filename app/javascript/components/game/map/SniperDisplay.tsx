@@ -24,14 +24,14 @@ export default function SniperDisplay({
   const nationOne = () => {
     const n = map.game?.playerOneNation
     return {
-      fill: `url(#nation-${n}-16)`, strokeWidth: 1, stroke: "#000"
+      fill: `url(#nation-${n})`, strokeWidth: 1, stroke: "#000"
     }
   }
 
   const nationTwo = () => {
     const n = map.game?.playerTwoNation
     return {
-      fill: `url(#nation-${n}-16)`, strokeWidth: 1, stroke: "#000"
+      fill: `url(#nation-${n})`, strokeWidth: 1, stroke: "#000"
     }
   }
 

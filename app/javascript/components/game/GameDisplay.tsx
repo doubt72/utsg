@@ -193,7 +193,7 @@ export default function GameDisplay() {
       nation = game.k.playerTwoNation
     }
     if (nation) {
-      const fill = `url(#nation-${nation}-16)`
+      const fill = `url(#nation-${nation})`
       setPlayerNation(
         <div style={{
             paddingTop: horizontalControls ? 3 : 8, paddingBottom: horizontalControls ? 0 : 12,

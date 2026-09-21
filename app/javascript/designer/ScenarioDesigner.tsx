@@ -34,6 +34,7 @@ export function defaultScenario(): ScenarioData {
       allied_units: { 0: { list: [] } }, axis_units: { 0: { list: [] } },
       description: ["no description yet"], special_rules: [], map_data: {
         layout: [15, 11, "x"], allied_dir: 1, axis_dir: 1, victory_hexes: [],
+        escape_hexes: [],
         allied_setup: { 0: [] }, axis_setup: { 0: [] },
         base_terrain: "g", night: false,
         start_weather: "dry", base_weather: "dry", precip: [0, "rain"], wind: [1, 1, false],
@@ -73,7 +74,8 @@ export type DesignStack = {
 }
 
 export type SelectionType = {
-  set: "vp" | "terrain" | "elevation" | "building" | "border" | "road" | "stream" | "railroad",
+  set: "vp" | "esc" | "terrain" | "elevation" | "building" | "border" | "road" |
+    "stream" | "railroad",
   terrain: TerrainType,
   elevation: Elevation,
   building: BuildingShape,
@@ -112,6 +114,7 @@ export default function ScenarioDesigner() {
   const [scenario, setScenario] = useState<Scenario>(new Scenario(defaultScenario()))
   const [hexCache, setHexCache] = useState<HexData[][]>([])
   const [vpCache, setVpCache] = useState<[number, number, 1 | 2][]>([])
+  const [escCache, setEscCache] = useState<[number, number, 1 | 2][]>([])
 
   const [allUnits, setAllUnits] = useState<{ [index: string]: UnitData | FeatureData }>({})
 
@@ -132,6 +135,7 @@ export default function ScenarioDesigner() {
   const [hexDisplayDetail, setHexDisplayDetail] = useState<JSX.Element[]>([])
   const [hexDisplayNight, setHexDisplayNight] = useState<JSX.Element[]>([])
   const [victoryDisplay, setVictoryDisplay] = useState<JSX.Element[]>([])
+  const [escapeDisplay, setEscapeDisplay] = useState<JSX.Element[]>([])
   const [unitDisplay, setUnitDisplay] = useState<JSX.Element[]>([])
   const [overlayDisplay, setOverlayDisplay] = useState<JSX.Element[]>([])
 
@@ -154,6 +158,7 @@ export default function ScenarioDesigner() {
     setDeploySelected("t0-1")
     setHexCache([])
     setVpCache([])
+    setEscCache([])
   }
 
   const resizeMap = (x: number, y: number) => {
@@ -183,7 +188,9 @@ export default function ScenarioDesigner() {
     }
     setHexCache(cache)
     const vps: [number, number, 1 | 2][] = []
+    const escs: [number, number, 1 | 2][] = []
     for (const vp of vpCache) { vps.push(vp) }
+    for (const esc of escCache) { escs.push(esc) }
     for (const vp of metadata.map_data.victory_hexes ?? []) {
       let found = false
       for (const ovp of vpCache) {
@@ -191,12 +198,21 @@ export default function ScenarioDesigner() {
       }
       if (!found) { vps.push(vp) }
     }
+    for (const esc of metadata.map_data.escape_hexes ?? []) {
+      let found = false
+      for (const oesc of escCache) {
+        if (esc[0] === oesc[0] && esc[1] === oesc[1]) { found = true; break }
+      }
+      if (!found) { escs.push(esc) }
+    }
     setVpCache(vps)
+    setEscCache(escs)
     pushDesignStack(
       {
         ...data, metadata: { ...metadata, map_data:  {
           ...metadata.map_data, layout: [x, y, "x"], hexes: hexData,
           victory_hexes: vps.filter(vp => vp[0] < x && vp[1] < y),
+          escape_hexes: vps.filter(esc => esc[0] < x && esc[1] < y),
         }}
       }, setDesignStack
     )
@@ -232,6 +248,23 @@ export default function ScenarioDesigner() {
         if (!found) { vps.push([selectionHex.x, selectionHex.y, 1])}
         pushDesignStack(
           { ...data, metadata: { ...metadata, map_data: { ...metadata.map_data, victory_hexes: vps }}},
+          setDesignStack
+        )
+      } else if (selectionType.set === "esc") {
+        resetCache()
+        const escs: [number, number, 1 | 2][] = []
+        let found = false;
+        for (const esc of metadata.map_data.escape_hexes as [number, number, 1 | 2][] ?? []) {
+          if (esc[0] === selectionHex.x && esc[1] === selectionHex.y) {
+            found = true
+            if (esc[2] === 1) { escs.push([esc[0], esc[1], 2]) }
+          } else {
+            escs.push(esc)
+          }
+        }
+        if (!found) { escs.push([selectionHex.x, selectionHex.y, 1])}
+        pushDesignStack(
+          { ...data, metadata: { ...metadata, map_data: { ...metadata.map_data, escape_hexes: escs }}},
           setDesignStack
         )
       } else if (selectionType.set === "terrain") {
@@ -453,6 +486,7 @@ export default function ScenarioDesigner() {
     const hexLoader: JSX.Element[] = []
     const detailLoader: JSX.Element[] = []
     const victoryLoader: JSX.Element[] = []
+    const escLoader: JSX.Element[] = []
     const nightLoader: JSX.Element[] = []
     const overlayLoader: JSX.Element[] = []
     const map = scenario.map
@@ -484,10 +518,26 @@ export default function ScenarioDesigner() {
             const yy = hex.yCorner(5, 20)
             const victory = v[2] === 1 ? data.allies[0] : data.axis[0]
             const style = {
-              fill: `url(#nation-${victory}-12)`, strokeWidth: 1, stroke: "#000"
+              fill: `url(#nation-${victory})`, strokeWidth: 1, stroke: "#000"
             }
             victoryLoader.push(
-              <circle key={`vp-${x}-${y}`} cx={xx} cy={yy} r={12} style={style}/>
+              <circle key={`vp-${x}-${y}`} cx={xx} cy={yy} r={12} style={style}
+                      onClick={() => selectHex(x, y)}/>
+            )
+          }
+        }
+        const esc = data.metadata.map_data.escape_hexes ?? [] as [number, number, 1|2][]
+        for (const e of esc) {
+          if (e[0] === x && e[1] === y) {
+            const xx = hex.xOffset
+            const yy = hex.yOffset
+            const escp = e[2] === 1 ? data.allies[0] : data.axis[0]
+            const style = {
+              fill: `url(#nation-${escp})`, strokeWidth: 1, stroke: "#000"
+            }
+            escLoader.push(
+              <circle opacity="0.5" key={`esc-${x}-${y}`} cx={xx} cy={yy} r={45} style={style}
+                      onClick={() => selectHex(x, y)}/>
             )
           }
         }
@@ -497,6 +547,7 @@ export default function ScenarioDesigner() {
     setHexDisplayDetail(detailLoader)
     setHexDisplayNight(nightLoader)
     setVictoryDisplay(victoryLoader)
+    setEscapeDisplay(escLoader)
     setUnitDisplay(map.counters.map((counter, i) => {
       return <MapCounter key={i} counter={counter} ovCallback={() => {}} />
     }))
@@ -534,6 +585,7 @@ export default function ScenarioDesigner() {
         {hexDisplayDetail}
         {scenario.map.night ? hexDisplayNight : ""}
         {victoryDisplay}
+        {escapeDisplay}
         {unitDisplay}
         {tab === 3 && !["i-1", "i-2"].includes(deploySelected) ? overlayDisplay : ""}
       </svg>

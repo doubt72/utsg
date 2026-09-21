@@ -2,7 +2,7 @@ import React from "react";
 import Hex from "../../../engine/Hex";
 import { Coordinate, streamType, terrainType } from "../../../utilities/commonTypes";
 import {
-  bridgeStyle, hexEdgeCoreStyle, hexEdgeDecorationStyle, hexEdgePath, railroadBedStyle, railroadBridgeStyle,
+  bridgeStyle, escapeLayout, hexEdgeCoreStyle, hexEdgeDecorationStyle, hexEdgePath, railroadBedStyle, railroadBridgeStyle,
   railroadPath, railroadtieStyle, railroadTrackStyle, riverPath, riverStyle, roadEdgeStyle, roadOutlineStyle,
   roadPath, roadRotate, roadStyle, victoryLayout
 } from "../../../engine/support/hexLayout";
@@ -19,10 +19,13 @@ interface MapHexDetailProps {
   terrainCallback: (a: JSX.Element | undefined) => void;
   svgRef: React.MutableRefObject<HTMLElement>;
   scale: number;
+  alliedFactions?: string[];
+  axisFactions?: string[];
 }
 
 export default function MapHexDetail({
-  hex, maxX, maxY, selectCallback, showTerrain, terrainCallback, svgRef, scale
+  hex, maxX, maxY, selectCallback, showTerrain, terrainCallback, svgRef, scale,
+  alliedFactions, axisFactions,
 }: MapHexDetailProps) {
   const river = () => {
     if (!hex.iRiver) { return "" }
@@ -86,6 +89,14 @@ export default function MapHexDetail({
                    transform={ hex.map.rotated ? `rotate(90, ${layout.x} ${layout.y})` : "" } />
   }
 
+  const escape = () => {
+    const layout = escapeLayout(hex, alliedFactions, axisFactions)
+    if (!layout) { return "" }
+    return <circle opacity="0.5" cx={layout.x} cy={layout.y} r={layout.r}
+                   style={layout.style as object}
+                   transform={ hex.map.rotated ? `rotate(90, ${layout.x} ${layout.y})` : "" } />
+  }
+
   const outline = (
     <polygon points={hex.hexCoords}
              style={{ strokeWidth: 1, stroke: "rgba(0,0,0,0.16)", fill: clearColor }} />
@@ -124,6 +135,7 @@ export default function MapHexDetail({
       {outline}
       {edge()}
       {victory()}
+      {escape()}
       {interactionOverly}
     </g>
   )

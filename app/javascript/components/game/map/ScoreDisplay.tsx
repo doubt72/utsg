@@ -26,17 +26,17 @@ export default function ScoreDisplay({ map, xx, yy, maxX, maxY, scale }: ScoreDi
   const [base, setBase] = useState<JSX.Element | undefined>()
   const [helpDisplay, setHelpDisplay] = useState<JSX.Element | undefined>()
 
-  const nationOne = (size: number, stroke: number = 1) => {
+  const nationOne = (stroke: number = 1) => {
     const n = map.game?.playerOneNation
     return {
-      fill: `url(#nation-${n}-${size})`, strokeWidth: stroke, stroke: "#000"
+      fill: `url(#nation-${n})`, strokeWidth: stroke, stroke: "#000"
     }
   }
 
-  const nationTwo = (size: number, stroke: number = 1) => {
+  const nationTwo = (stroke: number = 1) => {
     const n = map.game?.playerTwoNation
     return {
-      fill: `url(#nation-${n}-${size})`, strokeWidth: stroke, stroke: "#000"
+      fill: `url(#nation-${n})`, strokeWidth: stroke, stroke: "#000"
     }
   }
 
@@ -99,10 +99,10 @@ export default function ScoreDisplay({ map, xx, yy, maxX, maxY, scale }: ScoreDi
             </g>
           </g>
         }
-        <circle cx={xl} cy={yd} r={12} style={nationOne(12, 1)}
+        <circle cx={xl} cy={yd} r={12} style={nationOne(1)}
                 onMouseEnter={() => helpText(xl+4, yd+8, game.alliedName)}
                 onMouseLeave={() => setHelpDisplay(undefined)}/>
-        <circle cx={xr} cy={yd} r={12} style={nationTwo(12, 1)}
+        <circle cx={xr} cy={yd} r={12} style={nationTwo(1)}
                 onMouseEnter={() => helpText(xr+4, yd+8, game.axisName)}
                 onMouseLeave={() => setHelpDisplay(undefined)}/>
       </g>

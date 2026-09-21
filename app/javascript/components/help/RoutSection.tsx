@@ -95,7 +95,7 @@ export default function RoutSection({ section }: SectionProps) {
                    `L ${x - radius + size} ${y + size} M ${x - radius} ${y} L ${x} ${y}`}
                 style={{ fill: clearColor, stroke: "#444", strokeWidth: 2 }}/>
         </g>
-        <circle cx={x} cy={y} r={12} style={{ fill: `url(#nation-ger-12`, strokeWidth: 1, stroke: "#000"}}/>
+        <circle cx={x} cy={y} r={12} style={{ fill: `url(#nation-ger)`, strokeWidth: 1, stroke: "#000"}}/>
       </g>
     )
   }

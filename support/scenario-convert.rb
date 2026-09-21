@@ -150,6 +150,16 @@ print "            "
 print mapdata["victory_hexes"].map { |v| "#{v}" }.join(", ")
 print ",\n"
 
+if mapdata["escape_hexes"]
+  puts <<EOF
+          ],
+          escape_hexes: [
+EOF
+  print "            "
+  print mapdata["escape_hexes"].map { |v| "#{v}" }.join(", ")
+  print ",\n"
+end
+
 allied_setup = "#{mapdata["allied_setup"]}".gsub("=>", ' => ').gsub("{","{ ").gsub("}"," }")
 axis_setup = "#{mapdata["axis_setup"]}".gsub("=>", ' => ').gsub("{","{ ").gsub("}"," }")
 

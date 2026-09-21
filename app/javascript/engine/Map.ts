@@ -30,6 +30,7 @@ export type MapData = {
   allied_dir: ExtendedDirection;
   axis_dir: ExtendedDirection;
   victory_hexes?: [ number, number, 1 | 2 ][];
+  escape_hexes?: [ number, number, 1 | 2 ][];
   allied_setup?: DeployHexesTurn;
   axis_setup?: DeployHexesTurn;
   hexes: HexData[][];
@@ -51,6 +52,7 @@ export default class Map {
   alliedDir: ExtendedDirection;
   axisDir: ExtendedDirection;
   victoryHexes: VictoryHex[];
+  escapeHexes: VictoryHex[];
   alliedSetupHexes?: DeployHexesTurn;
   axisSetupHexes?: DeployHexesTurn;
   mapHexes: Hex[][] = [];
@@ -86,6 +88,9 @@ export default class Map {
     this.alliedDir = data.allied_dir
     this.axisDir = data.axis_dir
     this.victoryHexes = data.victory_hexes?.map(v => {
+      return { x: v[0], y: v[1], player: v[2] }
+    }) || []
+    this.escapeHexes = data.escape_hexes?.map(v => {
       return { x: v[0], y: v[1], player: v[2] }
     }) || []
     this.alliedSetupHexes = data.allied_setup
@@ -174,6 +179,29 @@ export default class Map {
 
   victoryAt(loc: Coordinate): Player | false {
     for (const v of this.victoryHexes) {
+      if (v.x === loc.x && v.y === loc.y) {
+        return v.player
+      }
+    }
+    return false
+  }
+
+  escapeNationAt(
+    loc: Coordinate, alliedFactions?: string[], axisFactions?: string[]
+  ): string | false {
+    const player = this.escapeAt(loc)
+    if (player === false) { return false }
+    const alf = alliedFactions ? alliedFactions[0] : false
+    const axf = axisFactions ? axisFactions[0] : false
+    if (player === 1) {
+      return this.game?.playerOneNation ?? alf
+    } else {
+      return this.game?.playerTwoNation ?? axf
+    }
+  }
+
+  escapeAt(loc: Coordinate): Player | false {
+    for (const v of this.escapeHexes) {
       if (v.x === loc.x && v.y === loc.y) {
         return v.player
       }

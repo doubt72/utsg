@@ -37,13 +37,13 @@ export default function MapHexPatterns({ map, rotated }: MapHexPatternProps) {
     return path.join(" ")
   }
 
-  const nationalControlPattern = (nation: string, size: number) => {
-    const key = `nation-${nation}-${size}`
+  const nationalControlPattern = (nation: string) => {
+    const key = `nation-${nation}`
     return (
       <pattern key={key} id={key} x="0" y="0" patternUnits="objectBoundingBox"
-               width={size*2} height={size*2}>
-        <rect width={size*2} height={size*2} style={{ fill: nationalControlLookup(nation) }}/>
-        <image x="0" y="0" height={size*2} width={size*2} xlinkHref={`/assets/units/${nation}.svg`}/>
+               width={1} height={1} viewBox="0 0 100 100">
+        <rect x="0" y="0" width="100" height="100" style={{ fill: nationalControlLookup(nation) }}/>
+        <image x="0" y="0" height="100" width="100" xlinkHref={`/assets/units/${nation}.svg`}/>
       </pattern>
     )
   }
@@ -204,9 +204,7 @@ export default function MapHexPatterns({ map, rotated }: MapHexPatternProps) {
           } style={darkStrokeStyle} />
       </pattern>
 
-      {nations.map(n => nationalControlPattern(n, 9))}
-      {nations.map(n => nationalControlPattern(n, 12))}
-      {nations.map(n => nationalControlPattern(n, 16))}
+      {nations.map(n => nationalControlPattern(n))}
     </defs>
   )
 }

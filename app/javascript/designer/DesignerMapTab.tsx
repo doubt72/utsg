@@ -59,6 +59,16 @@ export default function DesignerMapTab({
           }
         </div>
       </div>
+      <div className={`designer-radio-all${ selectionType.set === "esc" ? " designer-selected" : ""}`} >
+        <input type="radio" className="mr05em"
+               name="select"
+               value="esc"
+               checked={ selectionType.set === "esc" }
+               onChange={() => setSelectionType(s =>
+                 { return { ...s, set: "esc" }}
+               )} />
+        <label className="design-label flex-fill">escape hexes</label>
+      </div>
       <div className={`designer-radio${ selectionType.set === "terrain" ? " designer-selected" : ""}`} >
         <input type="radio" className="mr05em"
                name="select"

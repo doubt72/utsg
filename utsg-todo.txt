@@ -1,7 +1,5 @@
 Features/Bug Fixes
   - Monitor memory usage
-  + (420), (425) Cave special rules
-  + 025, 519, 522 Check if winter needed for snow
   - 037, (043), 521 Special escape rules
   - 516 Special cavalry rules (single morale check, mounted but not weapon fire)
   - 523 Hidden cavalry

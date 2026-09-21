@@ -107,12 +107,12 @@ export default function TurnDisplay({
                 { r1 ? <circle opacity={opacity} cx={x + 15} cy={y + 65} r={12}
                                style={{
                                   strokeWidth: 1, stroke: "#000",
-                                  fill: `url(#nation-${map.game?.playerOneNation}-12)`,
+                                  fill: `url(#nation-${map.game?.playerOneNation})`,
                                 }} /> : "" }
                 { r2 ? <circle opacity={opacity} cx={x + 65} cy={y + 65} r={12}
                                style={{
                                   strokeWidth: 1, stroke: "#000",
-                                  fill: `url(#nation-${map.game?.playerTwoNation}-12)`,
+                                  fill: `url(#nation-${map.game?.playerTwoNation})`,
                                 }} /> : "" }
               </g>
               )
@@ -156,12 +156,12 @@ export default function TurnDisplay({
                 { r1 ? <circle opacity={opacity} cx={x + left} cy={y + bottom} r={size}
                                style={{
                                   strokeWidth: 1, stroke: "#000",
-                                  fill: `url(#nation-${map.game?.playerOneNation}-${size})`,
+                                  fill: `url(#nation-${map.game?.playerOneNation})`,
                                }} /> : "" }
                 { r2 ? <circle opacity={opacity} cx={x + right} cy={y + top} r={size}
                                style={{
                                   strokeWidth: 1, stroke: "#000",
-                                  fill: `url(#nation-${map.game?.playerTwoNation}-${size})`,
+                                  fill: `url(#nation-${map.game?.playerTwoNation})`,
                                }} /> : "" }
               </g>
             )

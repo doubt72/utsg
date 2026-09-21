@@ -131,13 +131,13 @@ export function turnLayout(counter: Counter): CircleLayout[] | false {
     {
       x: counter.x + 22, y: counter.y + 50, r: 16,
       style: {
-        fill: `url(#nation-${counter.marker.value}-16)`, strokeWidth: 1, stroke: "#000"
+        fill: `url(#nation-${counter.marker.value})`, strokeWidth: 1, stroke: "#000"
       }
     },
     {
       x: counter.x + 58, y: counter.y + 50, r: 16,
       style: {
-        fill: `url(#nation-${counter.marker.value2}-16)`, strokeWidth: 1, stroke: "#000"
+        fill: `url(#nation-${counter.marker.value2})`, strokeWidth: 1, stroke: "#000"
       }
     }
   ]

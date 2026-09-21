@@ -1,10 +1,12 @@
 # 0.150
 
+- Start on escape hexes for 037, etc.
 - Add cave movement for 420, etc.
 - Add CC moral-size bonus
 - Bug fix: winter/snow movement over frozen water
 - Bug fix: allow crews to abandon immobilized tanks
-- Updated 010, 025, 429, 519, 522
+- Bug fix: rotating map updates hexes
+- Updated 010, 025, 037, 429, 519, 522
 - Added prototype 423
 
 # 0.149

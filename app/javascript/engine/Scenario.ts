@@ -293,6 +293,10 @@ export default class Scenario {
         return `${allied} infantry units start unobserved`
       } else if (r === "axis_hidden_units") {
         return `${axis} infantry units start unobserved`
+      } else if (r === "allied_escape") {
+        return `${allied} units can escape map for victory points`
+      } else if (r === "axis_escape") {
+        return `${axis} units can escape map for victory points`
       } else if (r === "axis_bonzai") {
         return `Elminited ${axis} units only award one victory point`
       } else if (r === "axis_cave_movement") {

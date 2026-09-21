@@ -186,7 +186,7 @@ export default function ScenarioSummary({ data }: ScenarioSummaryProps) {
         const p = t === 0 ? (scenario.firstDeploy === 1 ? pp : 3 - pp) : (scenario.firstAction === 1 ? pp : 3 - pp)
         if ((p === 1 && scenario.alliedReinforcements[t]) ||
             (p === 2 && scenario.axisReinforcements[t])) {
-          const fill = `url(#nation-${p === 1 ? scenario.alliedFactions[0] : scenario.axisFactions[0]}-9)`
+          const fill = `url(#nation-${p === 1 ? scenario.alliedFactions[0] : scenario.axisFactions[0]})`
           const units = p === 1 ? scenario.alliedUnitTurnList(t) : scenario.axisUnitTurnList(t)
           rc.push(
             <div key={`${t}-${p}`}
@@ -269,7 +269,9 @@ export default function ScenarioSummary({ data }: ScenarioSummaryProps) {
               </div>
             </div>
             <div className="p05em ml1em mb1em corner-round edge-line-white background-gray float-right">
-              <MapDisplay map={map} scale={scale()} preview={true} forceUpdate={0} />
+              <MapDisplay map={map} scale={scale()} preview={true} forceUpdate={0}
+                          alliedFactions={scenario.alliedFactions}
+                          axisFactions={scenario.axisFactions} />
             </div>
             {scenario.description?.map((p, i) => {
               return <p key={i}>{p}</p>

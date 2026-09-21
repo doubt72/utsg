@@ -66,6 +66,8 @@ interface MapDisplayProps {
   shrinkCallback?: (shrink: boolean) => void;
   checkCancelHideLOS?: number;
   checkCancelTerrain?: number;
+  alliedFactions?: string[];
+  axisFactions?: string[];
 }
 
 export default function MapDisplay({
@@ -74,6 +76,7 @@ export default function MapDisplay({
   headerCollapse = false, horizontalControls = false, checkCancelHideLOS, checkCancelTerrain,
   hexCallback = () => {}, counterCallback = () => {}, directionCallback = () => {}, resetCallback = () => {},
   clearActionCallback = () => {}, updateCallback = () => {}, shrinkCallback = () => {},
+  alliedFactions, axisFactions
 }: MapDisplayProps) {
   const [mouseDown, setMouseDown] = useState<boolean>(false)
   const [mapUpdate, setMapUpdate] = useState(0)
@@ -414,7 +417,8 @@ export default function MapDisplay({
                                         terrainCallback={st ? a => setTerrainInfoOverlay(a) :
                                           () => setTerrainInfoOverlay(undefined) }
                                         svgRef={svgRef as React.MutableRefObject<HTMLElement>}
-                                        scale={sc} />)
+                                        scale={sc} alliedFactions={alliedFactions}
+                                        axisFactions={axisFactions} />)
         if (map.night) {
           nightLoader.push(
             <MapHexNight key={`${x}-${y}-n`} hex={hex} maxX={scaleWidth} maxY={scaleHeight} scale={sc}
@@ -428,7 +432,10 @@ export default function MapDisplay({
     setHexDisplay(hexLoader)
     setHexDisplayDetail(detailLoader)
     setHexNightOverlay(nightLoader)
-  }, [map, showTerrain, showCoords, scale, map.game?.playerOneScore, map.game?.playerTwoScore])
+  }, [
+    map, map.rotated, showTerrain, showCoords, scale,
+    map.game?.playerOneScore, map.game?.playerTwoScore
+  ])
 
   // dynamic elements
   useEffect(() => {

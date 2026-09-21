@@ -53,7 +53,7 @@ export default function MapDeployDisplay({ scenario, scale, turn, player }: MapD
         }
         const vp = scenario.map.victoryAt(loc)
         if (vp) {
-          const fill = `url(#nation-${vp === 1 ? scenario.alliedFactions[0] : scenario.axisFactions[0]}-16)`
+          const fill = `url(#nation-${vp === 1 ? scenario.alliedFactions[0] : scenario.axisFactions[0]})`
           vpLoader.push(
             <circle transform={`scale(3) translate(${-hex.xOffset/1.5} ${-hex.yOffset/1.5})`} key={`${x}-${y}-vp`}
                     cx={hex.xOffset} cy={hex.yOffset} r={16} style={{ fill, strokeWidth: 0 }}/>

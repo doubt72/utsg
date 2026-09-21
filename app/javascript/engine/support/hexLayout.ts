@@ -291,7 +291,21 @@ export function victoryLayout(hex: Hex): CircleLayout | false {
   const y = hex.map.rotated ? hex.yCorner(6, 20) : hex.yCorner(5, 20)
   return {
     x: x, y: y, r: 12, style: {
-      fill: `url(#nation-${victory}-12)`, strokeWidth: 1, stroke: "#000"
+      fill: `url(#nation-${victory})`, strokeWidth: 1, stroke: "#000"
+    },
+  }
+}
+
+export function escapeLayout(
+  hex: Hex, alliedFactions?: string[], axisFactions?: string[]
+): CircleLayout | false {
+  const escape = hex.map.escapeNationAt(hex.coord, alliedFactions, axisFactions)
+  if (!escape) { return false }
+  const x = hex.xOffset
+  const y = hex.yOffset
+  return {
+    x: x, y: y, r: 45, style: {
+      fill: `url(#nation-${escape})`, strokeWidth: 1, stroke: "#000"
     },
   }
 }

@@ -11,7 +11,6 @@ import Game from "../../../engine/Game";
 import { mapActionButtons } from "../../../engine/support/hexLayout";
 import { actionButtonHelpLayout } from "../../../engine/support/help";
 import { HelpOverlay } from "./HelpOverlay";
-import { hexDistance } from "../../../utilities/utilities";
 
 interface MoveTrackOverlayProps {
   map: Map;
@@ -132,18 +131,8 @@ export default function MoveTrackOverlay({
       const offset2 = Math.max(map.countersAt(hx[i].coord).length * 5 - 5, 0)
       const x2 = hx[i].xOffset + offset2
       const y2 = hx[i].yOffset - (map.rotated ? -offset2 : offset2)
-      const distance = hexDistance(hx[i-1].coord, hx[i].coord)
-      const style1 = distance > 1 ? {
-        stroke: "#DDD", strokeWidth: 4,
-        strokeDasharray: "0, 18, 5, 0, 0, 12",
-      } : {
-        stroke: "#DDD", strokeWidth: 4,
-      }
-      const style2 = distance > 1 ? {
-        stroke: "#333", strokeWidth: 4, strokeDasharray: "5, 30",
-      } : {
-        stroke: "#333", strokeWidth: 4, strokeDasharray: "5, 5",
-      }
+      const style1 = { stroke: "#DDD", strokeWidth: 4 }
+      const style2 = { stroke: "#333", strokeWidth: 4, strokeDasharray: "5, 5" }
       track.push(
         <g className={`tracking-mto-ht-${i}`} key={`${i}-g`}>
           <line key={`${i}-la`} x1={x1} y1={y1} x2={x2} y2={y2}
