@@ -378,6 +378,17 @@ export default class AssaultState extends BaseState {
     this.game.closeOverlay = true
   }
 
+  escape() {
+    for (const s of this.selection) {
+      this.addActions.push({
+        x: s.x, y: s.y, type: gameActionAddActionType.Escape, id: s.id, name: s.name,
+        cost: 0, index: s.counter.unitIndex,
+      })
+    }
+    this.doneSelect = true
+    this.game.closeOverlay = true
+  }
+
   selectRepair(id: string) {
     const x = this.selection[0].x
     const y = this.selection[0].y

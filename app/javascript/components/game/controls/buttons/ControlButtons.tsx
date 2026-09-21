@@ -2,7 +2,7 @@ import React, { FormEvent, useEffect } from "react";
 import Game from "../../../../engine/Game";
 import { OverlayTrigger, Tooltip, TooltipProps } from "react-bootstrap";
 import {
-  ArrowClockwise, ArrowCounterclockwise, BoxArrowDown, BoxArrowInUp, CircleFill, CircleHalf, Clouds,
+  ArrowClockwise, ArrowCounterclockwise, ArrowUpCircle, BoxArrowDown, BoxArrowInUp, CircleFill, CircleHalf, Clouds,
   CloudSlash, DashSquare, ShieldFill, XCircle, XLg
 } from "react-bootstrap-icons";
 import AssaultState from "../../../../engine/control/state/AssaultState";
@@ -72,6 +72,16 @@ export function AssaultMoveEntrenchButton({ game, vertical, callback }: ButtonPr
   }
 
   return <StandardTooltipButton vertical={vertical} text="entrench" glyph={<ShieldFill />} hotkey={"E"}
+                                callback={submit} />
+}
+
+export function AssaultMoveEscapeButton({ game, vertical, callback }: ButtonProps) {
+  const submit = () => {
+    game.assaultState.escape()
+    callback()
+  }
+
+  return <StandardTooltipButton vertical={vertical} text="escape" glyph={<ArrowUpCircle />} hotkey={"Y"}
                                 callback={submit} />
 }
 

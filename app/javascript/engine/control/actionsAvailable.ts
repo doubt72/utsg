@@ -5,7 +5,7 @@ import Game from "../Game"
 import Map from "../Map"
 import { gamePhaseType } from "../support/gamePhase"
 import Unit from "../Unit"
-import { showAbandon, showClearObstacles, showCrew, showEntrench, showRepair } from "./assault"
+import { showAbandon, showClearObstacles, showCrew, showEntrench, showEscape, showRepair } from "./assault"
 import { closeCombatCasualtyNeeded } from "./closeCombat"
 import { showLaySmoke, showLoadMove, showDropMove } from "./movement"
 import { isRandomDrop, isRandomDropFor } from "./randomDrop"
@@ -408,6 +408,9 @@ function addAssaultActions(game: Game, actions: GameControl[]): void {
       })
     } else {
       actions.unshift({ type: "none", message: "select hex to move" })
+      if (showEscape(game)) {
+        actions.push({ type: "assault_move_escape" })
+      }
       if (showClearObstacles(game)) {
         actions.push({ type: "assault_move_clear" })
       }

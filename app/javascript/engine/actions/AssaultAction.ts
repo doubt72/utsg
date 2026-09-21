@@ -60,6 +60,8 @@ export default class AssaultMoveAction extends BaseAction {
         actions.push(`attempts to repair vehicle; ${this.diceResult[0].description as string}`)
       } else if (a.type === gameActionAddActionType.Crew) {
         actions.push(`manned ${this.addAction[0].name}`)
+      } else if (a.type === gameActionAddActionType.Escape) {
+        actions.push(`escaped from map`)
       } else if (a.type !== gameActionAddActionType.VP) {
         actions.push("unexpected action")
       }
@@ -154,6 +156,9 @@ export default class AssaultMoveAction extends BaseAction {
         counter.unit.exhaust()
         const loc = new Coordinate(a.x, a.y)
         this.map.removeCounter(loc, this.origin[0].id)
+      } else if (a.type === gameActionAddActionType.Escape) {
+        const loc = new Coordinate(a.x, a.y)
+        this.map.escapeCounter(loc, a.id as string)
       }
     }
     for (const s of this.spottingData) { removeSpotting(this.game, s.ref) }
@@ -200,6 +205,11 @@ export default class AssaultMoveAction extends BaseAction {
         unit.playerNation = counter.unit.playerNation as string
         const loc = new Coordinate(a.x, a.y)
         this.map.addCounter(loc, unit)
+      } else if (a.type === gameActionAddActionType.Escape) {
+        const unit = this.game.findUnitById(a.id as string) as Unit
+        const loc = new Coordinate(a.x, a.y)
+        this.map.addCounter(loc, unit)
+        this.game.removeEscapedCounter(a.id as string)
       }
     }
     if (this.target.length > 0) {

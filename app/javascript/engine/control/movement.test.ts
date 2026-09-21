@@ -3564,8 +3564,6 @@ describe("movement", () => {
     const map = game.scenario.map
     const unit = new Unit(testJapSNLF)
     unit.id = "test1"
-    unit.baseMovement = 4
-    unit.facing = 2
     map.addCounter(new Coordinate(1, 1), unit)
     map.select(unit)
 
@@ -3594,10 +3592,8 @@ describe("movement", () => {
       [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
     ])
     const map = game.scenario.map
-    const unit = new Unit(testJapSNLF)
+    const unit = new Unit(testGInf)
     unit.id = "test1"
-    unit.baseMovement = 4
-    unit.facing = 2
     map.addCounter(new Coordinate(1, 1), unit)
     map.select(unit)
 
@@ -3631,10 +3627,8 @@ describe("movement", () => {
       [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
     ])
     const map = game.scenario.map
-    const unit = new Unit(testJapSNLF)
+    const unit = new Unit(testGInf)
     unit.id = "test1"
-    unit.baseMovement = 4
-    unit.facing = 2
     map.addCounter(new Coordinate(1, 1), unit)
     map.select(unit)
 

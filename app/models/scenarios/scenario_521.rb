@@ -25,8 +25,8 @@ module Scenarios
       "0": { list: [
         :ger_leader_5_1,
         :ger_leader_4_1,
-        [6, :ger_volksgrenadier_s],
-        [2, :ger_mg_34],
+        [8, :ger_volksgrenadier_s],
+        [3, :ger_mg_34],
       ] },
       "2": { list: [
         :ger_leader_4_1,
@@ -62,6 +62,7 @@ module Scenarios
           allied_units:,
           axis_units:,
           init_axis_units:,
+          special_rules: ["allied_escape"],
         }
       end
 
@@ -101,7 +102,10 @@ module Scenarios
           allied_dir: 1.5,
           axis_dir: 4.5,
           victory_hexes: [
-            [2, 5, 1], [8, 3, 1],
+            [13, 0, 2], [7, 0, 2], [3, 2, 2], [1, 5, 2], [2, 12, 2],
+          ],
+          escape_hexes: [
+            [11, 0, 1], [10, 0, 1], [5, 0, 1], [4, 0, 1], [0, 3, 1],
           ],
           allied_setup: {
             "0" => [
@@ -118,7 +122,6 @@ module Scenarios
             "2" => [[0, "1-10"], ["*", 0]],
             "3" => [[0, "1-10"], ["*", 0]],
           },
-          base_terrain: "",
         }
       end
 

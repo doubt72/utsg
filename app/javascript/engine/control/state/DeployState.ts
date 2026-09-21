@@ -66,6 +66,7 @@ export default class DeployState extends BaseState {
           return hexOpenType.Closed
         }
         if (this.map.victoryNationAt(hex.coord)) { return hexOpenType.Closed }
+        if (this.map.escapeNationAt(hex.coord)) { return hexOpenType.Closed }
       }
     } else {
       if (unit.size + this.map.sizeAt(hex.coord) > stackLimit) {

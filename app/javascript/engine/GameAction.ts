@@ -123,10 +123,10 @@ export type GameActionCCData = {
 }
 
 export type GameActionAddActionType = "smoke" | "drop" | "load" | "vp" | "clear" | "entrench" |
-  "abandon" | "repair" | "crew"
+  "abandon" | "repair" | "crew" | "escape"
 export const gameActionAddActionType: { [index: string]: GameActionAddActionType } = {
   Smoke: "smoke", Drop: "drop", Load: "load", VP: "vp", Clear: "clear", Entrench: "entrench",
-  Abandon: "abandon", Repair: "repair", Crew: "crew",
+  Abandon: "abandon", Repair: "repair", Crew: "crew", Escape: "escape",
 }
 export type GameActionAddAction = {
   type: GameActionAddActionType, x: number, y: number, id?: string, name?: string,

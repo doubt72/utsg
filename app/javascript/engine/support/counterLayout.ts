@@ -316,6 +316,9 @@ export function counterInfoBadges(
     for (const c of map.game.eliminatedUnits) {
       if (!c.isFeature && counter.unit.id === c.id) { return [] }
     }
+    for (const c of map.game.escapedUnits) {
+      if (counter.unit.id === c.id) { return [] }
+    }
   }
   const badges: { text: string, color: string, tColor: string, arrow?: Direction}[] = []
   if (counter.targetUF.rotates && !(counter.hasUnit && counter.unit.isWreck) &&

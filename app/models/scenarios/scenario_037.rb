@@ -21,18 +21,21 @@ module Scenarios
       ] },
       "3": { list: [
         :ussr_leader_5_1,
+        [2, :ussr_smg_s],
         [2, :ussr_rifle_s],
         :ussr_dp_27,
       ] },
       "4": { list: [
         :ussr_leader_4_1,
-        :ussr_smg_s,
-        :ussr_rifle_s,
+        [2, :ussr_smg_s],
+        [2, :ussr_rifle_s],
         :ussr_dp_27,
       ] },
       "5": { list: [
         :ussr_leader_5_1,
         [3, :ussr_smg_s],
+        [2, :ussr_rifle_s],
+        [2, :ussr_dp_27],
         [2, :ussr_t_34_m42_m43],
         :ussr_su_122,
       ] },
@@ -51,7 +54,7 @@ module Scenarios
     class << self
       def generate
         {
-          turns: 7,
+          turns: 6,
           first_deploy: 1,
           first_action: 2,
           date:,
@@ -96,7 +99,7 @@ module Scenarios
           allied_dir: 2.5,
           axis_dir: 5.5,
           victory_hexes: [
-            [8, 8, 2], [7, 13, 2], [12, 2, 1], [0, 10, 1], [14, 7, 1],
+            [8, 8, 2], [7, 13, 1], [12, 2, 1], [0, 10, 1], [14, 7, 1],
           ],
           escape_hexes: [
             [2, 22, 2], [5, 22, 2], [8, 22, 2],

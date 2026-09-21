@@ -5,7 +5,7 @@ import Unit from "../Unit"
 import { describe, expect, test, vi } from "vitest"
 import select from "./select"
 import organizeStacks from "../support/organizeStacks"
-import { showClearObstacles, showEntrench } from "./assault"
+import { showClearObstacles, showEntrench, showEscape } from "./assault"
 import Feature from "../Feature"
 import {
   createBlankGame,
@@ -1395,8 +1395,6 @@ describe("assault movement", () => {
     const map = game.scenario.map
     const unit = new Unit(testJapSNLF)
     unit.id = "test1"
-    unit.baseMovement = 4
-    unit.facing = 2
     map.addCounter(new Coordinate(1, 1), unit)
     map.select(unit)
 
@@ -1404,5 +1402,50 @@ describe("assault movement", () => {
     expect(game.moveState.openHex(4, 4)).toBe(hexOpenType.Closed)
     game.scenario.specialRules.push("axis_cave_movement")
     expect(game.moveState.openHex(4, 4)).toBe(hexOpenType.All)
+  })
+
+  test("escape", () => {
+    const game = createBlankGame()
+    const map = game.scenario.map
+    map.escapeHexes.push({ x: 2, y: 2, player: 2 })
+    const unit = new Unit(testGInf)
+    unit.id = "test1"
+    map.addCounter(new Coordinate(2, 2), unit)
+    map.select(unit)
+
+    game.setGameState(new AssaultState(game))
+
+    expect(showEscape(game)).toBe(false)
+    game.scenario.specialRules.push("axis_escape")
+    expect(showEscape(game)).toBe(true)
+
+    expect(game.playerOneScore).toBe(10)
+    expect(game.playerTwoScore).toBe(10)
+
+    game.assaultState.escape()
+    game.assaultState.finish()
+
+    expect(game.playerOneScore).toBe(10)
+    expect(game.playerTwoScore).toBe(16)
+
+    let all = map.allCounters
+    expect(all.length).toBe(0)
+
+    expect(game.escapedUnits.length).toBe(1)
+    expect(game.escapedUnits[0].id).toBe("test1")
+
+    expect(game.actions[0].stringValue).toBe("German Rifle at C3 escaped from map")
+
+    game.executeUndo(false)
+    all = map.allCounters
+    expect(all.length).toBe(1)
+    expect(all[0].hex?.x).toBe(2)
+    expect(all[0].hex?.y).toBe(2)
+    expect(all[0].feature.id).toBe("test1")
+
+    expect(game.escapedUnits.length).toBe(0)
+
+    expect(game.playerOneScore).toBe(10)
+    expect(game.playerTwoScore).toBe(10)
   })
 });

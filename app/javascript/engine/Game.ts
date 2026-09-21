@@ -97,7 +97,8 @@ export default class Game {
   state?: string;
   currentSequence = 1;
 
-  eliminatedUnits: (Unit | Feature)[]
+  eliminatedUnits: (Unit | Feature)[];
+  escapedUnits: Unit[];
 
   refreshCallback: (g: Game, error?: [string, string, string?]) => void;
 
@@ -175,6 +176,7 @@ export default class Game {
     this.state = data.state
 
     this.eliminatedUnits = []
+    this.escapedUnits = []
 
     this.refreshCallback = refreshCallback
 
@@ -655,6 +657,15 @@ export default class Game {
         points += bonzai ? 1 : unit.size
       }
     }
+    for (const u of this.escapedUnits) {
+      if (u.playerNation === this.playerTwoNation) { continue }
+      const unit = u as Unit
+      if (unit.leader) {
+        points += 6
+      } else if (!unit.operated && !unit.tankCrew && !unit.decoy) {
+        points += unit.size
+      }
+    }
     return points
   }
 
@@ -667,6 +678,15 @@ export default class Game {
     }
     for (const u of this.eliminatedUnits) {
       if (u.isFeature || u.playerNation === this.playerTwoNation) { continue }
+      const unit = u as Unit
+      if (unit.leader) {
+        points += 6
+      } else if (!unit.operated && !unit.tankCrew && !unit.decoy) {
+        points += unit.size
+      }
+    }
+    for (const u of this.escapedUnits) {
+      if (u.playerNation === this.playerOneNation) { continue }
       const unit = u as Unit
       if (unit.leader) {
         points += 6
@@ -960,6 +980,9 @@ export default class Game {
     for (const c of this.eliminatedUnits) {
       if (c.id === id) { return new Counter(undefined, c) }
     }
+    for (const c of this.escapedUnits) {
+      if (c.id === id) { return new Counter(undefined, c) }
+    }
     return undefined
   }
 
@@ -974,10 +997,38 @@ export default class Game {
     this.eliminatedUnits = this.eliminatedUnits.filter(c => c.id !== id)
   }
 
+  addEscapedCounter(c: Unit) {
+    this.escapedUnits.push(c)
+  }
+
+  removeEscapedCounter(id: string) {
+    this.escapedUnits = this.escapedUnits.filter(c => c.id !== id)
+  }
+
   panelCasualties(player: Player): ReinforcementList {
     const set: { [index: string]: { x: number, c: Unit } } = {}
     for (const c of this.eliminatedUnits) {
       if (c.isFeature || c.playerNation !== (player === 1 ? this.playerOneNation : this.playerTwoNation)) {
+        continue
+      }
+      const key = counterKey(c)
+      if (set[key] === undefined) {
+        set[key] = { x: 1, c: c as Unit }
+      } else {
+        set[key].x++
+      }
+    }
+    const rc: ReinforcementList = {}
+    for (const key in set) {
+      rc[key] = { x: set[key].x, used: 0, id: key, counter: set[key].c }
+    }
+    return rc
+  }
+
+  panelEscaped(player: Player): ReinforcementList {
+    const set: { [index: string]: { x: number, c: Unit } } = {}
+    for (const c of this.escapedUnits) {
+      if (c.playerNation !== (player === 1 ? this.playerOneNation : this.playerTwoNation)) {
         continue
       }
       const key = counterKey(c)

@@ -48,6 +48,23 @@ export function showEntrench(game: Game): boolean {
   return true
 }
 
+export function showEscape(game: Game): boolean {
+  if (!game.gameState) { return false }
+  if (game.currentPlayer === 1 && !game.scenario.specialRules.includes("allied_escape")) { return false }
+  if (game.currentPlayer === 2 && !game.scenario.specialRules.includes("axis_escape")) { return false }
+  const selection = game.assaultState.selection
+  const loc = new Coordinate(selection[0].x, selection[0].y)
+  if (game.scenario.map.contactAt(loc)) { return false }
+  if (game.assaultState.path.length + game.assaultState.addActions.length > 1) { return false }
+  const unit = selection[0].counter.unit
+  if (unit.currentMovement === 0) { return false }
+  if (unit.decoy) { return false }
+  for (const e of game.scenario.map.escapeHexes) {
+    if (e.x === loc.x && e.y === loc.y && game.currentPlayer === e.player) { return true }
+  }
+  return false
+}
+
 export function showAbandon(game: Game): boolean {
   if (!showCommon(game)) { return false }
   const selection = game.assaultState.selection

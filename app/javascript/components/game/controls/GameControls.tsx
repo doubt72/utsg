@@ -11,15 +11,15 @@ import { ClockHistory, ExclamationCircle, ExclamationTriangle, HexagonHalf } fro
 import { OverlayTrigger, Tooltip, TooltipProps } from "react-bootstrap";
 import {
   AssaultMoveAbandonButton, AssaultMoveButton, AssaultMoveClearButton, AssaultMoveCrewButton,
-  AssaultMoveEntrenchButton, AssaultMoveFinishButton, AssaultMoveRepairButton, BreakdownButton,
-  CancelActionButton, CancelMoveButton, CloseCombatReduceButton, CloseCombatSelectButton,
-  DeleteGameButton, EnemyRoutButton, FinishDeployButton, FireButton, FireDisplaceCancelButton,
-  FireDisplaceConfirmButton, FireDisplaceEliminateButton, FireFinishButton, FireOutCheckButton,
-  FireSmokeButton, FireSpreadCheckButton, FireStartCheckButton, InitiativeButton, IntensiveFireButton,
-  JoinSquadButton, MoraleCheckButton, MoveButton, MoveFinishButton, MoveLoadToggleButton,
-  MoveRotateToggleButton, MoveShortToggleButton, MoveSmokeToggleButton, OverstackReduceButton,
-  PassButton, PassCancelButton, PrecipCheckButton, RallyButton, RallyPassButton, RandomDropButton,
-  ReactionFireButton, ReactionIntensiveFireButton, ReactionPassButton, ResignButton,
+  AssaultMoveEntrenchButton, AssaultMoveEscapeButton, AssaultMoveFinishButton,
+  AssaultMoveRepairButton, BreakdownButton, CancelActionButton, CancelMoveButton,
+  CloseCombatReduceButton, CloseCombatSelectButton, DeleteGameButton, EnemyRoutButton, FinishDeployButton,
+  FireButton, FireDisplaceCancelButton, FireDisplaceConfirmButton, FireDisplaceEliminateButton,
+  FireFinishButton, FireOutCheckButton, FireSmokeButton, FireSpreadCheckButton, FireStartCheckButton,
+  InitiativeButton, IntensiveFireButton, JoinSquadButton, MoraleCheckButton, MoveButton, MoveFinishButton,
+  MoveLoadToggleButton, MoveRotateToggleButton, MoveShortToggleButton, MoveSmokeToggleButton,
+  OverstackReduceButton, PassButton, PassCancelButton, PrecipCheckButton, RallyButton, RallyPassButton,
+  RandomDropButton, ReactionFireButton, ReactionIntensiveFireButton, ReactionPassButton, ResignButton,
   ResignCancelButton, RoutButton, RoutCheckButton, RoutEliminateButton, RushButton, ShortMoveButton,
   SkipShortMoveButton, SmokeCheckButton, SniperButton, SplitSquadButton, ToggleSponsonButton,
   UndeployButton, UndoButton, UnselectButton, WeatherCheckButton
@@ -231,6 +231,8 @@ export default function GameControls({
         return <AssaultMoveButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "assault_move_finish") {
         return <AssaultMoveFinishButton game={game} key={i} callback={callAllBack} vertical={vertical} />
+      } else if (a.type === "assault_move_escape") {
+        return <AssaultMoveEscapeButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "assault_move_clear") {
         return <AssaultMoveClearButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "assault_move_entrench") {

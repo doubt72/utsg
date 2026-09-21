@@ -42,7 +42,9 @@ export default function ReinforcementPanel({
       rc[n] = reinf[n]
     }
     const last = map.game.panelCasualties(player)
-    if (Object.keys(last).length > 0) { rc[99] = last }
+    if (Object.keys(last).length > 0) { rc[998] = last }
+    const esc = map.game.panelEscaped(player)
+    if (Object.keys(esc).length > 0) { rc[999] = esc }
     return rc
   }
 
@@ -127,7 +129,7 @@ export default function ReinforcementPanel({
               style={{ fill: mainFill, stroke: "#777", strokeWidth: 1 }} />
         <text x={x + 10} y={y + 22} fontSize={16} textAnchor="start"
               fontFamily="'Courier Prime', monospace" style={{ fill: "#FFF" }}>
-          available units{ units[99] ? ", losses" : "" }:
+          available units{ units[998] ? ", losses" : "" }{ units[999] ? ", escaped" : "" }:
         </text>
         <text x={x + 10} y={y + 44} fontSize={16} textAnchor="start"
               fontFamily="'Courier Prime', monospace" style={{ fill: "#FFF" }}>
@@ -137,7 +139,7 @@ export default function ReinforcementPanel({
         {
           Object.entries(units).map((pair, i) => {
             const turn = Number(pair[0])
-            const label = turn > 98 ? "losses" : (turn > 0 ? `turn ${turn}` : "setup")
+            const label = turn === 999 ? "escape" : (turn === 998 ? "losses" : (turn > 0 ? `turn ${turn}` : "setup"))
             return (
               <g className={`tracking-rp-e-${i}`} key={i}>
                 <text x={x + 10} y={y + 120 + 106*i} fontSize={16} textAnchor="start"
@@ -163,7 +165,7 @@ export default function ReinforcementPanel({
                     }
                     counter.showDisabled = (map.game?.phase !== gamePhaseType.Deploy ||
                       map.game?.currentPlayer !== player || map.game.state !== 'in_progress' ||
-                      map.game.turn !== turn) && turn !== 99
+                      map.game.turn !== turn) && turn !== 998 && turn !== 999
                     let count = (data.x || 1) - (data.used || 0)
                     let show = true
                     if (player === 1 && map.game?.scenario.specialRules.includes("allied_hidden_units")) {

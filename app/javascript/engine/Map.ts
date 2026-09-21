@@ -390,8 +390,6 @@ export default class Map {
         }
         unit.children = []
       }
-    }
-    if (counter.hasUnit) {
       counter.unit.unpin()
       counter.unit.routed = false
       counter.unit.resetStatus()
@@ -399,6 +397,28 @@ export default class Map {
     if (counter.hasFeature && (counter.feature.type === featureType.Fire ||
       counter.feature.type === featureType.Smoke)) { return }
     this.game.addEliminatedCounter(counter.hasFeature ? counter.feature : counter.unit)
+    sortStacks(this.game.scenario.map)
+  }
+
+  escapeCounter(loc: Coordinate, id: string) {
+    if (!this.game) { return }
+    const counter = this.findCounterById(id) as Counter
+    const newList = this.removeCounterFromList(this.units[loc.y][loc.x], id)
+    this.units[loc.y][loc.x] = newList
+    const unit = counter.unit
+    if (unit.parent) {
+      unit.parent.children = unit.parent.children.filter(c => c.id !== unit.id)
+      unit.parent = undefined
+    }
+    if (unit.children.length > 0) {
+      for (const c of unit.children) {
+        c.parent = undefined
+      }
+      unit.children = []
+    }
+    counter.unit.resetStatus()
+    if (counter.unit.lastSelected) { this.lastSelect(counter.unit) }
+    this.game.addEscapedCounter(counter.unit)
     sortStacks(this.game.scenario.map)
   }
 
@@ -812,6 +832,14 @@ export default class Map {
           if (unit.loaderSelected) { unit.loaderSelect() }
           if (unit.loadedSelected) { unit.loadedSelect() }
         }
+      }
+      for (const u of this.game.escapedUnits) {
+        const unit = u as Unit
+        if (unit.selected) { unit.select() }
+        if (unit.targetSelected) { unit.targetSelect() }
+        if (unit.dropSelected) { unit.dropSelect() }
+        if (unit.loaderSelected) { unit.loaderSelect() }
+        if (unit.loadedSelected) { unit.loadedSelect() }
       }
     }
     this.selection = undefined
