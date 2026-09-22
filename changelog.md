@@ -6,8 +6,8 @@
 - Bug fix: winter/snow movement over frozen water
 - Bug fix: allow crews to abandon immobilized tanks
 - Bug fix: rotating map updates hexes
-- Updated 010, 025, 037, 429, 519, 521, 522
-- Added prototype 423
+- Updated 010, 025, 037, 204, 422, 429 -> 428, 519, 521, 522
+- Added prototype 211, 423, 425, 426, 427
 
 # 0.149
 

@@ -188,9 +188,7 @@ export default function ScenarioDesigner() {
     }
     setHexCache(cache)
     const vps: [number, number, 1 | 2][] = []
-    const escs: [number, number, 1 | 2][] = []
     for (const vp of vpCache) { vps.push(vp) }
-    for (const esc of escCache) { escs.push(esc) }
     for (const vp of metadata.map_data.victory_hexes ?? []) {
       let found = false
       for (const ovp of vpCache) {
@@ -198,6 +196,9 @@ export default function ScenarioDesigner() {
       }
       if (!found) { vps.push(vp) }
     }
+    setVpCache(vps)
+    const escs: [number, number, 1 | 2][] = []
+    for (const esc of escCache) { escs.push(esc) }
     for (const esc of metadata.map_data.escape_hexes ?? []) {
       let found = false
       for (const oesc of escCache) {
@@ -205,14 +206,13 @@ export default function ScenarioDesigner() {
       }
       if (!found) { escs.push(esc) }
     }
-    setVpCache(vps)
     setEscCache(escs)
     pushDesignStack(
       {
         ...data, metadata: { ...metadata, map_data:  {
           ...metadata.map_data, layout: [x, y, "x"], hexes: hexData,
           victory_hexes: vps.filter(vp => vp[0] < x && vp[1] < y),
-          escape_hexes: vps.filter(esc => esc[0] < x && esc[1] < y),
+          escape_hexes: escs.filter(esc => esc[0] < x && esc[1] < y),
         }}
       }, setDesignStack
     )

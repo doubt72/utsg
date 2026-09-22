@@ -168,7 +168,7 @@ puts <<EOF
           allied_setup: #{allied_setup},
           axis_setup: #{axis_setup},
 EOF
-if mapdata["base_terrain"] != "g"
+if mapdata["base_terrain"] && mapdata["base_terrain"] != "g"
   puts <<EOF
           base_terrain: "#{mapdata["base_terrain"]}",
 EOF

@@ -55,6 +55,7 @@ module Scenarios
         [2, :jap_type_1_47mm],
         [4, :wire],
         [2, :mines8],
+        :sniper5,
       ] },
     }.freeze
 

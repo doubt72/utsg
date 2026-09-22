@@ -59,6 +59,7 @@ module Scenarios
         :jap_radio_7_5cm,
         [6, :wire],
         [4, :mines8],
+        :sniper4,
       ] },
     }.freeze
 

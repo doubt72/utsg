@@ -59,6 +59,7 @@ module Scenarios
         [6, :wire],
         [2, :mines8],
         [2, :bunker],
+        :sniper4,
       ] },
       "5": { list: [
         [2, :jap_leader_5_1],
