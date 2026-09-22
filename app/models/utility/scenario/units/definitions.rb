@@ -192,6 +192,8 @@ module Utility
               "type_97_81mm": { fp: 20, rng: 17, mrng: 3, mv: -2, smk: true, tgt: true, brk: 3, area: true, sz: 1 },
               "type_97_90mm": { fp: 20, rng: 27, mrng: 4, mv: -2, smk: true, tgt: true, brk: 3, area: true, sz: 1 },
               "type_94_90mm": { fp: 20, rng: 27, mrng: 4, mv: 2, smk: true, crw: true, twsz: 2, tgt: true, brk: 3, area: true, sz: 2 },
+              "type_2_12cm": { fp: 32, rng: 28, mrng: 4, mv: 1, crw: true, twsz: 3, tgt: true, brk: 3, area: true, sz: 3 },
+              "type_97_150mm": { fp: 48, rng: 28, mrng: 5, mv: 1, crw: true, twsz: 3, tgt: true, brk: 3, area: true, sz: 3 },
               "2inch_mortar": { fp: 10, rng: 15, mrng: 2, mv: 0, tgt: true, brk: 3, area: true, sz: 1 },
               "ml_3inch_mortar": { fp: 20, rng: 18, mrng: 3, mv: -1, smk: true, tgt: true, brk: 3, area: true, sz: 1 },
               "ml_4_2inch_mortar": { fp: 24, rng: 26, mrng: 5, mv: 2, smk: true, crw: true, twsz: 2, tgt: true, brk: 3, area: true, sz: 2 },

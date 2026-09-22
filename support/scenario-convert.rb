@@ -150,7 +150,7 @@ print "            "
 print mapdata["victory_hexes"].map { |v| "#{v}" }.join(", ")
 print ",\n"
 
-if mapdata["escape_hexes"]
+if mapdata["escape_hexes"] && mapdata["escape_hexes"].length > 0
   puts <<EOF
           ],
           escape_hexes: [

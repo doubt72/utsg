@@ -87,6 +87,7 @@ module Utility
 
               ["jap", "Type 10 Gren.L", 21], ["jap", "Type 89 Gren.L", 29],
               ["jap", "Type 97 81mm", 37], ["jap", "Type 97 90mm", 37], ["jap", "Type 94 90mm", 34],
+              ["jap", "Type 2 12cm", 44], ["jap", "Type 97 150mm", 36],
 
               ["uk", "2inch Mortar", 37], ["uk", "ML 3inch Mortar", 33, { sn: 1 }],
               ["uk", "ML 4.2inch Mortar", 40, { sn: 3 }],
