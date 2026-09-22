@@ -12,7 +12,7 @@ import {
   createMoveGame, testGCrew, testGGun, testGInf, testGLdr, testGMG, testGTank, testGTCrew, testGTruck,
   testJapSNLF,
   testMine,
-  testMineAT, testRInf, testRTank, testWire
+  testMineAT, testRDump, testRInf, testRTank, testWire
 } from "./testHelpers"
 import AssaultState from "./state/AssaultState"
 import { stateType } from "./state/BaseState"
@@ -1382,6 +1382,61 @@ describe("assault movement", () => {
     expect(all[2].hex?.x).toBe(2)
     expect(all[2].hex?.y).toBe(2)
     expect(all[2].unit.id).toBe("tank1")
+    expect(all[2].unit.isWreck).toBe(false)
+  })
+
+  test("assault move destroys other", () => {
+    const game = createMoveGame()
+    const map = game.scenario.map
+    const unit = new Unit(testGInf)
+    unit.id = "test1"
+    map.addCounter(new Coordinate(3, 2), unit)
+    map.select(unit)
+
+    const dump = new Unit(testRDump)
+    dump.id = "dump1"
+    map.addCounter(new Coordinate(2, 2), dump)
+
+    expect(game.playerOneScore).toBe(10)
+    expect(game.playerTwoScore).toBe(10)
+
+    game.setGameState(new AssaultState(game))
+
+    expect(game.gameState?.openHex(2, 2)).toBe(hexOpenType.All)
+
+    game.assaultState.move(2, 2)
+
+    game.gameState?.finish()
+
+    let all = map.allCounters
+    expect(all.length).toBe(1)
+    expect(all[0].hex?.x).toBe(2)
+    expect(all[0].hex?.y).toBe(2)
+    expect(all[0].unit.id).toBe("test1")
+
+    expect(game.eliminatedUnits.length).toBe(1)
+    expect(game.eliminatedUnits[0].name).toBe("Port Facility")
+    expect(game.playerOneScore).toBe(10)
+    expect(game.playerTwoScore).toBe(15)
+
+    expect(game.actions[0].stringValue).toBe(
+      "German Rifle assault moved from D3 to C3, Soviet Port Facility destroyed"
+    )
+
+    game.executeUndo(false)
+    all = map.allCounters
+    expect(all.length).toBe(2)
+    expect(all[0].hex?.x).toBe(3)
+    expect(all[0].hex?.y).toBe(2)
+    expect(all[0].feature.id).toBe("test1")
+    expect(all[1].hex?.x).toBe(2)
+    expect(all[1].hex?.y).toBe(2)
+    expect(all[1].unit.id).toBe("dump1")
+
+    expect(game.eliminatedUnits.length).toBe(0)
+
+    expect(game.playerOneScore).toBe(10)
+    expect(game.playerTwoScore).toBe(10)
   })
 
   test("cave movement", () => {

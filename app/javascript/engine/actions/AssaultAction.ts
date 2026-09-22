@@ -111,7 +111,11 @@ export default class AssaultMoveAction extends BaseAction {
     if (this.target.length > 0) {
       for (const t of this.target) {
         const counter = this.map.findCounterById(t.id)
-        counter?.unit.wreck()
+        if (counter?.unit.isVehicle) {
+          counter?.unit.wreck()
+        } else {
+          this.map.eliminateCounter(new Coordinate(t.x, t.y), t.id)
+        }
       }
     }
     const anims = []
@@ -214,12 +218,17 @@ export default class AssaultMoveAction extends BaseAction {
     }
     if (this.target.length > 0) {
       for (const t of this.target) {
-        const counter = this.map.findCounterById(t.id)
-        counter?.unit.unWreck(
-          this.game, t.immobilized as boolean, t.turret as boolean,
-          t.weapon_jammed as boolean, t.weapon_broken as boolean,
-          t.sponson_jammed as boolean, t.sponson_broken as boolean
-        )
+        const unit = this.game.findUnitById(t.id) as Unit
+        if (unit.isVehicle) {
+          unit.unWreck(
+            this.game, t.immobilized as boolean, t.turret as boolean,
+            t.weapon_jammed as boolean, t.weapon_broken as boolean,
+            t.sponson_jammed as boolean, t.sponson_broken as boolean
+          )
+        } else {
+          this.game.removeEliminatedCounter(t.id)
+          this.map.addCounter(new Coordinate(t.x, t.y), unit)
+        }
       }
     }
 

@@ -181,6 +181,10 @@ export const testRSqdDecoy: UnitData = {
   id: "r_inf_decoy", c: "ussr", i: "decoy", n: "squad", s: 6, t: "sqd", v: 4, y: 0, d: 1, f: 0, r: 0, o: {},
 }
 
+export const testRDump: UnitData = {
+  id: "r_other_dump", t: "other", c: "ussr", n: "Port Facility", i: "supply", y: 0, s: 5, f: 0, r: 0, v: 0, o: {}
+}
+
 export const testWire: FeatureData = {
   id: "wire", ft: 1, n: "Wire", t: "wire", i: "wire", f: "½", r: 0, v: "A"
 }

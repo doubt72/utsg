@@ -1,5 +1,6 @@
 # 0.150
 
+- Remove Other (goal) units when enemy assault moves into same hex
 - Add escape hexes for 037, etc.
 - Add cave movement for 420, etc.
 - Add CC moral-size bonus

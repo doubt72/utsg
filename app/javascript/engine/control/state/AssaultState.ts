@@ -1,4 +1,4 @@
-import { Coordinate, CounterSelectionTarget, Direction, featureType, hexOpenType, terrainType } from "../../../utilities/commonTypes";
+import { Coordinate, CounterSelectionTarget, Direction, featureType, hexOpenType, terrainType, unitType } from "../../../utilities/commonTypes";
 import { formatDieResult, passBlue, passGreen } from "../../../utilities/graphics";
 import { normalDir, roll2d10, stackLimit } from "../../../utilities/utilities";
 import Counter from "../../Counter";
@@ -437,6 +437,11 @@ export default class AssaultState extends BaseState {
             immobilized: c.unit.isImmobilized, turret: c.unit.isTurretJammed,
             weapon_jammed: c.unit.jammed, weapon_broken: c.unit.weaponDestroyed,
             sponson_jammed: c.unit.sponsonJammed, sponson_broken: c.unit.sponsonDestroyed,
+          })
+        } else if (c.hasUnit && c.unit.type === unitType.Other &&
+            c.unit.playerNation !== this.selection[0].counter.unit.playerNation) {
+          target.push({
+            x: loc.x, y: loc.y, id: c.unit.id, name: c.unit.name, status: c.unit.status,
           })
         }
       }

@@ -1,5 +1,5 @@
 Features/Bug Fixes
-  - 521: Assault move into "other" removes unit
+  + 521: Assault move into "other" removes unit
   - 516 Special cavalry rules (single morale check, mounted but not weapon fire)
   - 523 Hidden cavalry
   - (046) Special partisan rules
