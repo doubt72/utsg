@@ -183,7 +183,7 @@ RSpec.describe Utility::Scenario do
       constants = Scenarios.constants.reject do |k|
         %i[Base Scenario999 Scenario0TT].include?(k)
       end
-      expect(constants.length).to be == 157
+      expect(constants.length).to be == 158
 
       # If any of these change, scenario MUST to be updated with a new version,
       # then update test with new version/checksum
@@ -258,6 +258,7 @@ RSpec.describe Utility::Scenario do
       expect(Utility::Scenario.checksum("211")).to be == "0.1p-247e01eb5469142d584ff7972265c8e4"
       expect(Utility::Scenario.checksum("212")).to be == "0.1p-bdbed8ae5763e4ab41ec04fbe5fddda8"
       expect(Utility::Scenario.checksum("213")).to be == "0.1p-95e379dcc3d8350a7a9278a39ef70114"
+      expect(Utility::Scenario.checksum("214")).to be == "0.1p-7cb2c6cd50a1645773e64a906c3d3c64"
 
       expect(Utility::Scenario.checksum("216")).to be == "0.1p-ec47bede0a68773209cdaba827dfd545"
 

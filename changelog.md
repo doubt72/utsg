@@ -8,7 +8,7 @@
 - Bug fix: allow crews to abandon immobilized tanks
 - Bug fix: rotating map updates hexes
 - Updated 010, 025, 037, 204, 422, 429 -> 428, 519, 521, 522
-- Added prototype 211, 212, 213, 216, 423, 425, 426, 427
+- Added prototype 211, 212, 213, 214, 216, 423, 425, 426, 427
 
 # 0.149
 

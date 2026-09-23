@@ -12,6 +12,8 @@ Features/Bug Fixes
   - Add Some Developer Notes
   - Strategy notes
 
+Maps 216, 310, 318
+
 Nice to Have Eventually:
   ? Better rollback of smoke on reaction fire
 
