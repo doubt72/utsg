@@ -76,6 +76,10 @@ export default function FireEffectsSection({ section }: SectionProps) {
         exhausted (infantry units).  Vehicles are replaced with wrecks with the same size (flip the
         counter). Wrecks affect stacking (for both sides) but otherwise have no other effects.
       </p>
+      <p>
+        This applies to infantry carried by horse cavalry as well; infantry only take one morale
+        check per attack, however (i.e., cavalry morale checks happen first).
+      </p>
       <h3>{section}.2. Tank Crews</h3>
       <p>
         When a tank or self-propelled-gun/tank destroyer are destroyed, there&apos;s a small chance
@@ -120,6 +124,9 @@ export default function FireEffectsSection({ section }: SectionProps) {
           broken, eliminate it. A roll of 2 always fails. A roll of 20 always succeeds.
         </li>
       </ol>
+      <p>
+        Horse cavalry are eliminated if they fail a morale check, they are never broken.
+      </p>
       <h3>{section}.5. Weapons Carried by Eliminated Units</h3>
       <p>
         Infantry and crewed weapons are not damaged or eliminated when units carrying them or

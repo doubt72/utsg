@@ -14,9 +14,10 @@ import organizeStacks from "../support/organizeStacks"
 import { GameActionDiceResult, GameActionPath } from "../GameAction"
 import Feature from "../Feature"
 import {
-  createBlankGame, createFireGame, testGAC, testGCrew, testGFT, testGGun, testGInf, testGLdr,
+  createBlankGame, createFireGame, testGAC, testGBike, testGCrew, testGFT, testGGun, testGHorse, testGInf, testGLdr,
   testGMC, testGMG, testGMortar, testGRadio, testGSC, testGTank, testGTruck, testITank, testPill,
-  testRGun, testRHT, testRInf, testRLdr, testRMG, testRRadio, testRSPG, testRTank, testRTD,
+  testRBike,
+  testRGun, testRHorse, testRHT, testRInf, testRLdr, testRMG, testRRadio, testRSPG, testRTank, testRTD,
   testRTruck, testSmoke, testWire
 } from "./testHelpers"
 import FireState from "./state/FireState"
@@ -26,6 +27,7 @@ import { deHTML } from "../../utilities/graphics"
 import { fireHelpText, moraleHelpText } from "../support/help"
 import MoraleCheckState from "./state/MoraleCheckState"
 import { HexData } from "../Hex"
+import MoveState from "./state/MoveState"
 
 describe("ranged fire attacks", () => {
   describe("probability checks", () => {
@@ -3514,44 +3516,6 @@ describe("ranged fire attacks", () => {
       expect((game.eliminatedUnits[1] as Unit).parent).toBe(undefined)
     })
 
-    test("destroying vehicle breaks children", () => {
-      const game = createFireGame()
-      const map = game.scenario.map
-      const firing = new Unit(testGTruck)
-      firing.id = "firing1"
-      const floc = new Coordinate(3, 2)
-      map.addCounter(floc, firing)
-      const firing2 = new Unit(testGGun)
-      firing2.id = "firing2"
-      map.addCounter(floc, firing2)
-      const firing3 = new Unit(testGInf)
-      firing3.id = "firing3"
-      map.addCounter(floc, firing3)
-      const firing4 = new Unit(testGMG)
-      firing4.id = "firing4"
-      map.addCounter(floc, firing4)
-      organizeStacks(map)
-
-      map.eliminateCounter(floc, "firing1")
-
-      const all = map.allUnits
-      expect(all.length).toBe(3)
-      expect(all[0].unit.id).toBe("firing2")
-      expect(all[0].unit.jammed).toBe(false)
-      expect(all[0].unit.isNormal).toBe(true)
-      expect(all[0].unit.parent).toBe(undefined)
-      expect(all[1].unit.id).toBe("firing3")
-      expect(all[1].unit.isBroken).toBe(true)
-      expect(all[0].unit.parent).toBe(undefined)
-      expect(all[2].unit.id).toBe("firing4")
-      expect(all[2].unit.jammed).toBe(false)
-      expect(all[2].unit.isNormal).toBe(true)
-      expect(all[0].unit.parent).toBe(undefined)
-
-      expect(game.eliminatedUnits[0].id).toBe("firing1")
-      expect((game.eliminatedUnits[0] as Unit).children.length).toBe(0)
-    })
-
     test("eliminated infantry drops weapon", () => {
       const game = createFireGame()
       const map = game.scenario.map
@@ -5593,6 +5557,224 @@ describe("ranged fire attacks", () => {
       expect(mod.mod).toBe(-3)
       expect(mod.why.length).toBe(1)
       expect(mod.why[0]).toBe("- minus morale 3")
+    })
+  })
+
+  describe("cavalry", () => {
+    test("carried infantry included when cav targeted", () => {
+      const game = createBlankGame()
+      const map = game.scenario.map
+      const firing = new Unit(testGInf)
+      firing.id = "firing1"
+      const floc = new Coordinate(4, 2)
+      map.addCounter(floc, firing)
+      map.select(firing)
+
+      const target = new Unit(testRBike)
+      target.id = "target1"
+      const tloc = new Coordinate(2, 2)
+      map.addCounter(tloc, target)
+      const target2 = new Unit(testRInf)
+      target2.id = "target2"
+      map.addCounter(tloc, target2)
+      organizeStacks(map)
+
+      game.setGameState(new FireState(game, false))
+
+      select(map, {
+        counter: map.countersAt(tloc)[0],
+        target: { type: "map", xy: tloc }
+      }, () => {})
+      expect(target.targetSelected).toBe(true)
+      expect(target2.targetSelected).toBe(true)
+
+      const original = Math.random
+      vi.spyOn(Math, "random").mockReturnValue(0.99)
+      game.gameState?.finish()
+      Math.random = original
+
+      expect(game.actions[0].stringValue).toBe(
+        "German Rifle at E3 fired at Soviet Bicycle, Rifle at C3; target 12, " +
+          "rolled 20 [2d10: 10 + 10]: critical hit, Bicycle destroyed"
+      )
+      expect(game.moraleChecksNeeded).toStrictEqual([{
+        critical: true, from: [floc], to: tloc, unit: target2, incendiary: false,
+      }])
+
+      const all = map.allCounters
+      expect(all.length).toBe(2)
+      expect(all[0].hex?.x).toBe(4)
+      expect(all[0].hex?.y).toBe(2)
+      expect(all[0].unit.id).toBe("firing1")
+      expect(all[1].hex?.x).toBe(2)
+      expect(all[1].hex?.y).toBe(2)
+      expect(all[1].unit.id).toBe("target2")
+
+      expect(game.eliminatedUnits.length).toBe(1)
+      expect(game.eliminatedUnits[0].id).toBe("target1")
+    })
+
+    test("cav included when infantry targeted", () => {
+      const game = createBlankGame()
+      const map = game.scenario.map
+      const firing = new Unit(testGInf)
+      firing.id = "firing1"
+      const floc = new Coordinate(4, 2)
+      map.addCounter(floc, firing)
+      map.select(firing)
+
+      const target = new Unit(testRHorse)
+      target.id = "target1"
+      const tloc = new Coordinate(2, 2)
+      map.addCounter(tloc, target)
+      const target2 = new Unit(testRInf)
+      target2.id = "target2"
+      map.addCounter(tloc, target2)
+      organizeStacks(map)
+
+      expect(target2.parent?.id).toBe("target1")
+
+      game.setGameState(new FireState(game, false))
+
+      select(map, {
+        counter: map.countersAt(tloc)[1],
+        target: { type: "map", xy: tloc }
+      }, () => {})
+      expect(target.targetSelected).toBe(true)
+      expect(target2.targetSelected).toBe(true)
+
+      const original = Math.random
+      vi.spyOn(Math, "random").mockReturnValue(0.99)
+      game.fireState.finish()
+      Math.random = original
+
+      expect(game.actions[0].stringValue).toBe(
+        "German Rifle at E3 fired at Soviet Horse, Rifle at C3; target 12, " +
+          "rolled 20 [2d10: 10 + 10]: critical hit"
+      )
+      expect(game.moraleChecksNeeded).toStrictEqual([
+        { critical: true, from: [floc], to: tloc, unit: target, incendiary: false },
+        { critical: true, from: [floc], to: tloc, unit: target2, incendiary: false },
+      ])
+
+      game.setGameState(new MoraleCheckState(game))
+      vi.spyOn(Math, "random").mockReturnValue(0.01)
+      game.fireState.finish()
+      Math.random = original
+
+      expect(game.actions[1].stringValue).toBe(
+        "Soviet morale check for Horse (2d10): target 18, rolled 2 [2d10: 1 + 1], " +
+          "unit eliminated"
+      )
+
+      expect(game.eliminatedUnits.length).toBe(1)
+      expect(game.eliminatedUnits[0].id).toBe("target1")
+
+      const all = map.allCounters
+      expect(all.length).toBe(2)
+      expect(all[0].hex?.x).toBe(4)
+      expect(all[0].hex?.y).toBe(2)
+      expect(all[0].unit.id).toBe("firing1")
+      expect(all[1].hex?.x).toBe(2)
+      expect(all[1].hex?.y).toBe(2)
+      expect(all[1].unit.id).toBe("target2")
+
+      expect(game.moraleChecksNeeded).toStrictEqual([
+        { critical: true, from: [floc], to: tloc, unit: target2, incendiary: false },
+      ])
+
+      game.setGameState(new MoraleCheckState(game))
+      vi.spyOn(Math, "random").mockReturnValue(0.01)
+      game.fireState.finish()
+      Math.random = original
+
+      expect(game.actions[2].stringValue).toBe(
+        "Soviet morale check for Rifle (2d10): target 16, rolled 2 [2d10: 1 + 1], " +
+          "unit breaks"
+      )
+    })
+
+    test("mines target both horse and carried unit", () => {
+      
+    })
+
+    test("mines remove bike and target carried unit", () => {
+      
+    })
+
+    test("infantry can fire from cavalry", () => {
+      
+    })
+
+    test("infantry weapon can't fire from cavalry", () => {
+      
+    })
+
+    test("radio can fire from cavalry", () => {
+      
+    })
+
+    test("assault move removes cavalry", () => {
+      
+    })
+
+    test("horse cavalry triggers snipers", () => {
+      const game = createFireGame()
+      game.alliedSniper = new Feature({
+        id: "sniper-1", t: featureType.Sniper, n: "Sniper", i: "sniper", f: 3, o: { q: 1 }, ft: 1
+      })
+      const map = game.scenario.map
+      const unit = new Unit(testGHorse)
+      unit.id = "unit1"
+      map.addCounter(new Coordinate(3, 2), unit)
+      map.select(unit)
+
+      game.setGameState(new MoveState(game))
+      game.moveState.move(2, 2)
+      game.moveState.finish()
+
+      expect(game.sniperNeeded).toStrictEqual([{ loc: new Coordinate(2, 2), unit }])
+    })
+
+    test("bicycle cavalry does not trigger snipers", () => {
+      const game = createFireGame()
+      game.alliedSniper = new Feature({
+        id: "sniper-1", t: featureType.Sniper, n: "Sniper", i: "sniper", f: 3, o: { q: 1 }, ft: 1
+      })
+      const map = game.scenario.map
+      const unit = new Unit(testGBike)
+      unit.id = "unit1"
+      map.addCounter(new Coordinate(3, 2), unit)
+      map.select(unit)
+
+      game.setGameState(new MoveState(game))
+      game.moveState.move(2, 2)
+      game.moveState.finish()
+
+      expect(game.sniperNeeded).toStrictEqual([])
+    })
+
+    test("infantry carried by cavalry triggers snipers", () => {
+      const game = createFireGame()
+      game.alliedSniper = new Feature({
+        id: "sniper-1", t: featureType.Sniper, n: "Sniper", i: "sniper", f: 3, o: { q: 1 }, ft: 1
+      })
+      const map = game.scenario.map
+      const unit = new Unit(testGBike)
+      unit.id = "unit1"
+      const loc = new Coordinate(3, 2)
+      map.addCounter(loc, unit)
+      map.select(unit)
+      const unit2 = new Unit(testGInf)
+      unit2.id = "unit2"
+      map.addCounter(loc, unit2)
+      organizeStacks(map)
+
+      game.setGameState(new MoveState(game))
+      game.moveState.move(2, 2)
+      game.moveState.finish()
+
+      expect(game.sniperNeeded).toStrictEqual([{ loc: new Coordinate(2, 2), unit: unit2 }])
     })
   })
 })

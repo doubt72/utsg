@@ -125,7 +125,7 @@ export default function CounterSection({ section }: SectionProps) {
       <g>
         <text x={40} y={66 + offset*2} fontSize={9} textAnchor="end">Icon</text>
         <text x={40} y={72 + offset*2} fontSize={5} textAnchor="end">{unit.isWreck ? "" : "(unit type)"}</text>
-        { labelLine(41,66 + offset*2,(unit.canCarrySupport || unit.type === "cav" ? 103 : 105) + swOffset,
+        { labelLine(41,66 + offset*2,(unit.infantryTarget ? 103 : 105) + swOffset,
                 71 + offset) }
       </g>
     )

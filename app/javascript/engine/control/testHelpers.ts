@@ -165,6 +165,26 @@ export const testJapSNLF: UnitData = {
   o: { a: 1 },
 }
 
+export const testRBike: UnitData = {
+  id: "r_bike", t: "cav", c: "ussr", n: "Bicycle", i: "cav-wheel", y: 30, o: { tr: 3, w: 1 },
+  s: 3, v: 4, f: 0, r: 0,
+}
+
+export const testRHorse: UnitData = {
+  id: "r_horse", t: "cav", c: "ussr", n: "Horse", i: "cav", y: 0, m: 1, o: { tr: 3 },
+  s: 3, v: 7, f: 0, r: 0,
+}
+
+export const testGBike: UnitData = {
+  id: "r_bike", t: "cav", c: "ger", n: "Bicycle", i: "cav-wheel", y: 30, o: { tr: 3, w: 1 },
+  s: 3, v: 4, f: 0, r: 0,
+}
+
+export const testGHorse: UnitData = {
+  id: "r_horse", t: "cav", c: "ger", n: "Horse", i: "cav", y: 0, m: 1, o: { tr: 3 },
+  s: 3, v: 7, f: 0, r: 0,
+}
+
 export const testGSqdDecoy: UnitData = {
   id: "g_inf_decoy", c: "ger", i: "decoy", n: "squad", s: 6, t: "sqd", v: 4, y: 0, d: 1, f: 0, r: 0, o: {},
 }

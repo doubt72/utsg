@@ -1,5 +1,6 @@
 # 0.150
 
+- Start on cavalry rules for 516, etc.
 - Remove Other (goal) units when enemy assault moves into same hex
 - Add escape hexes for 037, etc.
 - Add cave movement for 420, etc.

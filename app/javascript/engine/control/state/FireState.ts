@@ -1,4 +1,4 @@
-import { Coordinate, CounterSelectionTarget, Direction, hexOpenType } from "../../../utilities/commonTypes";
+import { Coordinate, CounterSelectionTarget, Direction, hexOpenType, unitType } from "../../../utilities/commonTypes";
 import { los } from "../../../utilities/los";
 import { hexDistance } from "../../../utilities/utilities";
 import Counter from "../../Counter";
@@ -127,7 +127,7 @@ export default class FireState extends BaseState {
         } else if (counter) {
           this.map.targetSelect(counter.unit)
           this.map.clearOtherTargetSelections(x, y, counter.unit.id)
-          if (!counter.unit.isVehicle) {
+          if (!counter.unit.isVehicle || counter.unit.type === unitType.Cavalry) {
             this.map.targetSelectAllAt(x, y, false, false)
           }
         }

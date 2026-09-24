@@ -1,4 +1,4 @@
-import { Coordinate, hexOpenType, HexOpenType } from "../../../utilities/commonTypes";
+import { Coordinate, hexOpenType, HexOpenType, unitType } from "../../../utilities/commonTypes";
 import { roll2d10 } from "../../../utilities/utilities";
 import Counter from "../../Counter";
 import Game, { ComplexCheck } from "../../Game";
@@ -21,6 +21,7 @@ export default class MoraleCheckState extends BaseState {
     this.moraleCheck = {
       mod: modifiers.mod, why: modifiers.why, critical: check.critical,
       short: check.to.x !== counter.hex?.x || check.to.y !== counter.hex?.y,
+      cav: check.unit.type === unitType.Cavalry,
     }
     if (!check.unit.selected) { this.map.select(check.unit) }
 

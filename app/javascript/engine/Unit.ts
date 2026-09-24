@@ -355,6 +355,13 @@ export default class Unit {
     ].includes(this.type)
   }
 
+  get infantryTarget(): boolean {
+    if (this.type === unitType.Cavalry && this.icon === "cav") { return true }
+    return [
+      unitType.Leader, unitType.Squad, unitType.Team,
+    ].includes(this.type)
+  }
+
   get rotates(): boolean {
     return ![
       unitType.SupportWeapon, unitType.Leader, unitType.Squad, unitType.Team,
@@ -527,7 +534,7 @@ export default class Unit {
     this.turretJammedState = false
     this.sponsonJammed = false
     this.sponsonDestroyed = false
-    this.internalStatus = unitStatus.Wreck
+    if (this.type !== unitType.Cavalry) { this.internalStatus = unitStatus.Wreck }
     if (game) {
       const map = game.scenario.map
       const loc = map.findLocationById(this.id) as Coordinate
@@ -538,16 +545,20 @@ export default class Unit {
           c.activate()
         }
         map.dropUnit(loc, loc, c.id, c.rotates ? normalDir(this.facing + 3) : undefined)
-        if (c.canCarrySupport) {
+        if (c.canCarrySupport && this.type !== unitType.Cavalry) {
           game.moraleChecksNeeded.push({
             unit: c, from: [loc], to: loc, incendiary: false, critical: false
           })
         }
       }
-      const casualty = this.clone()
-      casualty.playerNation = this.playerNation
-      casualty.id = `${this.id}-clone`
-      game.addEliminatedCounter(casualty)
+      if (this.type === unitType.Cavalry) {
+        game.scenario.map.eliminateCounter(loc, this.id)
+      } else {
+        const casualty = this.clone()
+        casualty.playerNation = this.playerNation
+        casualty.id = `${this.id}-clone`
+        game.addEliminatedCounter(casualty)
+      }
       if (map.victoryAt(loc)) {
         let same = false
         let other = false
@@ -569,7 +580,11 @@ export default class Unit {
     game: Game, immobilized: boolean, turret: boolean, weaponJammed: boolean,
     weaponDestroyed: boolean, sponsonJammed: boolean, sponsonDestroyed: boolean
   ): void {
-    game.removeEliminatedCounter(`${this.id}-clone`)
+    if (this.type === unitType.Cavalry) {
+      throw "can't unwreck cavalry"
+    } else {
+      game.removeEliminatedCounter(`${this.id}-clone`)
+    }
     this.internalStatus = unitStatus.Normal
     this.immobilizationState = immobilized
     this.turretJammedState = turret

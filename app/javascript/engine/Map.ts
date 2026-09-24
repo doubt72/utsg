@@ -1,7 +1,7 @@
 import Game from "./Game";
 import {
   BaseTerrainType, Coordinate, Direction, ExtendedDirection, Player, VictoryHex,
-  WeatherType, WindType, baseTerrainType, featureType, markerType, terrainType, unitStatus, weatherType, windType,
+  WeatherType, WindType, baseTerrainType, featureType, markerType, terrainType, unitStatus, unitType, weatherType, windType,
 } from "../utilities/commonTypes";
 import Hex, { HexData } from "./Hex";
 import Counter from "./Counter";
@@ -384,9 +384,6 @@ export default class Map {
       if (unit.children.length > 0) {
         for (const c of unit.children) {
           c.parent = undefined
-          if (c.canCarrySupport) {
-            c.break(this.game)
-          }
         }
         unit.children = []
       }
@@ -941,7 +938,9 @@ export default class Map {
   ) {
     const counters = this.countersAt(new Coordinate(x, y))
     for (const c of counters) {
-      if (!c.hasUnit || c.unit.parent) { continue }
+      if (!c.hasUnit || (c.unit.parent && c.unit.parent.type !== unitType.Cavalry)) {
+        continue
+      }
       if (c.unit.operated || c.unit.isWreck) { continue }
       if (c.unit.armored) {
         if (armored && !c.unit.targetSelected) { this.targetSelect(c.unit) }
@@ -955,6 +954,9 @@ export default class Map {
         }
       } else if (c.unit.isVehicle) {
         if (vehicles && !c.unit.targetSelected) { this.targetSelect(c.unit) }
+        if (c.unit.type === unitType.Cavalry && !c.unit.targetSelected) {
+          this.targetSelect(c.unit)
+        }
       } else {
         if (!c.unit.targetSelected) { this.targetSelect(c.unit) }
       }

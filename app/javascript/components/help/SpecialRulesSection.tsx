@@ -42,7 +42,7 @@ export default function SpecialRulesSection({ section }: SectionProps) {
         a decoy can&apos;t do that does&apos;t explicitly reveal a unit will implicitly reveal that
         a unit is not a decoy to your opponent.
       </p>
-      <h3>{section}.1. Random Drop Deployment</h3>
+      <h3>{section}.2. Random Drop Deployment</h3>
       <p>
         Random drops are used in certain airborne scenarios; in a random drop deployment, instead of
         a the normal deployment process, all squads are split into teams, all teams and leaders are
@@ -60,6 +60,38 @@ export default function SpecialRulesSection({ section }: SectionProps) {
         <strong>rout all</strong> actions during the same turn that the deployment was performed (or
         turn one if deployment was performed in setup).
       </p>
+      <h3>{section}.3. Cavalry</h3>
+      <p>
+        Cavalry has several special rules, and horse cavalry is handled slightly differently from
+        bicycle or motorcycle cavalry.
+      </p>
+      <ul>
+        <li>
+          All cavalry is considered soft targets, and are targeted with any other infantry in the
+          same hex. Unlike other vehicles, mounted infantry are also
+          targeted when the carrying cavalry units are targeted (they are not &quot;inside&quot;
+          the vehicle).
+        </li>
+        <li>
+          Unlike other vehicles, infantry (but <em>not</em> carried infantry weapons, except radios)
+          may fire when mounted.
+        </li>
+        <li>
+          Like other unarmored vehicles, bicycle and motorcycle cavalry are eliminated on a hit.
+          Like other infantry, horse cavalry take a morale check on a hit, however, unlike other
+          infantry, horse cavalry doesn&apos;t break, but are eliminated on failing a morale check.
+        </li>
+        <li>
+          Cavalry are vehicles, and theoretically trigger a moral check for any carried infantry
+          when eliminated; however, since an additional morale check will not be triggered if a
+          morale check is already needed, and any attack against a stack with cavalry already
+          triggers one on the infantry, this rule is effectively irrelevant.
+        </li>
+        <li>
+          Unlike other vehicles, horse cavalry (or any cavalry if carrying infantry) must make
+          sniper checks if a sniper is present.
+        </li>
+      </ul>
     </div>
   );
 }

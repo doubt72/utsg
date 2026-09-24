@@ -229,13 +229,23 @@ export default class MoveAction extends BaseAction {
             loc = new Coordinate(a.x, a.y)
           }
         })
-        if (unit?.canCarrySupport) { this.game.addSniper( { unit, loc }) }
+        if (unit?.infantryTarget) { this.game.addSniper( { unit, loc }) }
+        if (unit?.type === "cav" && unit.children.length > 0) {
+          for (const u of unit.children) {
+            if (u.infantryTarget) { this.game.addSniper( { unit: u, loc }) }
+          }
+        }
       })
       this.addAction.forEach(a => {
         if (!a.id || a.type !== gameActionAddActionType.Load) { return }
         const unit = this.game.findUnitById(a.id)
         const loc = new Coordinate(this.lastPath.x, this.lastPath.y)
-        if (unit?.canCarrySupport) { this.game.addSniper( { unit, loc }) }
+        if (unit?.infantryTarget) { this.game.addSniper( { unit, loc }) }
+        if (unit?.type === "cav" && unit.children.length > 0) {
+          for (const u of unit.children) {
+            if (u.infantryTarget) { this.game.addSniper( { unit: u, loc }) }
+          }
+        }
       })
     }
     for (const s of this.spottingData) { removeSpotting(this.game, s.ref) }

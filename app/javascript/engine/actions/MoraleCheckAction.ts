@@ -36,7 +36,7 @@ export default class MoraleCheckAction extends BaseAction {
     } morale check for ${formatNation(this.game, this.player, this.target.name)} (2d10): ` +
       `target ${formatTarget(check)}, rolled ${formatDieResult(this.diceResult.result)}`
     if (roll < check || roll === 2) {
-      if (this.target.status === unitStatus.Broken) {
+      if (this.target.status === unitStatus.Broken || this.moraleMods.cav) {
         rc += `, unit <span style="color: ${failRed()};">eliminated</span>`
       } else {
         rc += `, unit <span style="color: ${failRed()};">breaks</span>`
@@ -79,7 +79,7 @@ export default class MoraleCheckAction extends BaseAction {
       if (this.game.shortCheckNeeded.hit) {
         this.game.shortCheckNeeded.short = true
       }
-      if (counter.unit.isBroken) {
+      if (counter.unit.isBroken || this.moraleMods.cav) {
         let sub = undefined
         if (counter.unit.children.length > 0 && counter.unit.children[0].incendiary) {
           sub = counter.unit.children[0]
