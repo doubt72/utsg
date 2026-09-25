@@ -1,12 +1,6 @@
 Features/Bug Fixes
-  + 516 Special cavalry rules (single morale check, mounted but not weapon fire)
-    + Cavalry are included in infantry targeting
-      + Also mines
-    + Cavalry get only one morale check; are eliminated without breaking
-    + Infantry can fire from cavalry, but infantry weapons can't (including MG)
-    + Eliminating cavalry doesn't add second infantry morale check
-    + Snipers
-    + Assualt move into cav eliminates it
+  + Should not be able to pick up weapon unless movement left
+  + Tank with sponson fixed gun that wasn't broken
   - 523 Hidden cavalry
   - (046) Special partisan rules
   - 319 Test playing multiple factions

@@ -189,7 +189,8 @@ export function canBeLoaded(game: Game, target: Unit): boolean {
   if (target.crewed && path && path.length > 1) { return false }
   if (target.crewed && game.moveState.rushing) { return false }
   const extra = target.uncrewedSW ? target.baseMovement : 0
-  return unit.canCarry(target) && movementPastCost(game.scenario.map, unit) <= unit.currentMovement - 1 + extra
+  const move = game.moveState.rushing ? Math.floor(unit.currentMovement/2) : unit.currentMovement
+  return unit.canCarry(target) && movementPastCost(game.scenario.map, unit) <= move - 1 + extra
 }
 
 export function canLoadUnit(game: Game, unit: Unit, multi: boolean): boolean {
@@ -208,8 +209,8 @@ export function loadUnitCounters(game: Game, unit: Unit, multi: boolean): Counte
     if (c.unit.crewed && game.moveState.rushing) { continue }
     if (c.unit.parent || c.unit.decoy) { continue }
     const extra = c.unit.uncrewedSW ? c.unit.baseMovement : 0
-    if (unit.canCarry(c.unit, !multi) &&
-        movementPastCost(game.scenario.map, unit) <= unit.currentMovement - 1 + extra) {
+    const move = game.moveState.rushing ? Math.floor(unit.currentMovement/2) : unit.currentMovement
+    if (unit.canCarry(c.unit, !multi) && movementPastCost(game.scenario.map, unit) <= move - 1 + extra) {
       if (!c.unit.loadedSelected) { rc.push(c) }
     }
   }

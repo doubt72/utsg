@@ -56,12 +56,12 @@ export default class RallyAction extends BaseAction {
     const roll = this.diceResult.result.result
     const nation = formatNation(this.game, this.player)
     const infantry = !this.fixRoll
-    const action = infantry ? "rally check" : "attempt to fix weapon"
-    const succeed = infantry ? "rallies" : "is repaired"
+    const action = infantry ? "rally check" : `attempt to fix ${this.vehicle ? "vehicle " : ""}weapon`
+    const succeed = infantry ? "rallies" : `${ this.vehicle ? "weapon " : "" }is repaired`
     const weaponFail = this.vehicle ? `weapon is <span style="color: ${failRed()};">destroyed</span>` :
       `is <span style="color: ${failRed()};">eliminated</span>`
     const fail = infantry ? `fails to rally` :
-      ( roll <= this.breakRoll ? weaponFail : "remains broken" )
+      ( roll <= this.breakRoll ? weaponFail : `${ this.vehicle ? "weapon " : "" }remains broken` )
     const result = `${this.passed ? `<span style="color: ${passGreen()};">passed</span>` : (
       !infantry && roll <= this.breakRoll ? `catastrophic <span style="color: ${failRed()};">failure</span>` : `<span style="color: ${failRed()};">failed</span>`
     ) }: ` + `${formatNation(this.game, this.player, this.target.name)} ${this.passed ? succeed : fail}`
@@ -85,14 +85,23 @@ export default class RallyAction extends BaseAction {
           this.map.toggleVP(loc)
         }
       }
-      if (unit.jammed) {
-        unit.jammed = false
+      if (unit.jammed || unit.sponsonJammed) {
+        if (unit.sponsonJammed) {
+          unit.sponsonJammed = false
+        } else {
+          unit.jammed = false
+        }
         this.game.addActionAnimations([{ loc, type: "fix" }])
       }
     } else if (!unit.canCarrySupport && this.diceResult.result.result <= this.breakRoll ) {
       if (unit.isVehicle) {
-        unit.jammed = false
-        unit.weaponDestroyed = true
+        if (unit.sponsonJammed) {
+          unit.sponsonJammed = false
+          unit.sponsonDestroyed = true
+        } else {
+          unit.jammed = false
+          unit.weaponDestroyed = true
+        }
         this.game.addActionAnimations([{ loc, type: "destroyed" }])
       } else {
         unit.jammed = false

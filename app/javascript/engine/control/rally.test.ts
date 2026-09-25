@@ -1,5 +1,5 @@
 import { describe, expect, test, vi } from "vitest";
-import { createBlankGame, testGInf, testGLdr, testGMG, testGTank } from "./testHelpers";
+import { createBlankGame, testGInf, testGLdr, testGMG, testGTank, testITank } from "./testHelpers";
 import { Coordinate, unitStatus } from "../../utilities/commonTypes";
 import Unit from "../Unit";
 import RallyAction from "../actions/RallyAction";
@@ -185,7 +185,8 @@ describe("rallying", () => {
     const action = game.actions[0]
     expect(action.type).toBe("rally")
     expect(action.stringValue).toBe(
-      "German attempt to fix weapon at A1: target 15, rolled 2 [2d10: 1 + 1], catastrophic failure: MG 08/15 is eliminated"
+      "German attempt to fix weapon at A1: target 15, rolled 2 [2d10: 1 + 1], catastrophic failure: " +
+        "MG 08/15 is eliminated"
     )
     expect(map.anyUnitsCanRally(2)).toBe(false)
   })
@@ -215,10 +216,45 @@ describe("rallying", () => {
     const action = game.actions[0]
     expect(action.type).toBe("rally")
     expect(action.stringValue).toBe(
-      "German attempt to fix weapon at A1: target 18, rolled 2 [2d10: 1 + 1], catastrophic failure: " +
+      "German attempt to fix vehicle weapon at A1: target 18, rolled 2 [2d10: 1 + 1], catastrophic failure: " +
         "PzKpfw 35(t) weapon is destroyed"
     )
     expect(unit.weaponDestroyed).toBe(true)
+    expect(map.anyUnitsCanRally(2)).toBe(false)
+  })
+
+  test("rally succeeds for hull weapon", () => {
+    const game = createBlankGame()
+    game.phase = gamePhaseType.PrepRally
+    game.setCurrentPlayer(2)
+    const map = game.scenario.map
+    const unit = new Unit(testITank)
+    unit.sponsonJammed = true
+    map.addCounter(new Coordinate(0,0), unit)
+    organizeStacks(map)
+
+    expect(map.anyUnitsCanRally(2)).toBe(true)
+
+    game.setGameState(new RallyState(game))
+
+    map.select(unit)
+
+    const original = Math.random
+    vi.spyOn(Math, "random").mockReturnValue(0.99)
+    game.gameState?.finish()
+    Math.random = original
+
+    expect(map.countersAt(new Coordinate(0,0)).length).toBe(2)
+    const action = game.actions[0]
+    expect(action.type).toBe("rally")
+    expect(action.stringValue).toBe(
+      "German attempt to fix vehicle weapon at A1: target 18, rolled 20 [2d10: 10 + 10], passed: " +
+        "M11/39 weapon is repaired"
+    )
+    expect(unit.jammed).toBe(false)
+    expect(unit.weaponDestroyed).toBe(false)
+    expect(unit.sponsonJammed).toBe(false)
+    expect(unit.sponsonDestroyed).toBe(false)
     expect(map.anyUnitsCanRally(2)).toBe(false)
   })
 
@@ -333,7 +369,8 @@ describe("rallying", () => {
     expect(action.type).toBe("rally")
     expect(action.freeRally).toBe(false)
     expect(action.stringValue).toBe(
-      "German attempt to fix weapon at A1: target 18, rolled 20 [2d10: 10 + 10], passed: PzKpfw 35(t) is repaired"
+      "German attempt to fix vehicle weapon at A1: target 18, rolled 20 [2d10: 10 + 10], passed: " +
+        "PzKpfw 35(t) weapon is repaired"
     )
     expect(map.anyUnitsCanRally(2)).toBe(false)
   })

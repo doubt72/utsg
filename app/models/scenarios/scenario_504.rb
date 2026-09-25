@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Mixing It Up"
     ALLIES = ["fra"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "b"
-    VERSION = "0.7"
+    STATUS = ""
+    VERSION = "1.0"
 
     DATE = [1940, 5, 14].freeze
     LAYOUT = [15, 23, "x"].freeze
@@ -22,8 +22,8 @@ module Scenarios
         [2, :fra_75mm_m1897],
         :fra_m1915_hotchkiss,
         :fra_brandt_m1935,
-        :fra_radio_155mm,
-        [4, :fra_char_b1],
+        :fra_radio_105mm,
+        [3, :fra_char_b1],
       ] },
     }.freeze
 
@@ -31,7 +31,7 @@ module Scenarios
       "0": { list: [
         :ger_leader_5_2,
         [2, :ger_leader_5_1],
-        [6, :ger_rifle_s],
+        [8, :ger_rifle_s],
         :ger_elite_crew_t,
         [2, :ger_mg_34],
         :ger_8cm_grw_34,

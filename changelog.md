@@ -1,3 +1,9 @@
+# 0.152
+
+- Bug fix: repair role didn't fix hull guns
+- Bug fix: picking up weapons on rushes incorrectly based on non-activated movement
+- Updated/promoted 504
+
 # 0.151
 
 - Finish cavalry rules for 516, etc.

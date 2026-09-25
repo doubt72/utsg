@@ -992,7 +992,6 @@ describe("movement", () => {
       // Warning expected for placing a unit by itself
       expect(err instanceof StackingActionError).toBe(true)
     }
-
     const unit4 = new Unit(testRMG)
     unit4.id = "test4"
     const loc3 = new Coordinate(0, 2)

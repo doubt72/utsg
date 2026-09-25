@@ -6,7 +6,7 @@ import select from "./select"
 import { gameActionAddActionType } from "../GameAction"
 import StackingActionError from "../actions/StackingActionError"
 import organizeStacks from "../support/organizeStacks"
-import { createMoveGame, testGCrew, testGGun, testGInf, testGLdr, testGMG } from "./testHelpers"
+import { createBlankGame, createMoveGame, testGCrew, testGGun, testGInf, testGLdr, testGMG } from "./testHelpers"
 import MoveState from "./state/MoveState"
 import { stateType } from "./state/BaseState"
 
@@ -397,6 +397,7 @@ describe("rush movement", () => {
 
     const unit2 = new Unit(testGMG)
     unit2.id = "test2"
+    unit2.baseMovement = 0
     try {
       map.addCounter(new Coordinate(3, 2), unit2)
     } catch(err) {
@@ -489,6 +490,43 @@ describe("rush movement", () => {
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].unit.name).toBe("MG 08/15")
     expect(all[1].unit.isActivated).toBe(true)
+  })
+
+  test("can't pick up sw with no movement left", () => {
+    const game = createBlankGame([
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o", st: { sh: "t" } }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+    ])
+    const map = game.scenario.map
+    const unit = new Unit(testGInf)
+    unit.id = "test1"
+    unit.activate()
+    const loc = new Coordinate(4, 2)
+    map.addCounter(loc, unit)
+    map.select(unit)
+
+    const unit2 = new Unit(testGMG)
+    unit2.id = "test2"
+    unit2.baseMovement = 0
+    const loc2 = new Coordinate(3, 2)
+    try {
+      map.addCounter(loc2, unit2)
+    } catch(err) {
+      // Warning expected for placing a unit by itself
+      expect(err instanceof StackingActionError).toBe(true)
+    }
+
+    game.setGameState(new MoveState(game))
+
+    expect(showLoadMove(game)).toBe(false)
+    game.moveState.move(loc2.x, loc2.y)
+    expect(game.gameState?.openHex(1, 2)).toBe(hexOpenType.Closed)
+    expect(game.gameState?.openHex(0, 1)).toBe(hexOpenType.Closed)
+    expect(game.gameState?.openHex(0, 3)).toBe(hexOpenType.Closed)
+    expect(showLoadMove(game)).toBe(false)
   })
 
   test("drop sw", () => {
