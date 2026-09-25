@@ -3,7 +3,7 @@ import Unit from "../Unit"
 import { describe, expect, test, vi } from "vitest"
 import IllegalActionError from "../actions/IllegalActionError"
 import Feature from "../Feature"
-import { createBlankGame, createMoveGame, testGInf, testGLdr, testGTank, testRInf } from "./testHelpers"
+import { createBlankGame, createFireGame, createMoveGame, testGBike, testGHorse, testGInf, testGLdr, testGTank, testRInf } from "./testHelpers"
 import InitiativeState, { initiativeCheck } from "./state/InitiativeState"
 import PassState from "./state/PassState"
 import { stateType } from "./state/BaseState"
@@ -481,5 +481,64 @@ describe("game actions", () => {
 
     expect(game.state).toBe("complete")
     expect(game.winner).toBe("two")
+  })
+
+  test("horse cavalry triggers snipers", () => {
+    const game = createFireGame()
+    game.alliedSniper = new Feature({
+      id: "sniper-1", t: featureType.Sniper, n: "Sniper", i: "sniper", f: 3, o: { q: 1 }, ft: 1
+    })
+    const map = game.scenario.map
+    const unit = new Unit(testGHorse)
+    unit.id = "unit1"
+    map.addCounter(new Coordinate(3, 2), unit)
+    map.select(unit)
+
+    game.setGameState(new MoveState(game))
+    game.moveState.move(2, 2)
+    game.moveState.finish()
+
+    expect(game.sniperNeeded).toStrictEqual([{ loc: new Coordinate(2, 2), unit }])
+  })
+
+  test("bicycle cavalry does not trigger snipers", () => {
+    const game = createFireGame()
+    game.alliedSniper = new Feature({
+      id: "sniper-1", t: featureType.Sniper, n: "Sniper", i: "sniper", f: 3, o: { q: 1 }, ft: 1
+    })
+    const map = game.scenario.map
+    const unit = new Unit(testGBike)
+    unit.id = "unit1"
+    map.addCounter(new Coordinate(3, 2), unit)
+    map.select(unit)
+
+    game.setGameState(new MoveState(game))
+    game.moveState.move(2, 2)
+    game.moveState.finish()
+
+    expect(game.sniperNeeded).toStrictEqual([])
+  })
+
+  test("infantry carried by cavalry triggers snipers", () => {
+    const game = createFireGame()
+    game.alliedSniper = new Feature({
+      id: "sniper-1", t: featureType.Sniper, n: "Sniper", i: "sniper", f: 3, o: { q: 1 }, ft: 1
+    })
+    const map = game.scenario.map
+    const unit = new Unit(testGBike)
+    unit.id = "unit1"
+    const loc = new Coordinate(3, 2)
+    map.addCounter(loc, unit)
+    map.select(unit)
+    const unit2 = new Unit(testGInf)
+    unit2.id = "unit2"
+    map.addCounter(loc, unit2)
+    organizeStacks(map)
+
+    game.setGameState(new MoveState(game))
+    game.moveState.move(2, 2)
+    game.moveState.finish()
+
+    expect(game.sniperNeeded).toStrictEqual([{ loc: new Coordinate(2, 2), unit: unit2 }])
   })
 });

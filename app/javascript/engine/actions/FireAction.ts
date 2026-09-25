@@ -315,7 +315,7 @@ export default class FireAction extends BaseAction {
                   }</span>` }
                   for (const t of dTargets) {
                     if (t.counter.unit.canCarrySupport && !t.counter.unit.decoy) {
-                      this.game.moraleChecksNeeded.push({
+                      this.game.addMoraleCheck({
                         unit: t.counter.unit, from: [from], to: d, incendiary: u0.incendiary,
                         critical,
                       })
@@ -332,7 +332,8 @@ export default class FireAction extends BaseAction {
               for (const t of dTargets) {
                 if (t.counter.unit.canCarrySupport) { continue }
                 if (t.counter.unit.isWreck) { continue }
-                if (t.counter.unit.isVehicle && (!t.counter.unit.armored || t.counter.unit.topOpen)) {
+                if (t.counter.unit.isVehicle && (!t.counter.unit.armored || t.counter.unit.topOpen) &&
+                    !t.counter.unit.infantryTarget) {
                   for (const f of fsHexes) {
                     if (f.x === d.x && f.y === d.y) { f.vehicle = t.counter.unit }
                   }
@@ -344,7 +345,7 @@ export default class FireAction extends BaseAction {
                   this.game.observeNeeded.push(d)
                   t.counter.unit.wreck(this.game)
                   anims.push({ loc: d, type: "wreck" })
-                } else if (t.counter.unit.isVehicle) {
+                } else if (t.counter.unit.isVehicle && !t.counter.unit.infantryTarget) {
                   const fwire = firing.map(f => f.wire ?? false)
                   fp = firepower(this.game, this.convertAToA(firing), t.counter.unit, d, sponson, fwire)
                   const baseHit = baseToHit(fp.fp)
@@ -396,7 +397,7 @@ export default class FireAction extends BaseAction {
               }
             }
           }
-        } else if (target0.unit.isVehicle && !target0.unit.armored) {
+        } else if (target0.unit.isVehicle && !target0.unit.armored && !target0.unit.infantryTarget) {
           fsHexes = [{ x: dHexes[0].x, y: dHexes[0].y, vehicle: target0.unit }]
           const hex = target0.hex as Coordinate
           if (hex.x != dHexes[0].x || hex.y !== dHexes[0].y) {
@@ -406,7 +407,7 @@ export default class FireAction extends BaseAction {
           target0.unit.wreck(this.game)
           this.game.observeNeeded.push(dHexes[0])
           anims.push({ loc: dHexes[0], type: "wreck" })
-        } else if (target0.unit.isVehicle) {
+        } else if (target0.unit.isVehicle && !target0.unit.infantryTarget) {
           let turretHit = false
           if (target0.unit.turreted) {
             if (needDice) { this.diceResults.push({ result: rolld10() }) }
@@ -509,7 +510,7 @@ export default class FireAction extends BaseAction {
             const critical = critHit(hitRoll.result.result, hitCheck)
             targets.forEach(t => {
               if (!t.counter.unit.decoy) {
-                this.game.moraleChecksNeeded.push(
+                this.game.addMoraleCheck(
                   { unit: t.counter.unit, from: [from], to, incendiary: target0.unit.incendiary, critical }
                 )
               }
@@ -606,7 +607,7 @@ export default class FireAction extends BaseAction {
         } else if (u0.breakDestroysWeapon ||
                    (u0.parent && u0.nation !== u0.parent.nation)) {
           if (u0.incendiary && u0.parent) {
-            this.game.moraleChecksNeeded.push({
+            this.game.addMoraleCheck({
               unit: u0.parent, from: [], to, incendiary: true, critical: false,
             })
           }
@@ -665,8 +666,8 @@ export default class FireAction extends BaseAction {
           let critMessage = false
           targets.forEach(t => {
             if (t.x === c.x && t.y === c.y) {
-              if (!(t.counter.unit.isVehicle && !t.counter.unit.armored) &&
-                  !(t.counter.unit.isVehicle && u0.incendiary)) {
+              if (!(t.counter.unit.isVehicle && !t.counter.unit.armored && !t.counter.unit.infantryTarget) &&
+                  !(t.counter.unit.isVehicle && u0.incendiary && !t.counter.unit.infantryTarget)) {
                 if (critical) { critMessage = true }
               }
             }
@@ -678,7 +679,7 @@ export default class FireAction extends BaseAction {
           }
           targets.forEach(t => {
             if (t.x === c.x && t.y === c.y) {
-              if (t.counter.unit.isVehicle && !t.counter.unit.armored) {
+              if (t.counter.unit.isVehicle && !t.counter.unit.armored && !t.counter.unit.infantryTarget) {
                 fsHexes = [{ x: t.x, y: t.y, vehicle: t.counter.unit }]
                 const hex = t.counter.hex as Coordinate
                 if (hex.x != t.x || hex.y !== t.y) {
@@ -687,7 +688,7 @@ export default class FireAction extends BaseAction {
                 if (needDice) { hitRoll.description += `, ${this.formatUnit(t.counter.unit)} destroyed` }
                 t.counter.unit.wreck(this.game)
                 anims.push({ loc: c, type: "wreck" })
-              } else if (t.counter.unit.isVehicle && u0.incendiary) {
+              } else if (t.counter.unit.isVehicle && u0.incendiary && !t.counter.unit.infantryTarget) {
                 fp = firepower(this.game, this.convertAToA(firing), t.counter.unit, to, false, [wire])
                 let hitCheck = baseToHit(fp.fp)
                 if (hitCheck < 2) { hitCheck = 2 }
@@ -714,7 +715,7 @@ export default class FireAction extends BaseAction {
                   anims.push({ loc: c, type: "nowreck" })
                 }
               } else if (!t.counter.unit.decoy) {
-                this.game.moraleChecksNeeded.push({
+                this.game.addMoraleCheck({
                   unit: t.counter.unit, from: fcoords, to: c, incendiary: u0.incendiary, critical
                 })
               }
@@ -768,7 +769,7 @@ export default class FireAction extends BaseAction {
                        (u0.parent && u0.nation !== u0.parent.nation)) {
               const hex = new Coordinate(f.x, f.y)
               if (f.counter.unit.incendiary && f.counter.unit.parent) {
-                this.game.moraleChecksNeeded.push({
+                this.game.addMoraleCheck({
                   unit: f.counter.unit.parent, from: [], to: hex, incendiary: true, critical: false,
                 })
               }

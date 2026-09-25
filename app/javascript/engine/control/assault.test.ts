@@ -12,7 +12,7 @@ import {
   createMoveGame, testGCrew, testGGun, testGInf, testGLdr, testGMG, testGTank, testGTCrew, testGTruck,
   testJapSNLF,
   testMine,
-  testMineAT, testRDump, testRInf, testRTank, testWire
+  testMineAT, testRBike, testRDump, testRHorse, testRInf, testRTank, testWire
 } from "./testHelpers"
 import AssaultState from "./state/AssaultState"
 import { stateType } from "./state/BaseState"
@@ -1432,6 +1432,128 @@ describe("assault movement", () => {
     expect(all[1].hex?.x).toBe(2)
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].unit.id).toBe("dump1")
+
+    expect(game.eliminatedUnits.length).toBe(0)
+
+    expect(game.playerOneScore).toBe(10)
+    expect(game.playerTwoScore).toBe(10)
+  })
+
+  test("assault move destroys cavalry with no infantry", () => {
+    const game = createMoveGame()
+    const map = game.scenario.map
+    const unit = new Unit(testGInf)
+    unit.id = "test1"
+    map.addCounter(new Coordinate(3, 2), unit)
+    map.select(unit)
+
+    const cav = new Unit(testRHorse)
+    cav.id = "cav1"
+    map.addCounter(new Coordinate(2, 2), cav)
+
+    expect(game.playerOneScore).toBe(10)
+    expect(game.playerTwoScore).toBe(10)
+
+    game.setGameState(new AssaultState(game))
+
+    expect(game.gameState?.openHex(2, 2)).toBe(hexOpenType.All)
+
+    game.assaultState.move(2, 2)
+
+    game.gameState?.finish()
+
+    let all = map.allCounters
+    expect(all.length).toBe(1)
+    expect(all[0].hex?.x).toBe(2)
+    expect(all[0].hex?.y).toBe(2)
+    expect(all[0].unit.id).toBe("test1")
+
+    expect(game.eliminatedUnits.length).toBe(1)
+    expect(game.eliminatedUnits[0].name).toBe("Horse")
+    expect(game.playerOneScore).toBe(10)
+    expect(game.playerTwoScore).toBe(13)
+
+    expect(game.actions[0].stringValue).toBe(
+      "German Rifle assault moved from D3 to C3, Soviet Horse destroyed"
+    )
+
+    game.executeUndo(false)
+    all = map.allCounters
+    expect(all.length).toBe(2)
+    expect(all[0].hex?.x).toBe(3)
+    expect(all[0].hex?.y).toBe(2)
+    expect(all[0].feature.id).toBe("test1")
+    expect(all[1].hex?.x).toBe(2)
+    expect(all[1].hex?.y).toBe(2)
+    expect(all[1].unit.id).toBe("cav1")
+
+    expect(game.eliminatedUnits.length).toBe(0)
+
+    expect(game.playerOneScore).toBe(10)
+    expect(game.playerTwoScore).toBe(10)
+  })
+
+  test("assault move destroys cavalry with infantry", () => {
+    const game = createMoveGame()
+    const map = game.scenario.map
+    const unit = new Unit(testGInf)
+    unit.id = "test1"
+    map.addCounter(new Coordinate(3, 2), unit)
+    map.select(unit)
+
+    const cav = new Unit(testRBike)
+    cav.id = "cav1"
+    const cloc = new Coordinate(2, 2)
+    map.addCounter(cloc, cav)
+    const inf = new Unit(testRInf)
+    inf.id = "inf1"
+    map.addCounter(cloc, inf)
+    organizeStacks(map)
+
+    expect(game.playerOneScore).toBe(10)
+    expect(game.playerTwoScore).toBe(10)
+
+    game.setGameState(new AssaultState(game))
+
+    expect(game.gameState?.openHex(2, 2)).toBe(hexOpenType.All)
+
+    game.assaultState.move(2, 2)
+
+    game.gameState?.finish()
+
+    let all = map.allCounters
+    expect(all.length).toBe(2)
+    expect(all[0].hex?.x).toBe(2)
+    expect(all[0].hex?.y).toBe(2)
+    expect(all[0].unit.id).toBe("inf1")
+    expect(all[1].hex?.x).toBe(2)
+    expect(all[1].hex?.y).toBe(2)
+    expect(all[1].unit.id).toBe("test1")
+
+    expect(game.eliminatedUnits.length).toBe(1)
+    expect(game.eliminatedUnits[0].name).toBe("Bicycle")
+    expect(game.playerOneScore).toBe(10)
+    expect(game.playerTwoScore).toBe(13)
+
+    expect(game.actions[0].stringValue).toBe(
+      "German Rifle assault moved from D3 to C3, Soviet Bicycle destroyed"
+    )
+
+    expect(game.moraleChecksNeeded.length).toBe(0)
+
+    game.executeUndo(false)
+    all = map.allCounters
+    expect(all.length).toBe(3)
+    expect(all[0].hex?.x).toBe(3)
+    expect(all[0].hex?.y).toBe(2)
+    expect(all[0].feature.id).toBe("test1")
+    expect(all[1].hex?.x).toBe(2)
+    expect(all[1].hex?.y).toBe(2)
+    expect(all[1].unit.id).toBe("cav1")
+    expect(all[2].hex?.x).toBe(2)
+    expect(all[2].hex?.y).toBe(2)
+    expect(all[2].unit.id).toBe("inf1")
+    expect(all[2].unit.parent?.name).toBe("Bicycle")
 
     expect(game.eliminatedUnits.length).toBe(0)
 

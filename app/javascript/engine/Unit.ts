@@ -1,6 +1,6 @@
 import {
   Coordinate, Direction, GunHandlingRange, LeadershipRange, MoraleRange, MovementType, NumberBoolean,
-  SizeRange, SponsonType, UnitStatus, UnitType, movementType, sponsonType, unitStatus, unitType
+  SizeRange, SponsonType, UnitStatus, UnitType, featureType, movementType, sponsonType, unitStatus, unitType
 } from "../utilities/commonTypes";
 import { normalDir } from "../utilities/utilities";
 import { removeSpotting } from "./control/spotting";
@@ -356,7 +356,7 @@ export default class Unit {
   }
 
   get infantryTarget(): boolean {
-    if (this.type === unitType.Cavalry && this.icon === "cav") { return true }
+    if (this.isCavalry && this.icon === "cav") { return true }
     return [
       unitType.Leader, unitType.Squad, unitType.Team,
     ].includes(this.type)
@@ -534,10 +534,14 @@ export default class Unit {
     this.turretJammedState = false
     this.sponsonJammed = false
     this.sponsonDestroyed = false
-    if (this.type !== unitType.Cavalry) { this.internalStatus = unitStatus.Wreck }
+    if (!this.isCavalry) { this.internalStatus = unitStatus.Wreck }
     if (game) {
       const map = game.scenario.map
       const loc = map.findLocationById(this.id) as Coordinate
+      let mines = false
+      for (const c of map.countersAt(loc)) {
+        if (c.hasFeature && c.feature.type === featureType.Mines) { mines = true }
+      }
       for (const c of this.children) {
         if (c.canCarrySupport) {
           c.exhaust()
@@ -545,13 +549,13 @@ export default class Unit {
           c.activate()
         }
         map.dropUnit(loc, loc, c.id, c.rotates ? normalDir(this.facing + 3) : undefined)
-        if (c.canCarrySupport && this.type !== unitType.Cavalry) {
-          game.moraleChecksNeeded.push({
-            unit: c, from: [loc], to: loc, incendiary: false, critical: false
+        if (c.canCarrySupport) {
+          game.addMoraleCheck({
+            unit: c, from: [loc], to: loc, incendiary: mines, critical: false
           })
         }
       }
-      if (this.type === unitType.Cavalry) {
+      if (this.isCavalry) {
         game.scenario.map.eliminateCounter(loc, this.id)
       } else {
         const casualty = this.clone()
@@ -580,7 +584,7 @@ export default class Unit {
     game: Game, immobilized: boolean, turret: boolean, weaponJammed: boolean,
     weaponDestroyed: boolean, sponsonJammed: boolean, sponsonDestroyed: boolean
   ): void {
-    if (this.type === unitType.Cavalry) {
+    if (this.isCavalry) {
       throw "can't unwreck cavalry"
     } else {
       game.removeEliminatedCounter(`${this.id}-clone`)
@@ -639,7 +643,11 @@ export default class Unit {
   }
 
   get isVehicle(): boolean {
-    return this.isWheeled || this.isTracked
+    return this.isWheeled || this.isTracked || this.isCavalry
+  }
+
+  get isCavalry(): boolean {
+    return this.type === unitType.Cavalry
   }
 
   get isTankCrewed(): boolean {

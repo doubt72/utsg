@@ -111,10 +111,16 @@ export default class AssaultMoveAction extends BaseAction {
     if (this.target.length > 0) {
       for (const t of this.target) {
         const counter = this.map.findCounterById(t.id)
-        if (counter?.unit.isVehicle) {
+        const loc = new Coordinate(t.x, t.y)
+        if (counter?.unit.isCavalry) {
+          for (const c of counter.unit.children) {
+            this.map.dropUnit(loc, loc, c.id)
+          }
+          this.map.eliminateCounter(loc, t.id)
+        } else if (counter?.unit.isVehicle) {
           counter?.unit.wreck()
         } else {
-          this.map.eliminateCounter(new Coordinate(t.x, t.y), t.id)
+          this.map.eliminateCounter(loc, t.id)
         }
       }
     }
@@ -219,7 +225,14 @@ export default class AssaultMoveAction extends BaseAction {
     if (this.target.length > 0) {
       for (const t of this.target) {
         const unit = this.game.findUnitById(t.id) as Unit
-        if (unit.isVehicle) {
+        const loc = new Coordinate(t.x, t.y)
+        if ((t.children?.length ?? 0) > 0) {
+          this.game.removeEliminatedCounter(t.id)
+          this.map.addCounter(loc, unit)
+          for (const c of t.children as string[]) {
+            this.map.loadUnit(loc, loc, c, unit.id)
+          }
+        } else if (unit.isVehicle && !unit.isCavalry) {
           unit.unWreck(
             this.game, t.immobilized as boolean, t.turret as boolean,
             t.weapon_jammed as boolean, t.weapon_broken as boolean,
@@ -227,7 +240,7 @@ export default class AssaultMoveAction extends BaseAction {
           )
         } else {
           this.game.removeEliminatedCounter(t.id)
-          this.map.addCounter(new Coordinate(t.x, t.y), unit)
+          this.map.addCounter(loc, unit)
         }
       }
     }

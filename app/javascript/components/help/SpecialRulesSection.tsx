@@ -68,9 +68,8 @@ export default function SpecialRulesSection({ section }: SectionProps) {
       <ul>
         <li>
           All cavalry is considered soft targets, and are targeted with any other infantry in the
-          same hex. Unlike other vehicles, mounted infantry are also
-          targeted when the carrying cavalry units are targeted (they are not &quot;inside&quot;
-          the vehicle).
+          same hex. Unlike other vehicles, mounted infantry are also targeted when the carrying
+          cavalry units are targeted (they are not &quot;inside&quot; the vehicle).
         </li>
         <li>
           Unlike other vehicles, infantry (but <em>not</em> carried infantry weapons, except radios)
@@ -82,14 +81,24 @@ export default function SpecialRulesSection({ section }: SectionProps) {
           infantry, horse cavalry doesn&apos;t break, but are eliminated on failing a morale check.
         </li>
         <li>
-          Cavalry are vehicles, and theoretically trigger a moral check for any carried infantry
-          when eliminated; however, since an additional morale check will not be triggered if a
-          morale check is already needed, and any attack against a stack with cavalry already
-          triggers one on the infantry, this rule is effectively irrelevant.
+          Cavalry are vehicles, and trigger a moral check for any carried infantry when eliminated
+          (except during an opponent&apos;s assault move, see below); however, since an additional
+          morale check will not be triggered if a morale check is already needed, and any attack
+          against a stack with cavalry already triggers one on the infantry. This can apply to mine
+          attacks, however (e.g., when AT mines destroy a motorcycle carrying infantry).
+        </li>
+        <li>
+          If a mine attack hits, it triggers a morale check on any carried infantry, regardless of
+          whether or not the cavalry fails the morale check (if horse cavalry).
         </li>
         <li>
           Unlike other vehicles, horse cavalry (or any cavalry if carrying infantry) must make
           sniper checks if a sniper is present.
+        </li>
+        <li>
+          If an opponent assault moves into a hex with cavalry, the cavalry is removed. If the
+          cavalry was carrying any units, the units are automatically dismounted (but don&apos;t
+          require a morale check).
         </li>
       </ul>
     </div>

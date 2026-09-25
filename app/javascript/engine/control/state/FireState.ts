@@ -1,4 +1,6 @@
-import { Coordinate, CounterSelectionTarget, Direction, hexOpenType, unitType } from "../../../utilities/commonTypes";
+import {
+  Coordinate, CounterSelectionTarget, Direction, hexOpenType
+} from "../../../utilities/commonTypes";
 import { los } from "../../../utilities/los";
 import { hexDistance } from "../../../utilities/utilities";
 import Counter from "../../Counter";
@@ -6,7 +8,10 @@ import Game from "../../Game";
 import GameAction, { GameActionPath } from "../../GameAction";
 import Unit from "../../Unit";
 import { observe } from "../decoy";
-import { areaFire, armorAtArc, canMultiSelectFire, canToggleSponson, inRange, leadershipRange, rapidFire, refreshTargetSelection, unTargetSelectExceptChain } from "../fire";
+import {
+  areaFire, armorAtArc, canMultiSelectFire, canToggleSponson, inRange, leadershipRange, rapidFire,
+  refreshTargetSelection, unTargetSelectExceptChain
+} from "../fire";
 import { placeReactionFireGhosts, reactionFireHexes, reactionFireInRange } from "../reactionFire";
 import { clearUnrangedSelection, removeStateSelection } from "../select";
 import BaseState, { StateSelection, stateType } from "./BaseState";
@@ -127,7 +132,7 @@ export default class FireState extends BaseState {
         } else if (counter) {
           this.map.targetSelect(counter.unit)
           this.map.clearOtherTargetSelections(x, y, counter.unit.id)
-          if (!counter.unit.isVehicle || counter.unit.type === unitType.Cavalry) {
+          if (!counter.unit.isVehicle || counter.unit.isCavalry) {
             this.map.targetSelectAllAt(x, y, false, false)
           }
         }
@@ -183,8 +188,8 @@ export default class FireState extends BaseState {
         }
       }
       if (target.parent && target.parent.isVehicle) {
-        if (!target.parent || !this.samePlayer(target.parent)) {
-          this.game.addMessage("can't target units in vehicles")
+        if (!this.samePlayer(target.parent)) {
+          this.game.addMessage(`can't target ${target.parent.isCavalry ? "mounted units" : "units in vehicles"}`)
           return false
         }
       }

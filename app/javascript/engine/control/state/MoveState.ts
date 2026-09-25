@@ -1,6 +1,6 @@
 import {
   Coordinate, CounterSelectionTarget, Direction, featureType, HexOpenType, hexOpenType,
-  terrainType
+  terrainType,
 } from "../../../utilities/commonTypes";
 import { normalDir, roll2d10, rolld10, stackLimit } from "../../../utilities/utilities";
 import Counter from "../../Counter";
@@ -585,7 +585,9 @@ export default class MoveState extends BaseState {
         {
           firepower: check.baseFirepower as number, infantry: !check.antiTank,
           antitank: check.fieldGun || check.antiTank, is_armored: mineTarget.armored,
-          is_vehicle: mineTarget.isVehicle, lowest_armor: mineTarget.lowestArmor
+          is_vehicle: mineTarget.isVehicle && !mineTarget.infantryTarget &&
+            mineTarget.name !== "Bicycle",
+          lowest_armor: mineTarget.lowestArmor
         }
       } : undefined
     const dice: GameActionDiceResult[] = []
@@ -613,7 +615,8 @@ export default class MoveState extends BaseState {
     if (moveData) {
       const unit = this.selection[0].counter.unit
       const mines = moveData.mines
-      if ((unit.armored && mines?.antitank) || (!unit.armored && mines?.infantry)) {
+      if ((unit.isVehicle && mines?.antitank) ||
+          (!unit.armored && mines?.infantry)) {
         dice.push({ result: roll2d10() })
       }
     }

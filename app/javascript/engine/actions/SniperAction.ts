@@ -47,7 +47,7 @@ export default class SniperAction extends BaseAction {
       this.game.observeNeeded.push(loc)
       for (const t of this.target) {
         const unit = this.game.findUnitById(t.id) as Unit
-        this.game.moraleChecksNeeded.push({ unit, from: [loc], to: loc, incendiary: false, critical: false })
+        this.game.addMoraleCheck({ unit, from: [loc], to: loc, incendiary: false, critical: false })
         let found = false
         for (const a of anims) {
           if (a.loc.x === loc.x && a.loc.y === loc.y) { found = true; break }

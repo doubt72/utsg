@@ -86,7 +86,9 @@ export default class MoveAction extends BaseAction {
           mineAction = ", AP mines have no effect"
         }
       } else {
-        if (mines.infantry) {
+        if (mines.infantry && this.origin[0].name === "Bicycle") {
+          mineAction = ", vehicle destroyed by mines"
+        } else if (mines.infantry) {
           mineAction = `, mine roll (2d10): target ${formatTarget(hitCheck)}, rolled ${formatHit}, `
           if (hitRoll > hitCheck) {
             mineAction += "hit"
@@ -145,7 +147,8 @@ export default class MoveAction extends BaseAction {
       const mines = this.moveData.mines
       hitCheck = baseToHit(mines.firepower)
       const unit = this.game.findUnitById(this.origin[0].id) as Unit
-      if ((unit.armored && mines.antitank) || (!unit.armored && mines.infantry)) {
+      if ((unit.isVehicle && mines.antitank && !unit.isCavalry) ||
+          (!unit.armored && mines.infantry)) {
         hitRoll = this.diceResults[diceIndex++].result.result
       }
     }
@@ -160,7 +163,17 @@ export default class MoveAction extends BaseAction {
       }
       this.rush ? unit.unit.exhaust() : unit.unit.activate()
       if (this.moveData?.mines) {
-        if (unit.unit.isVehicle && !unit.unit.armored) {
+        const children = unit.unit.children
+        if (unit.unit.infantryTarget) {
+          if (hitRoll > hitCheck) {
+            this.game.addMoraleCheck({ unit: unit.unit, from: [end], to: end, incendiary: true, critical: false })
+            if (first) {
+              anims.push({ loc: end, type: "hit" })
+              first = false
+            }
+          }
+        } else if (unit.unit.isVehicle && !unit.unit.armored &&
+              !(!this.moveData.mines.infantry && unit.unit.name === "Bicycle")) {
           this.game.fireStartCheckNeeded.push({
             loc: end, vehicle: true, incendiary: false, tank: unit.unit.isTankCrewed,
             vehicle_incendiary: unit.unit.incendiary || unit.unit.sponson?.type === sponsonType.Flame,
@@ -179,12 +192,17 @@ export default class MoveAction extends BaseAction {
             unit.unit.wreck(this.game)
             anims.push({ loc: end, type: "wreck" })
           }
-        } else {
-          if (hitRoll > hitCheck) {
-            this.game.moraleChecksNeeded.push({ unit: unit.unit, from: [end], to: end, incendiary: true, critical: false })
-            if (first) {
-              anims.push({ loc: end, type: "hit" })
-              first = false
+        }
+        if (unit.unit.isCavalry && children.length > 0) {
+          for (const c of children) {
+            if (c.infantryTarget) {
+              if (hitRoll > hitCheck) {
+                this.game.addMoraleCheck({ unit: c, from: [end], to: end, incendiary: true, critical: false })
+                if (first) {
+                  anims.push({ loc: end, type: "hit" })
+                  first = false
+                }
+              }
             }
           }
         }

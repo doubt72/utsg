@@ -25,8 +25,9 @@ export function leadershipRange(game: Game): number | false {
 
 export function canMultiSelectFire(game: Game, x: number, y: number, unit: Unit): boolean {
   if (unit.targetedRange || unit.isVehicle || unit.incendiary) { return false }
-  if (unit.leader) { return true }
   if (unit.areaFire) { return false }
+  if (unit.canCarrySupport && unit.parent) { return false }
+  if (unit.leader) { return true }
   if (unit.uncrewedSW && unit.parent) { return true }
   if (unit.children.length > 0 && !unit.children[0].targetedRange &&
       (unit.children[0].isNormal || unit.children[0].isTired || (unit.children[0].isActivated &&

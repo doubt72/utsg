@@ -185,6 +185,12 @@ export const testGHorse: UnitData = {
   s: 3, v: 7, f: 0, r: 0,
 }
 
+// Captured motorcycle?
+export const testGMotorcycle: UnitData = {
+  id: "r_moto", t: "cav", c: "ger", n: "Dnepr M-72", i: "cav-wheel", y: 42, o: { tr: 3, w: 1 },
+  s: 3, v: 6, f: 0, r: 0,
+}
+
 export const testGSqdDecoy: UnitData = {
   id: "g_inf_decoy", c: "ger", i: "decoy", n: "squad", s: 6, t: "sqd", v: 4, y: 0, d: 1, f: 0, r: 0, o: {},
 }

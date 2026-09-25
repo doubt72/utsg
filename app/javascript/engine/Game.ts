@@ -852,6 +852,18 @@ export default class Game {
     return this.closeNeeded.filter(c => c.state !== closeProgress.Done).length > 0
   }
 
+  addMoraleCheck(check: ComplexCheck): void {
+    for (const c of this.moraleChecksNeeded) {
+      if (c.unit.id === check.unit.id) {
+        if (check.incendiary) { c.incendiary = true }
+        if (check.critical) { c.critical = true }
+        c.from = check.from
+        return
+      }
+    }
+    this.moraleChecksNeeded.push(check)
+  }
+
   addSmokeCheckState(): void {
     const done = []
     for (let i = this.lastActionIndex; i >= 0; i--) {

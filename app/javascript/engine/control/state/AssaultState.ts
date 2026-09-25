@@ -438,10 +438,11 @@ export default class AssaultState extends BaseState {
             weapon_jammed: c.unit.jammed, weapon_broken: c.unit.weaponDestroyed,
             sponson_jammed: c.unit.sponsonJammed, sponson_broken: c.unit.sponsonDestroyed,
           })
-        } else if (c.hasUnit && c.unit.type === unitType.Other &&
+        } else if (c.hasUnit && [unitType.Other, unitType.Cavalry].includes(c.unit.type) &&
             c.unit.playerNation !== this.selection[0].counter.unit.playerNation) {
           target.push({
             x: loc.x, y: loc.y, id: c.unit.id, name: c.unit.name, status: c.unit.status,
+            children: c.unit.children.map(u => u.id),
           })
         }
       }

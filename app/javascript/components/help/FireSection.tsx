@@ -57,6 +57,9 @@ export default function FireSection({ section }: SectionProps) {
         combine its attack with the unit carrying it, e.g., an infantry squad
         could combine its attack with a machine gun it carries.
       </p>
+      <p>
+        Units mounted on cavalry cannot be part of a fire group.
+      </p>
       <h3>{section}.6. Status</h3>
       <p>When fire is complete, mark all firing units as activated.</p>
     </div>

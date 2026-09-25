@@ -7,7 +7,7 @@ module Scenarios
     ALLIES = ["fra"].freeze
     AXIS = ["ger"].freeze
     STATUS = "b"
-    VERSION = "0.6"
+    VERSION = "0.7"
 
     DATE = [1940, 5, 14].freeze
     LAYOUT = [15, 23, "x"].freeze
@@ -16,12 +16,14 @@ module Scenarios
       "0": { list: [
         :fra_leader_5_1,
         :fra_leader_4_1,
-        [5, :fra_reservist_s],
+        [6, :fra_reservist_s],
         [2, :fra_crew_t],
         [2, :fra_fm_24_29],
         [2, :fra_75mm_m1897],
-        :fra_radio_105mm,
-        [3, :fra_char_b1],
+        :fra_m1915_hotchkiss,
+        :fra_brandt_m1935,
+        :fra_radio_155mm,
+        [4, :fra_char_b1],
       ] },
     }.freeze
 
@@ -29,7 +31,7 @@ module Scenarios
       "0": { list: [
         :ger_leader_5_2,
         [2, :ger_leader_5_1],
-        [8, :ger_rifle_s],
+        [6, :ger_rifle_s],
         :ger_elite_crew_t,
         [2, :ger_mg_34],
         :ger_8cm_grw_34,

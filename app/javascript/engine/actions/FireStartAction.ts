@@ -74,7 +74,7 @@ export default class FireStartAction extends BaseAction {
         unit.playerNation = this.startData[i].player_nation as string
         unit.exhaust()
         this.map.addCounter(loc, unit)
-        this.game.moraleChecksNeeded.push({ unit, from: [loc], to: loc, incendiary: false, critical: false })
+        this.game.addMoraleCheck({ unit, from: [loc], to: loc, incendiary: false, critical: false })
         this.game.addActionAnimations([{ loc, type: "crewescape" }])
         if (this.game.currentPlayerNation !== unit.playerNation) { this.game.togglePlayer() }
       }

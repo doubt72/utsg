@@ -1,3 +1,9 @@
+# 0.151
+
+- Finish cavalry rules for 516, etc.
+- Updated 504
+- Added prototype 215
+
 # 0.150
 
 - Start on cavalry rules for 516, etc.

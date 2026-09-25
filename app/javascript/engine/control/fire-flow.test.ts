@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { createBlankGame, createInProgressGame, testGInf, testGLdr, testGMG, testGTank, testRInf } from "./testHelpers";
+import { createBlankGame, createInProgressGame, testGHorse, testGInf, testGLdr, testGMG, testGRadio, testGTank, testGTruck, testRInf } from "./testHelpers";
 import Unit from "../Unit";
 import FireState from "./state/FireState";
 import { Coordinate } from "../../utilities/commonTypes";
@@ -416,6 +416,256 @@ describe("fire flow", () => {
     expect(actionsAvailable(game, "two")).toStrictEqual(
       [
         { type: "none", message: "select target" },
+        { type: "cancel_action" },
+      ]
+    )
+  })
+
+  test("infantry can't fire from vehicle", () => {
+    const game = createBlankGame()
+    const map = game.scenario.map
+    const target1 = new Unit(testRInf)
+    target1.id = "target1"
+    const tloc = new Coordinate(2, 2)
+    map.addCounter(tloc, target1)
+
+    const fire1 = new Unit(testGTruck)
+    fire1.id = "fire1"
+    const floc = new Coordinate(3, 2)
+    map.addCounter(floc, fire1)
+    const fire2 = new Unit(testGInf)
+    fire2.id = "fire2"
+    map.addCounter(floc, fire2)
+    organizeStacks(map)
+
+    expect(actionsAvailable(game, "two")).toStrictEqual(
+      [
+        { type: "none", message: "select unit to activate" },
+        { type: "pass" },
+      ]
+    )
+
+    select(map, {
+      counter: map.countersAt(floc)[1],
+      target: { type: "map", xy: floc }
+    }, () => {})
+    expect(fire2.selected).toBe(true)
+
+    expect(actionsAvailable(game, "two")).toStrictEqual(
+      [
+        { type: "unselect" },
+      ]
+    )
+  })
+
+  test("mg can't fire from vehicle", () => {
+    const game = createBlankGame()
+    const map = game.scenario.map
+    const target1 = new Unit(testRInf)
+    target1.id = "target1"
+    const tloc = new Coordinate(2, 2)
+    map.addCounter(tloc, target1)
+
+    const fire1 = new Unit(testGTruck)
+    fire1.id = "fire1"
+    const floc = new Coordinate(3, 2)
+    map.addCounter(floc, fire1)
+    const fire2 = new Unit(testGInf)
+    fire2.id = "fire2"
+    map.addCounter(floc, fire2)
+    const fire3 = new Unit(testGMG)
+    fire3.id = "fire3"
+    map.addCounter(floc, fire3)
+    organizeStacks(map)
+
+    expect(actionsAvailable(game, "two")).toStrictEqual(
+      [
+        { type: "none", message: "select unit to activate" },
+        { type: "pass" },
+      ]
+    )
+
+    select(map, {
+      counter: map.countersAt(floc)[2],
+      target: { type: "map", xy: floc }
+    }, () => {})
+    expect(fire3.selected).toBe(true)
+
+    expect(actionsAvailable(game, "two")).toStrictEqual(
+      [
+        { type: "unselect" },
+      ]
+    )
+  })
+
+  test("infantry can fire from cavalry", () => {
+    const game = createBlankGame()
+    const map = game.scenario.map
+    const target1 = new Unit(testRInf)
+    target1.id = "target1"
+    const tloc = new Coordinate(2, 2)
+    map.addCounter(tloc, target1)
+
+    const fire1 = new Unit(testGHorse)
+    fire1.id = "fire1"
+    const floc = new Coordinate(3, 2)
+    map.addCounter(floc, fire1)
+    const fire2 = new Unit(testGInf)
+    fire2.id = "fire2"
+    map.addCounter(floc, fire2)
+    const fire3 = new Unit(testGMG)
+    fire3.id = "fire3"
+    map.addCounter(floc, fire3)
+    organizeStacks(map)
+
+    expect(actionsAvailable(game, "two")).toStrictEqual(
+      [
+        { type: "none", message: "select unit to activate" },
+        { type: "pass" },
+      ]
+    )
+
+    select(map, {
+      counter: map.countersAt(floc)[1],
+      target: { type: "map", xy: floc }
+    }, () => {})
+    expect(fire2.selected).toBe(true)
+
+    expect(actionsAvailable(game, "two")).toStrictEqual(
+      [
+        { type: "fire" },
+        { type: "unselect" },
+      ]
+    )
+
+    game.setGameState(new FireState(game, false))
+
+    expect(actionsAvailable(game, "two")).toStrictEqual(
+      [
+        { type: "none", message: "select target" },
+        { type: "cancel_action" },
+      ]
+    )
+    expect(game.fireState.doneSelect).toBe(true)
+
+    select(map, {
+      counter: map.countersAt(tloc)[0],
+      target: { type: "map", xy: tloc }
+    }, () => {})
+    expect(target1.targetSelected).toBe(true)
+
+    expect(actionsAvailable(game, "two")).toStrictEqual(
+      [
+        { type: "none", message: "select target" },
+        { type: "fire_finish" },
+        { type: "cancel_action" },
+      ]
+    )
+  })
+
+  test("infantry weapon can't fire from cavalry", () => {
+    const game = createBlankGame()
+    const map = game.scenario.map
+    const target1 = new Unit(testRInf)
+    target1.id = "target1"
+    const tloc = new Coordinate(2, 2)
+    map.addCounter(tloc, target1)
+
+    const fire1 = new Unit(testGHorse)
+    expect(fire1.isVehicle).toBe(true)
+    fire1.id = "fire1"
+    const floc = new Coordinate(3, 2)
+    map.addCounter(floc, fire1)
+    const fire2 = new Unit(testGInf)
+    fire2.id = "fire2"
+    map.addCounter(floc, fire2)
+    const fire3 = new Unit(testGMG)
+    fire3.id = "fire3"
+    map.addCounter(floc, fire3)
+    organizeStacks(map)
+
+    expect(actionsAvailable(game, "two")).toStrictEqual(
+      [
+        { type: "none", message: "select unit to activate" },
+        { type: "pass" },
+      ]
+    )
+
+    select(map, {
+      counter: map.countersAt(floc)[2],
+      target: { type: "map", xy: floc }
+    }, () => {})
+    expect(fire3.selected).toBe(true)
+
+    expect(actionsAvailable(game, "two")).toStrictEqual(
+      [
+        { type: "unselect" },
+      ]
+    )
+  })
+
+  test("radio can fire from cavalry", () => {
+    const game = createBlankGame()
+    const map = game.scenario.map
+    const target1 = new Unit(testRInf)
+    target1.id = "target1"
+    const tloc = new Coordinate(2, 2)
+    map.addCounter(tloc, target1)
+
+    const fire1 = new Unit(testGHorse)
+    fire1.id = "fire1"
+    const floc = new Coordinate(3, 2)
+    map.addCounter(floc, fire1)
+    const fire2 = new Unit(testGLdr)
+    fire2.id = "fire2"
+    map.addCounter(floc, fire2)
+    const fire3 = new Unit(testGRadio)
+    fire3.id = "fire3"
+    map.addCounter(floc, fire3)
+    organizeStacks(map)
+
+    expect(actionsAvailable(game, "two")).toStrictEqual(
+      [
+        { type: "none", message: "select unit to activate" },
+        { type: "pass" },
+      ]
+    )
+
+    select(map, {
+      counter: map.countersAt(floc)[2],
+      target: { type: "map", xy: floc }
+    }, () => {})
+    expect(fire3.selected).toBe(true)
+
+    expect(actionsAvailable(game, "two")).toStrictEqual(
+      [
+        { type: "fire" },
+        { type: "unselect" },
+      ]
+    )
+
+    game.setGameState(new FireState(game, false))
+
+    expect(actionsAvailable(game, "two")).toStrictEqual(
+      [
+        { type: "none", message: "select target" },
+        { type: "fire_smoke" },
+        { type: "cancel_action" },
+      ]
+    )
+    expect(game.fireState.doneSelect).toBe(true)
+
+    select(map, {
+      counter: map.countersAt(tloc)[0],
+      target: { type: "map", xy: tloc }
+    }, () => {})
+    expect(target1.targetSelected).toBe(true)
+
+    expect(actionsAvailable(game, "two")).toStrictEqual(
+      [
+        { type: "none", message: "select target" },
+        { type: "fire_smoke" },
+        { type: "fire_finish" },
         { type: "cancel_action" },
       ]
     )

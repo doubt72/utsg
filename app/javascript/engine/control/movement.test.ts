@@ -12,7 +12,8 @@ import StackingActionError from "../actions/StackingActionError"
 import organizeStacks from "../support/organizeStacks"
 import IllegalActionError from "../actions/IllegalActionError"
 import {
-  createBlankGame, createMoveGame, testGCrew, testGGun, testGInf, testGLdr, testGMG,
+  createBlankGame, createMoveGame, testGBike, testGCrew, testGGun, testGHorse, testGInf, testGLdr, testGMG,
+  testGMotorcycle,
   testGTank, testGTruck, testJapSNLF, testMine, testMineAP, testMineAT, testRInf, testRMG, testRTank,
   testSmoke, testWire
 } from "./testHelpers"
@@ -2746,6 +2747,77 @@ describe("movement", () => {
     }
   })
 
+  test("mines target both horse and carried unit", () => {
+    const game = createMoveGame()
+    const map = game.scenario.map
+    const unit = new Unit(testGHorse)
+    unit.id = "test1"
+    const floc = new Coordinate(4, 2)
+    map.addCounter(floc, unit)
+    const unit2 = new Unit(testGInf)
+    unit2.id = "test2"
+    map.addCounter(floc, unit2)
+    map.select(unit)
+
+    const feature = new Feature(testMine)
+    feature.id = "mine"
+    const tloc = new Coordinate(3, 2)
+    map.addCounter(tloc, feature)
+    organizeStacks(map)
+
+    game.setGameState(new MoveState(game))
+    game.moveState.move(3, 2)
+
+    const original = Math.random
+    vi.spyOn(Math, "random").mockReturnValue(0.99)
+    game.gameState?.finish()
+    Math.random = original
+
+    expect(game.moraleChecksNeeded).toStrictEqual([
+      { unit: unit, from: [tloc], to: tloc, incendiary: true, critical: false },
+      { unit: unit2, from: [tloc], to: tloc, incendiary: true, critical: false },
+    ])
+
+    expect(game.lastAction?.stringValue).toBe(
+      "German Horse moved from E3 to D3, mine roll (2d10): target 12, rolled 20 [2d10: 10 + 10], hit"
+    )
+  })
+
+  test("mines remove bike and target carried unit", () => {
+    const game = createMoveGame()
+    const map = game.scenario.map
+    const unit = new Unit(testGBike)
+    unit.id = "test1"
+    const floc = new Coordinate(4, 2)
+    map.addCounter(floc, unit)
+    const unit2 = new Unit(testGInf)
+    unit2.id = "test2"
+    map.addCounter(floc, unit2)
+    map.select(unit)
+
+    const feature = new Feature(testMine)
+    feature.id = "mine"
+    const tloc = new Coordinate(3, 2)
+    map.addCounter(tloc, feature)
+    organizeStacks(map)
+
+    game.setGameState(new MoveState(game))
+    game.moveState.move(3, 2)
+
+    const original = Math.random
+    vi.spyOn(Math, "random").mockReturnValue(0.99)
+    game.gameState?.finish()
+    Math.random = original
+
+    expect(game.moraleChecksNeeded).toStrictEqual([
+      { unit: unit2, from: [tloc], to: tloc, incendiary: true, critical: false },
+    ])
+
+    expect(game.lastAction?.stringValue).toBe(
+      "German Bicycle moved from E3 to D3, vehicle destroyed by mines"
+    )
+  })
+
   test("moving into AP mines", () => {
     const game = createMoveGame()
     const map = game.scenario.map
@@ -2847,6 +2919,263 @@ describe("movement", () => {
     expect(all[1].unit.name).toBe("Rifle")
 
     game.executeUndo(false)
+  })
+
+  test("moving bicycle into AT mines has no effect", () => {
+    const game = createMoveGame()
+    const map = game.scenario.map
+    const unit = new Unit(testGBike)
+    unit.id = "test1"
+    const floc = new Coordinate(4, 2)
+    map.addCounter(floc, unit)
+    const unit2 = new Unit(testGInf)
+    unit2.id = "test2"
+    map.addCounter(floc, unit2)
+    map.select(unit)
+
+    const feature = new Feature(testMineAT)
+    feature.id = "mine"
+    const tloc = new Coordinate(3, 2)
+    map.addCounter(tloc, feature)
+    organizeStacks(map)
+
+    game.setGameState(new MoveState(game))
+    game.moveState.move(3, 2)
+    game.gameState?.finish()
+
+    expect(game.moraleChecksNeeded).toStrictEqual([])
+
+    expect(game.lastAction?.stringValue).toBe(
+      "German Bicycle moved from E3 to D3, AT mines have no effect"
+    )
+
+    const all = map.allCounters
+    expect(all.length).toBe(3)
+    expect(all[0].hex?.x).toBe(3)
+    expect(all[0].hex?.y).toBe(2)
+    expect(all[0].feature.name).toBe("AT Minefield")
+    expect(all[1].hex?.x).toBe(3)
+    expect(all[1].hex?.y).toBe(2)
+    expect(all[1].unit.name).toBe("Bicycle")
+    expect(all[2].hex?.x).toBe(3)
+    expect(all[2].hex?.y).toBe(2)
+    expect(all[2].unit.name).toBe("Rifle")
+
+    expect(game.eliminatedUnits.length).toBe(0)
+  })
+
+  test("moving horse into AT mines has no effect", () => {
+    const game = createMoveGame()
+    const map = game.scenario.map
+    const unit = new Unit(testGHorse)
+    unit.id = "test1"
+    const floc = new Coordinate(4, 2)
+    map.addCounter(floc, unit)
+    const unit2 = new Unit(testGInf)
+    unit2.id = "test2"
+    map.addCounter(floc, unit2)
+    map.select(unit)
+
+    const feature = new Feature(testMineAT)
+    feature.id = "mine"
+    const tloc = new Coordinate(3, 2)
+    map.addCounter(tloc, feature)
+    organizeStacks(map)
+
+    game.setGameState(new MoveState(game))
+    game.moveState.move(3, 2)
+    game.gameState?.finish()
+
+    expect(game.moraleChecksNeeded).toStrictEqual([])
+
+    expect(game.lastAction?.stringValue).toBe(
+      "German Horse moved from E3 to D3, AT mines have no effect"
+    )
+
+    const all = map.allCounters
+    expect(all.length).toBe(3)
+    expect(all[0].hex?.x).toBe(3)
+    expect(all[0].hex?.y).toBe(2)
+    expect(all[0].feature.name).toBe("AT Minefield")
+    expect(all[1].hex?.x).toBe(3)
+    expect(all[1].hex?.y).toBe(2)
+    expect(all[1].unit.name).toBe("Horse")
+    expect(all[2].hex?.x).toBe(3)
+    expect(all[2].hex?.y).toBe(2)
+    expect(all[2].unit.name).toBe("Rifle")
+
+    expect(game.eliminatedUnits.length).toBe(0)
+  })
+
+  test("moving motorcycles into AT mines destroys them", () => {
+    const game = createMoveGame()
+    const map = game.scenario.map
+    const unit = new Unit(testGMotorcycle)
+    unit.id = "test1"
+    const floc = new Coordinate(4, 2)
+    map.addCounter(floc, unit)
+    const unit2 = new Unit(testGInf)
+    unit2.id = "test2"
+    map.addCounter(floc, unit2)
+    map.select(unit)
+
+    const feature = new Feature(testMineAT)
+    feature.id = "mine"
+    const tloc = new Coordinate(3, 2)
+    map.addCounter(tloc, feature)
+    organizeStacks(map)
+
+    game.setGameState(new MoveState(game))
+    game.moveState.move(3, 2)
+    game.gameState?.finish()
+
+    expect(game.moraleChecksNeeded).toStrictEqual([
+      { unit: unit2, from: [tloc], to: tloc, incendiary: true, critical: false },
+    ])
+
+    expect(game.lastAction?.stringValue).toBe(
+      "German Dnepr M-72 moved from E3 to D3, vehicle destroyed by mines"
+    )
+
+    const all = map.allCounters
+    expect(all.length).toBe(2)
+    expect(all[0].hex?.x).toBe(3)
+    expect(all[0].hex?.y).toBe(2)
+    expect(all[0].feature.name).toBe("AT Minefield")
+    expect(all[1].hex?.x).toBe(3)
+    expect(all[1].hex?.y).toBe(2)
+    expect(all[1].unit.name).toBe("Rifle")
+
+    expect(game.eliminatedUnits.length).toBe(1)
+    expect(game.eliminatedUnits[0].name).toBe("Dnepr M-72")
+  })
+
+  test("moving motorcycles into AP mines destroys them", () => {
+    const game = createMoveGame()
+    const map = game.scenario.map
+    const unit = new Unit(testGMotorcycle)
+    unit.id = "test1"
+    const floc = new Coordinate(4, 2)
+    map.addCounter(floc, unit)
+    const unit2 = new Unit(testGInf)
+    unit2.id = "test2"
+    map.addCounter(floc, unit2)
+    map.select(unit)
+
+    const feature = new Feature(testMineAP)
+    feature.id = "mine"
+    const tloc = new Coordinate(3, 2)
+    map.addCounter(tloc, feature)
+    organizeStacks(map)
+
+    game.setGameState(new MoveState(game))
+    game.moveState.move(3, 2)
+    game.gameState?.finish()
+
+    expect(game.moraleChecksNeeded).toStrictEqual([
+      { unit: unit2, from: [tloc], to: tloc, incendiary: true, critical: false },
+    ])
+
+    expect(game.lastAction?.stringValue).toBe(
+      "German Dnepr M-72 moved from E3 to D3, vehicle destroyed by mines"
+    )
+
+    const all = map.allCounters
+    expect(all.length).toBe(2)
+    expect(all[0].hex?.x).toBe(3)
+    expect(all[0].hex?.y).toBe(2)
+    expect(all[0].feature.name).toBe("AP Minefield")
+    expect(all[1].hex?.x).toBe(3)
+    expect(all[1].hex?.y).toBe(2)
+    expect(all[1].unit.name).toBe("Rifle")
+
+    expect(game.eliminatedUnits.length).toBe(1)
+    expect(game.eliminatedUnits[0].name).toBe("Dnepr M-72")
+  })
+
+  test("moving truck into AP mines destroys them", () => {
+    const game = createMoveGame()
+    const map = game.scenario.map
+    const unit = new Unit(testGTruck)
+    unit.id = "test1"
+    const floc = new Coordinate(4, 2)
+    map.addCounter(floc, unit)
+    const unit2 = new Unit(testGInf)
+    unit2.id = "test2"
+    map.addCounter(floc, unit2)
+    map.select(unit)
+
+    const feature = new Feature(testMineAP)
+    feature.id = "mine"
+    const tloc = new Coordinate(3, 2)
+    map.addCounter(tloc, feature)
+    organizeStacks(map)
+
+    game.setGameState(new MoveState(game))
+    game.moveState.move(3, 2)
+    game.gameState?.finish()
+
+    expect(game.moraleChecksNeeded).toStrictEqual([
+      { unit: unit2, from: [tloc], to: tloc, incendiary: true, critical: false },
+    ])
+
+    expect(game.lastAction?.stringValue).toBe(
+      "German Opel Blitz moved from E3 to D3, vehicle destroyed by mines"
+    )
+
+    const all = map.allCounters
+    expect(all.length).toBe(3)
+    expect(all[0].hex?.x).toBe(3)
+    expect(all[0].hex?.y).toBe(2)
+    expect(all[0].feature.name).toBe("AP Minefield")
+    expect(all[1].hex?.x).toBe(3)
+    expect(all[1].hex?.y).toBe(2)
+    expect(all[1].unit.name).toBe("Opel Blitz")
+    expect(all[1].unit.isWreck).toBe(true)
+    expect(all[2].hex?.x).toBe(3)
+    expect(all[2].hex?.y).toBe(2)
+    expect(all[2].unit.name).toBe("Rifle")
+
+    expect(game.eliminatedUnits.length).toBe(1)
+    expect(game.eliminatedUnits[0].name).toBe("Opel Blitz")
+  })
+
+  test("moving tank into AP mines has no effect", () => {
+    const game = createMoveGame()
+    const map = game.scenario.map
+    const unit = new Unit(testGTank)
+    unit.id = "test1"
+    const floc = new Coordinate(4, 2)
+    map.addCounter(floc, unit)
+    map.select(unit)
+
+    const feature = new Feature(testMineAP)
+    feature.id = "mine"
+    const tloc = new Coordinate(3, 2)
+    map.addCounter(tloc, feature)
+    organizeStacks(map)
+
+    game.setGameState(new MoveState(game))
+    game.moveState.move(3, 2)
+    game.gameState?.finish()
+
+    expect(game.moraleChecksNeeded).toStrictEqual([])
+
+    expect(game.lastAction?.stringValue).toBe(
+      "German PzKpfw 35(t) moved from E3 to D3, AP mines have no effect"
+    )
+
+    const all = map.allCounters
+    expect(all.length).toBe(3)
+    expect(all[0].hex?.x).toBe(3)
+    expect(all[0].hex?.y).toBe(2)
+    expect(all[0].feature.name).toBe("AP Minefield")
+    expect(all[1].hex?.x).toBe(3)
+    expect(all[1].hex?.y).toBe(2)
+    expect(all[1].marker.type).toBe("tracked_hull")
+    expect(all[2].hex?.x).toBe(3)
+    expect(all[2].hex?.y).toBe(2)
+    expect(all[2].unit.name).toBe("PzKpfw 35(t)")
   })
 
   test("vehicle moving into mines", () => {
