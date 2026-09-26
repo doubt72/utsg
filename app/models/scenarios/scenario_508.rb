@@ -67,8 +67,8 @@ module Scenarios
           to halt the German advance in a short but intense firefight.  The
           German commander was seriously wounded, and the attackers retreated.
           This delay gave the Norwegian leadership critical time to escape
-          farther north, eventually allowing them to continue resistance and
-          organize in exile.",
+          farther north, eventually allowing them to continue to resist and
+          eventually organize in exile.",
         ]
       end
 

@@ -55,8 +55,8 @@ module Scenarios
           troops to easily create fortifications and ambush advancing Allied
           forces. The bocage also hindered Allied tank movement and made
           progress slow and costly.",
-          "The fighting in the bocage became known as the \"Battle of the
-          Hedgerows\" or \"Hedge War,\" highlighting the significant impact of
+          "The fighting in the bocage became known as the Battle of the
+          Hedgerows or Hedge War, highlighting the significant impact of
           this terrain on the Allied advance.",
         ]
       end

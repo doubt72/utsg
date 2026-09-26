@@ -65,7 +65,7 @@ module Scenarios
           fortified it with 88mm guns.  During the battle, the Germans
           attempted to draw in British tanks by deploying a small tank force
           as a decoy to draw British armor into an ambush; the ambush was
-          executed successfully and all but one of the attacking British tank
+          executed successfully and all but one of the attacking British tanks
           were destroyed.",
         ]
       end

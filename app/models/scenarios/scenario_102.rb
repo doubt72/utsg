@@ -54,7 +54,7 @@ module Scenarios
           Hussars and 1st Royal Tank Regiment were sent to capture Fort
           Capuzzo, which they did.  The Fort was not occupied for long due to
           shortages of troops and equipment, instead demolition parties
-          destroyed as much of the Italian ammunition and vehicles stored
+          destroyed as much of the Italian ammunition and as many of the vehicles stored
           there as possible.",
           "Fort Capuzzo would soon be reoccupied by the Italians, and would end
           up changing hands several more times over the course of the war.",

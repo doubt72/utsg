@@ -89,7 +89,7 @@ module Scenarios
           "Nonetheless, the infantry of the German Armored fighting formations
           that were the spearhead of the advance were mobile infantry, which
           allowed them to concentrate forces at the point of attack, something
-          the French in turn could not easily counter one their defensive
+          the French in turn could not easily counter once their defensive
           lines were breached and they were forced onto the defensive
           piecemeal.",
         ]

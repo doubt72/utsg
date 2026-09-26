@@ -1,7 +1,5 @@
 Features/Bug Fixes
-  + Should not be able to pick up weapon unless movement left
-  + Tank with sponson fixed gun that wasn't broken
-  - 523 Hidden cavalry
+  + 523 Hidden cavalry
   - (046) Special partisan rules
   - 319 Test playing multiple factions
   - 524 Finns on the other side
@@ -13,7 +11,7 @@ Features/Bug Fixes
   - Add Some Developer Notes
   - Strategy notes
 
-Maps 216, 310, 318
+Maps 310, 318
 
 Nice to Have Eventually:
   ? Better rollback of smoke on reaction fire

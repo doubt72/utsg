@@ -20,6 +20,13 @@ module Scenarios
         [2, :alm_wz__35_at_rifle],
         [2, :alm_zb_vz__30],
         :alm_81mm_mortar,
+        [5, :alm_horse],
+        [2, :alm_decoy_leader6],
+        [7, :alm_decoy_squad4_s],
+        :alm_decoy_weapon2,
+        :alm_decoy_weapon1,
+        [4, :alm_decoy_weapon0],
+        [5, :alm_decoy_horse],
       ] },
     }.freeze
 
@@ -52,12 +59,33 @@ module Scenarios
           map_data:,
           allied_units:,
           axis_units:,
+          special_rules: ["allied_hidden_units"],
         }
       end
 
       def description
         [
-          "no description yet",
+          "The charge at Krojanty or the Battle of Krojanty was a Polish
+          cavalry charge on the first day of the Second World War near the
+          Pomeranian village of Krojanty, and was part of the larger Battle of
+          Tuchola Forest. Polish soldiers advanced east along the railway to a
+          railroad crossroads 7 kilometers from the town of Chojnice, where
+          elements of the Polish cavalry charged and dispersed a German
+          infantry battalion. Machine gun fire from German armoured cars that
+          appeared from a nearby forest forced the Poles to retreat. However,
+          the attack delayed the German advance, allowing the Polish 1st Rifle
+          Battalion and Czersk Operational Group to withdraw safely.",
+          "After journalists saw the bodies of horses and cavalrymen, it
+          prompted false reports of Polish cavalry attacking German tanks.
+          Nazi propaganda took advantage of that to suggest that the Poles
+          attacked intentionally since they had believed the Germans still had
+          the dummy tanks permitted by the Versailles Treaty's restrictions,
+          but contrary to German propaganda, Polish cavalry brigades never
+          charged tanks with their sabres or lances, were in the process of
+          being reorganized into motorized brigades, and had anti-tank weapons
+          including the Wz. 35 anti-tank rifle which could penetrate the light
+          armor the small Panzer I and Panzer II tanks the Germans had at the
+          time.",
         ]
       end
 

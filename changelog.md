@@ -1,7 +1,10 @@
 # 0.152
 
+- Add hidden cavalry for 523
 - Bug fix: repair role didn't fix hull guns
 - Bug fix: picking up weapons on rushes incorrectly based on non-activated movement
+- Updated 102, 103, 107, 303, 502, 503, 504, 508 (clean up scenario descriptions)
+- Updated 216, 310, 318, 523
 - Updated/promoted 504
 
 # 0.151

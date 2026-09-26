@@ -10,7 +10,7 @@ export function hideObserved(game: Game, uf: Unit | Feature): boolean {
   const unit = uf as Unit
   const player = unit.playerNation === game.playerOneNation ? 1 : 2
   const special = game.scenario.specialRules
-  if (unit.canCarrySupport || unit.uncrewedSW) {
+  if (unit.canCarrySupport || unit.uncrewedSW || unit.isCavalry) {
     if ((special.includes("allied_hidden_units") && player === 1) ||
         (special.includes("axis_hidden_units") && player === 2)) {
       return true

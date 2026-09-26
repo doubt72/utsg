@@ -56,7 +56,7 @@ module Scenarios
         [
           "During the opening of Operation Crusader, the British
           22nd Armoured Brigade attempted to capture Bir el Gubi, a key
-          position in Cyrenaica. The Italian \"Ariete\" Division repelled the
+          position in Cyrenaica. The Italian Ariete Division repelled the
           attack, inflicting heavy casualties and holding their ground,
           resulting in a significant Italian victory.",
           "With their forces unexpectedly tied up with the Italians, only one
@@ -65,7 +65,7 @@ module Scenarios
           the initial British move in Crusader, though it later defeated the
           Italian-German forces in a battle of attrition and forced them to
           retreat. The British attacked with Crusader tanks with long-range
-          artillery support but no infantry. The \"Ariete\" Division had adopted
+          artillery support but no infantry. The Ariete Division had adopted
           the German practice of tank-infantry coordination while training
           with the Panzer units of the Afrika Korps during the previous months
           and had put it to good use at Bir el Gubi.",

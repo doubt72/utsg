@@ -74,7 +74,7 @@ module Scenarios
           "The day after Sedan fell, the first Panzer division raced south
           towards Connage and Bulson.  The French 55th and 71st infantry
           divisions had been routed and were in full retreat.  In the
-          confusion the French response was delayed, until finally French
+          confusion the French response was delayed, until the French
           finally committed their armor to try and fill the gap. The French
           armor was very slow and it took a long time until it finally
           arrived, allowing the Germans to advance significantly in the

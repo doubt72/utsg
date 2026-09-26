@@ -12,12 +12,12 @@ export default function SpecialRulesSection({ section }: SectionProps) {
       <h3>{section}.1. Unobserved Units and Decoys</h3>
       <p>
         Some scenarios start with one side or both unobserved and include &quot;decoy&quot; units.
-        Unobserved leaders, infantry, and infantry weapons (only) look exactly like decoys to their
-        opponent (other types of units start observed), showing only what type of unit they are (or
-        might be), and what their size and movement are, allowing the player to try and deceive
-        their opponent as to which of their units are real and which aren&apos;t. Unobserved units
-        also display that status to the player that controls them so they can see if they&apos;re
-        unobserved or not.
+        Unobserved leaders, infantry, cavalry, and infantry weapons (only) look exactly like decoys
+        to their opponent (other types of units start observed), showing only what type of unit they
+        are (or might be), and what their size and movement are, allowing the player to try and
+        deceive their opponent as to which of their units are real and which aren&apos;t. Unobserved
+        units also display that status to the player that controls them so they can see if
+        they&apos;re unobserved or not.
       </p>
       <p>
         Units become &quot;observed&quot; whenever an opponent moves next to them, or fires at them

@@ -60,7 +60,7 @@ module Scenarios
           (among other similar things) \"Do not open! Surveillance Equipment
           A.R.\" Among various codenames, it was known as \"Urugwaj\" after
           the country it was supposedly being exported to, and that's the name
-          it was most known as after the war.",
+          it was most known by after the war.",
           "The subterfuge was successful — despite the fairly large numbers
           produced and deployed, neither the Germans or Soviets were aware of
           the rifle's existance unti encountering it in the field.  The weapon
