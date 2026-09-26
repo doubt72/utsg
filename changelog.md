@@ -1,3 +1,11 @@
+# 0.153
+
+- Add ability to search for factions with text search
+- Combine Vichy France with Axis Minors, and (player one) Finland with Allied Minors
+- Promoted 010
+- Promoted 009, 417, 505 to beta
+- Added prototype 117, 118, 119
+
 # 0.152
 
 - Add hidden cavalry for 523

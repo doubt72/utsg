@@ -17,9 +17,9 @@ module Utility
         # { name: "Israeli", code: "isr", nations: ["isr"] },
         {
           name: "Minor Powers", code: "alm",
-          nations: %w[pol gre nor bel dut yug eth bol cze],
+          nations: %w[pol gre nor bel dut yug eth bol cze fin], # includes fin
         },
-        { name: "Finnish", code: "fin", nations: ["fin"] },
+        # { name: "Finnish", code: "fin", nations: ["fin"] },
       ].freeze
 
       AVAILABLE_AXIS_FACTIONS = [
@@ -29,7 +29,6 @@ module Utility
         { name: "Japanese", code: "jap", nations: ["jap"] },
         # ...Move this to minors? (anything > 5 scenarios = include here)
         { name: "Finnish", code: "fin", nations: ["fin"] },
-        { name: "Vichy French", code: "vcf", nations: ["vcf"] },
         # { name: "Chinese", code: "chb", nations: ["chb2 chg"] },
         # { name: "Communist", code: "com", nations: %w[ussr chc nk vie] },
         # { name: "Nationalist", code: "nsp", nations: ["nsp"] },
@@ -38,9 +37,67 @@ module Utility
         # { name: "Arab League", code: "arl", nations: %w[syr jor egy] },
         {
           name: "Minor Powers", code: "axm",
-          nations: %w[hun bul rom slv cro nsp par],
+          nations: %w[hun bul rom slv cro nsp par vcf], # includes vcf
         },
       ].freeze
+
+      def code_to_search(code) # rubocop:disable Metrics/MethodLength
+        {
+          "ussr" => "Soviet Union",
+          "usa" => "American",
+          "bra" => "Brazilian",
+          "uk" => "British",
+          "can" => "Canadian",
+          "aus" => "Australian",
+          "nz" => "New Zealand",
+          "ind" => "Indian",
+          "sa" => "South African",
+          "fra" => "French",
+          "frf" => "Free French",
+          "chi" => "Chinese",
+          "pol" => "Polish",
+          "gre" => "Greek",
+          "nor" => "Norwegian",
+          "bel" => "Belgian",
+          "dut" => "Dutch",
+          "yug" => "Yugoslavian",
+          "fin" => "Finnish",
+
+          "rsp" => "Republican Spain",
+          "eth" => "Ethiopian",
+          "bol" => "Bolivian",
+          "chb" => "Beiyang Chinese",
+
+          "un" => "United Nations",
+          "sk" => "South Korean",
+          "doi" => "Indian",
+          "isr" => "Israeli",
+
+          "cze" => "Czeckoslovakian",
+
+          "ger" => "German",
+          "ita" => "Italian",
+          "jap" => "Japanese",
+          "hun" => "Hungarian",
+          "bul" => "Bulgarian",
+          "rom" => "Romanian",
+          "slv" => "Slovakian",
+          "cro" => "Croatian",
+          "vcf" => "Vichy French",
+
+          "nsp" => "Nationalist Spain",
+          "chc" => "Communist Chinese",
+          "par" => "Paraguayan",
+          "chg" => "Beiyang Chinese",
+
+          "nk" => "North Korean",
+          "vie" => "Viet Minh;Vietminh;Vietnamese",
+          "pak" => "Pakistani",
+          "syr" => "Syrian",
+          "jor" => "TransJordanian",
+          "egy" => "Egyptian",
+        }[code] || ""
+      end
     end
   end
 end

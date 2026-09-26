@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Alligator Creek"
     ALLIES = ["usa"].freeze
     AXIS = ["jap"].freeze
-    STATUS = "p"
-    VERSION = "0.1"
+    STATUS = "b"
+    VERSION = "0.2"
 
     DATE = [1942, 8, 21].freeze
     LAYOUT = [15, 23, "x"].freeze
@@ -45,7 +45,7 @@ module Scenarios
     class << self
       def generate
         {
-          turns: 6,
+          turns: 5,
           first_deploy: 1,
           first_action: 2,
           date:,

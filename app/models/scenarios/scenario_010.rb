@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Fish in a Barrel"
     ALLIES = ["ussr"].freeze
     AXIS = ["hun"].freeze
-    STATUS = "b"
-    VERSION = "0.4"
+    STATUS = ""
+    VERSION = "1.0"
 
     DATE = [1941, 8, 1].freeze
     LAYOUT = [15, 23, "x"].freeze

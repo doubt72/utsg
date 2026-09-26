@@ -229,8 +229,7 @@ export default function NewGame() {
       <select
         name="sort"
         className="form-input-gray"
-        onChange={({ target }) => onSearchChange(target.name, target.value)}
-      >
+        onChange={({ target }) => onSearchChange(target.name, target.value)} >
         {
           sorts.map(sel => {
             return <option key={sel.code} value={sel.code}>{sel.name}</option>
@@ -250,8 +249,7 @@ export default function NewGame() {
     <select
       name="allies"
       className="form-input-gray"
-      onChange={({ target }) => onSearchChange(target.name, target.value)}
-    >
+      onChange={({ target }) => onSearchChange(target.name, target.value)} >
       <option key="" value="">[ any ]</option>
       {
         alliedFactions.map((faction: { code: string, name: string }) => {
@@ -265,8 +263,7 @@ export default function NewGame() {
     <select
       name="axis"
       className="form-input-gray"
-      onChange={({ target }) => onSearchChange(target.name, target.value)}
-    >
+      onChange={({ target }) => onSearchChange(target.name, target.value)} >
       <option key="" value="">[ any ]</option>
       {
         axisFactions.map((faction: { code: string, name: string }) => {
@@ -293,8 +290,7 @@ export default function NewGame() {
     <select
       name="status"
       className="form-input-gray"
-      onChange={({ target }) => onSearchChange(target.name, target.value)}
-    >
+      onChange={({ target }) => onSearchChange(target.name, target.value)} >
       {
         statuses.map(sel => {
           return <option key={sel.code} value={sel.code}>{sel.name}</option>
@@ -321,8 +317,7 @@ export default function NewGame() {
     <select
       name="theater"
       className="form-input-gray"
-      onChange={({ target }) => onSearchChange(target.name, target.value)}
-    >
+      onChange={({ target }) => onSearchChange(target.name, target.value)} >
       {
         theaters.map(sel => {
           return <option key={sel.code} value={sel.code}>{sel.name}</option>
@@ -343,8 +338,7 @@ export default function NewGame() {
     <select
       name="type"
       className="form-input-gray"
-      onChange={({ target }) => onSearchChange(target.name, target.value)}
-    >
+      onChange={({ target }) => onSearchChange(target.name, target.value)} >
       {
         unitClasses.map(sel => {
           return <option key={sel.code} value={sel.code}>{sel.name}</option>
@@ -371,8 +365,7 @@ export default function NewGame() {
     <select
       name="size"
       className="form-input-gray"
-      onChange={({ target }) => onSearchChange(target.name, target.value)}
-    >
+      onChange={({ target }) => onSearchChange(target.name, target.value)} >
       {
         sizes.map(sel => {
           return <option key={sel.code} value={sel.code}>{sel.name}</option>

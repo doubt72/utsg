@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Line in the Snow"
     ALLIES = ["ussr"].freeze
     AXIS = ["fin"].freeze
-    STATUS = "a"
-    VERSION = "0.3"
+    STATUS = "b"
+    VERSION = "0.4"
 
     DATE = [1939, 12, 15].freeze
     LAYOUT = [15, 11, "x"].freeze

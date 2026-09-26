@@ -17,7 +17,9 @@ module Utility
         return unless string
 
         scenarios.filter! do |s|
-          s[:string].include?(string.downcase) || s[:id].include?(string)
+          s[:string].include?(string.downcase) || s[:id].include?(string) ||
+            s[:allies].map { |c| code_to_search(c) }.join(" ").downcase.include?(string.downcase) ||
+            s[:axis].map { |c| code_to_search(c) }.join(" ").downcase.include?(string.downcase)
         end
       end
 

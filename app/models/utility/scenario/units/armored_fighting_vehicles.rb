@@ -83,7 +83,7 @@ module Utility
               ["ussr", "M3 Stuart", 41, { bd: 4 }], ["ussr", "M3 Grant", 41, { bd: 4 }],
               ["ussr", "M4 Sherman", 43], ["ussr", "M4A1(76) Sherman", 44, { sn: 3 }],
 
-              ["vcf", "Renault FT", 40],
+              ["vcf", "Renault FT", 40], ["vcf", "SOMUA S35", 40], ["vcf", "Renault R35", 40],
             ].each do |unit|
               tank = { t: "tank", i: "tank" }
               unit.each_with_index do |v, i|
@@ -174,7 +174,8 @@ module Utility
               ["uk", "Daimler AC", 41], ["uk", "Daimler AC CS", 41], ["uk", "Humber AC I", 40],
               ["uk", "Humber AC IV", 42], ["uk", "T17E1 Staghound", 44, { sn: 1 }],
               ["uk", "Humber LRC", 40], ["uk", "White Scout Car", 39, { sn: 1 }],
-              ["uk", "M8 Greyhound", 43],
+              ["uk", "M8 Greyhound", 43], ["uk", "Marmon-H AC IIIA", 41, { sn: 2 }],
+              ["uk", "Marmon-H AC IV", 43, { sn: 1 }], ["uk", "Marmon-H AC IVF", 43, { sn: 2 }],
 
               ["usa", "M3A1 Scout Car", 39, { sn: 1 }], ["usa", "M8 Greyhound", 43],
               ["usa", "M20 Greyhound", 43, { sn: 1 }],

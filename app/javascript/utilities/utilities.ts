@@ -73,10 +73,10 @@ export function axisCodeToName(code: string): string {
     { name: "Vichy French", code: "vcf" },
 
     // Interwar
-    { name: "Nationalist", code: "rsp" },
+    { name: "Nationalist", code: "nsp" },
     { name: "Communist", code: "chc" },
     { name: "Communist", code: "par" },
-    { name: "Beiyang", code: "chb2" },
+    { name: "Beiyang", code: "chb" },
     { name: "Guanxi", code: "chg" },
 
     // Cold War
@@ -385,4 +385,4 @@ export const critHitDiff = 8
 export const critMorale = 4
 export const titleName = "A Hex Too Far"
 export const subtitleName = "Light Tactical Battle System"
-export const serverVersion = "0.152"
+export const serverVersion = "0.153"
