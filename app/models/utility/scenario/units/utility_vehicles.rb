@@ -75,7 +75,10 @@ module Utility
               ["ger", "le. gl. Lkw", "truck", 37],
 
               ["ita", "Alfa Romeo 430", "truck", 42], ["ita", "Alfa Romeo 500", "truck", 37],
-              ["ita", "Alfa Romeo 800", "truck", 40],
+              ["ita", "Alfa Romeo 800", "truck", 40], ["ita", "SPA AS.37", "truck", 37],
+              ["ita", "SPA-Viberti AS.42", "truck", 42], ["ita", "Fiat 634", "truck", 31],
+              ["ita", "Lancia 3Ro", "truck", 39], ["ita", "SPA AS.37 MG", "truck", 39],
+              ["ita", "Lancia 3Ro AT", "truck", 39], ["ita", "Lancia 3Ro MG", "truck", 39],
 
               ["uk", "Bedford MW", "truck", 39], ["uk", "Bedford OY", "truck", 39],
               ["uk", "Bedford QL", "truck", 41], ["uk", "Ford F15", "truck", 39],

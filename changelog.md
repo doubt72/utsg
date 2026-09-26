@@ -6,6 +6,7 @@
 - Updated 102, 103, 107, 303, 502, 503, 504, 508 (clean up scenario descriptions)
 - Updated 216, 310, 318, 523
 - Updated/promoted 504
+- Added prototype 115, 116
 
 # 0.151
 

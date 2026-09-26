@@ -1,5 +1,4 @@
 Features/Bug Fixes
-  + 523 Hidden cavalry
   - (046) Special partisan rules
   - 319 Test playing multiple factions
   - 524 Finns on the other side
