@@ -86,16 +86,16 @@ module Scenarios
           issued Clark with orders to implement it, but Clark was determined
           that VI Corps should strike directly for Rome.",
           "By the end of 25 May, the 3rd Infantry Division was heading into
-          the Velletri gap near Cori, and elements of the 1st Armoured
+          the Velletri gap near Cori, and elements of the 1st Armored
           Division were within 3 miles of Valmontone in contact with the
           Germans. Although VI Corps had suffered over 3,300 casualties in the
           three days fighting, Operation Buffalo was going to plan, and
-          Truscott was confident that a concerted attack by the 1st Armoured
+          Truscott was confident that a concerted attack by the 1st Armored
           Division and the 3rd Infantry Division the next day would reach
           Route 6. However, that evening, Truscott received new orders from
           Clark to implement Operation Turtle and turn the main line of attack
           90 degrees to the left. Although the attack towards Valmontone and
-          Route 6 would continue, the 1st Armoured Division was to withdraw to
+          Route 6 would continue, the 1st Armored Division was to withdraw to
           prepare to exploit the planned breakthrough along the new line of
           attack leaving the 3rd Infantry Division to continue towards
           Valmontone without it. Truscott was shocked; to say the change was

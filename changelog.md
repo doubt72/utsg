@@ -1,3 +1,10 @@
+# 0.154
+
+- Updated 008, 014, 033, 035, 103, 104, 121, 204, 216, 302, 307, 509, 515, 516, 523, 524, 609 (minor text changes)
+- Updated 417
+- Updated/promoted 009
+- Added prototype 122
+
 # 0.153
 
 - Add ability to search for factions with text search

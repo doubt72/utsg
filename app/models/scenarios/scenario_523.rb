@@ -71,7 +71,7 @@ module Scenarios
           Tuchola Forest. Polish soldiers advanced east along the railway to a
           railroad crossroads 7 kilometers from the town of Chojnice, where
           elements of the Polish cavalry charged and dispersed a German
-          infantry battalion. Machine gun fire from German armoured cars that
+          infantry battalion. Machine gun fire from German armored cars that
           appeared from a nearby forest forced the Poles to retreat. However,
           the attack delayed the German advance, allowing the Polish 1st Rifle
           Battalion and Czersk Operational Group to withdraw safely.",

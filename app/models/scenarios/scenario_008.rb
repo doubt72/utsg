@@ -71,7 +71,7 @@ module Scenarios
           bombardment; accordingly, the Tigers tanks of the spearhead were
           redeployed to strike towards this area.",
           "The Red Army recognized the threat and countered with a large force
-          of T-34s.  In the resulting three-hour battle,  The Soviet armoured
+          of T-34s.  In the resulting three-hour battle,  The Soviet armored
           units lost 42 tanks while the Germans lost two Tigers and a further
           five more immobilized with track damage.  While the Red Army
           counter-attack was defeated and the first defensive belt breached,

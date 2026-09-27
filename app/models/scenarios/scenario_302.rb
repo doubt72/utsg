@@ -63,7 +63,7 @@ module Scenarios
           tanks the Germans committed.",
           "Ordered by Hitler despite protests from the German commanders on
           the spot, there was little chance of the attack succeeding, and the
-          concentration of their armoured reserves at the western end of the
+          concentration of their armored reserves at the western end of the
           front in Normandy soon led to disaster, as they were outflanked to
           their south and the front to their east collapsed, resulting in many
           of the German troops in Normandy being trapped in the Falaise

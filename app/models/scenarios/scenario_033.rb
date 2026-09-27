@@ -73,7 +73,7 @@ module Scenarios
           bombardment and Red Army counter bombardments, the 9th Army began
           its attack.",
           "On the first day, the XLVII Panzer Corps penetrated 6 miles into
-          the Red Army defences before stalling, and the XLI Panzer Corps
+          the Red Army defenses before stalling, and the XLI Panzer Corps
           reached the heavily fortified small town of Ponyri, in the second
           defensive belt, which controlled the roads and railways leading
           south to Kursk. The Soviets bagan their counter-attack on the

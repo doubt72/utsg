@@ -71,8 +71,8 @@ module Scenarios
           the narrow roads and wooded hills of the Ardennes in Luxembourg and
           southern Belgium.",
 
-          "The advance of Army Group A was to be delayed by Belgian motorised
-          infantry and French mechanised cavalry divisions advancing into the
+          "The advance of Army Group A was to be delayed by Belgian motorized
+          infantry and French mechanized cavalry divisions advancing into the
           Ardennes.  The Belgian troops blocked roads, held up the 1st Panzer
           Division at Bodange for about eight hours and then retired
           northwards too quickly for the French, who had not arrived. The

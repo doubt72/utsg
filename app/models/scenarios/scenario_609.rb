@@ -80,7 +80,7 @@ module Scenarios
           numbers — as well as their superiority in artillery, tanks, planes
           and military intelligence — eventually began to take their toll on
           the ill-reinforced defenders. By midnight, the two Australian
-          brigades involved in the defence of the beach had lost
+          brigades involved in the defense of the beach had lost
           communications with each other and the 22nd Brigade was forced to
           retreat in confusion.",
         ]

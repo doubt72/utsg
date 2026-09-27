@@ -85,7 +85,7 @@ module Scenarios
           700,000 men under arms, more than 400,000 had fewer than four weeks
           of training and not one division was at full readiness when the
           invasion began. The Axis brought 52 divisions, almost half German,
-          and 2,200 aircraft; German armoured and motorised formations that
+          and 2,200 aircraft; German armored and motorized formations that
           were veterans of the Polish, Norwegian and French campaigns led the
           assault. In addtion, the insistence of the Yugoslav army on
           defending all its borders likely assured its failure.",

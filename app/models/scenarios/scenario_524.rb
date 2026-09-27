@@ -70,7 +70,7 @@ module Scenarios
           demanded that Finland break diplomatic ties with Germany and expel
           or disarm any German soldiers remaining in Finland.",
           "The Wehrmacht had anticipated this turn of events and planned an
-          organised withdrawal to Nazi-occupied Norway. Despite a failed
+          organized withdrawal to Nazi-occupied Norway. Despite a failed
           offensive landing operation by Germany in the Gulf of Finland, the
           evacuation proceeded peacefully at first. The Finns escalated the
           situation into warfare on 28 September after Soviet pressure to

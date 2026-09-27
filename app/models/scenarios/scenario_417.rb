@@ -37,7 +37,7 @@ module Scenarios
       "0": { list: [
         :jap_leader_5_1,
         :jap_leader_4_1,
-        [12, :jap_a_division_s],
+        [16, :jap_a_division_s],
         [3, :jap_type_96_lmg],
       ] },
     }.freeze

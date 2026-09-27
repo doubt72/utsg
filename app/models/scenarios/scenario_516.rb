@@ -63,7 +63,7 @@ module Scenarios
       def description
         [
           "During the German invasion of Poland, cavalry formed about a tenth
-          of the Polish Army. Cavalry units were organised into 11 cavalry
+          of the Polish Army. Cavalry units were organized into 11 cavalry
           brigades, each composed of 3 to 4 cavalry regiments with organic
           artillery, armor and infantry. Two additional brigades had recently
           been converted to motorized and armored units. In addition, every

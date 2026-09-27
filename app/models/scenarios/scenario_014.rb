@@ -72,7 +72,7 @@ module Scenarios
           been used for Moscow's defense.  The only notable success of the
           offensive occurred west of Moscow near Aleksino, where Soviet tanks
           inflicted heavy losses on the 4th Army because the Germans still
-          lacked anti-tank weapons capable of damaging the new, well-armoured
+          lacked anti-tank weapons capable of damaging the new, well-armored
           T-34 tanks.",
         ]
       end

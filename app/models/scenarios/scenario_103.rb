@@ -55,7 +55,7 @@ module Scenarios
       def description
         [
           "During the opening of Operation Crusader, the British
-          22nd Armoured Brigade attempted to capture Bir el Gubi, a key
+          22nd Armored Brigade attempted to capture Bir el Gubi, a key
           position in Cyrenaica. The Italian Ariete Division repelled the
           attack, inflicting heavy casualties and holding their ground,
           resulting in a significant Italian victory.",

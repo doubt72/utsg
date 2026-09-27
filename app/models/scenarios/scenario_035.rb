@@ -62,7 +62,7 @@ module Scenarios
 
       def description
         [
-          "The Vyborg–Petrozavodsk offensive or Karelian offensive was a
+          "The Vyborg-Petrozavodsk offensive or Karelian offensive was a
           strategic operation by the Soviets against Finland on the Karelian
           Isthmus and East Karelia fronts of the Continuation War. The Soviet
           forces captured East Karelia and Vyborg/Viipuri, but after that the

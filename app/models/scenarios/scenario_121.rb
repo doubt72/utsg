@@ -68,7 +68,7 @@ module Scenarios
           "At dusk of the second day, once the battle was well underway, Axis
           tanks from the German 15th Panzer Division and the Italian Littorio
           Division counterattacked with the sun at their backs to engage the
-          1st Armoured Division. The first big tank engagement of El Alamein
+          1st Armored Division. The first big tank engagement of El Alamein
           had begun: over 100 tanks were involved and half were destroyed by
           dark; neither position was meaninfully altered.",
         ]

@@ -73,7 +73,7 @@ module Scenarios
           "Historically, the Indians didn't have time to create a proper
           fortified box and were overrun after a day of desperate fighting,
           but bought time for Auchinleck to organize a defense to the west at
-          Ruweisat Ridge.  The British 1st Armoured Division was sent to
+          Ruweisat Ridge.  The British 1st Armored Division was sent to
           intervene at Deir el Shein but ran into the 15th Panzer Division
           instead to the south and ultimately was unable to relieve the
           Indians.  This version of the part of the action posits what might

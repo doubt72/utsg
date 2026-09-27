@@ -69,7 +69,7 @@ module Scenarios
           ground.  While the task of crossing the river would be easier in
           that the Rapido upstream of Cassino was fordable, the flooding made
           movement on the approaches each side very difficult. In particular,
-          armour could only move on paths laid with steel matting and it took
+          armor could only move on paths laid with steel matting and it took
           eight days of bloody fighting across the waterlogged ground for 34th
           Division to push back the German 44th Infantry Division to establish
           a foothold in the mountains.",

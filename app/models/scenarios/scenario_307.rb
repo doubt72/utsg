@@ -76,7 +76,7 @@ module Scenarios
           "In the days following the D-Day landings, British forces aimed to
           exploit a gap in the German lines and capture the strategically
           important town of Villers-Bocage, west of Caen.  Elements of the
-          British 7th Armoured Division, including the 4th County of London
+          British 7th Armored Division, including the 4th County of London
           Yeomanry, entered the town intending to secure high ground beyond it that
           would threaten the German rear.  However, they were ambushed by
           German Tiger tanks from the elite 1st SS Panzer Division, most
