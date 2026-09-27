@@ -2,9 +2,10 @@
 
 - Add ability to search for factions with text search
 - Combine Vichy France with Axis Minors, and (player one) Finland with Allied Minors
+- Update 102
 - Promoted 010
 - Promoted 009, 417, 505 to beta
-- Added prototype 117, 118, 119
+- Added prototype 117, 118, 119, 120, 121
 
 # 0.152
 

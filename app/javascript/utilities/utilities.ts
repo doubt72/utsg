@@ -75,7 +75,7 @@ export function axisCodeToName(code: string): string {
     // Interwar
     { name: "Nationalist", code: "nsp" },
     { name: "Communist", code: "chc" },
-    { name: "Communist", code: "par" },
+    { name: "Paraguayan", code: "par" },
     { name: "Beiyang", code: "chb" },
     { name: "Guanxi", code: "chg" },
 
