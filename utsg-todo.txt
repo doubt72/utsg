@@ -1,11 +1,11 @@
 Features/Bug Fixes
-  - Tanks should not be able to take advantage of paths in mud
-    - Test vehicle mud road/path, test inf path
+  + Tanks should not be able to take advantage of paths in mud
+    + Test vehicle mud road/path, test inf path
   - Should be able to rapid fire at moving unit
     - Doesn't break weapon already broken
       - Make sure no additional break penalty (not needed)
     - Shoots from beginning
-      - Doesn't break anyone twice
+      - Doesn't break/pin anyone twice
       - Option to go back is point of first pin/break
   - (046) Special partisan rules
   - 319 Test playing multiple factions

@@ -62,8 +62,8 @@ export default function SpecialRulesSection({ section }: SectionProps) {
       </p>
       <h3>{section}.3. Cavalry</h3>
       <p>
-        Cavalry has several special rules, and horse cavalry is handled slightly differently from
-        bicycle or motorcycle cavalry.
+        Cavalry has several special rules, and all three types of cavalry (horse, bicycle,
+        motorcycle) are handled slightly differently.
       </p>
       <ul>
         <li>
@@ -99,6 +99,9 @@ export default function SpecialRulesSection({ section }: SectionProps) {
           If an opponent assault moves into a hex with cavalry, the cavalry is removed. If the
           cavalry was carrying any units, the units are automatically dismounted (but don&apos;t
           require a morale check).
+        </li>
+        <li>
+          Horses and bicycles can use paths; motorcycles cannot.
         </li>
       </ul>
     </div>

@@ -101,7 +101,9 @@ export function movementCost(
     cost = 0.5
   } else if (target.isTracked && roadMove) {
     cost = 1
-  } else if (dir && alongRoad(hexFrom, hexTo, dir, true)) {
+  } else if (dir && alongRoad(
+        hexFrom, hexTo, dir, target.infantryTarget || (target.isCavalry && target.name === "Bicycle"
+      ))) {
     cost = 1
   }
   if (allAlongRoad(map, index) && (map.game?.moveState.path.length ?? 0) > 1 && !roadMove) {

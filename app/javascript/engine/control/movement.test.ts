@@ -3974,4 +3974,101 @@ describe("movement", () => {
     game.moveState.move(2, 2)
     expect(movementPastCost(map, unit)).toBe(2)
   })
+
+  test("movement along path in mud", () => {
+    const game = createBlankGame([
+      [{ t: "o" }, { t: "o", r: { d: [2, 5], t: "p" } }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o", r: { d: [2, 5], t: "p" } }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [
+        { t: "o" }, { t: "o" }, { t: "o", r: { d: [2, 4], t: "p" } },
+        { t: "o", r: { d: [1, 4], t: "p" } },
+        { t: "o", r: { d: [1, 4], t: "p" } },
+      ],
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+    ])
+    const map = game.scenario.map
+    const unit = new Unit(testGInf)
+    unit.id = "test1"
+    map.addCounter(new Coordinate(2, 2), unit)
+    map.select(unit)
+
+    game.setGameState(new MoveState(game))
+    expect(movementPastCost(map, unit)).toBe(0)
+    expect(game.moveState.openHex(2, 1)).toBe(1)
+    expect(game.moveState.openHex(3, 2)).toBe(1)
+    expect(game.moveState.openHex(2, 3)).toBe(1)
+
+    map.baseTerrain = baseTerrainType.Mud
+    expect(game.moveState.openHex(2, 1)).toBe(2)
+    expect(game.moveState.openHex(3, 2)).toBe(1)
+    expect(game.moveState.openHex(2, 3)).toBe(2)
+
+    game.moveState.move(3, 2)
+    expect(movementPastCost(map, unit)).toBe(1)
+  })
+
+  test("vehicle movement along path in mud", () => {
+    const game = createBlankGame([
+      [{ t: "o" }, { t: "o", r: { d: [2, 5], t: "p" } }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o", r: { d: [2, 5], t: "p" } }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [
+        { t: "o" }, { t: "o" }, { t: "o", r: { d: [2, 4], t: "p" } },
+        { t: "o", r: { d: [1, 4], t: "p" } },
+        { t: "o", r: { d: [1, 4], t: "p" } },
+      ],
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+    ])
+    const map = game.scenario.map
+    const unit = new Unit(testGTruck)
+    unit.facing = 4
+    unit.id = "test1"
+    map.addCounter(new Coordinate(2, 2), unit)
+    map.select(unit)
+
+    game.setGameState(new MoveState(game))
+    expect(movementPastCost(map, unit)).toBe(0)
+    expect(game.moveState.openHex(3, 2)).toBe(1)
+    expect(game.moveState.openHex(1, 2)).toBe(2)
+
+    map.baseTerrain = baseTerrainType.Mud
+    expect(game.moveState.openHex(3, 2)).toBe(2)
+    expect(game.moveState.openHex(1, 2)).toBe(4)
+
+    game.moveState.move(3, 2)
+    expect(movementPastCost(map, unit)).toBe(2)
+  })
+
+  test("vehicle movement along road in mud", () => {
+    const game = createBlankGame([
+      [{ t: "o" }, { t: "o", r: { d: [2, 5], t: "d" } }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o", r: { d: [2, 5], t: "d" } }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [
+        { t: "o" }, { t: "o" }, { t: "o", r: { d: [2, 4], t: "d" } },
+        { t: "o", r: { d: [1, 4], t: "d" } },
+        { t: "o", r: { d: [1, 4], t: "d" } },
+      ],
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+    ])
+    const map = game.scenario.map
+    const unit = new Unit(testGTruck)
+    unit.facing = 4
+    unit.id = "test1"
+    map.addCounter(new Coordinate(2, 2), unit)
+    map.select(unit)
+
+    game.setGameState(new MoveState(game))
+    expect(movementPastCost(map, unit)).toBe(0)
+    expect(game.moveState.openHex(3, 2)).toBe(0.5)
+    expect(game.moveState.openHex(1, 2)).toBe(2)
+
+    map.baseTerrain = baseTerrainType.Mud
+    expect(game.moveState.openHex(3, 2)).toBe(0.5)
+    expect(game.moveState.openHex(1, 2)).toBe(4)
+
+    game.moveState.move(3, 2)
+    expect(movementPastCost(map, unit)).toBe(0.5)
+  })
 });
