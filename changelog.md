@@ -2,7 +2,7 @@
 
 - Bug fix: vehicles should not get any movement benefits from paths in mud/snow
 - Updated 008, 014, 033, 035, 103, 104, 121, 204, 216, 302, 307, 509, 515, 516, 523, 524, 609 (minor text changes)
-- Updated 417
+- Updated 117, 417
 - Updated/promoted 009
 - Added prototype 122, 123, 124
 

@@ -1,6 +1,4 @@
 Features/Bug Fixes
-  + Tanks should not be able to take advantage of paths in mud
-    + Test vehicle mud road/path, test inf path
   - Should be able to rapid fire at moving unit
     - Doesn't break weapon already broken
       - Make sure no additional break penalty (not needed)
