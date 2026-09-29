@@ -1,4 +1,5 @@
 Features/Bug Fixes
+  - Rapid fire at all firing units
   - Should be able to rapid fire at moving unit
     - Doesn't break weapon already broken
       - Make sure no additional break penalty (not needed)

@@ -2215,4 +2215,12 @@ describe("reaction fire attacks", () => {
 
     expect(game.sniperNeeded).toStrictEqual([])
   })
+
+  test("rapid firing at multiple firing hexes", () => {
+
+  })
+
+  test("rapid firing at multiple moving hexes", () => {
+
+  })
 });

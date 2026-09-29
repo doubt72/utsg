@@ -38,12 +38,21 @@ export default function ReactionFireSection({ section }: SectionProps) {
         intensive fire actions (as appropriate) may not reaction fire (e.g., exhausted units may
         never reaction fire).
       </p>
-      <h3>{section}.4. Weapons That May Not React</h3>
+      <h3>{section}.4. Rapid Reaction Fire</h3>
+      <p>
+        Rapid fire weapons may do reaction fire at all of the triggering hexes in range and line of
+        sight; if firing at multiple firing hexes, treat as regular rapid fire. If firing
+        at multiple move hexes, roll for each of the hexes, but only the first hit (in
+        order of movement) triggers morale checks (units cannot be hit more than once) or
+        destroys a vehicle. However, all of the rolls are still performed, and later rolls
+        may break the weapon.
+      </p>
+      <h3>{section}.5. Weapons That May Not React</h3>
       <p>
         Area fire weapons (mortars, offboard artillery/radios, etc.) may not perform reaction fire.
         Reaction fire may not be rapid; units capable of rapid fire can only fire as infantry fire.
       </p>
-      <h3>{section}.5. Status</h3>
+      <h3>{section}.6. Status</h3>
       <p>
         Mark units that performed a reaction fire action as activated or exhausted, as appropriate
         (i.e., depending on if the reaction fire was intensive or not).
