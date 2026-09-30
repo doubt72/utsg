@@ -855,9 +855,13 @@ export default class Game {
   addMoraleCheck(check: ComplexCheck): void {
     for (const c of this.moraleChecksNeeded) {
       if (c.unit.id === check.unit.id) {
-        if (check.incendiary) { c.incendiary = true }
-        if (check.critical) { c.critical = true }
-        c.from = check.from
+        // If x/y same, due to cavalry attack, if not due to rapid reaction
+        // fire, otherwise should never happen
+        if (c.to.x === check.to.x && c.to.y === check.to.y) {
+          if (check.incendiary) { c.incendiary = true }
+          if (check.critical) { c.critical = true }
+          c.from = check.from
+        }
         return
       }
     }

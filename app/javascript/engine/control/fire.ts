@@ -1,6 +1,7 @@
 import { baseTerrainType, Coordinate, Direction, featureType, sponsonType, terrainType, unitType, weatherType } from "../../utilities/commonTypes";
 import { los, losHexPath } from "../../utilities/los";
 import { hexDistance, normalDir } from "../../utilities/utilities";
+import MoveAction from "../actions/MoveAction";
 import Counter from "../Counter";
 import Feature from "../Feature";
 import Game from "../Game";
@@ -50,7 +51,6 @@ export function canToggleSponson(unit: Unit, sponson: boolean): boolean {
 }
 
 export function rapidFire(game: Game): boolean {
-  if (game.fireState.reaction) { return false }
   for (const sel of game.fireState.selection) {
     if (sel.counter.unit.sponson && game.fireState.sponson) {
       return false
@@ -59,6 +59,22 @@ export function rapidFire(game: Game): boolean {
     }
   }
   return true
+}
+
+export function sortReactionTargets(game: Game) {
+  const action = game.lastSignificantAction as MoveAction
+  if (action && ["move", "rush"].includes(action.type)) {
+    game.fireState.targetSelection.sort((a, b) => {
+      let ai = -1
+      let bi = -1
+      for (let i = 0; i < action.path.length; i++) {
+        const path = action.path[i]
+        if (a.x === path.x && a.y == path.y) { ai = i }
+        if (b.x === path.x && b.y == path.y) { bi = i }
+      }
+      return ai - bi
+    })
+  }
 }
 
 export function areaFire(game: Game) {

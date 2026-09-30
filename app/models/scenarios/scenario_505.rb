@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Line in the Snow"
     ALLIES = ["ussr"].freeze
     AXIS = ["fin"].freeze
-    STATUS = "b"
-    VERSION = "0.4"
+    STATUS = ""
+    VERSION = "1.0"
 
     DATE = [1939, 12, 15].freeze
     LAYOUT = [15, 11, "x"].freeze
@@ -20,7 +20,7 @@ module Scenarios
           [7, :ussr_rifle_s],
           [2, :ussr_dp_27],
           :ussr_82_bm_37,
-          :ussr_radio_152mm,
+          :ussr_radio_122mm,
         ],
       },
     }.freeze
@@ -40,7 +40,7 @@ module Scenarios
     class << self
       def generate
         {
-          turns: 6,
+          turns: 5,
           first_deploy: 2,
           first_action: 1,
           date:,

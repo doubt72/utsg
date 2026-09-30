@@ -7,8 +7,8 @@ import { reactionAvailableCoords, reactionFireCheck, reactionFireHexes } from ".
 import StackingActionError from "../actions/StackingActionError"
 import Feature from "../Feature"
 import {
-  createBlankGame, createFireGame, testGInf, testGMG, testGTank, testGTruck, testRGun, testRInf,
-  testRMG, testRTank, testRTD,
+  createBlankGame, createFireGame, testGInf, testGLdr, testGMG, testGTank, testGTruck, testRGun,
+  testRInf, testRMG, testRTank, testRTD,
 } from "./testHelpers"
 import InitiativeState, { initiativeCheck } from "./state/InitiativeState"
 import FireState from "./state/FireState"
@@ -2217,10 +2217,240 @@ describe("reaction fire attacks", () => {
   })
 
   test("rapid firing at multiple firing hexes", () => {
+    const game = createBlankGame()
+    const map = game.scenario.map
+    const firing1 = new Unit(testGInf)
+    firing1.id = "firing1"
+    const floc1 = new Coordinate(2, 2)
+    map.addCounter(floc1, firing1)
+    const firing2 = new Unit(testGLdr)
+    firing2.id = "firing2"
+    map.addCounter(floc1, firing2)
+    const firing3 = new Unit(testGInf)
+    firing3.id = "firing3"
+    const floc2 = new Coordinate(3, 2)
+    map.addCounter(floc2, firing3)
 
+    const reaction1 = new Unit(testRInf)
+    reaction1.id = "reaction1"
+    const rloc = new Coordinate(2, 0)
+    map.addCounter(rloc, reaction1)
+    const reaction2 = new Unit(testRMG)
+    reaction2.id = "reaction2"
+    map.addCounter(rloc, reaction2)
+    organizeStacks(map)
+    map.select(firing1)
+
+    game.setGameState(new FireState(game, false))
+    select(map, {
+      counter: map.countersAt(floc1)[1],
+      target: { type: "map", xy: floc1 }
+    }, () => {})
+    expect(firing2.selected).toBe(true)
+
+    select(map, {
+      counter: map.countersAt(floc2)[0],
+      target: { type: "map", xy: floc2 }
+    }, () => {})
+    expect(firing3.selected).toBe(true)
+
+    select(map, {
+      counter: map.countersAt(rloc)[0],
+      target: { type: "map", xy: rloc }
+    }, () => {})
+    expect(reaction1.targetSelected).toBe(true)
+
+    const original = Math.random
+    vi.spyOn(Math, "random").mockReturnValue(0.01)
+    game.fireState.finish()
+
+    expect(game.actions[0].stringValue).toBe(
+      "German Rifle, Leader at C3 and German Rifle at D3 fired at Soviet Rifle at C1; " +
+        "target 8, rolled 2 [2d10: 1 + 1]: miss"
+    )
+
+    game.setGameState(new InitiativeState(game))
+    game.gameState?.finish()
+    expect(game.actions[1].stringValue).toBe(
+      "German initiative check target 11, rolled 2 [2d10: 1 + 1]: failed, initiative flipped"
+    )
+
+    select(map, {
+      counter: map.countersAt(rloc)[1],
+      target: { type: "map", xy: rloc }
+    }, () => {})
+    expect(reaction2.selected).toBe(true)
+
+    game.setGameState(new FireState(game, true))
+
+    select(map, {
+      counter: map.countersAt(floc1)[0],
+      target: { type: "map", xy: floc1 }
+    }, () => {})
+    expect(firing1.targetSelected).toBe(true)
+    expect(firing2.targetSelected).toBe(true)
+
+    select(map, {
+      counter: map.countersAt(floc2)[0],
+      target: { type: "map", xy: floc2 }
+    }, () => {})
+    expect(firing1.targetSelected).toBe(true)
+    expect(firing2.targetSelected).toBe(true)
+    expect(firing3.targetSelected).toBe(true)
+
+    vi.spyOn(Math, "random").mockReturnValue(0.99)
+    game.fireState.finish()
+    Math.random = original
+
+    expect(game.actions[2].stringValue).toBe(
+      "reaction fire: Soviet DP-27 at C1 fired at German Rifle at D3, " +
+        "German Rifle, Leader at C3; at D3: target 14, rolled 20 [2d10: 10 + 10]: hit; " +
+        "at C3: target 14, rolled 20 [2d10: 10 + 10]: hit"
+    )
   })
 
-  test("rapid firing at multiple moving hexes", () => {
+  test("rapid firing at multiple moving hexes hits", () => {
+    const game = createBlankGame()
+    const map = game.scenario.map
+    const moving = new Unit(testGInf)
+    moving.id = "firing1"
+    map.addCounter(new Coordinate(1, 2), moving)
 
+    const reaction1 = new Unit(testRInf)
+    reaction1.id = "reaction1"
+    const rloc = new Coordinate(2, 0)
+    map.addCounter(rloc, reaction1)
+    const reaction2 = new Unit(testRMG)
+    reaction2.id = "reaction2"
+    map.addCounter(rloc, reaction2)
+    organizeStacks(map)
+    map.select(moving)
+
+    game.setGameState(new MoveState(game))
+    game.moveState.move(2, 2)
+    game.moveState.move(3, 2)
+    game.moveState.finish()
+
+    expect(game.actions[0].stringValue).toBe("German Rifle moved from B3 to D3")
+
+    const original = Math.random
+    vi.spyOn(Math, "random").mockReturnValue(0.01)
+
+    game.setGameState(new InitiativeState(game))
+    game.gameState?.finish()
+    expect(game.actions[1].stringValue).toBe(
+      "German initiative check target 11, rolled 2 [2d10: 1 + 1]: failed, initiative flipped"
+    )
+
+    select(map, {
+      counter: map.countersAt(rloc)[1],
+      target: { type: "map", xy: rloc }
+    }, () => {})
+    expect(reaction2.selected).toBe(true)
+
+    game.setGameState(new FireState(game, true))
+
+    const tloc1 = new Coordinate(2, 2)
+    select(map, {
+      counter: map.countersAt(tloc1)[0],
+      target: { type: "map", xy: tloc1 }
+    }, () => {})
+    const ghost = map.countersAt(tloc1)[0]
+    expect(ghost.unit.ghost).toBe(true)
+    expect(ghost.unit.targetSelected).toBe(true)
+
+    const tloc2 = new Coordinate(3, 2)
+    select(map, {
+      counter: map.countersAt(tloc2)[0],
+      target: { type: "map", xy: tloc2 }
+    }, () => {})
+    expect(ghost.unit.targetSelected).toBe(true)
+    expect(moving.targetSelected).toBe(true)
+
+    vi.spyOn(Math, "random").mockReturnValue(0.99)
+    game.fireState.finish()
+    Math.random = original
+
+    expect(game.actions[2].stringValue).toBe(
+      "reaction fire: Soviet DP-27 at C1 fired at German Rifle at C3, " +
+        "German Rifle at D3; at C3: target 13, rolled 20 [2d10: 10 + 10]: hit; " +
+        "at D3: target 13, rolled 20 [2d10: 10 + 10]: hit"
+    )
+
+    expect(game.moraleChecksNeeded).toStrictEqual([
+      { unit: moving, critical: false, from: [rloc], to: tloc1, incendiary: false }
+    ])
+  })
+
+  test("rapid firing at multiple moving hexes breaks weapon", () => {
+    const game = createBlankGame()
+    const map = game.scenario.map
+    const moving = new Unit(testGInf)
+    moving.id = "firing1"
+    map.addCounter(new Coordinate(1, 2), moving)
+
+    const reaction1 = new Unit(testRInf)
+    reaction1.id = "reaction1"
+    const rloc = new Coordinate(2, 0)
+    map.addCounter(rloc, reaction1)
+    const reaction2 = new Unit(testRMG)
+    reaction2.id = "reaction2"
+    map.addCounter(rloc, reaction2)
+    organizeStacks(map)
+    map.select(moving)
+
+    game.setGameState(new MoveState(game))
+    game.moveState.move(2, 2)
+    game.moveState.move(3, 2)
+    game.moveState.finish()
+
+    expect(game.actions[0].stringValue).toBe("German Rifle moved from B3 to D3")
+
+    const original = Math.random
+    vi.spyOn(Math, "random").mockReturnValue(0.01)
+
+    game.setGameState(new InitiativeState(game))
+    game.gameState?.finish()
+    expect(game.actions[1].stringValue).toBe(
+      "German initiative check target 11, rolled 2 [2d10: 1 + 1]: failed, initiative flipped"
+    )
+
+    select(map, {
+      counter: map.countersAt(rloc)[1],
+      target: { type: "map", xy: rloc }
+    }, () => {})
+    expect(reaction2.selected).toBe(true)
+
+    game.setGameState(new FireState(game, true))
+
+    const tloc1 = new Coordinate(3, 2)
+    select(map, {
+      counter: map.countersAt(tloc1)[0],
+      target: { type: "map", xy: tloc1 }
+    }, () => {})
+    expect(moving.targetSelected).toBe(true)
+
+    const tloc2 = new Coordinate(2, 2)
+    select(map, {
+      counter: map.countersAt(tloc2)[0],
+      target: { type: "map", xy: tloc2 }
+    }, () => {})
+    const ghost = map.countersAt(tloc2)[0]
+    expect(ghost.unit.ghost).toBe(true)
+    expect(ghost.unit.targetSelected).toBe(true)
+    expect(moving.targetSelected).toBe(true)
+
+    vi.spyOn(Math, "random").mockReturnValue(0.01)
+    game.fireState.finish()
+    Math.random = original
+
+    expect(game.actions[2].stringValue).toBe(
+      "reaction fire: Soviet DP-27 at C1 fired at German Rifle at C3, " +
+        "German Rifle at D3; at C3: target 13, rolled 2 [2d10: 1 + 1]: miss, DP-27 broken; " +
+        "at D3: target 13, rolled 2 [2d10: 1 + 1]: miss, DP-27 broken"
+    )
+
+    expect(game.moraleChecksNeeded).toStrictEqual([])
+    expect(reaction2.jammed).toBe(true)
   })
 });

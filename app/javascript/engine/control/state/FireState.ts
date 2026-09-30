@@ -10,7 +10,7 @@ import Unit from "../../Unit";
 import { observe } from "../decoy";
 import {
   areaFire, armorAtArc, canMultiSelectFire, canToggleSponson, inRange, leadershipRange, rapidFire,
-  refreshTargetSelection, unTargetSelectExceptChain
+  refreshTargetSelection, sortReactionTargets, unTargetSelectExceptChain
 } from "../fire";
 import { placeReactionFireGhosts, reactionFireHexes, reactionFireInRange } from "../reactionFire";
 import { clearUnrangedSelection, removeStateSelection } from "../select";
@@ -138,6 +138,9 @@ export default class FireState extends BaseState {
         }
       }
       refreshTargetSelection(this.game)
+      if (this.reaction && rapidFire(this.game)) {
+        sortReactionTargets(this.game)
+      }
     }
     callback()
   }

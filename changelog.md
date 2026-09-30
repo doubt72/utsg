@@ -1,3 +1,9 @@
+# 0.155
+
+- Allow reaction rapid fire
+- Updated 117, 301
+- Updated/promoted 505
+
 # 0.154
 
 - Docs and test outline for reaction rapid fire
