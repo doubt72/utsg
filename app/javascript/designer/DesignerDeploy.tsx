@@ -2,6 +2,7 @@ import React, { Dispatch, SetStateAction, useState } from "react";
 import { UnitData } from "../engine/Unit";
 import { DesignStack, pushDesignStack } from "./ScenarioDesigner";
 import { FeatureData } from "../engine/Feature";
+import { unitType } from "../utilities/commonTypes";
 
 interface DesignerDeployProps {
   designStack: DesignStack;
@@ -22,7 +23,8 @@ export default function DesignerDeploy({
   const ids = raw.map(u => u.id)
   const names = raw.map(u => u.n)
   const counts = raw.map(u => u.x ?? 1)
-  const availableUnits = available.filter(n => !ids.includes(n[0]) && !n[2].ft )
+  const availableUnits = available.filter(n => !ids.includes(n[0]) && !n[2].ft &&
+    (n[2].t !== unitType.Team || n[2].n.includes("Crew")) )
   const availableFeatures = available.filter(n => !ids.includes(n[0]) && n[2].ft )
 
   const [currentUnit, setCurrentUnit] = useState<string>(availableUnits[0][0])

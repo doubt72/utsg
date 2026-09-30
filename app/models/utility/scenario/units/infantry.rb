@@ -32,7 +32,7 @@ module Utility
           end
 
           # These are fairly arbitrary and may change
-          def squads_and_teams
+          def squads_and_teams # rubocop:disable Metrics/AbcSize
             lu = {}
             key = %i[c n y m f r v o]
             [
@@ -129,6 +129,14 @@ module Utility
 
               name = "#{squad[:c]}_#{Units.sanitize(squad[:n])}"
               lu[:"#{name}_s"] = squad
+
+              team = squad.clone
+              team[:t] = "tm"
+              team[:i] = "team"
+              team[:s] = 3
+              team[:f] = team[:f] / 2
+              team[:o] = team[:v] < 4 ? { bv: team[:v] } : {}
+              lu[:"#{name}_t"] = team
             end
             lu
           end

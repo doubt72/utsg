@@ -1,9 +1,10 @@
 # 0.155
 
 - Allow reaction rapid fire
+- Some improvements to scenario designer; added the ability to select teams (for pre-deployed units only)
 - Updated 117, 301
 - Updated/promoted 505
-- Added prototype 321, 322, 323, 324
+- Added prototype 321, 322, 323, 324, 324, 325, 326
 
 # 0.154
 

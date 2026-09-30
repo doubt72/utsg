@@ -1,7 +1,8 @@
 Features/Bug Fixes
   - Unobserved random drops
+    - Docs
     - "Broken" hidden units/decoys show as broken
-    - "Rout all" observes all broken units
+    - Decoys automatically pass rally checks, automatically fail rout checks
   - (046) Special partisan rules
   - 319 Test playing multiple factions
   - 524 Finns on the other side

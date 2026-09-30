@@ -102,13 +102,25 @@ export default class Scenario {
         const counter = uf.data.ft ? new Feature(uf.data) : new Unit(uf.data)
         if (uf.facing && counter.rotates) { counter.facing = uf.facing }
         counter.id = `ia-${count++}`
-        this.map.addCounter(new Coordinate(uf.x, uf.y), counter)
+        try {
+          this.map.addCounter(new Coordinate(uf.x, uf.y), counter)
+        } catch(e) {
+          if (e instanceof Error) {
+            console.log(e.message)
+          }
+        }
       }
       for (const uf of data.metadata.init_axis_units ?? []) {
         const counter = uf.data.ft ? new Feature(uf.data) : new Unit(uf.data)
         if (uf.facing && counter.rotates) { counter.facing = uf.facing }
         counter.id = `ia-${count++}`
-        this.map.addCounter(new Coordinate(uf.x, uf.y), counter)
+        try {
+          this.map.addCounter(new Coordinate(uf.x, uf.y), counter)
+        } catch(e) {
+          if (e instanceof Error) {
+            console.log(e.message)
+          }
+        }
       }
     }
   }
