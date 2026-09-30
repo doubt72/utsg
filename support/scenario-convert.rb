@@ -160,13 +160,34 @@ EOF
   print ",\n"
 end
 
-allied_setup = "#{mapdata["allied_setup"]}".gsub("=>", ' => ').gsub("{","{ ").gsub("}"," }")
-axis_setup = "#{mapdata["axis_setup"]}".gsub("=>", ' => ').gsub("{","{ ").gsub("}"," }")
-
 puts <<EOF
           ],
-          allied_setup: #{allied_setup},
-          axis_setup: #{axis_setup},
+          allied_setup: {
+EOF
+
+mapdata["allied_setup"].each_pair do |key, values|
+  puts <<EOF
+            "#{key}" => [
+              #{values.map {|v| "#{v},"}.join(" ")}
+            ],
+EOF
+end
+
+puts <<EOF
+          },
+          axis_setup: {
+EOF
+
+mapdata["axis_setup"].each_pair do |key, values|
+  puts <<EOF
+            "#{key}" => [
+              #{values.map {|v| "#{v},"}.join(" ")}
+            ],
+EOF
+end
+
+puts <<EOF
+          },
 EOF
 if mapdata["base_terrain"] && mapdata["base_terrain"] != "g"
   puts <<EOF

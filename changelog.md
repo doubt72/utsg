@@ -3,6 +3,7 @@
 - Allow reaction rapid fire
 - Updated 117, 301
 - Updated/promoted 505
+- Added prototype 321, 322, 323, 324
 
 # 0.154
 

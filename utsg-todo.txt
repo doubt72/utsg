@@ -1,6 +1,7 @@
 Features/Bug Fixes
-  + Rapid reaction fire at all firing units
-  + Should be able to rapid reaction fire at moving unit
+  - Unobserved random drops
+    - "Broken" hidden units/decoys show as broken
+    - "Rout all" observes all broken units
   - (046) Special partisan rules
   - 319 Test playing multiple factions
   - 524 Finns on the other side
@@ -11,8 +12,6 @@ Features/Bug Fixes
   - Playthrough of Clash of Steel
   - Add Some Developer Notes
   - Strategy notes
-
-Maps 310, 318
 
 Nice to Have Eventually:
   ? Better rollback of smoke on reaction fire
