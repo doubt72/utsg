@@ -1,4 +1,4 @@
-import { Coordinate, Player, unitType } from "../../utilities/commonTypes"
+import { Coordinate, MoraleRange, Player, unitType } from "../../utilities/commonTypes"
 import { roll2d10, sortReinforcementList } from "../../utilities/utilities"
 import Game from "../Game"
 import GameAction, { GameActionDiceResult, GameActionUnit } from "../GameAction"
@@ -16,6 +16,9 @@ export function randomDrop(game: Game) {
   const wTarget: GameActionUnit[] = []
   const dice: GameActionDiceResult[] = []
   let total = 0
+  const hidden = game.scenario.specialRules.includes(
+    game.currentPlayer === 1 ? "allied_hidden_units" : "axis_hidden_units"
+  )
   for (const r of sorted) {
     const u = r.counter as Unit
     const count = u.type === unitType.Squad ? r.x * 2 : r.x
@@ -63,8 +66,17 @@ export function randomDrop(game: Game) {
             if (check) { break }
           }
           if (check) { continue }
+          if (u.decoy) {
+            const lu = game.scenario.decoyMorale(game.currentPlayer, u)
+            if (!lu) { throw "missing decoy morale rule" }
+            u.baseMorale = lu
+          }
+          let name = u.name
+          if (hidden) {
+            name = u.leader ? "leader" : "team"
+          }
           const mod = moraleModifiers(game, u, [], loc, false).mod - 2
-          uTarget.push({ x, y, id: u.id, name: u.name, status: u.status, mod })
+          uTarget.push({ x, y, id: u.id, name, status: u.status, mod })
           units.push(u)
           dice.push({ result: roll2d10() })
           break
@@ -73,7 +85,9 @@ export function randomDrop(game: Game) {
           const target = uTarget[tIndex]
           const ut = units[tIndex]
           if (!u.offBoard && ut.type === unitType.Leader) { continue }
-          const weapon = { x: target.x, y: target.y, id: u.id, name: u.name, status: u.status }
+          if (u.decoy !== ut.decoy) { continue }
+          const name = hidden ? "weapon" : u.name
+          const weapon = { x: target.x, y: target.y, id: u.id, name, status: u.status }
           let check = false
           for (const w of wTarget) {
             if (w.x === weapon.x && w.y === weapon.y) {
@@ -92,7 +106,7 @@ export function randomDrop(game: Game) {
     user: game.currentUser, player: game.currentPlayer,
     data: {
       action: "random_drop", old_initiative: game.initiative,
-      target: uTarget.concat(wTarget),
+      target: randomizeUnits(uTarget).concat(randomizeUnits(wTarget)),
       dice_result: dice,
     }
   }, game)
@@ -119,4 +133,26 @@ export function randomDropLookup(rule: string): [Player, number] | false {
   const player = rule.includes("allied") ? 1 : 2
   const turn = Number(rule.substring(player === 1 ? 19 : 17))
   return [player, turn]
+}
+
+export function hiddenLeaderMoraleLookup(rule: string): [Player, MoraleRange] | false {
+  if (!rule.includes("hidden_leader_morale")) { return false }
+  const player = rule.includes("allied") ? 1 : 2
+  const morale = Number(rule.slice(-1)) as MoraleRange
+  return [player, morale]
+}
+
+export function hiddenInfantryMoraleLookup(rule: string): [Player, MoraleRange] | false {
+  if (!rule.includes("hidden_infantry_morale")) { return false }
+  const player = rule.includes("allied") ? 1 : 2
+  const morale = Number(rule.slice(-1)) as MoraleRange
+  return [player, morale]
+}
+
+function randomizeUnits(units: GameActionUnit[]): GameActionUnit[] {
+  const rc: GameActionUnit[] = [units[0]]
+  for (let i = 1; i < units.length; i++) {
+    rc.splice(Math.floor(Math.random() * i), 0, units[i])
+  }
+  return rc
 }

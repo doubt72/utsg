@@ -1,6 +1,7 @@
 # 0.155
 
 - Allow reaction rapid fire
+- Implement rules for hidden drops
 - Some improvements to scenario designer; added the ability to select teams (for pre-deployed units only)
 - Updated 117, 301
 - Updated/promoted 505

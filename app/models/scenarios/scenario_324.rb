@@ -14,8 +14,7 @@ module Scenarios
 
     ALLIED_UNITS = {
       "0": { list: [
-        [2, :usa_leader_6_1],
-        [2, :usa_leader_5_1],
+        [4, :usa_leader_6_1],
         [8, :usa_paratroop_s],
         [2, :usa_m1918_bar],
         [4, :usa_decoy_leader6],
@@ -23,8 +22,7 @@ module Scenarios
         [2, :usa_decoy_weapon0],
       ] },
       "2": { list: [
-        :usa_leader_6_1,
-        :usa_leader_5_1,
+        [2, :usa_leader_6_1],
         [4, :usa_paratroop_s],
         :usa_m1918_bar,
         [2, :usa_decoy_leader6],
@@ -55,7 +53,10 @@ module Scenarios
           map_data:,
           allied_units:,
           axis_units:,
-          special_rules: ["allied_random_drop_0", "allied_random_drop_2", "allied_hidden_units"],
+          special_rules: [
+            "allied_random_drop_0", "allied_random_drop_2", "allied_hidden_units",
+            "allied_hidden_leader_morale_6", "allied_hidden_infantry_morale_4",
+          ],
         }
       end
 

@@ -44,7 +44,8 @@ export default function ReactionFireSection({ section }: SectionProps) {
         sight; if firing at multiple firing hexes, treat as regular rapid fire. If firing
         at multiple move hexes, roll for each of the hexes, but only the first hit (in
         order of movement) triggers morale checks (units cannot be hit more than once) or
-        destroys a vehicle. However, all of the rolls are still performed, and later rolls
+        destroys a vehicle (the first hit also determines critical hits, regardless of
+        other results). However, all of the rolls are still performed, and later rolls
         may break the weapon.
       </p>
       <h3>{section}.5. Weapons That May Not React</h3>

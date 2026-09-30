@@ -1,8 +1,8 @@
-import { Coordinate, Direction, Player } from "../utilities/commonTypes";
+import { Coordinate, Direction, MoraleRange, Player } from "../utilities/commonTypes";
 import {
   addSpecialArmorRules, alliedCodeToName, axisCodeToName, getFormattedDate, sortReinforcementList
 } from "../utilities/utilities";
-import { randomDropLookup } from "./control/randomDrop";
+import { hiddenInfantryMoraleLookup, hiddenLeaderMoraleLookup, randomDropLookup } from "./control/randomDrop";
 import Feature, { FeatureData } from "./Feature";
 import Game from "./Game"
 import Map, { MapData } from "./Map";
@@ -318,11 +318,28 @@ export default class Scenario {
       } else if (r === "retreat_301") {
         return `${allied} units rout up below row 5, down otherwise; ${axis} rout in opposite direction`
       }
-      const lu = randomDropLookup(r)
-      if (lu) {
-        return `${lu[0] === 1 ? allied : axis} random drop deployment ${lu[1] === 0 ? "setup" : `on turn ${lu[1]}`}`
+      const dlu = randomDropLookup(r)
+      if (dlu) {
+        return `${dlu[0] === 1 ? allied : axis} random drop deployment ${dlu[1] === 0 ? "setup" : `on turn ${dlu[1]}`}`
+      }
+      const lmlu = hiddenLeaderMoraleLookup(r)
+      if (lmlu) {
+        return `${lmlu[0] === 1 ? allied : axis} leader decoy morale ${lmlu[1]}`
+      }
+      const imlu = hiddenInfantryMoraleLookup(r)
+      if (imlu) {
+        return `${imlu[0] === 1 ? allied : axis} squad or team decoy morale ${imlu[1]}`
       }
       return "unknown rule"
     })
+  }
+
+  decoyMorale(player: Player, unit: Unit): MoraleRange | false {
+    for (const r of this.specialRules) {
+      const lu = unit.leader ? hiddenLeaderMoraleLookup(r) :
+        hiddenInfantryMoraleLookup(r)
+      if (lu && lu[0] === player) { return lu[1] }
+    }
+    return false
   }
 }

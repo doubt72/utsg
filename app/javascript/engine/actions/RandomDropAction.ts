@@ -1,6 +1,7 @@
 import { Coordinate, unitType } from "../../utilities/commonTypes";
 import { failRed, formatCoordinate, formatDieResult, formatNation, formatTarget, passBlue } from "../../utilities/graphics";
 import { baseMorale } from "../../utilities/utilities";
+import { hideObserved } from "../control/decoy";
 import Game from "../Game";
 import { GameActionData, GameActionDiceResult, GameActionUnit } from "../GameAction";
 import organizeStacks from "../support/organizeStacks";
@@ -71,6 +72,14 @@ export default class RandomDropAction extends BaseAction {
           u.pin()
         this.game.addActionAnimations([{ loc, type: "pinned" }])
         }
+      }
+      if (hideObserved(this.game, u)) {
+        u.observed = false
+      }
+      if (u.decoy) {
+        const lu = this.game.scenario.decoyMorale(this.game.currentPlayer, u)
+        if (!lu) { throw "missing decoy morale rule" }
+        u.baseMorale = lu
       }
       this.map.addCounter(loc, u)
     }

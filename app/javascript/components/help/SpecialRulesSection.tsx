@@ -60,7 +60,13 @@ export default function SpecialRulesSection({ section }: SectionProps) {
         <strong>rout all</strong> actions during the same turn that the deployment was performed (or
         turn one if deployment was performed in setup).
       </p>
-      <h3>{section}.3. Cavalry</h3>
+      <h3>{section}.3. Random Drops with Decoys</h3>
+      <p>
+        In scenarios with both hidden units and decoys, decoys will break on deploy and rally and
+        rout normally; there will be special rule with the base morale for all decoy leaders and
+        teams.
+      </p>
+      <h3>{section}.4. Cavalry</h3>
       <p>
         Cavalry has several special rules, and all three types of cavalry (horse, bicycle,
         motorcycle) are handled slightly differently.
