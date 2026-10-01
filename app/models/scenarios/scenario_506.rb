@@ -6,8 +6,8 @@ module Scenarios
     NAME = "A Ridge Too Far"
     ALLIES = ["gre"].freeze
     AXIS = ["ita"].freeze
-    STATUS = "a"
-    VERSION = "0.2"
+    STATUS = "b"
+    VERSION = "0.3"
 
     DATE = [1940, 11, 2].freeze
     LAYOUT = [15, 23, "x"].freeze
@@ -16,7 +16,7 @@ module Scenarios
       "0": { list: [
         :alm_leader_5_1,
         :alm_leader_4_1,
-        [8, :alm_regular_s],
+        [4, :alm_regular_s],
         :alm_vickers_mg,
         :alm_81mm_mortar,
         :alm_75mm_gun,
@@ -38,7 +38,7 @@ module Scenarios
     class << self
       def generate
         {
-          turns: 9,
+          turns: 6,
           first_deploy: 1,
           first_action: 2,
           date:,

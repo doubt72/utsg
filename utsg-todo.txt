@@ -1,4 +1,9 @@
 Features/Bug Fixes
+  + Counting decoy leaders for VP
+  - Decoy next to hit revealed
+  - Exhausted parent prevents fire (check rules?)
+  - Big stack not quite right
+  - Redo 309
   - (046) Special partisan rules
   - 319 Test playing multiple factions
   - 524 Finns on the other side

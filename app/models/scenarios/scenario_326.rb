@@ -22,6 +22,7 @@ module Scenarios
         [3, :usa_m1918_bar],
         :usa_m2_mortar,
         [2, :usa_m1919_browning],
+        [2, :usa_sc],
         :usa_radio_155mm,
         [3, :usa_57mm_m1],
         [2, :usa_m1a1_bazooka],

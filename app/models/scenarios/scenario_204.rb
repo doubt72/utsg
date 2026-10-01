@@ -6,8 +6,8 @@ module Scenarios
     NAME = "The Slogging Grounds"
     ALLIES = ["usa"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "a"
-    VERSION = "0.4"
+    STATUS = "b"
+    VERSION = "0.5"
 
     DATE = [1944, 1, 24].freeze
     LAYOUT = [15, 23, "x"].freeze
@@ -56,9 +56,8 @@ module Scenarios
 
       def description
         [
-          "The Battle of Monte Cassino, also known as the Battle for Rome, was
-          a series of four military assaults by the Allies against German
-          forces in Italy during the Italian Campaign of World War II. The
+          "The Battle of Monte Cassino, was a series of military assaults by
+          the Allies against German forces during the Italian Campaign. The
           objective was to break through the Winter Line and facilitate an
           advance towards Rome.",
           "At the end of January, 1944, the U.S. II Corps, with 34th Infantry

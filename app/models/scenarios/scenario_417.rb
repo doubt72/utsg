@@ -7,7 +7,7 @@ module Scenarios
     ALLIES = ["usa"].freeze
     AXIS = ["jap"].freeze
     STATUS = "b"
-    VERSION = "0.2"
+    VERSION = "0.3"
 
     DATE = [1942, 8, 21].freeze
     LAYOUT = [15, 23, "x"].freeze
@@ -37,7 +37,7 @@ module Scenarios
       "0": { list: [
         :jap_leader_5_1,
         :jap_leader_4_1,
-        [16, :jap_a_division_s],
+        [12, :jap_a_division_s],
         [3, :jap_type_96_lmg],
       ] },
     }.freeze

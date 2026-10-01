@@ -1,3 +1,11 @@
+# 0.156
+
+- Bug fix: decoy leaders score for axis
+- Updated 326, 417
+- Updated/promoted 026
+- Promoted 012, 204, 506 to beta
+- Added prototype 327, 328, 329
+
 # 0.155
 
 - Allow reaction rapid fire
