@@ -18,7 +18,7 @@ type ScenarioBaseData = {
 }
 
 type InitUnits = {
-  data: UnitData | FeatureData, x: number, y: number, facing?: Direction,
+  data: UnitData | FeatureData, x: number, y: number, facing?: Direction, split?: boolean
 }
 
 export type ScenarioData = ScenarioBaseData & {
@@ -100,6 +100,7 @@ export default class Scenario {
       let count = 0
       for (const uf of data.metadata.init_allied_units ?? []) {
         const counter = uf.data.ft ? new Feature(uf.data) : new Unit(uf.data)
+        if (!counter.isFeature && uf.split) { (counter as Unit).split() }
         if (uf.facing && counter.rotates) { counter.facing = uf.facing }
         counter.id = `ia-${count++}`
         try {
@@ -112,6 +113,7 @@ export default class Scenario {
       }
       for (const uf of data.metadata.init_axis_units ?? []) {
         const counter = uf.data.ft ? new Feature(uf.data) : new Unit(uf.data)
+        if (!counter.isFeature && uf.split) { (counter as Unit).split() }
         if (uf.facing && counter.rotates) { counter.facing = uf.facing }
         counter.id = `ia-${count++}`
         try {
@@ -176,13 +178,13 @@ export default class Scenario {
       (this.rawData.metadata.init_allied_units?.length ?? 0) < 1) { return [] }
     const counts: ReinforcementList = {}
     for (const iu of this.rawData.metadata.init_allied_units ?? []) {
-      if (counts[iu.data.id]) {
-        counts[iu.data.id].x += 1
+      const id = iu.split ? `${iu.data.id.slice(0, -2)}_t` : iu.data.id
+      if (counts[id]) {
+        counts[id].x += 1
       } else {
-        counts[iu.data.id] = {
-          x: 1, used: 0, id: iu.data.id,
-          counter: iu.data.ft ? new Feature(iu.data) : new Unit(iu.data)
-        }
+        const counter = iu.data.ft ? new Feature(iu.data) : new Unit(iu.data)
+        if (iu.split && !counter.isFeature) { (counter as Unit).split() }
+        counts[id] = { x: 1, used: 0, id, counter }
       }
     }
     for (const turn of Object.values(this.alliedReinforcements)) {
@@ -198,13 +200,13 @@ export default class Scenario {
       (this.rawData.metadata.init_axis_units?.length ?? 0) < 1) { return [] }
     const counts: ReinforcementList = {}
     for (const iu of this.rawData.metadata.init_axis_units ?? []) {
-      if (counts[iu.data.id]) {
-        counts[iu.data.id].x += 1
+      const id = iu.split ? `${iu.data.id.slice(0, -2)}_t` : iu.data.id
+      if (counts[id]) {
+        counts[id].x += 1
       } else {
-        counts[iu.data.id] = {
-          x: 1, used: 0, id: iu.data.id,
-          counter: iu.data.ft ? new Feature(iu.data) : new Unit(iu.data)
-        }
+        const counter = iu.data.ft ? new Feature(iu.data) : new Unit(iu.data)
+        if (iu.split && !counter.isFeature) { (counter as Unit).split() }
+        counts[id] = { x: 1, used: 0, id, counter }
       }
     }
     for (const turn of Object.values(this.axisReinforcements)) {
@@ -221,11 +223,14 @@ export default class Scenario {
     const counts: ReinforcementList = this.alliedReinforcements[turn]
     if (turn === 0) {
       for (const i of this.rawData.metadata.init_allied_units ?? []) {
-        counts[i.data.id] ? counts[i.data.id].x += 1 :
-          counts[i.data.id] = {
-            x: 1, used: 0, id: i.data.id,
-            counter: i.data.ft ? new Feature(i.data as FeatureData) : new Unit(i.data as UnitData)
-          }
+        const id = i.split ? `${i.data.id.slice(0, -2)}_t` : i.data.id
+        if (counts[id]) {
+          counts[id].x += 1
+        } else {
+          const counter = i.data.ft ? new Feature(i.data) : new Unit(i.data)
+          if (i.split && !counter.isFeature) { (counter as Unit).split() }
+          counts[id] = { x: 1, used: 0, id, counter }
+        }
       }
     }
     return sortReinforcementList(Object.entries(counts).flatMap(kv => kv[1]))
@@ -237,11 +242,14 @@ export default class Scenario {
     const counts: ReinforcementList = this.axisReinforcements[turn]
     if (turn === 0) {
       for (const i of this.rawData.metadata.init_axis_units ?? []) {
-        counts[i.data.id] ? counts[i.data.id].x += 1 :
-          counts[i.data.id] = {
-            x: 1, used: 0, id: i.data.id,
-            counter: i.data.ft ? new Feature(i.data as FeatureData) : new Unit(i.data as UnitData)
-          }
+        const id = i.split ? `${i.data.id.slice(0, -2)}_t` : i.data.id
+        if (counts[id]) {
+          counts[id].x += 1
+        } else {
+          const counter = i.data.ft ? new Feature(i.data) : new Unit(i.data)
+          if (i.split && !counter.isFeature) { (counter as Unit).split() }
+          counts[id] = { x: 1, used: 0, id, counter }
+        }
       }
     }
     return sortReinforcementList(Object.entries(counts).flatMap(kv => kv[1]))

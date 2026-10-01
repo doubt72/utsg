@@ -386,7 +386,9 @@ export default function ScenarioDesigner() {
       }
     } else if (tab === 3) {
       if (deploySelected === "i-1") {
-        const unit = availableAlliedUnits.find(u => u[0] === initAlliedSelected)
+        const split = initAlliedSelected.slice(-3) === "_tz"
+        const key = split ? initAlliedSelected.slice(0, -3) : initAlliedSelected
+        const unit = availableAlliedUnits.find(u => u[0] === key)
         const units = metadata.init_allied_units ?? []
         if (unit) {
           pushDesignStack({
@@ -394,14 +396,16 @@ export default function ScenarioDesigner() {
               ...metadata, init_allied_units: [
                 ...units, {
                   data: { ...unit[2], id: unit[0] }, x: selectionHex.x, y: selectionHex.y,
-                  facing: initDir as Direction,
+                  facing: initDir as Direction, split: split,
                 },
               ],
             },
           }, setDesignStack)
         }
       } else if (deploySelected === "i-2") {
-        const unit = availableAxisUnits.find(u => u[0] === initAxisSelected)
+        const split = initAxisSelected.slice(-3) === "_tz"
+        const key = split ? initAxisSelected.slice(0, -3) : initAxisSelected
+        const unit = availableAlliedUnits.find(u => u[0] === key)
         const units = metadata.init_axis_units ?? []
         if (unit) {
           pushDesignStack({
@@ -409,7 +413,7 @@ export default function ScenarioDesigner() {
               ...metadata, init_axis_units: [
                 ...units, {
                   data: { ...unit[2], id: unit[0] }, x: selectionHex.x, y: selectionHex.y,
-                  facing: initDir as Direction,
+                  facing: initDir as Direction, split: split,
                 },
               ],
             },

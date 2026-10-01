@@ -69,7 +69,7 @@ module Scenarios
         self::INIT_ALLIED_UNITS.map do |u|
           {
             data: convert_units([u[:data]])[0],
-            x: u[:x], y: u[:y], facing: u[:facing],
+            x: u[:x], y: u[:y], facing: u[:facing], split: u[:split] || false,
           }
         end
       end
@@ -78,7 +78,7 @@ module Scenarios
         self::INIT_AXIS_UNITS.map do |u|
           {
             data: convert_units([u[:data]])[0],
-            x: u[:x], y: u[:y], facing: u[:facing],
+            x: u[:x], y: u[:y], facing: u[:facing], split: u[:split] || false,
           }
         end
       end

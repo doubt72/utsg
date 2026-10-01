@@ -4,7 +4,7 @@ import { UnitData } from "../engine/Unit";
 import { toggleHex } from "../engine/control/deploy";
 import { DeployHexes } from "../engine/Map";
 import { DesignStack, pushDesignStack, showHex } from "./ScenarioDesigner";
-import { ExtendedDirection, Player } from "../utilities/commonTypes";
+import { ExtendedDirection, Player, unitType } from "../utilities/commonTypes";
 import { FeatureData } from "../engine/Feature";
 import { normalDir } from "../utilities/utilities";
 
@@ -69,6 +69,18 @@ export default function DesignerOrderOfBattleTab({
           },
         }, setDesignStack
     )
+  }
+
+  const availPlus = (source: [string, string, UnitData | FeatureData][]):
+    [string, string, UnitData | FeatureData, boolean][] => {
+    const rc: [string, string, UnitData | FeatureData, boolean][] = []
+    for (const d of source) {
+      rc.push([...d, false])
+      if (d[2].t === unitType.Squad) {
+        rc.push([...d, true])
+      }
+    }
+    return rc
   }
 
   const addSelector = (turn: number, player: number, deps: JSX.Element[]) => {
@@ -170,8 +182,10 @@ export default function DesignerOrderOfBattleTab({
                         }
                       }} >
                 <option key={"---"} value={""}>---</option>
-                { (i === 1 ? availableAlliedUnits : availableAxisUnits).map(n =>
-                    <option key={n[0]} value={n[0]}>{n[1]} [{n[0]}]</option>) }
+                { (i === 1 ? availPlus(availableAlliedUnits) : availPlus(availableAxisUnits)).map(n =>
+                    <option key={`${n[0]}${n[3] ? "_tz" : ""}`} value={`${n[0]}${n[3] ? "_tz" : ""}`}>
+                      {n[1]} [{n[0]}{n[3] ? " split" : ""}]
+                    </option>) }
               </select>
             </div>
             <div className="design-button" style={{ marginTop: "28px", marginBottom: "4px" }} onClick={() => {
