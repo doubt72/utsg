@@ -2,7 +2,7 @@
 
 module Utility
   class Scenario
-    module Filter
+    module Filter # rubocop:disable Metrics/ModuleLength
       def filter(scenarios, options)
         filter_string(scenarios, options["string"])
         filter_status(scenarios, options["status"])
@@ -108,9 +108,9 @@ module Utility
         "3x1" => { x: 23, y: 11 },
         "3x2" => { x: 23, y: 23 },
         "3x3" => { x: 23, y: 36 },
-        # "4x1" => { x: 32, y: 11 },
+        "4x1" => { x: 32, y: 11 },
         "4x2" => { x: 32, y: 23 },
-        # "4x3" => { x: 32, y: 36 },
+        "4x3" => { x: 32, y: 36 },
       }.freeze
 
       def matches_size?(scenario, size)

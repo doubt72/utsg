@@ -1,10 +1,11 @@
 Features/Bug Fixes
-  + Counting decoy leaders for VP
+  - Periodically check sync
   - Decoy next to hit revealed
   - Exhausted parent prevents fire (check rules?)
+  - Special partisan scenario rule: score for surviving units.
+    - Add rule that game is over when no units remain for one side
   - Big stack not quite right
-  - Redo 309
-  - (046) Special partisan rules
+  - 110, 309 Redo alphas before beta
   - 319 Test playing multiple factions
   - 524 Finns on the other side
   ? Monitor memory usage

@@ -6,8 +6,8 @@ module Scenarios
     NAME = "A Ridge Too Far"
     ALLIES = ["gre"].freeze
     AXIS = ["ita"].freeze
-    STATUS = "b"
-    VERSION = "0.3"
+    STATUS = ""
+    VERSION = "1.0"
 
     DATE = [1940, 11, 2].freeze
     LAYOUT = [15, 23, "x"].freeze
@@ -83,7 +83,7 @@ module Scenarios
           allied_dir: 1.5,
           axis_dir: 4.5,
           victory_hexes: [
-            [9, 5, 1], [2, 11, 2], [12, 12, 1], [10, 13, 1], [12, 15, 1], [8, 17, 1], [1, 20, 1],
+            [9, 5, 1], [2, 11, 2], [12, 12, 1], [10, 13, 1], [12, 15, 1], [8, 17, 1], [1, 19, 1],
           ],
           allied_setup: {
             "0" => [

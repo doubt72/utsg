@@ -116,6 +116,7 @@ module Utility
               ["ussr", "Rifle", 0, 3, 7, 3, 4, {}],
               ["ussr", "SMG", 0, 3, 7, 2, 4, { a: 1 }],
               ["ussr", "Militia", 0, 2, 6, 2, 3, {}],
+              ["ussr", "Partisan", 0, 2, 5, 2, 4, {}],
 
               ["vcf", "BAR", 0, 3, 8, 4, 4, { a: 1, s: 1 }],
               ["vcf", "Colonial", 0, 2, 6, 3, 3, {}],

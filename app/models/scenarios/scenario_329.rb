@@ -3,7 +3,7 @@
 module Scenarios
   class Scenario329 < Base
     ID = "329"
-    NAME = "Almost the End"
+    NAME = "Until the End"
     ALLIES = ["usa"].freeze
     AXIS = ["ger"].freeze
     STATUS = "p"

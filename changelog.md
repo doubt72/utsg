@@ -1,3 +1,9 @@
+# 0.157
+
+- Updated 204, 322, 329
+- Updated/promoted 506
+- Added prototype 041, 042, 330
+
 # 0.156
 
 - Bug fix: decoy leaders score for axis
