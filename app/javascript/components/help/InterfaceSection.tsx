@@ -75,7 +75,7 @@ export default function InterfaceSection() {
               height={height * shrink}
             >
               <image
-                href="/assets/screenshot4.png"
+                href="/assets/screenshot5.png"
                 x="0"
                 y="0"
                 width={width * shrink}
@@ -329,8 +329,8 @@ export default function InterfaceSection() {
         {redNumber(14)}
         <strong>Score display</strong>: shows the current score (i.e., who would win if the game
         ended at that moment). Also shows which directions the two players are advancing, or more
-        importantly, the directions that units must move when routing (i.e., the opposite direction
-        from the arrows).
+        importantly, the directions that units must move when routing (the red arrows in the
+        opposite direction).
       </p>
       <p>
         {redNumber(15)}

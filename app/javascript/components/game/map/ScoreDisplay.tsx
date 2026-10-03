@@ -85,17 +85,37 @@ export default function ScoreDisplay({ map, xx, yy, maxX, maxY, scale }: ScoreDi
                         `L ${xl - radius + size} ${yd + size} M ${xl - radius} ${yd} L ${xl} ${yd}`}
                     style={{ fill: clearColor, stroke: "#444", strokeWidth: 2 }}/>
             </g>
+            <g className={"tracking-sd-sri3"} transform={`rotate(${(alliedDir + 2)*60} ${xr} ${yd})`}>
+              <path d={`M ${xr - radius + size} ${yd - size} L ${xr - radius} ${yd} ` +
+                        `L ${xr - radius + size} ${yd + size}`}
+                    style={{ fill: clearColor, stroke: "#F00", strokeWidth: 2 }}/>
+            </g>
+            <g className={"tracking-sd-sri4"} transform={`rotate(${(axisDir + 2)*60} ${xr} ${yd})`}>
+              <path d={`M ${xr - radius + size} ${yd - size} L ${xr - radius} ${yd} ` +
+                        `L ${xr - radius + size} ${yd + size}`}
+                    style={{ fill: clearColor, stroke: "#F00", strokeWidth: 2 }}/>
+            </g>
           </g> :
           <g className={"tracking-sd-sr2"}>
-            <g className={"tracking-sd-sri3"} transform={`rotate(${(alliedDir - 1)*60} ${xl} ${yd})`}>
+            <g className={"tracking-sd-sri5"} transform={`rotate(${(alliedDir - 1)*60} ${xl} ${yd})`}>
               <path d={`M ${xl - radius + size} ${yd - size} L ${xl - radius} ${yd} ` +
                         `L ${xl - radius + size} ${yd + size} M ${xl - radius} ${yd} L ${xl} ${yd}`}
                     style={{ fill: clearColor, stroke: "#444", strokeWidth: 2 }}/>
             </g>
-            <g className={"tracking-sd-sri4"} transform={`rotate(${(axisDir - 1)*60} ${xr} ${yd})`}>
+            <g className={"tracking-sd-sri6"} transform={`rotate(${(alliedDir + 2)*60} ${xl} ${yd})`}>
+              <path d={`M ${xl - radius + size} ${yd - size} L ${xl - radius} ${yd} ` +
+                        `L ${xl - radius + size} ${yd + size}`}
+                    style={{ fill: clearColor, stroke: "#F00", strokeWidth: 2 }}/>
+            </g>
+            <g className={"tracking-sd-sri7"} transform={`rotate(${(axisDir - 1)*60} ${xr} ${yd})`}>
               <path d={`M ${xr - radius + size} ${yd - size} L ${xr - radius} ${yd} ` +
                         `L ${xr - radius + size} ${yd + size} M ${xr - radius} ${yd} L ${xr} ${yd}`}
                     style={{ fill: clearColor, stroke: "#444", strokeWidth: 2 }}/>
+            </g>
+            <g className={"tracking-sd-sri8"} transform={`rotate(${(axisDir + 2)*60} ${xr} ${yd})`}>
+              <path d={`M ${xr - radius + size} ${yd - size} L ${xr - radius} ${yd} ` +
+                        `L ${xr - radius + size} ${yd + size}`}
+                    style={{ fill: clearColor, stroke: "#F00", strokeWidth: 2 }}/>
             </g>
           </g>
         }

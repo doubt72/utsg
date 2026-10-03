@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Alligator Creek"
     ALLIES = ["usa"].freeze
     AXIS = ["jap"].freeze
-    STATUS = "b"
-    VERSION = "0.3"
+    STATUS = ""
+    VERSION = "1.0"
 
     DATE = [1942, 8, 21].freeze
     LAYOUT = [15, 23, "x"].freeze
@@ -109,7 +109,6 @@ module Scenarios
               ["10-14", 12], ["11-14", 13], ["12-14", 14], ["13-14", 15], [14, "16-17"],
             ],
           },
-          base_terrain: "",
           night: true,
         }
       end
@@ -364,8 +363,8 @@ module Scenarios
             { t: "p" },
             { t: "o", r: { t: "p", d: [2, 6] } },
             { t: "j" },
-            { t: "j", r: { t: "p", d: [2, 5] } },
-            { t: "j" },
+            { t: "j", r: { t: "p", d: [2, 4] } },
+            { t: "j", r: { t: "p", d: [1, 5] } },
             { t: "y" },
             { t: "o" },
             { t: "o" },
@@ -381,8 +380,8 @@ module Scenarios
             { t: "o", r: { t: "p", d: [3, 6] } },
             { t: "p" },
             { t: "j" },
-            { t: "j", r: { t: "p", d: [2, 5] } },
             { t: "j" },
+            { t: "j", r: { t: "p", d: [2, 5] } },
             { t: "y" },
             { t: "y" },
             { t: "j" },
@@ -399,26 +398,26 @@ module Scenarios
             { t: "p" },
             { t: "p" },
             { t: "j" },
-            { t: "j", r: { t: "p", d: [2, 5] } },
-            { t: "j" },
-            { t: "j" },
-            { t: "y" },
-            { t: "j" },
-          ],
-          [
-            { t: "o" },
-            { t: "p" },
-            { t: "o", r: { t: "p", d: [3, 6] } },
-            { t: "j" },
-            { t: "j" },
-            { t: "p" },
-            { t: "p" },
-            { t: "p" },
-            { t: "o" },
             { t: "j" },
             { t: "j", r: { t: "p", d: [2, 4] } },
             { t: "j", r: { t: "p", d: [1, 5] } },
+            { t: "y" },
             { t: "j" },
+          ],
+          [
+            { t: "o" },
+            { t: "p" },
+            { t: "o", r: { t: "p", d: [3, 6] } },
+            { t: "j" },
+            { t: "j" },
+            { t: "p" },
+            { t: "p" },
+            { t: "p" },
+            { t: "o" },
+            { t: "j" },
+            { t: "j" },
+            { t: "j" },
+            { t: "j", r: { t: "p", d: [2, 5] } },
             { t: "y" },
             { t: "j" },
           ],
@@ -435,8 +434,8 @@ module Scenarios
             { t: "j" },
             { t: "j" },
             { t: "j" },
-            { t: "j", r: { t: "p", d: [2, 5] } },
             { t: "j" },
+            { t: "j", r: { t: "p", d: [2, 6] } },
             { t: "y" },
           ],
           [
@@ -452,7 +451,7 @@ module Scenarios
             { t: "o" },
             { t: "o" },
             { t: "j" },
-            { t: "j", r: { t: "p", d: [2, 6] } },
+            { t: "j", r: { t: "p", d: [3, 6] } },
             { t: "j" },
             { t: "y" },
           ],

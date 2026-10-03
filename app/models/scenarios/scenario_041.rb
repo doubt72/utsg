@@ -55,6 +55,7 @@ module Scenarios
           map_data:,
           allied_units:,
           axis_units:,
+          special_rules: ["allied_existance"],
         }
       end
 
@@ -93,10 +94,7 @@ module Scenarios
           allied_dir: 1,
           axis_dir: 4,
           victory_hexes: [],
-          escape_hexes: [
-            [31, 6, 2], [25, 0, 1], [23, 10, 1], [9, 0, 1], [10, 10, 1], [11, 0, 1], [13, 0, 1],
-            [8, 10, 1], [6, 10, 1],
-          ],
+          escape_hexes: [[31, 6, 2]],
           allied_setup: {
             "0" => [
               ["10-31", 0], ["9-31", 1], ["10-31", 2], ["9-31", "3-4"], ["8-31", "5-6"],

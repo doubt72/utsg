@@ -647,14 +647,19 @@ export default class Game {
       const vh = this.scenario.map.victoryHexes[i]
       if (vh.player === 1) { points += 10 }
     }
-    for (const u of this.eliminatedUnits) {
-      if (u.isFeature || u.playerNation === this.playerOneNation) { continue }
-      const unit = u as Unit
-      const bonzai = this.scenario.specialRules.includes("axis_bonzai")
-      if (unit.leader && !unit.decoy) {
-        points += bonzai ? 1 : 6
-      } else if (!unit.operated && !unit.tankCrew && !unit.decoy) {
-        points += bonzai ? 1 : unit.size
+    const ae = this.scenario.specialRules.includes("allied_existance")
+    const xe = this.scenario.specialRules.includes("axis_existance")
+    if (ae) {
+      for (const u of this.scenario.map.allUnits) {
+        if (u.hasFeature || u.unit.playerNation !== this.playerOneNation) { continue }
+        points += u.unit.scoreValue(false)
+      }
+    }
+    if (!xe) {
+      for (const u of this.eliminatedUnits) {
+        if (u.isFeature || u.playerNation === this.playerOneNation) { continue }
+        const bonzai = this.scenario.specialRules.includes("axis_bonzai")
+        points += (u as Unit).scoreValue(bonzai)
       }
     }
     for (const u of this.escapedUnits) {
@@ -676,13 +681,18 @@ export default class Game {
       const vh = this.scenario.map.victoryHexes[i]
       if (vh.player === 2) { points += 10 }
     }
-    for (const u of this.eliminatedUnits) {
-      if (u.isFeature || u.playerNation === this.playerTwoNation) { continue }
-      const unit = u as Unit
-      if (unit.leader && !unit.decoy) {
-        points += 6
-      } else if (!unit.operated && !unit.tankCrew && !unit.decoy) {
-        points += unit.size
+    const ae = this.scenario.specialRules.includes("allied_existance")
+    const xe = this.scenario.specialRules.includes("axis_existance")
+    if (xe) {
+      for (const u of this.scenario.map.allUnits) {
+        if (u.hasFeature || u.unit.playerNation !== this.playerTwoNation) { continue }
+        points += u.unit.scoreValue(false)
+      }
+    }
+    if (!ae) {
+      for (const u of this.eliminatedUnits) {
+        if (u.isFeature || u.playerNation === this.playerTwoNation) { continue }
+        points += (u as Unit).scoreValue(false)
       }
     }
     for (const u of this.escapedUnits) {

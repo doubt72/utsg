@@ -101,7 +101,7 @@ export default function About() {
           </p>
           <div id="a20261002" className="about-announcement">
             <p>
-              <span className="about-announcement-header">New</span>
+              <span className="about-announcement-header">A Belated Update</span>
             </p>
             <p>
               <strong>02 Oct 2026</strong>: I really need to do these more often.

@@ -834,4 +834,13 @@ export default class Unit {
   closeCombatHelpText(game: Game, hex: Coordinate): string[] {
     return closeCombatHelpText(game, hex)
   }
+
+  scoreValue(bonzai: boolean): number {
+    if (this.leader && !this.decoy) {
+      return bonzai ? 1 : 6
+    } else if (!this.operated && !this.tankCrew && !this.decoy) {
+      return bonzai ? 1 : this.size
+    }
+    return 0
+  }
 }

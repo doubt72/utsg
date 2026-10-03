@@ -1,11 +1,11 @@
 Features/Bug Fixes
-  - Periodically check sync
+  + Add hex code to overlay
+  + Red reverse arrow
+  + 041: Special partisan scenario rule: score for surviving units
+  - Add rule that game is over when no units remain for one side
   - Decoy next to hit revealed
-  - Exhausted parent prevents fire (check rules?)
-  - Special partisan scenario rule: score for surviving units.
-    - Add rule that game is over when no units remain for one side
+  - Periodically check sync
   - Big stack not quite right
-  - Red reverse arrow
   - 110, 309 Redo alphas before beta
   - Update tutorial, video playthroughs
   - 319 Test playing multiple factions

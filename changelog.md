@@ -1,3 +1,11 @@
+# 0.158
+
+- Add hex coordinate to terrain overlay
+- Add red arrows for rout direction
+- Add rules for partisan scenario 041
+- Finish announcement :-/
+- Updated/promoted 417
+
 # 0.157
 
 - Updated announcements/moved old announcements to new page

@@ -2,7 +2,7 @@ import {
   baseTerrainType, Coordinate, Direction, markerType, sponsonType, streamType, weatherType, windType
 } from "../../utilities/commonTypes"
 import { HelpLayout, roundedRectangle } from "../../utilities/graphics"
-import { alliedCodeToName, axisCodeToName, baseMorale, baseRally, baseToHit, chance2D10, chanceCC, chanceD10x10, critHitDiff, critMorale, exact2D10, hexDistance, normalDir } from "../../utilities/utilities"
+import { alliedCodeToName, axisCodeToName, baseMorale, baseRally, baseToHit, chance2D10, chanceCC, chanceD10x10, coordinateToLabel, critHitDiff, critMorale, exact2D10, hexDistance, normalDir } from "../../utilities/utilities"
 import { closeCombatFirepower, closeCombatMoraleBonus, maxCCCasualties } from "../control/closeCombat"
 import {
   armorAtArc, armorHitModifiers, fireHindrance, firepower, leadershipAt, moraleModifiers, rangeMultiplier,
@@ -25,7 +25,7 @@ export function hexHelpLayout(
 }
 
 function hexHelpText(hex: Hex): string[] {
-  const text = [hex.terrain.name]
+  const text = [`${coordinateToLabel(hex.coord)}: ${hex.terrain.name}`]
   if (hex.terrain.name === "water" && hex.map.baseTerrain === baseTerrainType.Snow) {
     text.push("frozen")
     text.push("movement cost 2")
