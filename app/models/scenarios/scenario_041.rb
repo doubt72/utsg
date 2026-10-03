@@ -3,7 +3,7 @@
 module Scenarios
   class Scenario041 < Base
     ID = "041"
-    NAME = "Ambush"
+    NAME = "Jumping at Shadows"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
     STATUS = "p"

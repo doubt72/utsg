@@ -1,8 +1,8 @@
 # 0.157
 
-- Updated 204, 322, 329
+- Updated 106, 204, 322, 329
 - Updated/promoted 506
-- Added prototype 041, 042, 330
+- Added prototype 041, 042, 043, 044, 330
 
 # 0.156
 

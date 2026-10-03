@@ -3,7 +3,7 @@
 module Scenarios
   class Scenario037 < Base
     ID = "037"
-    NAME = "Breakout"
+    NAME = "One Way Out"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
     STATUS = "p"
@@ -44,7 +44,7 @@ module Scenarios
     AXIS_UNITS = {
       "0": { list: [
         [2, :ger_leader_5_1],
-        [7, :ger_rifle_s],
+        [8, :ger_rifle_s],
         [4, :ger_mg_42],
         [2, :ger_sc],
         :ger_stug_iii_b_e,

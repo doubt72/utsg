@@ -3,7 +3,7 @@
 module Scenarios
   class Scenario042 < Base
     ID = "042"
-    NAME = "Steel Tide"
+    NAME = "Steel, Steel, Steel!"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
     STATUS = "p"
@@ -91,14 +91,15 @@ module Scenarios
           defensive lines.",
           "After a week of fighting, the Soviets launched their
           counteroffensives: one in the north and another it the south. On the
-          southern side of the salient near Prokhorovka, the 5th Guards Tank
-          Army engaged the II SS-Panzer Corps of the 4th Panzer Army,
-          resulting in a large clash of armoured fighting vehicles. The 5th
-          Guards Tank Army suffered significant losses but succeeded in
-          preventing the Wehrmacht from capturing Prokhorovka and breaking
-          through. The Red Army went on a general offensive and had now seized
-          the strategic initiative on the Eastern Front, holding it for the
-          rest of the war.",
+          southern side of the salient near Prokhorovka, the signal to start
+          the attack was \"Steel, Steel, Steel!\", and the 5th Guards Tank Army
+          engaged the II SS-Panzer Corps of the 4th Panzer Army, resulting in
+          a large clash of armoured fighting vehicles. The 5th Guards Tank
+          Army suffered significant losses but succeeded in preventing the
+          Wehrmacht from capturing Prokhorovka and breaking through. The Red
+          Army went on a general offensive and had now seized the strategic
+          initiative on the Eastern Front, holding it for the rest of the
+          war.",
         ]
       end
 
