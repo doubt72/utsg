@@ -1,5 +1,6 @@
 # 0.157
 
+- Updated announcements/moved old announcements to new page
 - Updated 106, 204, 322, 329
 - Updated/promoted 506
 - Added prototype 041, 042, 043, 044, 330

@@ -23,11 +23,11 @@ export default function IntroSection() {
         <strong>{titleNameStyle}</strong> is a browser-based hex-and-counter wargame for simulating
         small unit tactical combat. It is intended to model land engagements during the
         mid-twentieth century, primarily the Second World War, using a streamlined system designed
-        to cover all major theaters and phases of the war, from China or Spain in the late 30&apos;s
-        to the final battles in Germany or the Pacific. The system supports small infantry
-        formations (squads and teams) and their support weapons, as well as individual vehicles
-        (armored and otherwise) in semi-turn-based engagements, and is meant to strike a balance
-        between historical authenticity and simplicity, though with the greater emphasis on
+        to cover all major theaters and phases of the war, from China, Poland, or Finland at the end
+        of the 30&apos;s to the final battles in Germany or the Pacific. The system supports small
+        infantry formations (squads and teams) and their support weapons, as well as individual
+        vehicles (armored and otherwise) in semi-turn-based engagements, and is meant to strike a
+        balance between historical authenticity and simplicity, though with the greater emphasis on
         simplicity.
       </p>
       <p>

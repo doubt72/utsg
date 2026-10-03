@@ -63,8 +63,7 @@ export default function SpecialRulesSection({ section }: SectionProps) {
       <h3>{section}.3. Random Drops with Decoys</h3>
       <p>
         In scenarios with both hidden units and decoys, decoys will break on deploy and rally and
-        rout normally; there will be special rule with the base morale for all decoy leaders and
-        teams.
+        rout normally; those scenarios include a base morale for all decoy leaders and teams.
       </p>
       <h3>{section}.4. Cavalry</h3>
       <p>
@@ -106,10 +105,13 @@ export default function SpecialRulesSection({ section }: SectionProps) {
           cavalry was carrying any units, the units are automatically dismounted (but don&apos;t
           require a morale check).
         </li>
-        <li>
-          Horses and bicycles can use paths; motorcycles cannot.
-        </li>
+        <li>Horses and bicycles can use paths; motorcycles cannot.</li>
       </ul>
+      <h3>{section}.5. Escape Hexes</h3>
+      <p>
+        Some scenarios include escape hexes; units in that hex can escape the map with an assault
+        move.
+      </p>
     </div>
   );
 }

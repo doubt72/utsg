@@ -736,6 +736,18 @@ div.design-button-disable {
   color: $dark-green;
 }
 
+.about-around {
+  background-color: $gray-c;
+}
+
+.about-previous {
+  padding: 1em;
+  flex-grow: 1;
+  background-color: $background-gray;
+  border-radius: 0.5em;
+  max-width: 1000px;
+}
+
 .inline-game-title {
   color: $dark-green;
   font: small-caps 20px $title-font, monospace;

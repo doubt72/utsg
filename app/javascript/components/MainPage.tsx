@@ -90,7 +90,7 @@ export default function MainPage() {
         <div>
           <div className="main-page-announcements">
             <p>
-              <strong>Latest announcement</strong>: <a className="regular" href="/about/a20260813">
+              <strong>Latest announcement</strong>: <a className="regular" href="/about/a20261002">
                 More Progress
               </a>
             </p>

@@ -31,12 +31,14 @@ import AdminUsers from "../admin/AdminUsers";
 import ScenarioDesigner from "../designer/ScenarioDesigner";
 import DebugUnitsPromo from "../debug/DebugUnitsPromo";
 import GameReplayDisplay from "../components/game/GameReplayDisplay";
+import Announcements from "../components/Announcements";
 
 export default function Routes() {
   const publicRoutes = [
     { path: "*", element: <MainPage /> },
     { path: "/about", element: <About /> },
     { path: "/about/:id", element: <About /> },
+    { path: "/announcements", element: <Announcements /> },
     { path: "/login", element: <Login /> },
     { path: "/signup", element: <Signup /> },
     { path: "/verify", element: <Verify /> },
