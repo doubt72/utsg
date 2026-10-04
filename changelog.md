@@ -1,3 +1,8 @@
+# 0.159
+
+- Bug fix: problem with fire starting when destroying tanks
+- Added prototype 901
+
 # 0.158
 
 - Add hex coordinate to terrain overlay

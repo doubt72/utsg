@@ -832,7 +832,7 @@ export default class FireAction extends BaseAction {
           if (f.vehicle?.isTankCrewed) {
             this.game.addFireCheck({
               loc, vehicle: true, incendiary, vehicle_incendiary, tank: true,
-              nation: target0.unit.nation, player_nation: target0.unit.playerNation
+              nation: f.vehicle.nation, player_nation: f.vehicle.playerNation
             })
           } else if (fireStartTarget(
                       this.map, loc, f.vehicle !== undefined, incendiary,
