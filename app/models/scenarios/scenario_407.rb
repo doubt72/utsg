@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Bloody Ridge"
     ALLIES = ["usa"].freeze
     AXIS = ["jap"].freeze
-    STATUS = "a"
-    VERSION = "0.3"
+    STATUS = "b"
+    VERSION = "0.4"
 
     DATE = [1942, 9, 13].freeze
     LAYOUT = [15, 23, "x"].freeze
@@ -18,8 +18,8 @@ module Scenarios
           :usa_leader_6_2,
           :usa_leader_5_1,
           :usa_leader_4_1,
-          [10, :usa_marine_rifle_s],
-          [3, :usa_m1917_browning],
+          [9, :usa_marine_rifle_s],
+          [2, :usa_m1917_browning],
           :usa_radio_105mm,
           [3, :foxhole],
         ],

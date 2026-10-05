@@ -310,7 +310,7 @@ export default function NewGame() {
     { code: "6", name: "China/Asia"},
     // { code: "7", name: "Cold War"},
     // { code: "8", name: "Interwar"},
-    // { code: "9", name: "Hypthetical"},
+    { code: "9", name: "Hypothetical"},
   ]
 
   const theaterSelector = (

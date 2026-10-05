@@ -198,7 +198,7 @@ class Game < ApplicationRecord # rubocop:disable Metrics/ClassLength
 
     action = GameAction.where(game_id: id, user_id: current_player_id, undone: false)
                        .order(sequence: :desc).first
-    return unless action && action.created_at < 15.minutes.ago
+    return unless action && action.created_at < 20.minutes.ago
 
     ::Utility::NotificationEmails.turn_notification(current_player, self)
     update(needs_turn_notification: false)

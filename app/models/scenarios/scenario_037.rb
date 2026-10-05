@@ -6,8 +6,8 @@ module Scenarios
     NAME = "One Way Out"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "p"
-    VERSION = "0.1"
+    STATUS = "b"
+    VERSION = "0.2"
 
     DATE = [1943, 8, 12].freeze
     LAYOUT = [15, 23, "x"].freeze
@@ -54,7 +54,7 @@ module Scenarios
     class << self
       def generate
         {
-          turns: 6,
+          turns: 7,
           first_deploy: 1,
           first_action: 2,
           date:,
@@ -99,18 +99,30 @@ module Scenarios
           allied_dir: 2.5,
           axis_dir: 5.5,
           victory_hexes: [
-            [8, 8, 2], [7, 13, 1], [12, 2, 1], [0, 10, 1], [14, 7, 1],
+            [8, 8, 2], [0, 10, 1], [14, 7, 1],
           ],
           escape_hexes: [
             [2, 22, 2], [5, 22, 2], [8, 22, 2],
           ],
           allied_setup: {
-            "0" => [["*", "16-22"]],
-            "3" => [[0, "*"]],
-            "4" => [[14, "*"]],
-            "5" => [["*", 0]],
+            "0" => [
+              ["*", "16-22"],
+            ],
+            "3" => [
+              [0, "*"],
+            ],
+            "4" => [
+              [14, "*"],
+            ],
+            "5" => [
+              ["*", 0],
+            ],
           },
-          axis_setup: { "0" => [["7-9", 7], ["7-10", 8], ["6-9", 9], ["7-8", 10]] },
+          axis_setup: {
+            "0" => [
+              ["7-9", 7], ["7-10", 8], ["6-9", 9], ["7-8", 10],
+            ],
+          },
           base_terrain: "",
         }
       end

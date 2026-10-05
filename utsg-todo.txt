@@ -1,6 +1,7 @@
 Features/Bug Fixes
-  - 012: add forest
-  - Add rule that game is over when no units remain for one side
+  + Add rule that game is over when no units remain for one side
+  - 110 Redo alphas before beta
+  - 311 Needs a better name
   - Decoy next to hit revealed
   - Periodically check sync
   - Big stack not quite right
@@ -11,8 +12,6 @@ Features/Bug Fixes
   - Add Some Developer Notes
   - Strategy notes
 
-  - 110, 309 Redo alphas before beta
-  - 311 Needs a better name
   - 319 Test playing multiple factions
   - 524 Test Finns on the other side
 

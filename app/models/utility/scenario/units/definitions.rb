@@ -257,6 +257,8 @@ module Utility
               "75mm_m1_pack": { fp: 16, rng: 20, mv: 1, tgt: true, fix: 18, gun: true, smk: true, crw: true, sz: 3, twsz: 3 },
               "76mm_zis_3": { fp: 16, rng: 28, mv: 1, tgt: true, fix: 18, gun: true, smk: true, crw: true, sz: 3, twsz: 3 },
               # AT Guns
+              "3_7cm_kpuv_vz__37": { fp: 6, rng: 12, mv: 2, tgt: true, fix: 18, at: true, crw: true, sz: 2, twsz: 2 },
+              "4_7cm_kpuv_vz__38": { fp: 10, rng: 12, mv: 1, tgt: true, fix: 18, at: true, crw: true, sz: 3, twsz: 3 },
               "25mm_hotchkiss": { fp: 4, rng: 12, mv: 2, tgt: true, fix: 18, at: true, crw: true, sz: 2, twsz: 2 },
               "47mm_apx": { fp: 12, rng: 16, mv: 1, tgt: true, fix: 18, at: true, crw: true, sz: 3, twsz: 3 },
               "2_8cm_spzb_41": { fp: 10, rng: 8, mv: 2, tgt: true, fix: 18, at: true, crw: true, sz: 2, twsz: 2 },

@@ -48,9 +48,10 @@ export default function HousekeepingSection({ section }: SectionProps) {
         at this time. Wrecks may not be removed.
       </p>
       <p>
-        The game ends on the last turn after this phase; there&apos;s no reason to update status,
-        check smoke, or check variable weather as it can no longer have any effect on the game, and
-        the chance that blazes spreading could is infinitessimal even if it wasn&apos;t skipped.
+        The game ends on the last turn (or if either player no longer has any units nor
+        future reinforcements) after this phase; there&apos;s no reason to update status, check
+        smoke, or check variable weather as it can no longer have any effect on the game, and the
+        chance that blazes spreading could is infinitessimal even if it wasn&apos;t skipped.
       </p>
       <h3>{section}.2. Updating Unit Status and Initiative</h3>
       <p>

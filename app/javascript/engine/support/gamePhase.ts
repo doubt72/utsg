@@ -203,7 +203,7 @@ function cleanupOverstack(game: Game, data: GameActionData): void {
     }
     cleanupOverstack(game, data)
   } else {
-    if (phaseData.new_turn === game.scenario.turns) {
+    if (phaseData.new_turn === game.scenario.turns || game.finished) {
       phaseData.new_phase = gamePhaseType.CleanupStatus
       phaseData.messages.push("game complete")
       phaseData.done = true

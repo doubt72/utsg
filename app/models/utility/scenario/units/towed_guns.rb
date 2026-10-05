@@ -57,6 +57,8 @@ module Utility
             key = %i[c n y o]
             [
               ["alm", "Bofors 37mm AT", 35, { sn: 1 }],
+              ["alm", "3.7cm KPUV vz. 37", 36, { sn: 3 }],
+              ["alm", "4.7cm KPUV vz. 38", 36, { sn: 3 }],
 
               ["axm", "Bofors 37mm AT", 35, { sn: 1 }], ["axm", "3.7cm Pak 36", 36],
 

@@ -3,29 +3,64 @@
 module Scenarios
   class Scenario901 < Base
     ID = "901"
-    NAME = "blank scenario"
-    ALLIES = ["ussr"].freeze
+    NAME = "Czechoslovakia Stands"
+    ALLIES = ["cze"].freeze
     AXIS = ["ger"].freeze
     STATUS = "p"
     VERSION = "0.1"
 
-    DATE = [1939, 1, 1].freeze
+    DATE = [1938, 10, 1].freeze
     LAYOUT = [23, 23, "x"].freeze
 
     ALLIED_UNITS = {
-      "0": { list: [] },
+      "0": { list: [
+        :alm_leader_5_1,
+        :alm_leader_4_1,
+        [4, :alm_regular_s],
+        [3, :alm_crew_t],
+        [2, :alm_zb_vz__30],
+        :alm_81mm_mortar,
+        :alm_75mm_gun,
+        :alm_3_7cm_kpuv_vz__37,
+        :alm_4_7cm_kpuv_vz__38,
+        :alm_oa_vz__30,
+        [8, :wire],
+      ] },
+      "2": { list: [
+        [4, :alm_lt_vz__35],
+        [2, :alm_lt_vz__38],
+      ] },
     }.freeze
 
     AXIS_UNITS = {
-      "0": { list: [] },
+      "0": { list: [
+        :ger_leader_6_1,
+        :ger_leader_5_1,
+        :ger_leader_4_1,
+        [9, :ger_rifle_s],
+        [6, :ger_mg_34],
+        :ger_radio_10_5cm,
+        [4, :ger_pzkpfw_i],
+        [4, :ger_pzkpfw_ii_a_e],
+        [2, :ger_sdkfz_221],
+        [2, :ger_sdkfz_222],
+      ] },
     }.freeze
+
+    INIT_ALLIED_UNITS = [
+      { data: :tanktrap, x: 9, y: 10, facing: 3 },
+      { data: :tanktrap, x: 20, y: 5, facing: 3 },
+      { data: :bunker, x: 1, y: 20, facing: 3 },
+      { data: :bunker, x: 17, y: 20, facing: 2 },
+      { data: :bunker, x: 17, y: 17, facing: 2 },
+    ].freeze
 
     class << self
       def generate
         {
-          turns: 5,
-          first_deploy: 2,
-          first_action: 1,
+          turns: 6,
+          first_deploy: 1,
+          first_action: 2,
           date:,
           location: "Králíky, Czechoslovakia",
           author: "The Establishment",
@@ -33,12 +68,41 @@ module Scenarios
           map_data:,
           allied_units:,
           axis_units:,
+          init_allied_units:,
         }
       end
 
       def description
         [
-          "no description yet",
+          "The Munich Agreement was an agreement between the main European
+          powers, namely France, Britain, Germany, and Italy, to cede the
+          border Sudetenland of Czechosolovakia to Germany. Disgracefully,
+          Czechoslovakia had not been invited to the talks (nor had the Soviet
+          Union). At that point the situation in the Sudetenland had reached a
+          crisis point: many of the inhabitants of the Sudetenland were ethnic
+          Germans, and at the same time that Germany had been putting pressure
+          on Czechoslovakia to ced the Sudetenland, it had also been
+          supporting unrest in the region among the German-speaking locals to
+          the point that it had become an undeclared war, mainly between the
+          insurgent paramilitary SFK (Freikorps Sudetenland) and Czechoslovak
+          gendarme with occasional direct intervention by the Wehrmacht and
+          Czechoslovak army.",
+          "This put Czechoslovakia in an impossible position: either cede the
+          Sudetenland to the Germans, where a large portion of Czechoslovak
+          industry was located — not to mention all of the Czechoslovak border
+          defences and its most defensible terrain — or fight alone against
+          the Wehrmacht. While Russia had offered military support, it was
+          only on the condition that Romania or Poland allow the passage of
+          Soviet troops, which they would not do — the Poles in
+          particular had their own claims against Czechoslovak territory that
+          they shortsightedly wanted to press. Even Hitler wanted the
+          Czechoslovak Republic to refuse and give Germany an excuse to
+          invade, but in the end the Czechoslovak government gave in.",
+          "But what if they hadn't?  While not nearly as large of a nation as
+          Germany, the Czechoslovak army was well-equipped, and much of its
+          equipment was of high quality and would continue to be used in
+          significant quantities by the Wehrmacht for years after Germany
+          annexed most of the country.",
         ]
       end
 
@@ -50,16 +114,27 @@ module Scenarios
           wind: [1, 1, false],
           hexes:,
           layout:,
-          allied_dir: 1,
-          axis_dir: 1,
+          allied_dir: 2.5,
+          axis_dir: 5.5,
           victory_hexes: [
-            [10, 12, 1],
+            [21, 6, 1], [20, 15, 1], [16, 13, 1], [7, 16, 1], [14, 15, 1], [9, 11, 1], [1, 16, 1],
           ],
           allied_setup: {
-            "0" => [],
+            "0" => [
+              [22, "3-4"], ["21-22", "5-6"], [17, 7], ["20-22", 7], ["17-22", 8], [13, 9],
+              ["16-22", 9], ["12-22", 10], ["2-4", 11], ["9-22", 11], ["2-5", 12], ["9-22", 12],
+              ["1-22", 13], ["*", "14-22"],
+            ],
+            "2" => [
+              [22, "14-21"], ["*", 22],
+            ],
           },
           axis_setup: {
-            "0" => [],
+            "0" => [
+              ["0-21", 2], ["0-20", "3-4"], ["0-19", 5], ["0-16", 6], [19, 6], ["0-15", 7],
+              ["0-12", 8], [15, 8], ["0-10", 9], ["0-1", 10], ["6-8", 10], [0, 11], ["6-7", 11],
+              [0, 12], ["*", "0-1"],
+            ],
           },
         }
       end
@@ -468,7 +543,7 @@ module Scenarios
           ],
           [
             { t: "o" },
-            { t: "o" },
+            { t: "o", st: { sh: "l", s: "f" }, d: 1 },
             { t: "d", d: 1 },
             { t: "d", d: 1 },
             { t: "o", r: { t: "t", d: [2, 4] } },
@@ -584,7 +659,7 @@ module Scenarios
             { t: "o" },
             { t: "o" },
             { t: "o" },
-            { t: "o" },
+            { t: "o", h: 1 },
             { t: "o" },
             { t: "o" },
             { t: "o", r: { t: "t", d: [2, 5] } },
@@ -608,9 +683,9 @@ module Scenarios
             { t: "o" },
             { t: "o" },
             { t: "o" },
-            { t: "o" },
             { t: "o", h: 1 },
-            { t: "o", h: 1 },
+            { t: "f", h: 1 },
+            { t: "f", h: 1 },
             { t: "o" },
             { t: "o", r: { t: "t", d: [2, 5] } },
             { t: "o" },
@@ -634,10 +709,10 @@ module Scenarios
             { t: "o" },
             { t: "o" },
             { t: "o" },
-            { t: "o", h: 1 },
-            { t: "o", h: 1 },
-            { t: "o", h: 1 },
-            { t: "o" },
+            { t: "f", h: 1 },
+            { t: "f", h: 1 },
+            { t: "f", h: 1 },
+            { t: "f" },
             { t: "o", r: { t: "t", d: [2, 5] } },
             { t: "o" },
           ],

@@ -640,6 +640,28 @@ export default class Game {
     return true
   }
 
+  get finished(): boolean {
+    let p1units = false
+    let p2units = false
+    for (const c of this.scenario.map.allCounters) {
+      if (c.hasFeature || c.hasMarker) { continue }
+      const u = c.unit
+      if (u.isWreck || u.crewed || u.uncrewedSW) { continue }
+      if (u.playerNation === this.playerOneNation) { p1units = true }
+      if (u.playerNation === this.playerTwoNation) { p2units = true }
+      if (p1units && p2units) { return false }
+    }
+    for (const t of Object.keys(this.scenario.alliedReinforcements)) {
+      if (Number(t) > this.turn) { p1units = true }
+      if (p1units && p2units) { return false }
+    }
+    for (const t of Object.keys(this.scenario.axisReinforcements)) {
+      if (Number(t) > this.turn) { p2units = true }
+      if (p1units && p2units) { return false }
+    }
+    return true
+  }
+
   get playerOneScore(): number {
     if (this.replay1Score) { return this.replay1Score }
     let points = 0

@@ -16,6 +16,9 @@ module Utility
             [
               ["alm", "Renault FT", 26], ["alm", "Renault R35", 36],
 
+              # Czech
+              ["alm", "LT vz. 35", 35], ["alm", "LT vz. 38", 38],
+
               # Romanian
               ["axm", "R-2", 38], ["axm", "T-3", 42], ["axm", "T-4", 43], ["axm", "T-38", 40],
 
@@ -154,8 +157,13 @@ module Utility
             lu = {}
             key = %i[c n y o]
             [
+              # Dutch
               ["alm", "Overvalwagen", 40],
 
+              # Czech
+              ["alm", "OA vz. 30", 34],
+
+              # Slovak
               ["axm", "OA vz. 30", 38],
 
               ["chi", "M3A1 Scout Car", 39, { sn: 1 }],

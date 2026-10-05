@@ -1,3 +1,11 @@
+# 0.160
+
+- Add rule that game finishes if either player has no units or reinforcements left
+- Increase time for triggering move notifications from 15 to 20 minutes
+- Updated 012, 901
+- Updated/promoted 306
+- Promoted 037, 309, 407 to beta
+
 # 0.159
 
 - Bug fix: problem with fire starting when destroying tanks

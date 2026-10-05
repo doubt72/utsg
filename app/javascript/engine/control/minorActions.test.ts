@@ -1,5 +1,5 @@
 import { describe, expect, test, vi } from "vitest";
-import { createBlankGame, testFire, testGInf, testSmoke } from "./testHelpers";
+import { createBlankGame, testFire, testGInf, testRInf, testSmoke } from "./testHelpers";
 import { checkPhase, gamePhaseType } from "../support/gamePhase";
 import PrecipCheckState from "./state/PrecipCheckState";
 import SmokeCheckState from "./state/SmokeCheckState";
@@ -135,20 +135,24 @@ describe("minor actions", () => {
     unit1.pin(game)
     const loc = new Coordinate(0,0)
     map.addCounter(loc, unit1)
-    const unit2 = new Unit(testGInf)
+    const unit2 = new Unit(testRInf)
     unit2.id = "test2"
     unit2.exhaust()
-    map.addCounter(loc, unit2)
+    const loc2 = new Coordinate(4,4)
+    map.addCounter(loc2, unit2)
 
     game.phase = gamePhaseType.CleanupOverstack
 
     checkPhase(game, false)
 
-    const units = map.countersAt(loc)
-    expect(units.length).toBe(2)
+    let units = map.countersAt(loc)
+    expect(units.length).toBe(1)
     expect(units[0].unit.isNormal).toBe(true)
     expect(units[0].unit.pinned).toBe(false)
-    expect(units[1].unit.isTired).toBe(true)
+
+    units = map.countersAt(loc2)
+    expect(units.length).toBe(1)
+    expect(units[0].unit.isTired).toBe(true)
 
     const action = game.actions[1]
     expect(action.type).toBe("status_update")
