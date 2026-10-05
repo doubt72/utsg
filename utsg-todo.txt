@@ -1,5 +1,4 @@
 Features/Bug Fixes
-  + Add rule that game is over when no units remain for one side
   - 110 Redo alphas before beta
   - 311 Needs a better name
   - Decoy next to hit revealed

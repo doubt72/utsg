@@ -29,7 +29,7 @@ export function defaultScenario(): ScenarioData {
   return structuredClone({
     id: "000", name: "blank scenario", status: "p", version: "0.1",
     allies: ["ussr"], axis: ["ger"], metadata: {
-      author: "nobody", date: [1939, 1, 1], location: "nowhere", turns: 5,
+      author: "nobody", date: [1920, 1, 1], location: "nowhere", turns: 5,
       first_action: 1, first_deploy: 2,
       allied_units: { 0: { list: [] } }, axis_units: { 0: { list: [] } },
       description: ["no description yet"], special_rules: [], map_data: {

@@ -5,6 +5,7 @@
 - Updated 012, 901
 - Updated/promoted 306
 - Promoted 037, 309, 407 to beta
+- Added prototype 902
 
 # 0.159
 
