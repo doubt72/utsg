@@ -548,9 +548,13 @@ export default class Map {
     return false
   }
 
-  sizeAt(loc: Coordinate): number {
+  sizeAt(loc: Coordinate, nation?: string): number {
     return this.countersAt(loc).reduce((sum, c) => {
-      return c.hasUnit ? sum + c.unit.size : sum
+      let size = c.hasUnit ? c.unit.size : 0
+      if (!c.hasUnit || (nation && nation !== c.unit.playerNation)) {
+        size = 0
+      }
+      return sum + size
     }, 0)
   }
 

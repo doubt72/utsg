@@ -138,14 +138,18 @@ export default class AssaultState extends BaseState {
       (sum, u) => sum + u.counter.unit.size + u.counter.unit.children.reduce((sum, u) => u.size, 0), 0
     )
     const toSize = this.map.sizeAt(to)
+    const toDblSize = this.map.sizeAt(to, selection.unit.playerNation)
     let check = false
     for (const c of countersAt) {
       if (c.hasUnit && selection.unit.playerNation !== c.unit.playerNation && !c.unit.isWreck &&
-          !c.unit.operated) { check = true }
+          !c.unit.operated) {
+        check = true
+      }
     }
     if (this.path.length + this.addActions.length > 1) { return hexOpenType.Closed }
     if (assaultMovement(this.game) === 0) { return hexOpenType.Closed }
     if (moveSize + toSize > stackLimit && !check) { return hexOpenType.Overstack }
+    if (moveSize + toDblSize > stackLimit * 2) { return hexOpenType.Overstack }
     return hexOpenType.All
   }
 

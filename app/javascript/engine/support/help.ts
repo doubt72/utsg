@@ -591,10 +591,10 @@ export function closeCombatHelpText(game: Game, loc: Coordinate): string[] {
   rc.push(`${game.axisName} firepower ${fp2}`)
   const m1 = closeCombatMoraleBonus(game, loc, 1)
   const m2 = closeCombatMoraleBonus(game, loc, 2)
-  if (m1) {
-    rc.push(`[${game.alliedName} +2 morale bonus]`)
-  } else if (m2) {
-    rc.push(`[${game.axisName} +2 morale bonus]`)
+  if (m1.bonus) {
+    rc.push(`[${game.alliedName} +${m1.value} morale bonus]`)
+  } else if (m2.bonus) {
+    rc.push(`[${game.axisName} +${m2.value} morale bonus]`)
   } else { rc.push("[no morale bonus]") }
   rc.push("")
   const max1 = maxCCCasualties(game.scenario.map, loc, game.playerTwoNation)

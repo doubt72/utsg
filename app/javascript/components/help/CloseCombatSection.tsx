@@ -37,14 +37,16 @@ export default function CloseCombatSection({ section }: SectionProps) {
         Each player adds up their combat power, which is the cumulative total of the firepower of
         any infantry unit (squad, team, or leader) plus 2 for any infantry units with an assault
         bonus, plus the highest leadership of any leader in the stack for that player added to each
-        non-leader infantry unit. Armored vehicles have close combat firepower of 2 (unless immobilized,
-        then 1), other vehicles have close combat fire of 1. Infantry weapons add 2 if they have
-        an assault bonus, otherwise 0.
+        non-leader infantry unit. Armored vehicles have close combat firepower of 2 (unless
+        immobilized, then 1), other vehicles have close combat fire of 1. Infantry weapons add 2 if
+        they have an assault bonus, otherwise 0.
       </p>
       <p>
-        A morale bonus is then added to the total firepower, if applicable: whichever side has
-        a higher total when adding up the product of each unit&apos;s morale and size gets an
-        additional +2 added to their firepower.
+        A morale bonus is then added to the total firepower, if applicable: whichever side has a
+        higher total when adding up the product of each unit&apos;s morale and size gets an
+        additional bonus equal to the number of unbroken squads, teams, and leader units they have
+        in the combat added to their firepower (pinned units count for both the comparison and the
+        total bonus; broken units only count for the purposes of the comparison).
       </p>
       <div className="example">
         For instance, in the example below, the American units&apos; total is 29 (4x6 + 5x1 = 29)
@@ -65,30 +67,31 @@ export default function CloseCombatSection({ section }: SectionProps) {
         or are destroyed before the next close combat phase by some other means).
       </p>
       <div className="example">
-      <div className={"flex mb1em"}>
-        <div>
-          <CounterDisplay unit={one1} />
+        <div className={"flex mb1em"}>
+          <div>
+            <CounterDisplay unit={one1} />
+          </div>
+          <div>&nbsp;</div>
+          <div>
+            <CounterDisplay unit={one2} />
+          </div>
+          <div>&nbsp;</div>
+          <div>
+            <CounterDisplay unit={one3} />
+          </div>
+          <div>&nbsp;</div>
+          <div>
+            <CounterDisplay unit={two} />
+          </div>
         </div>
-        <div>&nbsp;</div>
-        <div>
-          <CounterDisplay unit={one2} />
-        </div>
-        <div>&nbsp;</div>
-        <div>
-          <CounterDisplay unit={one3} />
-        </div>
-        <div>&nbsp;</div>
-        <div>
-          <CounterDisplay unit={two} />
-        </div>
-      </div>
-      For instance, if player one has a total combat power of 15 and rolls a 6 and a 4, and player two has
-      a total combat power of 8 and rolls a 4 and a 3, the total result for player one is
-      144 <span className="inline-monospace">[(2x15 + 6)x4]</span>, and the total result for player
-      two is 60 <span className="inline-monospace">[(2x8 + 4)x3]</span>.  Player two must take one hit (reduce
-      one unit &mdash; player one&apos;s total result is between 80 and 159), and because player two&apos;s total result is
-      below 80, player takes no hits.  Since player two only has one unit and must perform a reduction, the unit
-      breaks and the combat is over; a second hit would have eliminated the unit.
+        For instance, if player one has a total combat power of 15 and rolls a 6 and a 4, and player
+        two has a total combat power of 8 and rolls a 4 and a 3, the total result for player one is
+        144 <span className="inline-monospace">[(2x15 + 6)x4]</span>, and the total result for
+        player two is 60 <span className="inline-monospace">[(2x8 + 4)x3]</span>. Player two must
+        take one hit (reduce one unit &mdash; player one&apos;s total result is between 80 and 159),
+        and because player two&apos;s total result is below 80, player takes no hits. Since player
+        two only has one unit and must perform a reduction, the unit breaks and the combat is over;
+        a second hit would have eliminated the unit.
       </div>
     </div>
   );

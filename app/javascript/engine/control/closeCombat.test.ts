@@ -311,7 +311,7 @@ describe("close combat", () => {
     expect(game.lastAction?.type).toBe("close_combat_roll")
     expect(game.lastAction?.stringValue).toBe(
       "Japanese SNLF battles American Marine Rifle, Marine Rifle, M1918 BAR, Leader in close combat at C3; " +
-        "American player roll result of 288 [CC: (2 x 21 + 6) x 6] on 21 firepower; " +
+        "American player roll result of 300 [CC: (2 x 22 + 6) x 6] on 22 firepower; " +
         "Japanese player roll result of 132 [CC: (2 x 8 + 6) x 6] on 8 firepower; " +
         "American player takes 1 hit, Japanese player takes 2 hits (all eliminated)"
     )
@@ -401,7 +401,7 @@ describe("close combat", () => {
     map.addCounter(loc, jap)
     organizeStacks(map)
 
-    expect(closeCombatFirepower(game, loc, 1)).toBe(21)
+    expect(closeCombatFirepower(game, loc, 1)).toBe(22)
     expect(us4.closeCombatFirepower).toBe(1)
     us4.break(game)
     expect(us4.closeCombatFirepower).toBe(0)
@@ -409,18 +409,18 @@ describe("close combat", () => {
     expect(us1.closeCombatFirepower).toBe(9)
     us1.break(game)
     expect(us1.closeCombatFirepower).toBe(3)
-    expect(closeCombatFirepower(game, loc, 1)).toBe(10)
+    expect(closeCombatFirepower(game, loc, 1)).toBe(9)
     expect(us2.closeCombatFirepower).toBe(3)
     expect(us3.closeCombatFirepower).toBe(2)
     us2.break(game)
     expect(us2.closeCombatFirepower).toBe(1)
     expect(us3.closeCombatFirepower).toBe(0)
-    expect(closeCombatFirepower(game, loc, 1)).toBe(6)
+    expect(closeCombatFirepower(game, loc, 1)).toBe(4)
     us2.resetStatus()
     us3.jammed = true
     expect(us2.closeCombatFirepower).toBe(3)
     expect(us3.closeCombatFirepower).toBe(0)
-    expect(closeCombatFirepower(game, loc, 1)).toBe(8)
+    expect(closeCombatFirepower(game, loc, 1)).toBe(7)
   })
 
   test("wrecks", () => {
@@ -446,11 +446,11 @@ describe("close combat", () => {
     expect(two.closeCombatFirepower).toBe(0)
     expect(closeCombatFirepower(game, loc, 1)).toBe(0)
 
-    expect(closeCombatFirepower(game, loc, 2)).toBe(5)
+    expect(closeCombatFirepower(game, loc, 2)).toBe(4)
     expect(one.closeCombatFirepower).toBe(2)
     one.wreck()
     expect(one.closeCombatFirepower).toBe(0)
-    expect(closeCombatFirepower(game, loc, 2)).toBe(3)
+    expect(closeCombatFirepower(game, loc, 2)).toBe(2)
   })
 
   test("handles multiple losses", () => {

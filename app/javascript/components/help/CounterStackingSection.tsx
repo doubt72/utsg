@@ -148,10 +148,12 @@ export default function CounterStackingSection({ section }: SectionProps) {
       <h3 className="mt05em">{section}.4. Stacking Limit</h3>
       <p>
         Finally, there is a stacking limit of {stackLimit}. That limit can never be exceeded except
-        when moving into an enemy-occupied hex. Stacking limits in that case are separate for each
-        player, and each player may exceed their stacking limit by moving more units into that hex.
-        However, after close combat is resolved, if either player (separately) exceeds the stacking
-        limit, they must remove units until the stacking limit is no longer exceeded.
+        when moving into an enemy-occupied hex. In that case, stacking limits are double the normal
+        stacking limit for each player (counting each player&apos;s own units separately, but
+        including any dropped/unmanned infantry weapons or crewed weapons or wrecks for both
+        players). However, after close combat is resolved, if any surviving player exceeds the
+        stacking limit, during the housekeeping phase they must remove units until the stacking
+        limit is no longer exceeded.
       </p>
     </div>
   );

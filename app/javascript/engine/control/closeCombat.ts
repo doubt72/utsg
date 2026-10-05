@@ -27,20 +27,24 @@ export function closeCombatCasualtyNeeded(game: Game): Coordinate | false {
   return casualty[0].loc
 }
 
-export function closeCombatMoraleBonus(game: Game, loc: Coordinate, player: Player): boolean {
+export function closeCombatMoraleBonus(
+  game: Game, loc: Coordinate, player: Player
+): { bonus: boolean, value: number } {
   const nation = player === 1 ? game.playerOneNation : game.playerTwoNation
   const counters = game.scenario.map.countersAt(loc)
   let friend = 0
+  let unitCount = 0
   let foe = 0
   for (const c of counters) {
     if (!c.hasUnit || !c.unit.canCarrySupport) { continue }
     if (c.unit.playerNation === nation) {
       friend += c.unit.size * c.unit.currentMorale
+      if (!c.unit.isBroken) { unitCount += 1 }
     } else {
       foe += c.unit.size * c.unit.currentMorale
     }
   }
-  return friend > foe
+  return { bonus: friend > foe, value: friend > foe ? unitCount : 0 }
 }
 
 export function closeCombatFirepower(game: Game, loc: Coordinate, player: Player): number {
@@ -62,7 +66,7 @@ export function closeCombatFirepower(game: Game, loc: Coordinate, player: Player
       rc += c.unit.closeCombatFirepower
     }
   }
-  return rc + (closeCombatMoraleBonus(game, loc, player) ? 2 : 0)
+  return rc + closeCombatMoraleBonus(game, loc, player).value
 }
 
 export function setCCPlayer(game: Game, current: CloseCheck) {

@@ -305,6 +305,45 @@ describe("assault movement", () => {
     expect(game.gameState?.openHex(3, 3)).toBe(hexOpenType.Overstack)
   })
 
+  test("can't double overstack into enemy", () => {
+    const game = createMoveGame()
+    const map = game.scenario.map
+    const unit = new Unit(testGInf)
+    unit.id = "test1"
+    const loc = new Coordinate(4, 2)
+    map.addCounter(loc, unit)
+    map.select(unit)
+    const unit2 = new Unit(testGInf)
+    unit2.id = "test2"
+    map.addCounter(loc, unit2)
+
+    const unit3 = new Unit(testGInf)
+    unit3.id = "test3"
+    const oloc = new Coordinate(3, 3)
+    map.addCounter(oloc, unit3)
+    const unit4 = new Unit(testGInf)
+    unit4.id = "test4"
+    map.addCounter(oloc, unit4)
+    const unit5 = new Unit(testGInf)
+    unit5.id = "test5"
+    map.addCounter(oloc, unit5)
+
+    const unit6 = new Unit(testRInf)
+    unit6.id = "test6"
+    map.addCounter(oloc, unit6)
+
+    game.setGameState(new AssaultState(game))
+
+    select(map, {
+      counter: map.countersAt(loc)[1],
+      target: { type: "map", xy: loc }
+    }, () => {})
+    expect(game.gameState?.selection.length).toBe(2)
+    expect(game.assaultState.doneSelect).toBe(false)
+
+    expect(game.gameState?.openHex(3, 3)).toBe(hexOpenType.Overstack)
+  })
+
   test("assault into abandoned vehicle removes it", () => {
     const game = createMoveGame()
     const map = game.scenario.map

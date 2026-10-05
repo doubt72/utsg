@@ -1,16 +1,19 @@
 # 0.160
 
-- Add rule that game finishes if either player has no units or reinforcements left
-- Increase time for triggering move notifications from 15 to 20 minutes
-- Updated 012, 901
-- Updated/promoted 306
-- Promoted 037, 309, 407 to beta
-- Added prototype 902
+- Limit stacking to double in close combat
+- Morale bonus scales with number of units
+- Get versions back in sync with changelog (might be a little sleep-deprived)
+- Updated 407
 
 # 0.159
 
+- Add rule that game finishes if either player has no units or reinforcements left
+- Increase time for triggering move notifications from 15 to 20 minutes
 - Bug fix: problem with fire starting when destroying tanks
-- Added prototype 901
+- Updated 012, 901
+- Updated/promoted 306
+- Promoted 037, 309, 407 to beta
+- Added prototype 901, 902
 
 # 0.158
 
