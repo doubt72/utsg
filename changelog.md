@@ -1,3 +1,7 @@
+# 0.161
+
+- Bug fix: unit should be able to escape even if in contact
+
 # 0.160
 
 - Limit stacking to double in close combat

@@ -54,7 +54,6 @@ export function showEscape(game: Game): boolean {
   if (game.currentPlayer === 2 && !game.scenario.specialRules.includes("axis_escape")) { return false }
   const selection = game.assaultState.selection
   const loc = new Coordinate(selection[0].x, selection[0].y)
-  if (game.scenario.map.contactAt(loc)) { return false }
   if (game.assaultState.path.length + game.assaultState.addActions.length > 1) { return false }
   const unit = selection[0].counter.unit
   if (unit.currentMovement === 0) { return false }
