@@ -3,11 +3,11 @@
 module Scenarios
   class Scenario311 < Base
     ID = "311"
-    NAME = "Tip of the Spear"
+    NAME = "Tank School"
     ALLIES = ["usa"].freeze
     AXIS = ["ger"].freeze
     STATUS = "a"
-    VERSION = "0.3"
+    VERSION = "0.4"
 
     DATE = [1944, 9, 19].freeze
     LAYOUT = [23, 23, "x"].freeze

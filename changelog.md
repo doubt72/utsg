@@ -3,7 +3,7 @@
 - Limit stacking to double in close combat
 - Morale bonus scales with number of units
 - Get versions back in sync with changelog (might be a little sleep-deprived)
-- Updated 407
+- Updated 110, 407
 
 # 0.159
 

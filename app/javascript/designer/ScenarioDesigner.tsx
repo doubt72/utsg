@@ -405,7 +405,7 @@ export default function ScenarioDesigner() {
       } else if (deploySelected === "i-2") {
         const split = initAxisSelected.slice(-3) === "_tz"
         const key = split ? initAxisSelected.slice(0, -3) : initAxisSelected
-        const unit = availableAlliedUnits.find(u => u[0] === key)
+        const unit = availableAxisUnits.find(u => u[0] === key)
         const units = metadata.init_axis_units ?? []
         if (unit) {
           pushDesignStack({
