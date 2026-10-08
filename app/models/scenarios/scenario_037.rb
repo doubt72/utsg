@@ -6,8 +6,8 @@ module Scenarios
     NAME = "One Way Out"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "b"
-    VERSION = "0.2"
+    STATUS = ""
+    VERSION = "1.0"
 
     DATE = [1943, 8, 12].freeze
     LAYOUT = [15, 23, "x"].freeze
@@ -99,10 +99,10 @@ module Scenarios
           allied_dir: 2.5,
           axis_dir: 5.5,
           victory_hexes: [
-            [8, 8, 2], [0, 10, 1], [14, 7, 1],
+            [8, 8, 2], [7, 12, 1], [11, 6, 1],
           ],
           escape_hexes: [
-            [2, 22, 2], [5, 22, 2], [8, 22, 2],
+            [2, 22, 2], [5, 22, 2], [8, 22, 2], [6, 22, 2], [7, 22, 2], [1, 22, 2], [0, 22, 2],
           ],
           allied_setup: {
             "0" => [
@@ -115,7 +115,7 @@ module Scenarios
               [14, "*"],
             ],
             "5" => [
-              ["*", 0],
+              ["12-14", 0], ["11-13", "1-2"], ["11-12", 3],
             ],
           },
           axis_setup: {

@@ -116,6 +116,8 @@ export default class MoveAction extends BaseAction {
         actions.push(`smoke level ${smokeRoll(roll.result.result)} placed at ${label} (smoke roll of ${
           formatDieResult(roll.result)
         })`)
+      } else if (a.type === gameActionAddActionType.Escape) {
+        actions.push(`escaped from map`)
       } else if (a.type !== gameActionAddActionType.VP) {
         actions.push("unexpected action")
       }
@@ -234,6 +236,9 @@ export default class MoveAction extends BaseAction {
         this.map.addCounter(mid, new Feature(
           { ft: 1, t: featureType.Smoke, n: "Smoke", i: "smoke", h: hindrance, id: a.id ?? "smoke" }
         ))
+      } else if (a.type === gameActionAddActionType.Escape) {
+        const loc = new Coordinate(a.x, a.y)
+        this.map.escapeCounter(loc, a.id as string)
       }
     }
     sortStacks(this.map)
@@ -302,6 +307,11 @@ export default class MoveAction extends BaseAction {
       } else if (a.type === gameActionAddActionType.Smoke) {
         // Shouldn't happen
         throw new IllegalActionError("internal error undoing smoke")
+      } else if (a.type === gameActionAddActionType.Escape) {
+        const unit = this.game.findUnitById(a.id as string) as Unit
+        const loc = new Coordinate(a.x, a.y)
+        this.map.addCounter(loc, unit)
+        this.game.removeEscapedCounter(a.id as string)
       }
     }
 

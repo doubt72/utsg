@@ -1,6 +1,5 @@
 Features/Bug Fixes
-  + 110 Redo before beta
-  + 311 Needs a better name
+  + Add escape to plain movement
   - Decoy next to hit revealed
   - Periodically check sync
   - Big stack not quite right

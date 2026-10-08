@@ -290,6 +290,25 @@ export function smokeOpenHex(map: Map, from: Coordinate, to: Coordinate, selecti
   return hexOpenType.Closed
 }
 
+export function showMoveEscape(game: Game): boolean {
+  if (!game.gameState) { return false }
+  if (game.currentPlayer === 1 && !game.scenario.specialRules.includes("allied_escape")) { return false }
+  if (game.currentPlayer === 2 && !game.scenario.specialRules.includes("axis_escape")) { return false }
+  const lp = game.moveState.lastPath
+  const loc = new Coordinate(lp.x, lp.y)
+  const unit = game.moveState.selection[0].counter.unit
+  const past = movementPastCost(game.scenario.map, unit)
+  const move = mapSelectMovement(game, false)
+
+  if (past >= move) { return false }
+  if (unit.currentMovement === 0) { return false }
+  if (unit.decoy) { return false }
+  for (const e of game.scenario.map.escapeHexes) {
+    if (e.x === loc.x && e.y === loc.y && game.currentPlayer === e.player) { return true }
+  }
+  return false
+}
+
 export function rollbackAddActions(
   map: Map, from: Coordinate, to: Coordinate, id: string,
 ): void {

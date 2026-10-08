@@ -5,7 +5,7 @@ import Unit from "../Unit"
 import { describe, expect, test, vi } from "vitest"
 import select from "./select"
 import organizeStacks from "../support/organizeStacks"
-import { showClearObstacles, showEntrench, showEscape } from "./assault"
+import { showClearObstacles, showEntrench, showAssaultEscape } from "./assault"
 import Feature from "../Feature"
 import {
   createBlankGame,
@@ -1631,9 +1631,9 @@ describe("assault movement", () => {
 
     game.setGameState(new AssaultState(game))
 
-    expect(showEscape(game)).toBe(false)
+    expect(showAssaultEscape(game)).toBe(false)
     game.scenario.specialRules.push("axis_escape")
-    expect(showEscape(game)).toBe(true)
+    expect(showAssaultEscape(game)).toBe(true)
 
     expect(game.playerOneScore).toBe(10)
     expect(game.playerTwoScore).toBe(10)

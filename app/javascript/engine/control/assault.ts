@@ -48,7 +48,7 @@ export function showEntrench(game: Game): boolean {
   return true
 }
 
-export function showEscape(game: Game): boolean {
+export function showAssaultEscape(game: Game): boolean {
   if (!game.gameState) { return false }
   if (game.currentPlayer === 1 && !game.scenario.specialRules.includes("allied_escape")) { return false }
   if (game.currentPlayer === 2 && !game.scenario.specialRules.includes("axis_escape")) { return false }

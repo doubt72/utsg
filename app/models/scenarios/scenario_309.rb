@@ -7,7 +7,7 @@ module Scenarios
     ALLIES = ["usa"].freeze
     AXIS = ["ger"].freeze
     STATUS = "b"
-    VERSION = "0.3"
+    VERSION = "0.4"
 
     DATE = [1944, 10, 2].freeze
     LAYOUT = [15, 23, "x"].freeze
@@ -18,11 +18,11 @@ module Scenarios
         :usa_leader_4_1,
         [2, :usa_engineer_s],
         [6, :usa_rifle_s],
-        :usa_m2_browning,
+        :usa_m1917_browning,
+        :usa_m1918_bar,
         :usa_ft,
         [2, :usa_sc],
         :usa_radio_155mm,
-        :usa_m1917_browning,
       ] },
     }.freeze
 
@@ -32,9 +32,9 @@ module Scenarios
         :ger_leader_4_1,
         [5, :ger_rifle_s],
         :ger_elite_crew_t,
-        [2, :ger_mg_42],
+        [4, :ger_mg_42],
         :ger_7_5cm_leig_18,
-        [4, :wire],
+        [6, :wire],
         :ap_mines8,
         [2, :pillbox],
       ] },
@@ -43,7 +43,7 @@ module Scenarios
     class << self
       def generate
         {
-          turns: 6,
+          turns: 7,
           first_deploy: 2,
           first_action: 1,
           date:,
@@ -94,12 +94,12 @@ module Scenarios
           ],
           allied_setup: {
             "0" => [
-              [0, 13], ["0-1", "14-15"], ["9-14", 15], ["*", "16-22"],
+              ["*", "17-22"],
             ],
           },
           axis_setup: {
             "0" => [
-              ["*", "0-11"],
+              ["10-12", 13], ["*", "0-12"],
             ],
           },
         }

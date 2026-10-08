@@ -4,7 +4,8 @@ import {
 import Unit from "../Unit"
 import { describe, expect, test, vi } from "vitest"
 import {
-  showLaySmoke, showLoadMove, showDropMove, mapSelectMovement, movementPastCost
+  showLaySmoke, showLoadMove, showDropMove, mapSelectMovement, movementPastCost,
+  showMoveEscape
 } from "./movement"
 import select from "./select"
 import { gameActionAddActionType } from "../GameAction"
@@ -4070,5 +4071,73 @@ describe("movement", () => {
 
     game.moveState.move(3, 2)
     expect(movementPastCost(map, unit)).toBe(0.5)
+  })
+
+  test("escape", () => {
+    const game = createBlankGame()
+    const map = game.scenario.map
+    map.escapeHexes.push({ x: 4, y: 2, player: 2 })
+    const unit = new Unit(testGInf)
+    unit.id = "test1"
+    map.addCounter(new Coordinate(2, 2), unit)
+    map.select(unit)
+
+    game.scenario.specialRules.push("axis_escape")
+    game.setGameState(new MoveState(game))
+
+    expect(showMoveEscape(game)).toBe(false)
+    game.moveState.move(3, 2)
+    expect(showMoveEscape(game)).toBe(false)
+    game.moveState.move(4, 2)
+    expect(showMoveEscape(game)).toBe(true)
+
+    expect(game.playerOneScore).toBe(10)
+    expect(game.playerTwoScore).toBe(10)
+
+    game.moveState.escape()
+    game.moveState.finish()
+
+    expect(game.playerOneScore).toBe(10)
+    expect(game.playerTwoScore).toBe(16)
+
+    let all = map.allCounters
+    expect(all.length).toBe(0)
+
+    expect(game.escapedUnits.length).toBe(1)
+    expect(game.escapedUnits[0].id).toBe("test1")
+
+    expect(game.actions[0].stringValue).toBe("German Rifle moved from C3 to E3, escaped from map")
+
+    game.executeUndo(false)
+    all = map.allCounters
+    expect(all.length).toBe(1)
+    expect(all[0].hex?.x).toBe(2)
+    expect(all[0].hex?.y).toBe(2)
+    expect(all[0].feature.id).toBe("test1")
+
+    expect(game.escapedUnits.length).toBe(0)
+
+    expect(game.playerOneScore).toBe(10)
+    expect(game.playerTwoScore).toBe(10)
+  })
+
+  test("escape can't move with no movement left", () => {
+    const game = createBlankGame()
+    const map = game.scenario.map
+    map.escapeHexes.push({ x: 4, y: 2, player: 2 })
+    const unit = new Unit(testGInf)
+    unit.baseMovement = 2
+    unit.id = "test1"
+    map.addCounter(new Coordinate(2, 2), unit)
+    map.select(unit)
+
+    game.scenario.specialRules.push("axis_escape")
+    game.setGameState(new MoveState(game))
+
+    expect(showMoveEscape(game)).toBe(false)
+    game.moveState.move(3, 2)
+    expect(showMoveEscape(game)).toBe(false)
+    game.moveState.move(4, 2)
+    expect(showMoveEscape(game)).toBe(false)
   })
 });

@@ -109,8 +109,9 @@ export default function SpecialRulesSection({ section }: SectionProps) {
       </ul>
       <h3>{section}.5. Escape Hexes</h3>
       <p>
-        Some scenarios include escape hexes; units in that hex can escape the map with an assault
-        move.
+        Some scenarios include escape hexes; units can escape the map by moving if they have have
+        movement left when they reach that hex (any road movement bonus doesn&apos;t apply) or units
+        in that hex can escape the map with an assault move (whether or not the hex is contested).
       </p>
     </div>
   );

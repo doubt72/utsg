@@ -1,3 +1,9 @@
+# 0.162
+
+- Allow escape via regular movement
+- Updated 309
+- Updated/promoted 037
+
 # 0.161
 
 - Bug fix: unit should be able to escape even if in contact

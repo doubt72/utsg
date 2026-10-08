@@ -398,6 +398,16 @@ export function MoveFinishButton({ game, vertical, callback }: ButtonProps) {
                                 callback={submit} />
 }
 
+export function MoveEscapeButton({ game, vertical, callback }: ButtonProps) {
+  const submit = () => {
+    game.moveState.escape()
+    callback()
+  }
+
+  return <StandardTooltipButton vertical={vertical} text="escape" glyph={<ArrowUpCircle />} hotkey={"Y"}
+                                callback={submit} />
+}
+
 export function MoveLoadToggleButton({ game, vertical, callback }: ButtonProps) {
   const submit = () => {
     game.moveState.loadToggle()

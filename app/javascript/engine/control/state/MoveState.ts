@@ -35,6 +35,7 @@ export default class MoveState extends BaseState {
   smoke: boolean;
   dropping: boolean;
   loading: boolean;
+  escaping: boolean;
 
   constructor(game: Game) {
     super(game, stateType.Move, game.currentPlayer)
@@ -90,6 +91,7 @@ export default class MoveState extends BaseState {
     this.smoke = false
     this.dropping = false
     this.loading = false
+    this.escaping = false
     if (canSelect) { game.openOverlay = game.scenario.map.hexAt(hex) }
   }
 
@@ -100,6 +102,7 @@ export default class MoveState extends BaseState {
     const to = new Coordinate(x, y)
     if (this.dropping) { return hexOpenType.Closed }
     if (this.loading) { return hexOpenType.Closed }
+    if (this.escaping) { return hexOpenType.Closed }
     const selection = this.selection[0].counter
     const vp = this.map.victoryAt(to)
     if (selection.unit.decoy && vp && vp !== this.game.currentPlayer ) { return hexOpenType.Closed }
@@ -436,7 +439,12 @@ export default class MoveState extends BaseState {
           parent.unit.loaderSelect()
           parent.unit.select()
         }
-        this.addActions.pop()
+        if (gameActionAddActionType.Escape === lastAdd.type) {
+          this.escaping = false
+          this.addActions = this.addActions.filter(a => gameActionAddActionType.Escape !== a.type)
+        } else {
+          this.addActions.pop()
+        }
         if (lastAdd.type === gameActionAddActionType.VP) { this.unmove() }
         if (lastAdd.type === gameActionAddActionType.Smoke ||
             lastAdd.type === gameActionAddActionType.Drop
@@ -565,6 +573,19 @@ export default class MoveState extends BaseState {
     }
     this.dropping = false
     this.smoke = false
+  }
+
+  escape() {
+    const loc = this.lastPath
+    for (const s of this.selection) {
+      this.addActions.push({
+        x: loc.x, y: loc.y, type: gameActionAddActionType.Escape, id: s.id, name: s.name,
+        cost: 0, index: s.counter.unitIndex,
+      })
+    }
+    this.doneSelect = true
+    this.escaping = true
+    this.game.closeOverlay = true
   }
 
   finish() {

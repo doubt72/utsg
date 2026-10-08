@@ -5,9 +5,9 @@ import Game from "../Game"
 import Map from "../Map"
 import { gamePhaseType } from "../support/gamePhase"
 import Unit from "../Unit"
-import { showAbandon, showClearObstacles, showCrew, showEntrench, showEscape, showRepair } from "./assault"
+import { showAbandon, showClearObstacles, showCrew, showEntrench, showAssaultEscape, showRepair } from "./assault"
 import { closeCombatCasualtyNeeded } from "./closeCombat"
-import { showLaySmoke, showLoadMove, showDropMove } from "./movement"
+import { showLaySmoke, showLoadMove, showDropMove, showMoveEscape } from "./movement"
 import { isRandomDrop, isRandomDropFor } from "./randomDrop"
 import { reactionFireCheck } from "./reactionFire"
 import BaseState, { stateType } from "./state/BaseState"
@@ -372,22 +372,29 @@ function addMoveActions(game: Game, actions: GameControl[]): void {
       actions.unshift({ type: "none", message: "select unit to drop off" })
     } else if (action.smoke) {
       actions.unshift({ type: "none", message: "select hex to place smoke" })
+    } else if (action.escaping) {
+      actions.unshift({ type: "none", message: "escaping map" })
     } else if (action.doneSelect) {
       actions.unshift({ type: "none", message: "select hex to move" })
     } else {
       actions.unshift({ type: "none", message: "select additional units or select hex to move" })
     }
-    if (actionSelect.turreted && !actionSelect.isTurretJammed) {
-      actions.push({ type: "move_rotate_toggle" })
-    }
-    if (showLaySmoke(game)) {
-      actions.push({ type: "move_smoke_toggle" })
-    }
-    if (showDropMove(game)) {
-      actions.push({ type: "move_shortdrop_toggle" })
-    }
-    if (showLoadMove(game)) {
-      actions.push({ type: "move_load_toggle" })
+    if (!action.escaping) {
+      if (actionSelect.turreted && !actionSelect.isTurretJammed) {
+        actions.push({ type: "move_rotate_toggle" })
+      }
+      if (showMoveEscape(game)) {
+        actions.push({ type: "move_escape" })
+      }
+      if (showLaySmoke(game)) {
+        actions.push({ type: "move_smoke_toggle" })
+      }
+      if (showDropMove(game)) {
+        actions.push({ type: "move_shortdrop_toggle" })
+      }
+      if (showLoadMove(game)) {
+        actions.push({ type: "move_load_toggle" })
+      }
     }
     if (action.path.length + action.addActions.length > 1) {
       actions.push({ type: "move_finish" })
@@ -408,7 +415,7 @@ function addAssaultActions(game: Game, actions: GameControl[]): void {
       })
     } else {
       actions.unshift({ type: "none", message: "select hex to move" })
-      if (showEscape(game)) {
+      if (showAssaultEscape(game)) {
         actions.push({ type: "assault_move_escape" })
       }
       if (showClearObstacles(game)) {
