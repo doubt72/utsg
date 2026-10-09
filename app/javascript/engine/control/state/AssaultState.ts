@@ -187,6 +187,7 @@ export default class AssaultState extends BaseState {
       counter.children.forEach(c => this.map.select(c.unit))
       if (selected) {
         removeStateSelection(this.game, x, y, counter.unit.id)
+        counter.children.forEach(c => removeStateSelection(this.game, x, y, c.unit.id))
       } else {
         const sel = this.selection
         sel.push({ x, y, id: counter.unit.id, name: counter.unit.name, counter: counter })

@@ -1,3 +1,8 @@
+# 0.163
+
+- Bug fix: unselecting unit in assault move doesn't (internally) unselect carried weapons
+- Updated/promoted 407
+
 # 0.162
 
 - Allow escape via regular movement

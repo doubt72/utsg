@@ -1,5 +1,4 @@
 Features/Bug Fixes
-  + Add escape to plain movement
   - Decoy next to hit revealed
   - Periodically check sync
   - Big stack not quite right
