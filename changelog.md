@@ -1,3 +1,8 @@
+# 0.165
+
+- Updated front page to show animated counters
+- Updated/promoted 012
+
 # 0.164
 
 - Bug fix: fix for incorrect map sizing on new games

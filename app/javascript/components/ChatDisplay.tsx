@@ -15,7 +15,7 @@ interface ChatDisplayProps {
   showInput: boolean;
   desyncCallback: () => void;
   collapse?: boolean;
-  updateCallback?: () => void;
+  updateCallback?: () => void; // Currently not used anywhere, but might want to highlight something someday
 }
 
 export default function ChatDisplay({

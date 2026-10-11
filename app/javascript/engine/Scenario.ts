@@ -314,9 +314,9 @@ export default class Scenario {
       } else if (r === "axis_hidden_units") {
         return `${axis} infantry units start unobserved`
       } else if (r === "allied_existance") {
-        return `only non-eliminated ${allied} units count in score`
+        return `Only non-eliminated ${allied} units count in score`
       } else if (r === "axis_existance") {
-        return `only non-eliminated ${axis} units count in score`
+        return `Only non-eliminated ${axis} units count in score`
       } else if (r === "allied_escape") {
         return `${allied} units can escape map for victory points`
       } else if (r === "axis_escape") {

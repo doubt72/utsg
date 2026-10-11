@@ -472,29 +472,22 @@ div.design-button-disable {
 }
 
 .main-page-welcome {
-  flex-grow: 1;
-}
-
-.main-page-welcome-contents {
-  padding: 1em 1em 1em;
-  border-top-right-radius: 0.5em;
-  border-bottom-left-radius: 0.5em;
-  border-bottom-right-radius: 0.5em;
-  background-color: $background-gray;
-  height: calc(294px + 2em);
-}
-
-.main-page-scenario-loop {
-  float: left;
-  height: 294px;
-  margin-right: 1em;
+  display: flex;
+  margin: 0.5em;
+  padding: 1em 1em 0 1em;
   border-radius: 0.5em;
-  border: 2px solid $border-color-gray;
+  background-color: $background-gray;
+  min-height: calc(86px + 2em);
+}
+
+.main-page-counters {
+  float: right;
+  height: 86px;
+  margin-left: 1em;
 }
 
 .main-page-announcements {
   padding: 1em;
-  margin-top: 35.5px;
   margin-left: 0.5em;
   width: 480px;
   min-width: 480px;
@@ -609,9 +602,7 @@ div.design-button-disable {
   padding: 0.5em;
   flex-grow: 1;
   background-color: $background-gray;
-  border-top-right-radius: 0.5em;
-  border-bottom-left-radius: 0.5em;
-  border-bottom-right-radius: 0.5em;
+  border-radius: 0.5em;
 }
 
 .main-page-chat-section-logged-out {

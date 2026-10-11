@@ -70,33 +70,82 @@ export default function DebugUnitsPromo() {
   }
 
   const keysPromoMaybe: { [index: string]: boolean } = {
-    usa_m3_half_track: true,
-    ussr_militia_s: true,
-    uk_sherman_firefly: true,
-    usa_ranger_s: true,
+    alm_zb_vz__30: true,
+    alm_wz__35_at_rifle: true,
+    alm_bofors_37mm_at: true,
+    alm_lt_vz__38: true,
+    alm_horse: true,
+    axm_42m_toldi_iia: true,
+    chi_type_triple_ten: true,
+    chi_vickers_6_ton: true,
+    chi_bofors_75mm: true,
+    fin_sissi_s: true,
+    fin_mc: true,
+    fra_legionnaire_s: true,
+    fra_brandt_m1935: true,
+    fra_75mm_m1897: true,
+    fra_char_b1_bis: true,
+    ger_pionier_s: true,
+    ger_volksgrenadier_s: true,
+    ger_gebirgsjager_s: true,
+    ger_mg_42: true,
     ger_8_8cm_flak_36: true,
     ger_stug_iii_f_g: true,
-    ussr_t_34_85: true,
-    usa_gmc_cckw: true,
-    uk_universal_carrier: true,
-    uk_churchill_crocodile: true,
-    usa_gmc_dukw: true,
-    fra_brandt_m1935: true,
-    fra_char_b1_bis: true,
     ger_panzerschreck: true,
-    ussr_guards_smg_s: true,
-    ussr_kv_1_m39: true,
-    uk_gurkha_s: true,
-    uk_matilda_ii: true,
-    uk_piat: true,
-    usa_jeep__50_mg: true,
-    ger_panther_a_g: true,
-    ger_pzkpfw_iv_h_j: true,
-    ger_vw_kubelwagen: true,
+    ger_panther_d: true,
+    ger_pzkpfw_iv_f2: true,
     ger_tiger_ii: true,
+    ger_jagdtiger: true,
+    ger_marder_iii: true,
+    ger_sdkfz_221: true,
+    ger_sdkfz_234_1: true,
+    ger_sdkfz_251_1: true,
+    ger_vw_kubelwagen: true,
+    ita_bersaglieri_s: true,
+    ita_bande_s: true,
+    ita_m11_39: true,
+    ita_l3_35: true,
+    ita_autoblindo_41: true,
     jap_snlf_s: true,
+    jap_crew_t: true,
+    jap_type_89_gren_l: true,
+    jap_type_95_ha_go: true,
     jap_bicycle: true,
-    fin_sissi_s: true,
+    uk_gurkha_s: true,
+    uk_airborne_s: true,
+    uk_piat: true,
+    uk_vickers_mg: true,
+    uk_qf_6pdr_mk_iv: true,
+    uk_matilda_ii: true,
+    uk_sherman_firefly: true,
+    uk_churchill_crocodile: true,
+    uk_universal_carrier: true,
+    uk_kangaroo: true,
+    usa_ranger_s: true,
+    usa_marine_rifle_s: true,
+    usa_radio_155mm: true,
+    usa_m4_sherman: true,
+    usa_m3a1_stuart_ft: true,
+    usa_m18_hellcat: true,
+    usa_jeep__50_mg: true,
+    usa_m3a1_half_track: true,
+    usa_lvta_2: true,
+    usa_gmc_cckw: true,
+    usa_gmc_dukw: true,
+    ussr_guards_smg_s: true,
+    ussr_militia_s: true,
+    ussr_tank_crew_t: true,
+    ussr_kv_1_m39: true,
+    ussr_t_34_85: true,
+    ussr_is_2: true,
+    ussr_su_76m: true,
+    ussr_isu_122: true,
+    vcf_renault_ft: true,
+
+    wire: true,
+    at_mines10: true,
+    tanktrap: true,
+    sniper5: true,
   }
 
   const cells = (keys: { [index: string]: boolean }, pad: boolean) => {
@@ -135,6 +184,18 @@ export default function DebugUnitsPromo() {
       </div>
       <div className="p1em flex flex-wrap">
         {cells(keysPromo2, true)}
+      </div>
+      <div className="p1em flex flex-wrap">
+        {cells({ usa_ranger_s: true }, false)}
+        {cells({ ger_stug_iii_f_g: true }, false)}
+        {cells({ fra_brandt_m1935: true }, false)}
+        {/* {cells({ usa_m3_half_track: true }, false)} */}
+        {cells({ jap_snlf_s: true }, false)}
+        {cells({ ger_8_8cm_flak_36: true }, false)}
+        {cells({ uk_sherman_firefly: true }, false)}
+        {/* {cells({ ussr_t_34_85: true }, false)} */}
+        {/* {cells({ ger_tiger_ii: true }, false)} */}
+        {/* {cells({ usa_gmc_dukw: true }, false)} */}
       </div>
       <div className="p1em flex flex-wrap">
         {cells(rowTop, false)}

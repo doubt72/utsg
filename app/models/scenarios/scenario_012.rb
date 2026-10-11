@@ -6,16 +6,16 @@ module Scenarios
     NAME = "Iron Winter"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "b"
-    VERSION = "0.4"
+    STATUS = ""
+    VERSION = "1.0"
 
     DATE = [1941, 11, 18].freeze
     LAYOUT = [15, 11, "x"].freeze
 
     ALLIED_UNITS = {
       "0": { list: [
-        :ussr_leader_4_1,
-        [5, :ussr_rifle_s],
+        [2, :ussr_leader_4_1],
+        [6, :ussr_rifle_s],
         :ussr_crew_t,
         :ussr_dp_27,
         :ussr_dshk,
@@ -82,7 +82,7 @@ module Scenarios
           allied_dir: 1,
           axis_dir: 4,
           victory_hexes: [
-            [3, 1, 1], [7, 1, 1], [11, 1, 1], [11, 5, 1], [11, 8, 1],
+            [3, 1, 1], [7, 1, 1], [11, 5, 1], [11, 8, 1], [9, 9, 1],
           ],
           allied_setup: {
             "0" => [
@@ -121,7 +121,7 @@ module Scenarios
             { t: "o" },
             { t: "o" },
             { t: "o" },
-            { t: "o", r: { d: [2, 4] } },
+            { t: "o", r: { t: "d", d: [2, 4] } },
             { t: "o", r: { d: [1, 4] } },
             { t: "o", r: { d: [1, 4] } },
             { t: "o", r: { d: [1, 4] } },
@@ -186,9 +186,9 @@ module Scenarios
             { t: "o" },
           ],
           [
-            { t: "o" },
-            { t: "o" },
-            { t: "o" },
+            { t: "o", r: { t: "d", d: [1, 4] } },
+            { t: "o", r: { t: "d", d: [1, 4] } },
+            { t: "o", r: { t: "d", d: [1, 5] } },
             { t: "o" },
             { t: "o" },
             { t: "o" },
@@ -206,7 +206,7 @@ module Scenarios
             { t: "f" },
             { t: "f" },
             { t: "f" },
-            { t: "o" },
+            { t: "o", r: { t: "d", d: [2, 5] } },
             { t: "f" },
             { t: "f" },
             { t: "f" },
@@ -223,7 +223,7 @@ module Scenarios
             { t: "f" },
             { t: "f" },
             { t: "f" },
-            { t: "o" },
+            { t: "o", r: { t: "d", d: [2, 5] } },
             { t: "f" },
             { t: "f" },
             { t: "f" },
@@ -241,7 +241,7 @@ module Scenarios
             { t: "o" },
             { t: "o" },
             { t: "o" },
-            { t: "o" },
+            { t: "o", r: { t: "d", d: [2, 5] } },
             { t: "o" },
             { t: "o" },
             { t: "o" },
@@ -258,12 +258,12 @@ module Scenarios
             { t: "o" },
             { t: "o" },
             { t: "o" },
-            { t: "o" },
-            { t: "o" },
-            { t: "o" },
-            { t: "o" },
-            { t: "o" },
-            { t: "o", r: { d: [3, 5] } },
+            { t: "o", r: { t: "d", d: [2, 4] } },
+            { t: "o", r: { t: "d", d: [1, 4] } },
+            { t: "o", r: { t: "d", d: [1, 4] } },
+            { t: "o", r: { t: "d", d: [1, 4] } },
+            { t: "o", r: { t: "d", d: [1, 4] } },
+            { t: "o", r: { t: "d", d: [1, 3, 5] } },
             { t: "o" },
             { t: "o" },
             { t: "o" },

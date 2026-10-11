@@ -1,9 +1,9 @@
 Features/Bug Fixes
-  + Routing should not be allowed into close combat or wire from wire
-  + Not right height on initial load, need to recheck after load?
+  - Bug with combining exhausts squad when undone
+  - Big stack not quite right
+  - Make sure sub-counter closed with counter
   - Decoy next to hit revealed
   - Periodically check sync
-  - Big stack not quite right
   - Save/play user scenarios / limit 1 - 3 - 5
   - Update tutorial (with tutorial scenario), video playthroughs (clash of steel)
   - Add Some Developer Notes
