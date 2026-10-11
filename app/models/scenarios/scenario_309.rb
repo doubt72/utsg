@@ -17,7 +17,7 @@ module Scenarios
         :usa_leader_5_1,
         :usa_leader_4_1,
         [2, :usa_engineer_s],
-        [6, :usa_rifle_s],
+        [5, :usa_rifle_s],
         :usa_m1917_browning,
         :usa_m1918_bar,
         :usa_ft,
@@ -43,7 +43,7 @@ module Scenarios
     class << self
       def generate
         {
-          turns: 7,
+          turns: 6,
           first_deploy: 2,
           first_action: 1,
           date:,

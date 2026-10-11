@@ -242,6 +242,48 @@ describe("routing", () => {
       })
     })
 
+    test("double-wire bug", () => {
+      const game = createBlankGame()
+      const map = game.scenario.map
+      const unit = new Unit(testGInf)
+      unit.break(game)
+
+      const wire = new Feature(testWire)
+      map.addCounter(new Coordinate(0, 2), wire)
+      const blocking = new Feature(testWire)
+      map.addCounter(new Coordinate(1, 2), blocking)
+
+      expect(findRoutPathTree(game, new Coordinate(0, 2), 4, 2, unit)).toStrictEqual({
+        x: 0, y: 2, children: [{
+          x: 0, y: 1, children: [],
+        }, {
+          x: 0, y: 3, children: [],
+        }]
+      })
+    })
+
+    test("wire bug with contested stack", () => {
+      const game = createBlankGame()
+      const map = game.scenario.map
+      const unit = new Unit(testGInf)
+      unit.break(game)
+
+      const wire = new Feature(testWire)
+      map.addCounter(new Coordinate(0, 2), wire)
+      const blocking = new Unit(testGInf)
+      map.addCounter(new Coordinate(1, 2), blocking)
+      const blocking2 = new Unit(testRInf)
+      map.addCounter(new Coordinate(1, 2), blocking2)
+
+      expect(findRoutPathTree(game, new Coordinate(0, 2), 4, 2, unit)).toStrictEqual({
+        x: 0, y: 2, children: [{
+          x: 0, y: 1, children: [],
+        }, {
+          x: 0, y: 3, children: [],
+        }]
+      })
+    })
+
     test("path when blocked by blaze", () => {
       const game = createBlankGame()
       const map = game.scenario.map

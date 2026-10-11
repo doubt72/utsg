@@ -147,28 +147,28 @@ export default function MapDisplay({
     return turn > 2 && turn < turns - 2
   }
 
-  const minHeight = (height: number, scale: number = 1, m?: Map, base: number = 784): number => {
-    if (preview || m?.preview) { return (map.rotated ? map.xSize : map.ySize) * scale }
+  const minHeight = (h: number, s: number = 1, m?: Map, base: number = 784): number => {
+    if (preview || m?.preview) { return (map.rotated ? map.xSize : map.ySize) * s }
     const extra = user === m?.game?.playerOneName || user === m?.game?.playerTwoName || replay ? 0 : 48
     const gc = guiCollapse ? 178 - extra : 0
     const hc = headerCollapse ? 82 : 0
     const hc2 = horizontalControls ? 0 : 56
     const hc3 = replay ? 70 : 0
     const fill = m?.debug ? 16 : 400 - extra - gc - hc - hc2 - hc3
-    const available = base + 50 / scale - 50
-    return height - fill < available * scale ? available * scale : height - fill
+    const available = base + 50 / s - 50
+    return h - fill < available * s ? available * s : h - fill
   }
 
-  const minWidth = (width: number, scale: number = 1, m?: Map, base: number = 1110) => {
-    if (preview || m?.preview) { return (map.rotated ? map.ySize : map.xSize) * scale }
+  const minWidth = (w: number, s: number = 1, m?: Map, base: number = 1110) => {
+    if (preview || m?.preview) { return (map.rotated ? map.ySize : map.xSize) * s }
     let min = base
     if (m?.game?.alliedSniper || m?.game?.axisSniper) { min += 200 }
     const hc = horizontalControls || replay ? 0 : 69
     let margin = 32
-    if (minHeight(window.innerHeight + 0, scale, m) > (785 + 50 / scale - 50) * scale) {
+    if (minHeight(window.innerHeight + 0, s, m) > (785 + 50 / s - 50) * s) {
       margin = 16
     }
-    return width - margin - hc < min * scale ? min * scale : width - margin - hc
+    return w - margin - hc < min * s ? min * s : w - margin - hc
   }
 
   const [width, setWidth] = useState<number>(minWidth(window.innerWidth, 1, map))
@@ -182,18 +182,18 @@ export default function MapDisplay({
     const turnWidth = (map.game.scenario.turns + 1) * 88 +
       ((map.game?.alliedSniper || map.game?.axisSniper) ? 880 : 800)
     let value: 0 | 1 | 2 = width < minWidth(window.innerWidth, scale, map, turnWidth) ? 1 : 0
-    if(width < minWidth(
+    if (width < minWidth(
       window.innerWidth, scale, map, (map.game?.alliedSniper || map.game?.axisSniper) ? 1330 : 1250
     )) { value = 2 }
     setTShrink(value)
     shrinkCallback(window.innerWidth < 1200)
-  }, [width, map, map.game, scale, mapScale])
+  }, [width, map, map.game, map.game?.playerOneName, map.game?.playerTwoName, scale, mapScale])
 
   useEffect(() => {
     let shrink: 0 | 1 | 2 = height < minHeight(window.innerHeight, scale, map, 1147) ? 1 : 0
     if (height < minHeight(window.innerHeight, scale, map, 907)) { shrink = 2 }
     setIShrink(shrink)
-  }, [height, map, map.game, scale, mapScale])
+  }, [height, map, map.game, map.game?.playerOneName, map.game?.playerTwoName, scale, mapScale])
 
   // IDEK what I'm doing with types here
   const svgRef = useRef<HTMLElement | SVGSVGElement>()
@@ -300,12 +300,18 @@ export default function MapDisplay({
     }
     window.addEventListener("resize", handleResize)
     return () => window.removeEventListener("resize", handleResize)
-  }, [scale, map, guiCollapse, headerCollapse, horizontalControls])
+  }, [
+    scale, map, guiCollapse, headerCollapse, horizontalControls, map.game?.playerOneName,
+    map.game?.playerTwoName,
+  ])
 
   useEffect(() => {
     setWidth(minWidth(window.innerWidth, scale, map))
     setHeight(minHeight(window.innerHeight, scale, map))
-  }, [scale, map, guiCollapse, headerCollapse, horizontalControls])
+  }, [
+    scale, map, guiCollapse, headerCollapse, horizontalControls, map.game?.playerOneName,
+    map.game?.playerTwoName,
+  ])
 
   const minimapCallback = (event: React.MouseEvent, calculated: {
     mapSize: Coordinate, scale: number

@@ -284,7 +284,7 @@ RSpec.describe Utility::Scenario do
       expect(Utility::Scenario.checksum("306")).to be == "1.0-8a5846db67320d154c308703f786e606"
       expect(Utility::Scenario.checksum("307")).to be == "1.0-02f9488d1fa6a6272f7725dd25b1b7ac"
       expect(Utility::Scenario.checksum("308")).to be == "1.4-87966dc8adf28db7046b4508b42b9550"
-      expect(Utility::Scenario.checksum("309")).to be == "0.4b-367357e82ca05a81cfb4cfb53e72cf80"
+      expect(Utility::Scenario.checksum("309")).to be == "0.4b-a7303457be9d255060b6e0ae6616c1e6"
       expect(Utility::Scenario.checksum("310")).to be == "0.3a-122ff9e01e723a546f378e4c30fc14c2"
       expect(Utility::Scenario.checksum("311")).to be == "0.4a-9600f0c009227a3bc9d1b1ea1a76a1a1"
       expect(Utility::Scenario.checksum("312")).to be == "0.3a-ed9adf1397ed6088eec15eca2f07e87f"

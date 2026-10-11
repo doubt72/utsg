@@ -1,3 +1,9 @@
+# 0.164
+
+- Bug fix: fix for incorrect map sizing on new games
+- Bug fix: routs from wire incorrectly allow abiltiy to rout into illegal hexes
+- Updated 309
+
 # 0.163
 
 - Bug fix: unselecting unit in assault move doesn't (internally) unselect carried weapons

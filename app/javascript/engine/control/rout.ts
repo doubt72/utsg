@@ -87,9 +87,6 @@ export function routEnds(tree: RoutPathTree): Coordinate[] {
 
 function movementCost(map: Map, from: Coordinate, to: Coordinate, unit: Unit): number | false {
   const hexFrom = map.hexAt(from) as Hex;
-  for (const f of map.countersAt(from)) {
-    if (f.hasFeature && f.feature.currentMovement === "A") { return unit.currentMovement }
-  }
   const hexTo = map.hexAt(to) as Hex;
   const terrFrom = hexFrom.terrain
   const terrTo = hexTo.terrain
@@ -117,6 +114,9 @@ function movementCost(map: Map, from: Coordinate, to: Coordinate, unit: Unit): n
     const move = terrTo.borderMove
     if (!move) { return false }
     cost += move
+  }
+  for (const f of map.countersAt(from)) {
+    if (f.hasFeature && f.feature.currentMovement === "A") { return unit.currentMovement }
   }
   if (hexFrom.river && !alongStream(hexFrom, hexTo, dir)) {
     cost += hexFrom.terrain.outMove
