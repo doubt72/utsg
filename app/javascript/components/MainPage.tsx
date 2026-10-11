@@ -101,6 +101,8 @@ export default function MainPage() {
   const [counterDisplay, setCounterDisplay] = useState<JSX.Element | undefined>()
   const [update, setUpdate] = useState<number>(0)
 
+  const counterCount = 6
+
   useEffect(() => {
     getAPI("/api/v1/scenarios/all_units", {
       ok: response => response.json().then(json => {
@@ -111,6 +113,7 @@ export default function MainPage() {
           {from: "wire", toward: "uk_sherman_firefly", opacity: 1},
           {from: "wire", toward: "jap_snlf_s", opacity: 1},
           {from: "wire", toward: "ussr_t_34_85", opacity: 1},
+          {from: "wire", toward: "ger_tiger_ii", opacity: 1},
         ])
       })
     })
@@ -179,7 +182,7 @@ export default function MainPage() {
       const o = s[index].opacity
       if (o >= 1) {
         while (index === index) {
-          const next = Math.floor(Math.random() * 5)
+          const next = Math.floor(Math.random() * counterCount)
           if (next === index) { continue}
           let done = false
           let key = ""
@@ -207,12 +210,12 @@ export default function MainPage() {
 
   useEffect(() => {
     if (Object.keys(units).length < 1) { return }
-    nextStep(Math.floor(Math.random() * 5))
+    nextStep(Math.floor(Math.random() * counterCount))
   }, [units])
 
   useEffect(() => {
     setCounterDisplay(
-      <div className="ml1em flex nowrap">
+      <div className="mr1em flex nowrap">
         { counters.map((c, i) => {
           return svgContainer(makeUnit(units[c.from]), makeUnit(units[c.toward]), `${i}-1`, c.opacity)
         }) }
@@ -224,6 +227,8 @@ export default function MainPage() {
     <div className="main-page home-page">
       <Header />
         <div className="main-page-welcome">
+          { counterDisplay }
+          <div className="flex-fill"></div>
           <div>
             <p>
               Welcome to the <strong>{titleNameStyle}</strong> server!  The server is currently
@@ -236,9 +241,8 @@ export default function MainPage() {
               rendering performance can vary significantly.
             </p>
           </div>
-          { counterDisplay }
         </div>
-        <div className="flex ml05em mr05em mb05em">
+        <div className="flex ml05em mr05em mb1em">
           <div className={`main-page-chat-section${loggedIn ? "" : " main-page-chat-section-logged-out"}`}>
             <ChatDisplay gameId={0} showInput={loggedIn} desyncCallback={() => {}} />
           </div>
