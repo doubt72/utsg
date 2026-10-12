@@ -6,8 +6,8 @@ module Scenarios
     NAME = "A Stonne Place"
     ALLIES = ["fra"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "a"
-    VERSION = "0.2"
+    STATUS = "b"
+    VERSION = "0.3"
 
     DATE = [1940, 5, 15].freeze
     LAYOUT = [15, 23, "x"].freeze

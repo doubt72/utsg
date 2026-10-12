@@ -96,7 +96,7 @@ export default function MainPage() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [units, setUnits] = useState<{ [index: string]: UnitData }>({})
+  const [units, setUnits] = useState<{ [index: string]: UnitData | FeatureData | MarkerData }>({})
   const [counters, setCounters] = useState<CounterDisplay[]>([])
   const [counterDisplay, setCounterDisplay] = useState<JSX.Element | undefined>()
   const [update, setUpdate] = useState<number>(0)
@@ -189,12 +189,35 @@ export default function MainPage() {
           while (!done) {
             const keys = Object.keys(sampleUnitData)
             key = keys[Math.floor(Math.random() * keys.length)]
+            if (Math.random() * 10 < 1) {
+              const all = Object.keys(units)
+              key = all[Math.floor(Math.random() * all.length)]
+            }
             done = true
+            // Skip the following countries until we add scenarios
+            const exclNations = [
+              "rsp", "nsp", "eth", "chb", "chg", "chc", "bol", "par", "un", "sk", "doi", "pak",
+              "vie", "isr", "egy", "jor", "syr", "com", "arl"
+            ]
             for (const d of s) {
               if (d.from === key || d.toward === key) { done = false }
-              const c1 = units[key].c === "vcf" ? "fra" : units[key].c
-              const c2 = units[d.toward].c === "vcf" ? "fra" : units[d.toward].c
-              if (c1 === c2) { done = false }
+              // Add more equivalents as necessary
+              if (units[key].mk) {
+                const data = units[key] as MarkerData
+                if (exclNations.includes(data.v as string)) { done = false }
+                if (exclNations.includes(data.v2 as string)) { done = false }
+                if (exclNations.includes(data.nation as string)) { done = false }
+                if (data.type === (units[d.toward] as MarkerData).type) { done = false }
+              }
+              if (!units[key].mk && !units[key].ft) {
+                const data = units[key] as UnitData
+                const data2 = units[d.toward] as UnitData
+                const c1 = data.c === "vcf" ? "fra" : data.c
+                const c2 = data2.c === "vcf" ? "fra" : data2.c
+                if (c1 === c2) { done = false }
+                if (exclNations.includes(data.c)) { done = false }
+                if (data.d) { done = false }
+              }
               if (units[key].ft !== undefined && units[d.toward].ft !== undefined) { done = false }
             }
           }

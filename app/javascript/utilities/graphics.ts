@@ -189,9 +189,9 @@ export function nationalColorLookup(key: string): string {
     bul: "#8CD", hun: "#8CD", rom: "#8CD", slv: "#8CD", cro: "#8CD",
 
     rsp: "#CAC", eth: "#FA9", bol: "#FA9", chb: "#ECF",
-    nsp: "#FC5", chc: "#F99", chg: "#8CD", par: "#8CD",
-    sk: "#DDF", un: "#DDF", doi: "#FC9", isr: "#BBE",
-    com: "#F99", nk: "#F99", pak: "#9DB", vie: "#F99",
+    nsp: "#FC5", chc: "#F88", chg: "#8CD", par: "#8CD",
+    sk: "#ACF", un: "#ACF", doi: "#FC9", isr: "#CCE",
+    com: "#F88", nk: "#F88", pak: "#9DB", vie: "#F88",
     arl: "#9DB", syr: "#9DB", jor: "#9DB", egy: "#9DB",
     cze: "#FA9",
   }[key] ?? "#777"

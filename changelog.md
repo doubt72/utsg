@@ -1,3 +1,8 @@
+# 0.166
+
+- Add occasional random unit/marker to main page
+- Updated/promoted 204
+
 # 0.165
 
 - Updated front page to show animated counters

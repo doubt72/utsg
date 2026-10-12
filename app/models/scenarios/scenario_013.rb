@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Fall of the King"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "a"
-    VERSION = "0.2"
+    STATUS = "b"
+    VERSION = "0.3"
 
     DATE = [1944, 8, 11].freeze
     LAYOUT = [32, 23, "x"].freeze
@@ -18,10 +18,10 @@ module Scenarios
           :ussr_leader_5_1,
           :ussr_leader_4_1,
           [2, :ussr_guards_smg_s],
-          [3, :ussr_guards_rifle_s],
+          [2, :ussr_guards_rifle_s],
           [2, :ussr_dp_27],
           [3, :ussr_is_2],
-          [3, :ussr_t_34_m42_m43],
+          [3, :ussr_t_34_85],
           [2, :ussr_su_152],
         ],
       },
@@ -31,9 +31,9 @@ module Scenarios
       "0": {
         list: [
           :ger_leader_5_2,
-          :ger_leader_4_1,
-          [5, :ger_rifle_s],
-          [2, :ger_mg_42],
+          [2, :ger_leader_4_1],
+          [6, :ger_rifle_s],
+          [3, :ger_mg_42],
           [4, :ger_tiger_ii],
           [2, :ger_stug_iii_f_g],
           [2, :ger_sdkfz_250_1],

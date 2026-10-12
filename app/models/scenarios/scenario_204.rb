@@ -6,8 +6,8 @@ module Scenarios
     NAME = "The Slogging Grounds"
     ALLIES = ["usa"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "b"
-    VERSION = "0.6"
+    STATUS = ""
+    VERSION = "1.0"
 
     DATE = [1944, 1, 24].freeze
     LAYOUT = [15, 23, "x"].freeze
@@ -30,7 +30,7 @@ module Scenarios
         :ger_leader_5_1,
         :ger_leader_4_1,
         [5, :ger_rifle_s],
-        [2, :ger_crew_t],
+        [3, :ger_crew_t],
         [2, :ger_mg_42],
         :ger_7_5cm_leig_18,
         [2, :ger_7_5cm_pak_40],
@@ -41,7 +41,7 @@ module Scenarios
     class << self
       def generate
         {
-          turns: 7,
+          turns: 6,
           first_deploy: 2,
           first_action: 1,
           date:,

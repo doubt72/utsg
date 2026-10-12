@@ -1,4 +1,5 @@
 Features/Bug Fixes
+  + Add completely random units to the loop on the main page
   - Bug with combining exhausts squad when undone
   - Big stack not quite right
   - Make sure sub-counter closed with counter
