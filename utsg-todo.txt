@@ -1,5 +1,7 @@
 Features/Bug Fixes
-  + Add completely random units to the loop on the main page
+  - Sniper marker needs to rotate
+  - Never show any selection for eliminated units
+  - Cave adjacent for routing
   - Bug with combining exhausts squad when undone
   - Big stack not quite right
   - Make sure sub-counter closed with counter

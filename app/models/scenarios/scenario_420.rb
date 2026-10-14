@@ -6,8 +6,8 @@ module Scenarios
     NAME = "The Meatgrinder"
     ALLIES = ["usa"].freeze
     AXIS = ["jap"].freeze
-    STATUS = "b"
-    VERSION = "0.3"
+    STATUS = ""
+    VERSION = "1.0"
 
     DATE = [1945, 2, 27].freeze
     LAYOUT = [15, 23, "x"].freeze
