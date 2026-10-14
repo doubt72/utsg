@@ -61,6 +61,34 @@ describe("routing", () => {
       })
     })
 
+    test("path with cave", () => {
+      const game = createBlankGame([
+        [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+        [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+        [{ t: "o" }, { t: "v" }, { t: "o" }, { t: "o" }, { t: "o" }],
+        [{ t: "o" }, { t: "v" }, { t: "o" }, { t: "o" }, { t: "o" }],
+        [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      ])
+      game.scenario.specialRules.push("axis_cave_movement")
+      const unit = new Unit(testGInf)
+      unit.break(game)
+
+      expect(unit.currentMovement).toBe(4)
+
+      expect(findRoutPathTree(game, new Coordinate(0, 2), 4, 2, unit)).toStrictEqual({
+        x: 0, y: 2, children: [{
+          x: 1, y: 2, children: [
+            { x: 1, y: 3, children: [] },
+            {
+              x: 2, y: 2, children: [
+                { x: 3, y: 2, children: [] },
+              ]
+            },
+          ],
+        }]
+      })
+    })
+
     test("path when blocked", () => {
       const game = createBlankGame()
       const map = game.scenario.map

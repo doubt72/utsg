@@ -1,4 +1,4 @@
-import { Coordinate, Direction, markerType, unitType } from "../../utilities/commonTypes"
+import { Coordinate, Direction, featureType, markerType, unitType } from "../../utilities/commonTypes"
 import {
   actionBlue, ActionButtonLayout, actionGreen, BadgeLayout, baseCounterPath, circlePath, clearColor,
   counterObserved, counterElite, counterGreen, CounterLayout, counterRed, dropSelectColor, iconSymbols,
@@ -81,6 +81,7 @@ export function shadowPath(counter: Counter): string | false {
         ].includes(counter.marker.type)) {
       angle += 90
     }
+    if (counter.hasFeature && [featureType.Sniper].includes(counter.feature.type)) { angle += 90 }
     if (!counter.hasMarker && !counter.onMap) {
       angle += 90
     }

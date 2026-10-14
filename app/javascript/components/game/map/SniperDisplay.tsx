@@ -87,7 +87,7 @@ export default function SniperDisplay({
         setSniperTwo(<MapCounter counter={counter} ovCallback={cb} />)
       }
     }
-  }, [xx, yy, hideCounters])
+  }, [xx, yy, hideCounters, map.rotated])
 
   return (
     <g className={"tracking-sd-cp"}>

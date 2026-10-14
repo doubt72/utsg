@@ -96,6 +96,69 @@ describe("squad splitting/joining", () => {
     expect(all[1].unit.isActivated).toBe(true)
   })
 
+  test("joining teams with different status", () => {
+    const game = createBlankGame()
+    const map = game.scenario.map
+    const unit = new Unit(testGInf).split()
+    unit.id = "uf-101"
+    unit.setStatus(unitStatus.Tired)
+    const loc = new Coordinate(1, 1)
+    map.addCounter(loc, unit)
+    const unit2 = new Unit(testGInf).split()
+    unit2.id = "uf-102"
+    unit2.setStatus(unitStatus.Activated)
+    map.addCounter(loc, unit2)
+    const unit3 = new Unit(testGMG)
+    unit3.id = "uf-103"
+    unit3.setStatus(unitStatus.Exhausted)
+    map.addCounter(loc, unit3)
+    organizeStacks(map)
+
+    map.select(unit)
+    game.join()
+
+    expect(game.gameState?.type).toBe(stateType.SquadJoin)
+    const counters = map.countersAt(loc)
+    expect(counters[0].unit.loaderSelected).toBe(true)
+    expect(map.selection).toBe(undefined)
+
+    select(map, {
+      counter: counters[1],
+      target: { type: "map", xy: loc }
+    }, () => {})
+    expect(counters[1].unit.selected).toBe(true)
+    game.join()
+
+    let all = map.allCounters
+    expect(all.length).toBe(2)
+    expect(all[0].hex?.x).toBe(1)
+    expect(all[0].hex?.y).toBe(1)
+    expect(all[0].unit.name).toBe("Rifle")
+    expect(all[0].unit.type).toBe(unitType.Squad)
+    expect(all[0].unit.status).toBe(unitStatus.Activated)
+    expect(all[1].unit.id).toBe("uf-103")
+    expect(all[1].unit.type).toBe(unitType.SupportWeapon)
+    expect(all[1].unit.status).toBe(unitStatus.Exhausted)
+
+    expect(game.lastAction?.stringValue).toBe("German player joined two Rifle teams into a squad at B2")
+
+    game.executeUndo(false)
+
+    all = map.allCounters
+    expect(all.length).toBe(3)
+    expect(all[0].hex?.x).toBe(1)
+    expect(all[0].hex?.y).toBe(1)
+    expect(all[0].unit.id).toBe("uf-101")
+    expect(all[0].unit.type).toBe(unitType.Team)
+    expect(all[0].unit.status).toBe(unitStatus.Tired)
+    expect(all[1].unit.id).toBe("uf-102")
+    expect(all[1].unit.type).toBe(unitType.Team)
+    expect(all[1].unit.status).toBe(unitStatus.Activated)
+    expect(all[2].unit.id).toBe("uf-103")
+    expect(all[2].unit.type).toBe(unitType.SupportWeapon)
+    expect(all[2].unit.status).toBe(unitStatus.Exhausted)
+  })
+
   test("can split squads with weapon", () => {
     const game = createBlankGame()
     const map = game.scenario.map

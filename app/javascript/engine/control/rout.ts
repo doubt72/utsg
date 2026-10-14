@@ -1,4 +1,4 @@
-import { Coordinate, Direction, Player } from "../../utilities/commonTypes";
+import { Coordinate, Player, terrainType } from "../../utilities/commonTypes";
 import { neightborCoordinate, normalDir, stackLimit } from "../../utilities/utilities";
 import Game from "../Game";
 import Hex from "../Hex";
@@ -19,6 +19,19 @@ export function findRoutPathTree(
   }
   const straight = dir === Math.floor(dir)
   const hexes: Coordinate[] = []
+  if (player === 2 && game.scenario.specialRules.includes("axis_cave_movement")) {
+    if (map.hexAt(loc)?.baseTerrain === terrainType.Cave) {
+      for (let y = 0; y < map.height; y++) {
+        for (let x = 0; x < map.width; x++) {
+          if (x === loc.x && y === loc.y) { continue }
+          const hLoc = new Coordinate(x, y)
+          if (map.hexAt(hLoc)?.baseTerrain === terrainType.Cave) {
+            hexes.push(hLoc)
+          }
+        }
+      }
+    }
+  }
   if (straight) {
     const hex = neightborCoordinate(loc, dir)
     if (map.hexAt(hex)) { hexes.push(hex) }
@@ -91,8 +104,10 @@ function movementCost(map: Map, from: Coordinate, to: Coordinate, unit: Unit): n
   const terrFrom = hexFrom.terrain
   const terrTo = hexTo.terrain
   let cost = terrTo.move
-  const dir = map.relativeDirection(from, to) as Direction
-  if (alongRoad(hexFrom, hexTo, dir)) { cost = 1 }
+  const dir = map.relativeDirection(from, to)
+  if (dir) {
+    if (alongRoad(hexFrom, hexTo, dir)) { cost = 1 }
+  }
   if (!cost) { return false }
   for (const c of map.countersAt(to)) {
     if (c.hasFeature && (c.feature.currentMovement === "A" || c.feature.impassable)) { return false }
@@ -104,30 +119,34 @@ function movementCost(map: Map, from: Coordinate, to: Coordinate, unit: Unit): n
   }
   const toSize = map.sizeAt(to)
   if (toSize + unit.size > stackLimit) { return false }
-  if (!terrTo.move && alongRailroad(hexFrom, hexTo, dir)) { cost = 2 }
-  if (hexFrom.border && hexFrom.borderEdges?.includes(dir)) {
-    const move = terrFrom.borderMove
-    if (!move) { return false }
-    cost += move
-  }
-  if (hexTo.border && hexTo.borderEdges?.includes(normalDir(dir+3))) {
-    const move = terrTo.borderMove
-    if (!move) { return false }
-    cost += move
+  if (dir) {
+    if (!terrTo.move && alongRailroad(hexFrom, hexTo, dir)) { cost = 2 }
+    if (hexFrom.border && hexFrom.borderEdges?.includes(dir)) {
+      const move = terrFrom.borderMove
+      if (!move) { return false }
+      cost += move
+    }
+    if (hexTo.border && hexTo.borderEdges?.includes(normalDir(dir+3))) {
+      const move = terrTo.borderMove
+      if (!move) { return false }
+      cost += move
+    }
   }
   for (const f of map.countersAt(from)) {
     if (f.hasFeature && f.feature.currentMovement === "A") { return unit.currentMovement }
   }
-  if (hexFrom.river && !alongStream(hexFrom, hexTo, dir)) {
-    cost += hexFrom.terrain.outMove
+  if (dir) {
+    if (hexFrom.river && !alongStream(hexFrom, hexTo, dir)) {
+      cost += hexFrom.terrain.outMove
+    }
+    if (hexTo.river && !alongStream(hexFrom, hexTo, dir)) {
+      cost += hexTo.terrain.inMove
+    }
+    if (alongStream(hexFrom, hexTo, dir)) {
+      cost += hexFrom.terrain.alongMove
+    }
+    if (alongRoad(hexFrom, hexTo, dir, true)) { cost = 1 }
   }
-  if (hexTo.river && !alongStream(hexFrom, hexTo, dir)) {
-    cost += hexTo.terrain.inMove
-  }
-  if (alongStream(hexFrom, hexTo, dir)) {
-    cost += hexFrom.terrain.alongMove
-  }
-  if (alongRoad(hexFrom, hexTo, dir, true)) { cost = 1 }
   if (hexTo.elevation > hexFrom.elevation) {
     cost += 1
   }

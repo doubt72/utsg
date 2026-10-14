@@ -174,6 +174,7 @@ export function nationalColorLookup(key: string): string {
 
     rsp: "#BBF", eth: "#BBF", bol: "#BBF", chb: "#BBF",
     nsp: "#E0D044", chc: "#E0D044", chg: "#E0D044", par: "#E0D044",
+
     sk: "#BBF", un: "#BBF", doi: "#BBF", isr: "#BBF",
     com: "#E0D044", nk: "#E0D044", pak: "#E0D044", vie: "#E0D044",
     arl: "#E0D044", syr: "#E0D044", egy: "#E0D044", jor: "#E0D044",
@@ -190,6 +191,7 @@ export function nationalColorLookup(key: string): string {
 
     rsp: "#CAC", eth: "#FA9", bol: "#FA9", chb: "#ECF",
     nsp: "#FC5", chc: "#F88", chg: "#8CD", par: "#8CD",
+
     sk: "#ACF", un: "#ACF", doi: "#FC9", isr: "#CCE",
     com: "#F88", nk: "#F88", pak: "#9DB", vie: "#F88",
     arl: "#9DB", syr: "#9DB", jor: "#9DB", egy: "#9DB",
@@ -209,6 +211,7 @@ export function nationalControlLookup(key: string): string {
 
     rsp: "#BBF", eth: "#BBF", bol: "#BBF", chb: "#BBF",
     nsp: "#E0D044", chc: "#E0D044", chg: "#E0D044", par: "#E0D044",
+
     sk: "#BBF", un: "#BBF", doi: "#BBF", isr: "#BBF",
     com: "#E0D044", nk: "#E0D044", pak: "#E0D044", vie: "#E0D044",
     arl: "#E0D044", syr: "#E0D044", egy: "#E0D044", jor: "#E0D044",
@@ -225,6 +228,7 @@ export function nationalControlLookup(key: string): string {
 
     rsp: "#5D0080", eth: "#EEE", bol: "#EEE", chb: "#EEE",
     nsp: "#FFC400", chc: "#B00", chg: "#D00", par: "#EEE",
+
     sk: "#EEE", un: "#07B", doi: "#EEE", isr: "#FFF",
     com: "#EEE", nk: "#D00", pak: "#EEE", vie: "#EEE",
     arl: "#EEE", syr: "#EEE", jor: "#EEE", egy: "#EEE",

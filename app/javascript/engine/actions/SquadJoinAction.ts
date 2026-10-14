@@ -43,6 +43,7 @@ export default class SquadJoinAction extends BaseAction {
 
   undo(): void {
     const selection = this.map.findCounterById(this.target[0].id) as Counter
+    selection.unit.setStatus(this.target[0].status)
     const newUnit = selection.unit.split()
     newUnit.setStatus(this.target[1].status)
     newUnit.id = this.target[1].id

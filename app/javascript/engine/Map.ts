@@ -832,6 +832,7 @@ export default class Map {
           if (unit.dropSelected) { unit.dropSelect() }
           if (unit.loaderSelected) { unit.loaderSelect() }
           if (unit.loadedSelected) { unit.loadedSelect() }
+          if (unit.lastSelected) { u.lastSelect() }
         }
       }
       for (const u of this.game.escapedUnits) {
@@ -841,6 +842,7 @@ export default class Map {
         if (unit.dropSelected) { unit.dropSelect() }
         if (unit.loaderSelected) { unit.loaderSelect() }
         if (unit.loadedSelected) { unit.loadedSelect() }
+        if (unit.lastSelected) { u.lastSelect() }
       }
     }
     this.selection = undefined

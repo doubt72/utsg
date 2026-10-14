@@ -1,4 +1,4 @@
-import { Coordinate, markerType, Player } from "../utilities/commonTypes";
+import { Coordinate, featureType, markerType, Player } from "../utilities/commonTypes";
 import Marker from "./Marker";
 import Unit from "./Unit";
 import Feature from "./Feature";
@@ -94,6 +94,7 @@ export default class Counter {
         [markerType.Weather, markerType.Initiative, markerType.Turn].includes(this.marker.type)) {
       return false
     }
+    if (this.hasFeature && [featureType.Sniper].includes(this.feature.type)) { return false }
     if (!this.map?.rotated && (!this.target.rotates || (this.hasUnit && this.unit.isWreck))) { return false }
     let facing = this.target.facing
     if (!this.target.rotates || (this.hasUnit && this.unit.isWreck)) { facing = 4 }
