@@ -7,49 +7,45 @@ module Scenarios
     ALLIES = ["fra"].freeze
     AXIS = ["ger"].freeze
     STATUS = "a"
-    VERSION = "0.3"
+    VERSION = "0.4"
 
     DATE = [1940, 5, 10].freeze
     LAYOUT = [15, 23, "x"].freeze
 
     ALLIED_UNITS = {
-      "0": {
-        list: [
-          :fra_leader_5_1,
-          [2, :fra_leader_4_1],
-          [2, :fra_bar_s],
-          [5, :fra_chasseur_s],
-          [3, :fra_crew_t],
-          [2, :fra_m1915_hotchkiss],
-          :fra_brandt_m27_31,
-          [2, :fra_25mm_hotchkiss],
-          :fra_47mm_apx,
-          [2, :fra_hotchkiss_h35],
-          [2, :fra_amr_33],
-        ],
-      },
+      "0": { list: [
+        :fra_leader_5_1,
+        [2, :fra_leader_4_1],
+        [2, :fra_bar_s],
+        [5, :fra_chasseur_s],
+        [3, :fra_crew_t],
+        [2, :fra_m1915_hotchkiss],
+        :fra_brandt_m27_31,
+        [2, :fra_25mm_hotchkiss],
+        :fra_47mm_apx,
+        [2, :fra_hotchkiss_h35],
+        [2, :fra_amr_33],
+      ] },
     }.freeze
 
     AXIS_UNITS = {
-      "0": {
-        list: [
-          :ger_leader_6_2,
-          :ger_leader_4_1,
-          [5, :ger_rifle_s],
-          [2, :ger_mg_34],
-          [4, :ger_pzkpfw_ii_a_e],
-          [2, :ger_pzkpfw_i],
-          [2, :ger_pzkpfw_iii__39],
-          :ger_pzkpfw_38t_a_d,
-          :ger_pzkpfw_iv_a,
-        ],
-      },
+      "0": { list: [
+        :ger_leader_6_2,
+        :ger_leader_4_1,
+        [5, :ger_rifle_s],
+        [2, :ger_mg_34],
+        [4, :ger_pzkpfw_ii_a_e],
+        [2, :ger_pzkpfw_i],
+        [2, :ger_pzkpfw_iii__39],
+        :ger_pzkpfw_38t_a_d,
+        :ger_pzkpfw_iv_a,
+      ] },
     }.freeze
 
     class << self
       def generate
         {
-          turns: 8,
+          turns: 6,
           first_deploy: 1,
           first_action: 2,
           date:,
@@ -70,7 +66,6 @@ module Scenarios
           Maginot Line, Army Group A began moving three panzer corps through
           the narrow roads and wooded hills of the Ardennes in Luxembourg and
           southern Belgium.",
-
           "The advance of Army Group A was to be delayed by Belgian motorized
           infantry and French mechanized cavalry divisions advancing into the
           Ardennes.  The Belgian troops blocked roads, held up the 1st Panzer
@@ -93,11 +88,18 @@ module Scenarios
           allied_dir: 2.5,
           axis_dir: 5.5,
           victory_hexes: [
-            [3, 2, 2], [5, 8, 1], [12, 10, 1], [9, 13, 1], [2, 14, 1], [0, 19, 1], [12, 20, 1],
+            [5, 8, 1], [12, 10, 1], [9, 13, 1], [2, 14, 1], [4, 4, 2], [1, 18, 1], [11, 18, 1],
           ],
-          allied_setup: { "0" => [["*", "10-22"]] },
-          axis_setup: { "0" => [["*", "0-2"]] },
-          base_terrain: "g",
+          allied_setup: {
+            "0" => [
+              ["*", "10-22"],
+            ],
+          },
+          axis_setup: {
+            "0" => [
+              ["*", "0-2"],
+            ],
+          },
         }
       end
 
@@ -119,7 +121,8 @@ module Scenarios
             { t: "f" },
             { t: "f" },
             { t: "f" },
-          ], [
+          ],
+          [
             { t: "o" },
             { t: "o" },
             { t: "o", r: { d: [2, 5], t: "t" } },
@@ -135,7 +138,8 @@ module Scenarios
             { t: "f" },
             { t: "f" },
             { t: "f" },
-          ], [
+          ],
+          [
             { t: "o" },
             { t: "o" },
             { t: "o" },
@@ -151,7 +155,8 @@ module Scenarios
             { t: "o" },
             { t: "f" },
             { t: "f" },
-          ], [
+          ],
+          [
             { t: "o" },
             { t: "o" },
             { t: "o" },
@@ -167,7 +172,8 @@ module Scenarios
             { t: "o" },
             { t: "o" },
             { t: "o" },
-          ], [
+          ],
+          [
             { t: "f" },
             { t: "f" },
             { t: "o" },
@@ -183,7 +189,8 @@ module Scenarios
             { t: "o" },
             { t: "o" },
             { t: "o" },
-          ], [
+          ],
+          [
             { t: "f" },
             { t: "f" },
             { t: "o" },
@@ -199,7 +206,8 @@ module Scenarios
             { t: "o" },
             { t: "o" },
             { t: "o" },
-          ], [
+          ],
+          [
             { t: "o" },
             { t: "o" },
             { t: "o" },
@@ -215,7 +223,8 @@ module Scenarios
             { t: "o" },
             { t: "o" },
             { t: "o" },
-          ], [
+          ],
+          [
             { t: "o" },
             { t: "o" },
             { t: "o" },
@@ -231,7 +240,8 @@ module Scenarios
             { t: "o" },
             { t: "o" },
             { t: "o" },
-          ], [
+          ],
+          [
             { t: "o" },
             { t: "o" },
             { t: "o" },
@@ -247,7 +257,8 @@ module Scenarios
             { t: "o" },
             { t: "o" },
             { t: "o" },
-          ], [
+          ],
+          [
             { t: "f" },
             { t: "o" },
             { t: "o" },
@@ -263,7 +274,8 @@ module Scenarios
             { t: "o" },
             { t: "d", d: 1 },
             { t: "d", d: 1 },
-          ], [
+          ],
+          [
             { t: "f" },
             { t: "o" },
             { t: "o" },
@@ -279,7 +291,8 @@ module Scenarios
             { t: "o", d: 1, st: { sh: "l", s: "u" } },
             { t: "o", r: { d: [4, 6], t: "t" } },
             { t: "o", r: { d: [1, 4], t: "t" } },
-          ], [
+          ],
+          [
             { t: "o" },
             { t: "o" },
             { t: "o" },
@@ -295,7 +308,8 @@ module Scenarios
             { t: "o", r: { d: [1, 3, 5], t: "t" } },
             { t: "o", d: 2, st: { sh: "l", s: "u" } },
             { t: "o" },
-          ], [
+          ],
+          [
             { t: "o" },
             { t: "o" },
             { t: "o" },
@@ -311,7 +325,8 @@ module Scenarios
             { t: "o" },
             { t: "o", r: { d: [2, 5], t: "t" } },
             { t: "o" },
-          ], [
+          ],
+          [
             { t: "o" },
             { t: "o" },
             { t: "o" },
@@ -327,7 +342,8 @@ module Scenarios
             { t: "o" },
             { t: "o", r: { d: [2, 6], t: "t" } },
             { t: "o" },
-          ], [
+          ],
+          [
             { t: "o" },
             { t: "o" },
             { t: "o", d: 1, st: { sh: "l", s: "u" } },
@@ -343,7 +359,8 @@ module Scenarios
             { t: "o" },
             { t: "o", r: { d: [3, 6], t: "t" } },
             { t: "o" },
-          ], [
+          ],
+          [
             { t: "o", r: { d: [1, 4], t: "t" } },
             { t: "o", r: { d: [1, 4], t: "t" } },
             { t: "o", r: { d: [1, 4, 6], t: "t" } },
@@ -359,7 +376,8 @@ module Scenarios
             { t: "o", r: { d: [3, 6], t: "t" } },
             { t: "o" },
             { t: "o" },
-          ], [
+          ],
+          [
             { t: "o" },
             { t: "o", d: 3, st: { sh: "l", s: "u" } },
             { t: "o", r: { d: [3, 6], t: "t" } },
@@ -375,7 +393,8 @@ module Scenarios
             { t: "o", r: { d: [3, 6], t: "t" } },
             { t: "o" },
             { t: "o" },
-          ], [
+          ],
+          [
             { t: "o" },
             { t: "o", r: { d: [3, 6], t: "t" } },
             { t: "o" },
@@ -391,7 +410,8 @@ module Scenarios
             { t: "o" },
             { t: "o" },
             { t: "o" },
-          ], [
+          ],
+          [
             { t: "o" },
             { t: "o", r: { d: [3, 6], t: "t" } },
             { t: "o" },
@@ -407,7 +427,8 @@ module Scenarios
             { t: "o" },
             { t: "o" },
             { t: "o" },
-          ], [
+          ],
+          [
             { t: "o", r: { d: [3, 6], t: "t" } },
             { t: "o" },
             { t: "f" },
@@ -423,7 +444,8 @@ module Scenarios
             { t: "o" },
             { t: "f" },
             { t: "f" },
-          ], [
+          ],
+          [
             { t: "o", r: { d: [1, 3], t: "t" } },
             { t: "o" },
             { t: "f" },
@@ -439,7 +461,8 @@ module Scenarios
             { t: "o", r: { d: [2, 5], t: "t" } },
             { t: "f" },
             { t: "f" },
-          ], [
+          ],
+          [
             { t: "o" },
             { t: "f" },
             { t: "f" },
@@ -455,7 +478,8 @@ module Scenarios
             { t: "o", r: { d: [2, 5], t: "t" } },
             { t: "f" },
             { t: "f" },
-          ], [
+          ],
+          [
             { t: "o" },
             { t: "f" },
             { t: "f" },

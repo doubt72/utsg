@@ -7,7 +7,7 @@ module Scenarios
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
     STATUS = "p"
-    VERSION = "0.1"
+    VERSION = "0.2"
 
     DATE = [1943, 8, 5].freeze
     LAYOUT = [15, 23, "x"].freeze
@@ -79,8 +79,16 @@ module Scenarios
           victory_hexes: [
             [3, 4, 2], [4, 8, 2], [5, 11, 2], [4, 13, 2], [7, 18, 2],
           ],
-          allied_setup: { "0" => [["11-14", "*"]] },
-          axis_setup: { "0" => [["0-9", "*"]] },
+          allied_setup: {
+            "0" => [
+              ["11-14", "*"],
+            ],
+          },
+          axis_setup: {
+            "0" => [
+              ["0-9", "*"],
+            ],
+          },
           base_terrain: "",
         }
       end
@@ -139,7 +147,7 @@ module Scenarios
             { t: "o" },
           ],
           [
-            { t: "o", h: 1 },
+            { t: "b", h: 1 },
             { t: "o", h: 1 },
             { t: "o", h: 2 },
             { t: "o", h: 2 },
@@ -157,7 +165,7 @@ module Scenarios
           ],
           [
             { t: "o" },
-            { t: "o", h: 1 },
+            { t: "b", h: 1 },
             { t: "o", h: 1 },
             { t: "o", h: 2 },
             { t: "o", h: 1 },
@@ -310,7 +318,7 @@ module Scenarios
           ],
           [
             { t: "o" },
-            { t: "o", h: 1 },
+            { t: "b", h: 1 },
             { t: "o", h: 1 },
             { t: "o", h: 2 },
             { t: "o", h: 3 },
@@ -328,7 +336,7 @@ module Scenarios
           [
             { t: "o" },
             { t: "o" },
-            { t: "o", h: 1 },
+            { t: "b", h: 1 },
             { t: "o", h: 1 },
             { t: "b", h: 2 },
             { t: "b", h: 2 },
@@ -415,7 +423,7 @@ module Scenarios
             { t: "o", r: { t: "d", d: [1, 3] } },
             { t: "o" },
             { t: "o" },
-            { t: "o", h: 1 },
+            { t: "b", h: 1 },
             { t: "o", h: 1 },
             { t: "o", h: 2 },
             { t: "o", h: 1 },
@@ -433,7 +441,7 @@ module Scenarios
             { t: "o" },
             { t: "o" },
             { t: "o" },
-            { t: "o", h: 1 },
+            { t: "b", h: 1 },
             { t: "o", h: 1 },
             { t: "o", h: 1 },
             { t: "o", h: 1 },

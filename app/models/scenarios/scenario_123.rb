@@ -7,7 +7,7 @@ module Scenarios
     ALLIES = ["uk"].freeze
     AXIS = ["ger"].freeze
     STATUS = "p"
-    VERSION = "0.1"
+    VERSION = "0.2"
 
     DATE = [1943, 2, 26].freeze
     LAYOUT = [23, 23, "x"].freeze
@@ -37,7 +37,7 @@ module Scenarios
         [3, :ger_pzkpfw_iii_n],
         [3, :ger_pzkpfw_iv_f2],
       ] },
-      "1": { list: [
+      "2": { list: [
         :ger_leader_5_1,
         [3, :ger_rifle_s],
         [2, :ger_mg_42],
@@ -52,7 +52,7 @@ module Scenarios
     class << self
       def generate
         {
-          turns: 5,
+          turns: 6,
           first_deploy: 2,
           first_action: 1,
           date:,
@@ -126,7 +126,7 @@ module Scenarios
               ["21-22", "9-10"], ["20-22", "11-13"], ["21-22", 14], ["20-22", "15-16"],
               ["19-22", 17], ["20-22", "18-19"], ["21-22", 20],
             ],
-            "1" => [[22, "*"]],
+            "2" => [[22, "*"]],
           },
           base_terrain: "d",
         }

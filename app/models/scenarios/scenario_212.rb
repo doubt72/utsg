@@ -7,7 +7,7 @@ module Scenarios
     ALLIES = ["usa"].freeze
     AXIS = ["ita"].freeze
     STATUS = "p"
-    VERSION = "0.1"
+    VERSION = "0.2"
 
     DATE = [1943, 7, 10].freeze
     LAYOUT = [23, 23, "x"].freeze
@@ -29,11 +29,20 @@ module Scenarios
         [4, :ita_fucilieri_s],
         [2, :ita_breda_30],
         :ita_brixia_m35,
-        [3, :ita_crew_t],
-        [3, :ita_obice_da_75_18],
-        [3, :pillbox],
       ] },
     }.freeze
+
+    INIT_AXIS_UNITS = [
+      { data: :pillbox, x: 4, y: 10, facing: 5 },
+      { data: :pillbox, x: 7, y: 10, facing: 5 },
+      { data: :pillbox, x: 13, y: 9, facing: 6 },
+      { data: :ita_crew_t, x: 4, y: 10, facing: 6 },
+      { data: :ita_crew_t, x: 7, y: 10, facing: 6 },
+      { data: :ita_crew_t, x: 13, y: 9, facing: 6 },
+      { data: :ita_obice_da_75_18, x: 13, y: 9, facing: 6 },
+      { data: :ita_obice_da_75_18, x: 4, y: 10, facing: 5 },
+      { data: :ita_obice_da_75_18, x: 7, y: 10, facing: 5 },
+    ].freeze
 
     class << self
       def generate
@@ -48,6 +57,7 @@ module Scenarios
           map_data:,
           allied_units:,
           axis_units:,
+          init_axis_units:,
         }
       end
 
@@ -94,7 +104,11 @@ module Scenarios
               ["7-11", 18], ["7-10", 19], ["8-10", 20], ["8-9", 21],
             ],
           },
-          axis_setup: { "0" => [["0-4", 11], ["18-22", 11], [22, "12-13"], ["*", "0-10"]] },
+          axis_setup: {
+            "0" => [
+              ["0-4", 11], ["18-22", 11], [22, "12-13"], ["*", "0-10"],
+            ],
+          },
         }
       end
 

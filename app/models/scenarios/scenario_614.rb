@@ -7,7 +7,7 @@ module Scenarios
     ALLIES = ["uk"].freeze
     AXIS = ["jap"].freeze
     STATUS = "p"
-    VERSION = "0.1"
+    VERSION = "0.2"
 
     DATE = [1944, 4, 6].freeze
     LAYOUT = [15, 23, "x"].freeze
@@ -39,7 +39,7 @@ module Scenarios
     class << self
       def generate
         {
-          turns: 7,
+          turns: 6,
           first_deploy: 1,
           first_action: 2,
           date:,
@@ -84,8 +84,16 @@ module Scenarios
           victory_hexes: [
             [11, 4, 1], [6, 4, 1], [7, 8, 1], [7, 12, 1], [7, 16, 1], [4, 18, 1], [7, 19, 1],
           ],
-          allied_setup: { "0" => [["0-11", "*"]] },
-          axis_setup: { "0" => [["13-14", "*"]] },
+          allied_setup: {
+            "0" => [
+              ["0-11", "*"],
+            ],
+          },
+          axis_setup: {
+            "0" => [
+              ["13-14", "*"],
+            ],
+          },
         }
       end
 
@@ -174,7 +182,7 @@ module Scenarios
             { t: "o", h: 4, r: { t: "d", d: [1, 4, 6] } },
             { t: "o", h: 4, r: { t: "d", d: [1, 3] } },
             { t: "o", h: 3 },
-            { t: "o", h: 3 },
+            { t: "b", h: 3 },
           ],
           [
             { t: "b", h: 1 },

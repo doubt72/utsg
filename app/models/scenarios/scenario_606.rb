@@ -7,39 +7,35 @@ module Scenarios
     ALLIES = ["chi"].freeze
     AXIS = ["jap"].freeze
     STATUS = "a"
-    VERSION = "0.2"
+    VERSION = "0.3"
 
     DATE = [1942, 4, 17].freeze
     LAYOUT = [15, 23, "x"].freeze
 
     ALLIED_UNITS = {
-      "0": {
-        list: [
-          [2, :chi_leader_4_1],
-          [9, :chi_regular_s],
-          [2, :chi_czeck_lmg],
-          [3, :chi_m3_stuart],
-        ],
-      },
+      "0": { list: [
+        [2, :chi_leader_4_1],
+        [9, :chi_regular_s],
+        [2, :chi_czeck_lmg],
+        [3, :chi_m3_stuart],
+      ] },
     }.freeze
 
     AXIS_UNITS = {
-      "0": {
-        list: [
-          :jap_leader_5_1,
-          :jap_leader_4_1,
-          [7, :jap_b_division_s],
-          :jap_crew_t,
-          [2, :jap_type_96_lmg],
-          :jap_type_92_70mm,
-        ],
-      },
+      "0": { list: [
+        :jap_leader_5_1,
+        :jap_leader_4_1,
+        [7, :jap_b_division_s],
+        :jap_crew_t,
+        [2, :jap_type_96_lmg],
+        :jap_type_92_70mm,
+      ] },
     }.freeze
 
     class << self
       def generate
         {
-          turns: 9,
+          turns: 5,
           first_deploy: 2,
           first_action: 1,
           date:,
@@ -59,7 +55,6 @@ module Scenarios
           Division from encirclement by Japanese forces. As the Japanese
           advanced to seize Burma's vital oil fields near Yenangyaung, British
           and Indian troops were cut off and in danger of destruction.",
-
           "A Chinese expeditionary force under General Sun Li-jen launched a
           bold relief operation, coordinating with British units. After
           several days of fierce fighting in intense heat and difficult
@@ -68,9 +63,9 @@ module Scenarios
           to destroy the oil installations during their withdrawal, the battle
           was a successful Anglo-Chinese joint operation, delaying the
           Japanese advance deeper into Burma.",
-
           "Fog in this scenario represents smoke from the burning oil fields.
-          Fun fact: \"Yenangyuang\" literally means \"stream of oil\" in Burmese.",
+          Fun fact: Yenangyuang literally means \"stream of oil\" in
+          Burmese.",
         ]
       end
 
@@ -85,11 +80,18 @@ module Scenarios
           allied_dir: 5.5,
           axis_dir: 2.5,
           victory_hexes: [
-            [3, 2, 1], [5, 4, 1], [4, 7, 1], [2, 9, 2], [3, 13, 2], [2, 17, 2], [9, 18, 2],
+            [5, 4, 1], [4, 7, 1], [2, 9, 2], [3, 13, 2], [2, 17, 2], [9, 18, 2], [3, 3, 1],
           ],
-          allied_setup: { "0" => [["*", "0-7"]] },
-          axis_setup: { "0" => [["*", "14-22"]] },
-          base_terrain: "g",
+          allied_setup: {
+            "0" => [
+              ["*", "0-7"],
+            ],
+          },
+          axis_setup: {
+            "0" => [
+              ["*", "14-22"],
+            ],
+          },
         }
       end
 
@@ -111,7 +113,8 @@ module Scenarios
             { t: "g", h: 1 },
             { t: "g", h: 1 },
             { t: "o", h: 1 },
-          ], [
+          ],
+          [
             { t: "o" },
             { t: "o" },
             { t: "o", r: { d: [2, 4] } },
@@ -127,7 +130,8 @@ module Scenarios
             { t: "g", h: 1 },
             { t: "o", h: 1 },
             { t: "g", h: 1 },
-          ], [
+          ],
+          [
             { t: "o" },
             { t: "o" },
             { t: "o" },
@@ -143,7 +147,8 @@ module Scenarios
             { t: "o", h: 1 },
             { t: "o", h: 1 },
             { t: "o", h: 1 },
-          ], [
+          ],
+          [
             { t: "y" },
             { t: "o" },
             { t: "o" },
@@ -159,7 +164,8 @@ module Scenarios
             { t: "o", h: 1 },
             { t: "g", h: 1 },
             { t: "g", h: 1 },
-          ], [
+          ],
+          [
             { t: "o" },
             { t: "y" },
             { t: "o" },
@@ -175,7 +181,8 @@ module Scenarios
             { t: "o", h: 1 },
             { t: "g", h: 1 },
             { t: "g", h: 1 },
-          ], [
+          ],
+          [
             { t: "o" },
             { t: "y" },
             { t: "o" },
@@ -191,7 +198,8 @@ module Scenarios
             { t: "g", h: 1 },
             { t: "g", h: 1 },
             { t: "g", h: 1 },
-          ], [
+          ],
+          [
             { t: "o" },
             { t: "y" },
             { t: "o" },
@@ -207,7 +215,8 @@ module Scenarios
             { t: "j", h: 1 },
             { t: "j", h: 1 },
             { t: "j", h: 1 },
-          ], [
+          ],
+          [
             { t: "o" },
             { t: "y" },
             { t: "d", d: 3 },
@@ -223,7 +232,8 @@ module Scenarios
             { t: "o" },
             { t: "o" },
             { t: "o" },
-          ], [
+          ],
+          [
             { t: "o" },
             { t: "o" },
             { t: "y" },
@@ -239,7 +249,8 @@ module Scenarios
             { t: "y" },
             { t: "y" },
             { t: "y" },
-          ], [
+          ],
+          [
             { t: "o" },
             { t: "o" },
             { t: "y", r: { d: [3, 6] } },
@@ -255,7 +266,8 @@ module Scenarios
             { t: "j" },
             { t: "j" },
             { t: "j" },
-          ], [
+          ],
+          [
             { t: "o" },
             { t: "d", d: 2 },
             { t: "o", r: { d: [3, 5] } },
@@ -271,7 +283,8 @@ module Scenarios
             { t: "g" },
             { t: "g" },
             { t: "g" },
-          ], [
+          ],
+          [
             { t: "o" },
             { t: "d", d: 2 },
             { t: "o", r: { d: [2, 5] } },
@@ -287,7 +300,8 @@ module Scenarios
             { t: "g" },
             { t: "g" },
             { t: "g" },
-          ], [
+          ],
+          [
             { t: "o" },
             { t: "o" },
             { t: "d", d: 2 },
@@ -303,7 +317,8 @@ module Scenarios
             { t: "o" },
             { t: "g" },
             { t: "g" },
-          ], [
+          ],
+          [
             { t: "o" },
             { t: "o" },
             { t: "o" },
@@ -319,7 +334,8 @@ module Scenarios
             { t: "o" },
             { t: "o" },
             { t: "o" },
-          ], [
+          ],
+          [
             { t: "o", h: 1 },
             { t: "o", h: 1 },
             { t: "o", h: 1, d: 3, st: { sh: "h", s: "f" } },
@@ -335,7 +351,8 @@ module Scenarios
             { t: "o" },
             { t: "o" },
             { t: "o" },
-          ], [
+          ],
+          [
             { t: "o", h: 1 },
             { t: "o", h: 1 },
             { t: "o", h: 1, r: { d: [3, 6] } },
@@ -351,7 +368,8 @@ module Scenarios
             { t: "o" },
             { t: "o" },
             { t: "o" },
-          ], [
+          ],
+          [
             { t: "o", h: 1 },
             { t: "o", h: 1, d: 3, st: { sh: "h", s: "f" } },
             { t: "o", h: 1, r: { d: [3, 6] } },
@@ -367,7 +385,8 @@ module Scenarios
             { t: "o" },
             { t: "o" },
             { t: "o" },
-          ], [
+          ],
+          [
             { t: "o", h: 1 },
             { t: "o", h: 1, r: { d: [3, 6] } },
             { t: "o", h: 1, d: 3, st: { sh: "h", s: "f" } },
@@ -383,7 +402,8 @@ module Scenarios
             { t: "o" },
             { t: "o" },
             { t: "o" },
-          ], [
+          ],
+          [
             { t: "o", h: 1 },
             { t: "o", h: 1, r: { d: [3, 6] } },
             { t: "o", h: 1 },
@@ -399,7 +419,8 @@ module Scenarios
             { t: "o", h: 1 },
             { t: "o" },
             { t: "o" },
-          ], [
+          ],
+          [
             { t: "o", h: 1, r: { d: [3, 6] } },
             { t: "o", h: 1 },
             { t: "o", h: 1 },
@@ -415,7 +436,8 @@ module Scenarios
             { t: "o", h: 1 },
             { t: "o" },
             { t: "o" },
-          ], [
+          ],
+          [
             { t: "o", h: 1, r: { d: [3, 6] } },
             { t: "o", h: 1 },
             { t: "o", h: 1 },
@@ -431,7 +453,8 @@ module Scenarios
             { t: "o" },
             { t: "o", h: 1 },
             { t: "o", h: 1 },
-          ], [
+          ],
+          [
             { t: "o", h: 1 },
             { t: "o", h: 1 },
             { t: "o", h: 1 },
@@ -447,7 +470,8 @@ module Scenarios
             { t: "o" },
             { t: "o", h: 1 },
             { t: "o", h: 1 },
-          ], [
+          ],
+          [
             { t: "o", h: 1 },
             { t: "o", h: 1 },
             { t: "o", h: 1 },

@@ -119,6 +119,10 @@ export default function GameDisplay() {
               console.log(`couldn't find sequence ${action.data.sequence}`)
               if (game.k) { game.k.syncActiveCheckFailed = true }
               setUpdate()
+              setTimeout(() => {
+                // At some point, maybe just reload the game instead.
+                if (game.k && game.k.syncActiveCheckFailed) { desynced() }
+              }, 20000)
             } else {
               game.k.syncActiveCheckFailed = false
             }

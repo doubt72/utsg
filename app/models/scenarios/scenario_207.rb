@@ -7,7 +7,7 @@ module Scenarios
     ALLIES = ["usa"].freeze
     AXIS = ["ita"].freeze
     STATUS = "p"
-    VERSION = "0.1"
+    VERSION = "0.2"
 
     DATE = [1943, 7, 12].freeze
     LAYOUT = [23, 23, "x"].freeze
@@ -86,11 +86,21 @@ module Scenarios
           allied_dir: 2.5,
           axis_dir: 5.5,
           victory_hexes: [
-            [11, 21, 1], [8, 10, 2], [20, 8, 2], [7, 5, 2], [11, 5, 2], [2, 13, 2], [5, 7, 2],
+            [8, 10, 2], [20, 8, 2], [7, 5, 2], [11, 5, 2], [10, 18, 2], [2, 14, 2], [6, 6, 2],
           ],
-          allied_setup: { "0" => [["*", "20-22"]], "2" => [["*", 22]] },
-          axis_setup: { "0" => [["*", "0-18"]] },
-          base_terrain: "g",
+          allied_setup: {
+            "0" => [
+              ["*", "20-22"],
+            ],
+            "2" => [
+              ["*", 22],
+            ],
+          },
+          axis_setup: {
+            "0" => [
+              ["*", "0-18"],
+            ],
+          },
         }
       end
 

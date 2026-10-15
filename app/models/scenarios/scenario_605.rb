@@ -7,39 +7,35 @@ module Scenarios
     ALLIES = ["ind"].freeze
     AXIS = ["jap"].freeze
     STATUS = "a"
-    VERSION = "0.2"
+    VERSION = "0.3"
 
     DATE = [1944, 6, 24].freeze
     LAYOUT = [15, 11, "x"].freeze
 
     ALLIED_UNITS = {
-      "0": {
-        list: [
-          :uk_leader_6_1,
-          :uk_leader_5_1,
-          [3, :uk_gurkha_s],
-          [3, :uk_indian_s],
-          [2, :uk_bren_lmg],
-          :uk_2inch_mortar,
-          :uk_ft,
-        ],
-      },
+      "0": { list: [
+        :uk_leader_6_1,
+        :uk_leader_5_1,
+        [3, :uk_gurkha_s],
+        [3, :uk_indian_s],
+        [2, :uk_bren_lmg],
+        :uk_2inch_mortar,
+        :uk_ft,
+      ] },
     }.freeze
 
     AXIS_UNITS = {
-      "0": {
-        list: [
-          :jap_leader_5_1,
-          [5, :jap_b_division_s],
-          [2, :jap_type_92_hmg],
-        ],
-      },
+      "0": { list: [
+        :jap_leader_5_1,
+        [5, :jap_b_division_s],
+        [2, :jap_type_92_hmg],
+      ] },
     }.freeze
 
     class << self
       def generate
         {
-          turns: 7,
+          turns: 6,
           first_deploy: 2,
           first_action: 1,
           date:,
@@ -62,7 +58,6 @@ module Scenarios
           casualties.  Despite these challenges, they launched an assault on
           Mogaung, aiming to disrupt Japanese supply lines and capture the
           town.",
-
           "The Red House, a large brick building, was identified as a key
           defensive position held by the Japanese.  On June 23, after intense
           bombardment by Chinese artillery and British mortars, the Chindits
@@ -73,7 +68,6 @@ module Scenarios
           6th Gurkha Rifles, displayed extraordinary bravery during this
           assault, earning him a nomination for the Victoria Cross, as did
           Captain Michael Allmand who earned his nomination posthumously.",
-
           "The capture of the Red House was a significant turning point in the
           battle.  It disrupted the Japanese defensive positions and forced
           them to withdraw. Subsequent assaults by the Chindits and Chinese
@@ -96,10 +90,18 @@ module Scenarios
           allied_dir: 1,
           axis_dir: 4,
           victory_hexes: [
-            [2, 2, 2], [3, 6, 2], [6, 2, 2], [7, 6, 2], [8, 9, 2],
+            [6, 2, 2], [7, 6, 2], [8, 9, 2], [3, 7, 2], [3, 3, 2],
           ],
-          allied_setup: { "0" => [["12-14", "*"]] },
-          axis_setup: { "0" => [["0-10", "*"]] },
+          allied_setup: {
+            "0" => [
+              ["12-14", "*"],
+            ],
+          },
+          axis_setup: {
+            "0" => [
+              ["0-10", "*"],
+            ],
+          },
           base_terrain: "m",
         }
       end
@@ -122,10 +124,11 @@ module Scenarios
             { t: "o", r: { d: [4, 6] } },
             { t: "o", r: { d: [1, 4] } },
             { t: "o", r: { d: [1, 4] } },
-          ], [
+          ],
+          [
             { t: "w" },
             { t: "w" },
-            { t: "w", rr: { d: [[3, 6]] } },
+            { t: "w", rr: { d: [[3, 6]] }, h: 1 },
             { t: "w" },
             { t: "w" },
             { t: "w" },
@@ -138,7 +141,8 @@ module Scenarios
             { t: "p" },
             { t: "p" },
             { t: "p" },
-          ], [
+          ],
+          [
             { t: "o", r: { d: [1, 4] } },
             { t: "o", r: { d: [1, 4] } },
             { t: "o", h: 1, rr: { d: [[3, 5]] }, r: { d: [1, 4] } },
@@ -154,7 +158,8 @@ module Scenarios
             { t: "o" },
             { t: "o" },
             { t: "o" },
-          ], [
+          ],
+          [
             { t: "o", d: 1, st: { sh: "h", s: "f" } },
             { t: "d", d: 2 },
             { t: "o", h: 1, rr: { d: [[2, 5]] } },
@@ -170,7 +175,8 @@ module Scenarios
             { t: "o" },
             { t: "o" },
             { t: "o" },
-          ], [
+          ],
+          [
             { t: "o" },
             { t: "o" },
             { t: "d", d: 2 },
@@ -186,7 +192,8 @@ module Scenarios
             { t: "o" },
             { t: "o" },
             { t: "o" },
-          ], [
+          ],
+          [
             { t: "o" },
             { t: "o" },
             { t: "o" },
@@ -202,7 +209,8 @@ module Scenarios
             { t: "j" },
             { t: "j" },
             { t: "j" },
-          ], [
+          ],
+          [
             { t: "o", r: { d: [2, 5] } },
             { t: "o", d: 2, st: { sh: "h", s: "f" } },
             { t: "o" },
@@ -218,7 +226,8 @@ module Scenarios
             { t: "w" },
             { t: "w" },
             { t: "w" },
-          ], [
+          ],
+          [
             { t: "o", r: { d: [2, 5] } },
             { t: "o", d: 2, st: { sh: "h", s: "f" } },
             { t: "o" },
@@ -234,7 +243,8 @@ module Scenarios
             { t: "p" },
             { t: "p" },
             { t: "p" },
-          ], [
+          ],
+          [
             { t: "o", r: { d: [1, 4] } },
             { t: "o", r: { d: [1, 2, 5] } },
             { t: "o", d: 2, st: { sh: "h", s: "f" } },
@@ -250,7 +260,8 @@ module Scenarios
             { t: "p" },
             { t: "o" },
             { t: "o" },
-          ], [
+          ],
+          [
             { t: "o", d: 2, st: { sh: "h", s: "f" } },
             { t: "o", r: { d: [2, 4] } },
             { t: "o", h: 1, r: { d: [1, 4] } },
@@ -262,11 +273,12 @@ module Scenarios
             { t: "o", h: 1, r: { d: [1, 2, 4] } },
             { t: "o", h: 1, r: { d: [1, 4] } },
             { t: "o", h: 1, r: { d: [1, 4] } },
-            { t: "w", r: { d: [1, 4] } },
+            { t: "w", r: { d: [1, 4] }, h: 1 },
             { t: "o", h: 1, r: { d: [1, 4] } },
             { t: "o", h: 1, r: { d: [1, 4] } },
             { t: "o", h: 1, r: { d: [1, 4] } },
-          ], [
+          ],
+          [
             { t: "o" },
             { t: "o" },
             { t: "o" },

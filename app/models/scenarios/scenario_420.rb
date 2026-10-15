@@ -7,7 +7,7 @@ module Scenarios
     ALLIES = ["usa"].freeze
     AXIS = ["jap"].freeze
     STATUS = ""
-    VERSION = "1.0"
+    VERSION = "1.1"
 
     DATE = [1945, 2, 27].freeze
     LAYOUT = [15, 23, "x"].freeze
@@ -73,18 +73,18 @@ module Scenarios
 
       def description
         [
-          "Despite the loss of Mount Suribachi on the south end of the Iwo
-          Jima, the Japanese still held strong positions on the north end of
-          the island. The rocky terrain favored defense, even more so than
-          Mount Suribachi, which was much more vulnerable to naval artillery
-          fire. The fortifications on the northern section of Iwo Jima were
-          also more developed than those at the southern end of the island.
-          The biggest task for to the Marines was seizing the Motoyama
-          Plateau, with its distinctive Hill 382 and Turkey Knob, as well as
-          the area in between referred to as The Amphitheater. These obstacles
-          formed the basis of what came to be known as the meatgrinder. While
-          these Japanese positions were being reduced on the right flank,
-          American units on the left were clearing out Hill 362 with just as
+          "Despite the loss of Mount Suribachi on the south end of the island,
+          the Japanese still held strong positions on the north end of Iwo
+          Jima. The rocky terrain favored defense, even more so than Mount
+          Suribachi, which was much more vulnerable to naval artillery fire.
+          The fortifications on the northern section of Iwo Jima were also
+          more developed than those at the southern end of the island. The
+          biggest task for to the Marines was seizing the Motoyama Plateau,
+          with its distinctive Hill 382 and Turkey Knob, as well as the area
+          in between referred to as The Amphitheater. These obstacles formed
+          the basis of what came to be known as the meatgrinder. While these
+          Japanese positions were being reduced on the right flank, American
+          units on the left were clearing out Hill 362 with just as
           much difficulty.",
           "The Marines' overall objective at this point was to take control of
           Airfield No. 2 in the center of the island. However, constant pop-up

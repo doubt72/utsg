@@ -7,7 +7,7 @@ module Scenarios
     ALLIES = ["uk"].freeze
     AXIS = ["ger"].freeze
     STATUS = "a"
-    VERSION = "0.3"
+    VERSION = "0.4"
 
     DATE = [1944, 9, 18].freeze
     LAYOUT = [15, 36, "x"].freeze
@@ -26,6 +26,14 @@ module Scenarios
         [2, :uk_universal_carrier],
         :uk_m8_greyhound,
       ] },
+      "5": { list: [
+        :uk_leader_6_1,
+        :uk_leader_4_1,
+        [4, :uk_guard_s],
+        [2, :uk_bren_lmg],
+        :uk_jeep_vickers__50,
+        [2, :uk_sherman_firefly],
+      ] },
     }.freeze
 
     AXIS_UNITS = {
@@ -37,12 +45,12 @@ module Scenarios
         [2, :ger_mg_42],
         [2, :ger_7_5cm_pak_40],
       ] },
-      "3": { list: [
+      "2": { list: [
         :ger_leader_4_1,
         [3, :ger_rifle_s],
         :ger_mg_42,
       ] },
-      "6": { list: [
+      "5": { list: [
         :ger_leader_5_1,
         [2, :ger_ss_s],
         :ger_crew_t,
@@ -55,7 +63,7 @@ module Scenarios
     class << self
       def generate
         {
-          turns: 11,
+          turns: 9,
           first_deploy: 2,
           first_action: 1,
           date:,
@@ -76,9 +84,9 @@ module Scenarios
           the Lower Rhine River, bypassing the Siegfried Line and creating
           route for allied forces into northern Germany. This was to be
           achieved by two sub-operations: seizing nine bridges with combined
-          American and British airborne forces (\"Market\") followed by
+          American and British airborne forces (Market) followed by
           British land forces swiftly following over the bridges
-          (\"Garden\")",
+          (Garden)",
           "The planned route for allied forces followed Highway 69, later
           nicknamed Hell's Highway, consisting of two narrow lanes, partly
           raised above a surrounding flat terrain of polder or floodplain. The
@@ -102,11 +110,31 @@ module Scenarios
           allied_dir: 2.5,
           axis_dir: 5.5,
           victory_hexes: [
-            [10, 2, 2], [6, 5, 2], [10, 9, 2], [3, 15, 2], [7, 16, 2], [11, 21, 2], [9, 22, 2],
-            [4, 25, 2], [5, 32, 1],
+            [6, 5, 2], [10, 9, 2], [3, 15, 2], [7, 16, 2], [11, 21, 2], [9, 22, 2], [4, 25, 2],
+            [13, 10, 2], [9, 6, 2], [7, 9, 2], [5, 31, 1],
           ],
-          allied_setup: { "0" => [["*", "31-35"]] },
-          axis_setup: { "0" => [["*", "20-29"]], "3" => [["*", "10-19"]], "6" => [["*", "0-9"]] },
+          allied_setup: {
+            "0" => [
+              ["*", "31-35"],
+            ],
+            "5" => [
+              ["4-5", "32-33"], ["5-6", "34-35"],
+            ],
+          },
+          axis_setup: {
+            "0" => [
+              ["*", "20-29"],
+            ],
+            "2" => [
+              ["*", "9-17"],
+            ],
+            "5" => [
+              ["0-7", 9], [14, 9], [0, 10], [14, 10], [0, 11], [14, 11], [0, 12], [14, 12], [0, 13],
+              [14, 13], [0, 14], [14, 14], [0, 15], [14, 15], [0, 16], [14, 16], [0, 17], [14, 17],
+              [0, 18], [14, 18], [0, 19], [14, 19], [0, 20], [14, 20], [0, 21], [14, 21], [0, 22],
+              [14, 22], [0, 23], ["*", "0-8"],
+            ],
+          },
         }
       end
 

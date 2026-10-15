@@ -7,52 +7,46 @@ module Scenarios
     ALLIES = ["uk"].freeze
     AXIS = ["ger"].freeze
     STATUS = ""
-    VERSION = "1.0"
+    VERSION = "1.1"
 
     DATE = [1944, 6, 13].freeze
     LAYOUT = [23, 23, "x"].freeze
 
     ALLIED_UNITS = {
-      "0": {
-        list: [
-          :uk_leader_5_1,
-          [2, :uk_leader_4_1],
-          [8, :uk_line_s],
-          :uk_crew_t,
-          [3, :uk_bren_lmg],
-          [2, :uk_piat],
-          :uk_qf_6pdr_mk_iv,
-          [3, :uk_cromwell],
-          [3, :uk_sherman_firefly],
-          [2, :uk_m3_stuart],
-          :uk_bedford_ql,
-        ],
-      },
-      "1": {
-        list: [
-          :uk_leader_4_1,
-          [2, :uk_line_s],
-          :uk_bren_lmg,
-          :uk_radio_152mm,
-          [2, :uk_bedford_ql],
-          :uk_jeep,
-        ],
-      },
+      "0": { list: [
+        :uk_leader_5_1,
+        [2, :uk_leader_4_1],
+        [8, :uk_line_s],
+        :uk_crew_t,
+        [3, :uk_bren_lmg],
+        [2, :uk_piat],
+        :uk_qf_6pdr_mk_iv,
+        [3, :uk_cromwell],
+        [3, :uk_sherman_firefly],
+        [2, :uk_m3_stuart],
+        :uk_bedford_ql,
+      ] },
+      "1": { list: [
+        :uk_leader_4_1,
+        [2, :uk_line_s],
+        :uk_bren_lmg,
+        :uk_radio_152mm,
+        [2, :uk_bedford_ql],
+        :uk_jeep,
+      ] },
     }.freeze
 
     AXIS_UNITS = {
-      "0": {
-        list: [
-          :ger_leader_6_1,
-          :ger_leader_4_1,
-          [5, :ger_ss_s],
-          [2, :ger_mg_42],
-          [3, :ger_tiger_i],
-          [5, :ger_pzkpfw_iv_g],
-          [2, :ger_stug_iii_f_g],
-          [2, :ger_sdkfz_251_1],
-        ],
-      },
+      "0": { list: [
+        :ger_leader_6_1,
+        :ger_leader_4_1,
+        [5, :ger_ss_s],
+        [2, :ger_mg_42],
+        [3, :ger_tiger_i],
+        [5, :ger_pzkpfw_iv_g],
+        [2, :ger_stug_iii_f_g],
+        [2, :ger_sdkfz_251_1],
+      ] },
     }.freeze
 
     class << self
@@ -79,12 +73,10 @@ module Scenarios
           British 7th Armored Division, including the 4th County of London
           Yeomanry, entered the town intending to secure high ground beyond it that
           would threaten the German rear.  However, they were ambushed by
-          German Tiger tanks from the elite 1st SS Panzer Division, most
-          notably under the command of SS-Obersturmführer Michael Wittmann. In
-          a surprise attack that became legendary, Wittmann destroyed numerous
+          German Tiger tanks from the elite 1st SS Panzer Division. In
+          a surprise attack that became legendary, the Germans destroyed numerous
           British tanks and vehicles inflicting heavy losses and forcing a
           British withdrawal.",
-
           "Although the engagement was a tactical victory for the Germans and
           delayed the British advance toward Caen, it was ultimately only a
           temporary setback.  The Allies eventually captured Villers-Bocage
@@ -107,15 +99,22 @@ module Scenarios
           axis_dir: 2.5,
           victory_hexes: [
             [6, 2, 1], [10, 3, 1], [17, 3, 1], [9, 5, 1], [8, 7, 1], [12, 10, 1], [5, 14, 1],
-            [21, 16, 1], [1, 17, 2], [16, 18, 2], [2, 20, 2],
+            [21, 16, 1], [1, 17, 2], [16, 18, 2], [2, 19, 2],
           ],
           allied_setup: {
-            "0" => 7.upto(15).map { |n| ["#{11 - ((n + 1) / 2)}-#{13 - ((n + 1) / 2)}", n] }
-                    .push(["8-9", 6], ["4-5", 16]),
-            "1" => [["*", 0]],
+            "0" => [
+              ["7-9", 7], ["7-9", 8], ["6-8", 9], ["6-8", 10], ["5-7", 11], ["5-7", 12],
+              ["4-6", 13], ["4-6", 14], ["3-5", 15], ["8-9", 6], ["4-5", 16],
+            ],
+            "1" => [
+              ["*", 0],
+            ],
           },
-          axis_setup: { "0" => [["*", "18-22"], ["0-2", 17]] },
-          base_terrain: "g",
+          axis_setup: {
+            "0" => [
+              ["*", "18-22"], ["0-2", 17],
+            ],
+          },
         }
       end
 
@@ -145,7 +144,8 @@ module Scenarios
             { t: "o" },
             { t: "o" },
             { t: "o" },
-          ], [
+          ],
+          [
             { t: "o", r: { d: [1, 4] }, b: "b", be: [2, 3] },
             { t: "o", r: { d: [1, 4] }, b: "b", be: [2, 3] },
             { t: "o", r: { d: [1, 4] }, b: "b", be: [2, 3] },
@@ -169,7 +169,8 @@ module Scenarios
             { t: "o" },
             { t: "o" },
             { t: "o" },
-          ], [
+          ],
+          [
             { t: "o" },
             { t: "o" },
             { t: "o" },
@@ -193,7 +194,8 @@ module Scenarios
             { t: "o" },
             { t: "o" },
             { t: "o" },
-          ], [
+          ],
+          [
             { t: "o", b: "b", be: [2, 3] },
             { t: "o", b: "b", be: [2, 3] },
             { t: "o", b: "b", be: [2, 3] },
@@ -217,7 +219,8 @@ module Scenarios
             { t: "o" },
             { t: "o" },
             { t: "o" },
-          ], [
+          ],
+          [
             { t: "o" },
             { t: "o" },
             { t: "o" },
@@ -241,7 +244,8 @@ module Scenarios
             { t: "o", b: "b", be: [5, 6] },
             { t: "o", b: "b", be: [5, 6] },
             { t: "o" },
-          ], [
+          ],
+          [
             { t: "o" },
             { t: "o" },
             { t: "o" },
@@ -265,7 +269,8 @@ module Scenarios
             { t: "o" },
             { t: "o" },
             { t: "o", r: { d: [3, 6] }, b: "b", be: [1] },
-          ], [
+          ],
+          [
             { t: "g", b: "b", be: [2, 3] },
             { t: "g", b: "b", be: [2, 3] },
             { t: "o", b: "b", be: [1, 2, 3, 6] },
@@ -289,7 +294,8 @@ module Scenarios
             { t: "o" },
             { t: "o" },
             { t: "o", r: { d: [3, 6] }, b: "b", be: [1, 2, 5] },
-          ], [
+          ],
+          [
             { t: "g" },
             { t: "g" },
             { t: "o", b: "b", be: [1, 6] },
@@ -313,7 +319,8 @@ module Scenarios
             { t: "o" },
             { t: "o", r: { d: [3, 6] }, b: "b", be: [1, 2, 4, 5] },
             { t: "g" },
-          ], [
+          ],
+          [
             { t: "g" },
             { t: "g" },
             { t: "g" },
@@ -337,7 +344,8 @@ module Scenarios
             { t: "o" },
             { t: "o", r: { d: [3, 6] }, b: "b", be: [1, 2, 4, 5] },
             { t: "g" },
-          ], [
+          ],
+          [
             { t: "g" },
             { t: "g" },
             { t: "g" },
@@ -361,7 +369,8 @@ module Scenarios
             { t: "o", r: { d: [3, 6] }, b: "b", be: [1, 2, 4, 5] },
             { t: "g" },
             { t: "g" },
-          ], [
+          ],
+          [
             { t: "g" },
             { t: "g" },
             { t: "g" },
@@ -385,7 +394,8 @@ module Scenarios
             { t: "o", r: { d: [3, 6] }, b: "b", be: [4] },
             { t: "g" },
             { t: "g" },
-          ], [
+          ],
+          [
             { t: "g" },
             { t: "g" },
             { t: "g", b: "b", be: [4, 5] },
@@ -409,7 +419,8 @@ module Scenarios
             { t: "f" },
             { t: "f" },
             { t: "f" },
-          ], [
+          ],
+          [
             { t: "g", b: "b", be: [5, 6] },
             { t: "g", b: "b", be: [5, 6] },
             { t: "g", b: "b", be: [4, 5, 6] },
@@ -433,7 +444,8 @@ module Scenarios
             { t: "f" },
             { t: "f" },
             { t: "f" },
-          ], [
+          ],
+          [
             { t: "o" },
             { t: "o", b: "b", be: [1] },
             { t: "o" },
@@ -457,7 +469,8 @@ module Scenarios
             { t: "o" },
             { t: "o" },
             { t: "o", r: { d: [3, 6] } },
-          ], [
+          ],
+          [
             { t: "o" },
             { t: "o" },
             { t: "o" },
@@ -481,7 +494,8 @@ module Scenarios
             { t: "o" },
             { t: "d", d: 3 },
             { t: "o", r: { d: [3, 6] } },
-          ], [
+          ],
+          [
             { t: "d", d: 3 },
             { t: "d", d: 3 },
             { t: "o" },
@@ -505,7 +519,8 @@ module Scenarios
             { t: "d", d: 3 },
             { t: "o", r: { d: [3, 5] } },
             { t: "o", d: 2, st: { sh: "l", s: "r" } },
-          ], [
+          ],
+          [
             { t: "d", d: 3 },
             { t: "d", d: 3 },
             { t: "o" },
@@ -529,7 +544,8 @@ module Scenarios
             { t: "o" },
             { t: "o", d: 1, st: { sh: "l", s: "r" } },
             { t: "o", r: { d: [2, 5] } },
-          ], [
+          ],
+          [
             { t: "d", d: 3 },
             { t: "o", d: 1, st: { sh: "l", s: "r" } },
             { t: "o", d: 1, st: { sh: "l", s: "r" } },
@@ -553,7 +569,8 @@ module Scenarios
             { t: "o" },
             { t: "d", d: 3 },
             { t: "o", r: { d: [2, 4, 6] } },
-          ], [
+          ],
+          [
             { t: "o", r: { d: [1, 4] } },
             { t: "o", r: { d: [1, 4] } },
             { t: "o", r: { d: [1, 5] } },
@@ -577,7 +594,8 @@ module Scenarios
             { t: "o" },
             { t: "o" },
             { t: "o", r: { d: [3, 6] } },
-          ], [
+          ],
+          [
             { t: "o" },
             { t: "o", d: 3, st: { sh: "l", s: "r" } },
             { t: "o", r: { d: [2, 3, 6] } },
@@ -601,7 +619,8 @@ module Scenarios
             { t: "o", r: { d: [1, 4] }, b: "b", be: [2, 3] },
             { t: "o", r: { d: [1, 3] } },
             { t: "d", d: 3 },
-          ], [
+          ],
+          [
             { t: "o", r: { d: [4, 6] } },
             { t: "o", r: { d: [1, 4] } },
             { t: "o", r: { d: [1, 3, 6] } },
@@ -625,7 +644,8 @@ module Scenarios
             { t: "o" },
             { t: "o" },
             { t: "d", d: 3 },
-          ], [
+          ],
+          [
             { t: "d", d: 1 },
             { t: "o", r: { d: [3, 6] } },
             { t: "o", d: 3, st: { sh: "l", s: "r" } },
@@ -649,7 +669,8 @@ module Scenarios
             { t: "o" },
             { t: "o" },
             { t: "o" },
-          ], [
+          ],
+          [
             { t: "o" },
             { t: "o", r: { d: [3, 6] } },
             { t: "o" },

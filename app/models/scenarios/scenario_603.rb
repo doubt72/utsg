@@ -7,33 +7,29 @@ module Scenarios
     ALLIES = ["chi"].freeze
     AXIS = ["jap"].freeze
     STATUS = ""
-    VERSION = "1.3"
+    VERSION = "1.4"
 
     DATE = [1941, 9, 26].freeze
     LAYOUT = [15, 11, "x"].freeze
 
     ALLIED_UNITS = {
-      "0": {
-        list: [
-          :chi_leader_5_1,
-          :chi_leader_4_1,
-          [6, :chi_regular_s],
-          [1, :chi_type_triple_ten],
-        ],
-      },
+      "0": { list: [
+        :chi_leader_5_1,
+        :chi_leader_4_1,
+        [6, :chi_regular_s],
+        :chi_type_triple_ten,
+      ] },
     }.freeze
 
     AXIS_UNITS = {
-      "0": {
-        list: [
-          :jap_leader_6_1,
-          :jap_leader_4_1,
-          [6, :jap_b_division_s],
-          :jap_type_99_lmg,
-          :jap_type_89_gren_l,
-          :jap_type_92_70mm,
-        ],
-      },
+      "0": { list: [
+        :jap_leader_6_1,
+        :jap_leader_4_1,
+        [6, :jap_b_division_s],
+        :jap_type_99_lmg,
+        :jap_type_89_gren_l,
+        :jap_type_92_70mm,
+      ] },
     }.freeze
 
     class << self
@@ -64,7 +60,6 @@ module Scenarios
           superiority and initial successes, the Chinese forces managed to
           inflict heavy losses on the advancing troops, disrupting their
           momentum.",
-
           "The battle near Jintan exemplified the Chinese strategy of
           attrition, aiming to wear down the Japanese forces through sustained
           resistance and tactical withdrawals. While the Japanese eventually
@@ -88,11 +83,18 @@ module Scenarios
           allied_dir: 4,
           axis_dir: 1,
           victory_hexes: [
-            [3, 2, 1], [3, 8, 1], [6, 9, 1], [8, 2, 1], [11, 3, 2],
+            [3, 2, 1], [6, 9, 1], [8, 2, 1], [11, 3, 2], [4, 8, 1],
           ],
-          allied_setup: { "0" => [["0-9", "*"]] },
-          axis_setup: { "0" => [["11-14", "*"]] },
-          base_terrain: "g",
+          allied_setup: {
+            "0" => [
+              ["0-9", "*"],
+            ],
+          },
+          axis_setup: {
+            "0" => [
+              ["11-14", "*"],
+            ],
+          },
         }
       end
 
@@ -114,7 +116,8 @@ module Scenarios
             { t: "f" },
             { t: "o", r: { d: [3, 6] } },
             { t: "f" },
-          ], [
+          ],
+          [
             { t: "f" },
             { t: "o", r: { d: [4, 6] } },
             { t: "o", r: { d: [1, 4] } },
@@ -130,7 +133,8 @@ module Scenarios
             { t: "o", r: { d: [3, 6] } },
             { t: "f" },
             { t: "f" },
-          ], [
+          ],
+          [
             { t: "f" },
             { t: "o", r: { d: [3, 6] } },
             { t: "o" },
@@ -146,7 +150,8 @@ module Scenarios
             { t: "o", r: { d: [1, 3, 5] } },
             { t: "f" },
             { t: "f" },
-          ], [
+          ],
+          [
             { t: "o", r: { d: [3, 6] } },
             { t: "o", d: 3, st: { sh: "l2", s: "f" } },
             { t: "o" },
@@ -162,7 +167,8 @@ module Scenarios
             { t: "o", r: { d: [2, 5] } },
             { t: "f" },
             { t: "f" },
-          ], [
+          ],
+          [
             { t: "o", r: { d: [3, 6] } },
             { t: "d", d: 3 },
             { t: "o" },
@@ -178,7 +184,8 @@ module Scenarios
             { t: "d", d: 2 },
             { t: "o", r: { d: [2, 4, 6] } },
             { t: "f", r: { d: [1, 4] } },
-          ], [
+          ],
+          [
             { t: "o" },
             { t: "o" },
             { t: "t" },
@@ -194,7 +201,8 @@ module Scenarios
             { t: "o", r: { d: [3, 6] } },
             { t: "o" },
             { t: "f" },
-          ], [
+          ],
+          [
             { t: "o" },
             { t: "o" },
             { t: "t" },
@@ -210,7 +218,8 @@ module Scenarios
             { t: "o", r: { d: [3, 6] } },
             { t: "o" },
             { t: "o" },
-          ], [
+          ],
+          [
             { t: "o" },
             { t: "t" },
             { t: "t" },
@@ -226,7 +235,8 @@ module Scenarios
             { t: "o" },
             { t: "o" },
             { t: "o" },
-          ], [
+          ],
+          [
             { t: "o", r: { d: [1, 4] } },
             { t: "o", r: { d: [1, 4] } },
             { t: "o", r: { d: [1, 4] } },
@@ -242,7 +252,8 @@ module Scenarios
             { t: "o" },
             { t: "o" },
             { t: "o" },
-          ], [
+          ],
+          [
             { t: "w" },
             { t: "w" },
             { t: "w", s: { d: [3, 6] } },
@@ -258,7 +269,8 @@ module Scenarios
             { t: "o", r: { d: [1, 4] } },
             { t: "o", r: { d: [1, 4] } },
             { t: "f", r: { d: [1, 4] } },
-          ], [
+          ],
+          [
             { t: "w" },
             { t: "w" },
             { t: "w" },

@@ -7,7 +7,7 @@ module Scenarios
     ALLIES = ["uk"].freeze
     AXIS = ["ger"].freeze
     STATUS = "p"
-    VERSION = "0.1"
+    VERSION = "0.2"
 
     DATE = [1943, 9, 9].freeze
     LAYOUT = [23, 23, "x"].freeze
@@ -63,7 +63,7 @@ module Scenarios
     class << self
       def generate
         {
-          turns: 9,
+          turns: 7,
           first_deploy: 2,
           first_action: 1,
           date:,

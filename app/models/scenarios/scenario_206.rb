@@ -7,42 +7,38 @@ module Scenarios
     ALLIES = ["bra"].freeze
     AXIS = ["ger"].freeze
     STATUS = "a"
-    VERSION = "0.3"
+    VERSION = "0.4"
 
     DATE = [1944, 11, 29].freeze
     LAYOUT = [15, 23, "x"].freeze
 
     ALLIED_UNITS = {
-      "0": {
-        list: [
-          :usa_leader_5_1,
-          [2, :usa_leader_4_1],
-          [9, :usa_green_s],
-          [3, :usa_m1918_bar],
-          :usa_radio_155mm,
-          [3, :usa_m4_sherman],
-        ],
-      },
+      "0": { list: [
+        :usa_leader_5_1,
+        [2, :usa_leader_4_1],
+        [9, :usa_green_s],
+        [3, :usa_m1918_bar],
+        :usa_radio_155mm,
+        [3, :usa_m4_sherman],
+      ] },
     }.freeze
 
     AXIS_UNITS = {
-      "0": {
-        list: [
-          :ger_leader_5_1,
-          :ger_leader_4_1,
-          [6, :ger_conscript_s],
-          [2, :ger_mg_42],
-          :ger_7_5cm_leig_18,
-          :ger_7_5cm_pak_40,
-          [2, :bunker],
-        ],
-      },
+      "0": { list: [
+        :ger_leader_5_1,
+        :ger_leader_4_1,
+        [6, :ger_conscript_s],
+        [2, :ger_mg_42],
+        :ger_7_5cm_leig_18,
+        :ger_7_5cm_pak_40,
+        [2, :bunker],
+      ] },
     }.freeze
 
     class << self
       def generate
         {
-          turns: 9,
+          turns: 6,
           first_deploy: 2,
           first_action: 1,
           date:,
@@ -52,7 +48,7 @@ module Scenarios
           map_data:,
           allied_units:,
           axis_units:,
-          special_rules: %i[winter],
+          special_rules: ["winter"],
         }
       end
 
@@ -67,7 +63,6 @@ module Scenarios
           strategically important height held by well-entrenched German forces
           as part of the Gothic Line, blocking the Allied advance toward the
           Po Valley.",
-
           "The Brazilians, fighting in difficult winter conditions, launched
           multiple assaults against the mountain beginning in November 1944,
           but were repelled each time by determined German defenders and harsh
@@ -92,11 +87,18 @@ module Scenarios
           allied_dir: 2.5,
           axis_dir: 5.5,
           victory_hexes: [
-            [9, 3, 2], [6, 6, 2], [10, 7, 2], [8, 8, 2], [12, 9, 2], [9, 16, 2], [7, 20, 1],
+            [9, 3, 2], [6, 6, 2], [10, 7, 2], [8, 8, 2], [12, 9, 2], [9, 16, 2], [14, 14, 2],
           ],
-          allied_setup: { "0" => [["*", "18-22"]] },
-          axis_setup: { "0" => [["*", "0-16"]] },
-          base_terrain: "g",
+          allied_setup: {
+            "0" => [
+              ["*", "18-22"],
+            ],
+          },
+          axis_setup: {
+            "0" => [
+              ["*", "0-16"],
+            ],
+          },
         }
       end
 
@@ -118,7 +120,8 @@ module Scenarios
             { t: "f", h: 3 },
             { t: "o", h: 2 },
             { t: "o", h: 2 },
-          ], [
+          ],
+          [
             { t: "f", h: 3 },
             { t: "f", h: 4 },
             { t: "f", h: 3 },
@@ -134,7 +137,8 @@ module Scenarios
             { t: "f", h: 2 },
             { t: "f", h: 2 },
             { t: "o", h: 2 },
-          ], [
+          ],
+          [
             { t: "f", h: 3 },
             { t: "f", h: 3 },
             { t: "f", h: 3 },
@@ -150,7 +154,8 @@ module Scenarios
             { t: "f", h: 2 },
             { t: "f", h: 2 },
             { t: "o", h: 2 },
-          ], [
+          ],
+          [
             { t: "f", h: 3 },
             { t: "f", h: 3 },
             { t: "f", h: 3 },
@@ -166,7 +171,8 @@ module Scenarios
             { t: "o", h: 1 },
             { t: "o", h: 1 },
             { t: "o", h: 1 },
-          ], [
+          ],
+          [
             { t: "f", h: 4 },
             { t: "f", h: 4 },
             { t: "f", h: 4 },
@@ -182,7 +188,8 @@ module Scenarios
             { t: "o", h: 1 },
             { t: "o", h: 2 },
             { t: "o", h: 1 },
-          ], [
+          ],
+          [
             { t: "f", h: 3, r: { d: [1, 4] } },
             { t: "f", h: 3, r: { d: [1, 4] } },
             { t: "o", h: 3, r: { d: [1, 5] } },
@@ -198,7 +205,8 @@ module Scenarios
             { t: "o", h: 1 },
             { t: "o", h: 2 },
             { t: "o", h: 1 },
-          ], [
+          ],
+          [
             { t: "f", h: 2 },
             { t: "f", h: 2 },
             { t: "f", h: 2 },
@@ -214,7 +222,8 @@ module Scenarios
             { t: "o", h: 2 },
             { t: "o", h: 1 },
             { t: "o", h: 2 },
-          ], [
+          ],
+          [
             { t: "f", h: 2 },
             { t: "f", h: 2 },
             { t: "f", h: 2 },
@@ -230,7 +239,8 @@ module Scenarios
             { t: "o", h: 1 },
             { t: "o", h: 1 },
             { t: "o", h: 1 },
-          ], [
+          ],
+          [
             { t: "o", h: 1 },
             { t: "f", h: 1 },
             { t: "f", h: 2 },
@@ -246,7 +256,8 @@ module Scenarios
             { t: "o", h: 1, d: 2, st: { sh: "l", s: "f" } },
             { t: "o", h: 1 },
             { t: "o", h: 1 },
-          ], [
+          ],
+          [
             { t: "o", h: 1 },
             { t: "f", h: 1 },
             { t: "f", h: 1 },
@@ -262,7 +273,8 @@ module Scenarios
             { t: "o", h: 1, d: 2, st: { sh: "l", s: "f" } },
             { t: "o", h: 1 },
             { t: "o", h: 1 },
-          ], [
+          ],
+          [
             { t: "o", h: 1 },
             { t: "o", h: 1 },
             { t: "f", h: 1 },
@@ -278,7 +290,8 @@ module Scenarios
             { t: "o", h: 1, r: { d: [2, 5] } },
             { t: "o", h: 1 },
             { t: "o", h: 1 },
-          ], [
+          ],
+          [
             { t: "o", h: 1 },
             { t: "o", h: 1 },
             { t: "f", h: 1 },
@@ -294,7 +307,8 @@ module Scenarios
             { t: "o", h: 1, r: { d: [2, 5] } },
             { t: "o", h: 1 },
             { t: "o", h: 1 },
-          ], [
+          ],
+          [
             { t: "o", h: 1 },
             { t: "o", h: 1 },
             { t: "o", h: 1 },
@@ -310,7 +324,8 @@ module Scenarios
             { t: "o", h: 1 },
             { t: "o", h: 1, r: { d: [2, 5] } },
             { t: "o", h: 1 },
-          ], [
+          ],
+          [
             { t: "o", h: 1 },
             { t: "o", h: 1 },
             { t: "o", h: 1 },
@@ -326,7 +341,8 @@ module Scenarios
             { t: "o", h: 1 },
             { t: "o", h: 1, r: { d: [2, 5] } },
             { t: "o", h: 1 },
-          ], [
+          ],
+          [
             { t: "o", h: 1 },
             { t: "o", h: 1 },
             { t: "o", h: 1 },
@@ -337,12 +353,13 @@ module Scenarios
             { t: "o", h: 1 },
             { t: "o", h: 1 },
             { t: "o", h: 1 },
-            { t: "o", h: 1, r: { d: [4, 6] }  },
-            { t: "o", h: 1, r: { d: [1, 4] }  },
-            { t: "o", h: 1, r: { d: [1, 4] }  },
-            { t: "o", h: 1, r: { d: [1, 4] }  },
+            { t: "o", h: 1, r: { d: [4, 6] } },
+            { t: "o", h: 1, r: { d: [1, 4] } },
+            { t: "o", h: 1, r: { d: [1, 4] } },
+            { t: "o", h: 1, r: { d: [1, 4] } },
             { t: "o", h: 1, r: { d: [1, 2, 5] } },
-          ], [
+          ],
+          [
             { t: "o", h: 1 },
             { t: "o", h: 1 },
             { t: "o", h: 1 },
@@ -358,7 +375,8 @@ module Scenarios
             { t: "o", h: 2 },
             { t: "o", h: 2 },
             { t: "o", h: 1, r: { d: [2, 6] } },
-          ], [
+          ],
+          [
             { t: "o", h: 1 },
             { t: "o", h: 1 },
             { t: "o", h: 1 },
@@ -374,7 +392,8 @@ module Scenarios
             { t: "o", h: 2 },
             { t: "o", h: 2 },
             { t: "o", h: 1, r: { d: [3, 6] } },
-          ], [
+          ],
+          [
             { t: "o", h: 1 },
             { t: "o", h: 1 },
             { t: "o", h: 1 },
@@ -390,7 +409,8 @@ module Scenarios
             { t: "o", h: 2 },
             { t: "o", h: 1, r: { d: [3, 5] } },
             { t: "o" },
-          ], [
+          ],
+          [
             { t: "o" },
             { t: "o" },
             { t: "o", h: 1 },
@@ -406,7 +426,8 @@ module Scenarios
             { t: "o", h: 1 },
             { t: "o", h: 1 },
             { t: "o", r: { d: [2, 6] } },
-          ], [
+          ],
+          [
             { t: "o" },
             { t: "o" },
             { t: "o" },
@@ -422,7 +443,8 @@ module Scenarios
             { t: "o", h: 1 },
             { t: "o", r: { d: [3, 6] } },
             { t: "o" },
-          ], [
+          ],
+          [
             { t: "o" },
             { t: "o" },
             { t: "o" },
@@ -438,7 +460,8 @@ module Scenarios
             { t: "o", r: { d: [4, 6] } },
             { t: "o", r: { d: [1, 3] } },
             { t: "o" },
-          ], [
+          ],
+          [
             { t: "o" },
             { t: "o" },
             { t: "o" },
@@ -454,7 +477,8 @@ module Scenarios
             { t: "o" },
             { t: "o" },
             { t: "o", h: 1 },
-          ], [
+          ],
+          [
             { t: "o" },
             { t: "o" },
             { t: "o" },

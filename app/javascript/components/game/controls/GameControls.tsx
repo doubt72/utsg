@@ -119,7 +119,7 @@ export default function GameControls({
           )
         } else {
           return (
-            <div className="mt05em mb05em mr05em ml05em" key={i}>
+            <div className="mt05em mb05em mr05em ml05em red" key={i}>
               synchronizing (you may need to reload this page)
             </div>
           )

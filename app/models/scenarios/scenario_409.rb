@@ -7,7 +7,7 @@ module Scenarios
     ALLIES = ["aus"].freeze
     AXIS = ["jap"].freeze
     STATUS = "a"
-    VERSION = "0.2"
+    VERSION = "0.3"
 
     DATE = [1942, 11, 4].freeze
     LAYOUT = [15, 11, "x"].freeze
@@ -41,7 +41,7 @@ module Scenarios
     class << self
       def generate
         {
-          turns: 7,
+          turns: 6,
           first_deploy: 2,
           first_action: 1,
           date:,
@@ -56,7 +56,7 @@ module Scenarios
 
       def description
         [
-          "The Battle of Oivi–Gorari marked the final major engagement of the
+          "The Battle of Oivi-Gorari marked the final major engagement of the
           Kokoda Track Campaign, as Australian forces launched a coordinated
           offensive to destroy the last organized Japanese defenses inland
           from the Papuan coast. The Japanese had entrenched themselves at

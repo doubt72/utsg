@@ -7,7 +7,7 @@ module Scenarios
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
     STATUS = "p"
-    VERSION = "0.1"
+    VERSION = "0.2"
 
     DATE = [1941, 7, 21].freeze
     LAYOUT = [15, 11, "x"].freeze
@@ -73,10 +73,18 @@ module Scenarios
           allied_dir: 1,
           axis_dir: 1,
           victory_hexes: [
-            [6, 5, 1], [2, 5, 2], [10, 3, 1], [4, 7, 1], [12, 5, 1],
+            [10, 3, 1], [4, 7, 1], [11, 5, 1], [5, 5, 1], [7, 5, 1],
           ],
-          allied_setup: { "0" => [["4-14", "*"]] },
-          axis_setup: { "0" => [["0-2", "*"]] },
+          allied_setup: {
+            "0" => [
+              ["4-14", "*"],
+            ],
+          },
+          axis_setup: {
+            "0" => [
+              ["0-2", "*"],
+            ],
+          },
         }
       end
 
@@ -165,7 +173,7 @@ module Scenarios
             { t: "o", h: 2, r: { t: "d", d: [1, 5] } },
             { t: "d", h: 2, d: 1 },
             { t: "d", h: 2, d: 1 },
-            { t: "d", h: 2, d: 1 },
+            { t: "o", h: 2, r: { t: "d", d: [4, 6] } },
           ],
           [
             { t: "d", h: 2, d: 1 },
@@ -177,12 +185,12 @@ module Scenarios
             { t: "o", h: -1, s: { t: "s", d: [3, 5] }, r: { t: "d", d: [1, 4] } },
             { t: "o", r: { t: "d", d: [1, 3] } },
             { t: "o", h: 1 },
-            { t: "o", h: 2 },
             { t: "d", h: 2, d: 1 },
+            { t: "o", h: 2 },
             { t: "o", h: 2, r: { t: "d", d: [2, 4] } },
             { t: "o", h: 2, r: { t: "d", d: [1, 4] } },
-            { t: "o", h: 2, r: { t: "d", d: [1, 4] } },
-            { t: "o", h: 2, r: { t: "d", d: [1, 4] } },
+            { t: "o", h: 2, r: { t: "d", d: [1, 3] } },
+            { t: "f", h: 2 },
           ],
           [
             { t: "o", h: 2, r: { t: "d", d: [1, 4] } },
@@ -198,8 +206,8 @@ module Scenarios
             { t: "o", h: 2 },
             { t: "o", h: 2 },
             { t: "d", h: 2, d: 1 },
-            { t: "o", h: 2 },
             { t: "d", h: 2, d: 1 },
+            { t: "o", h: 2 },
           ],
           [
             { t: "o", h: 2 },

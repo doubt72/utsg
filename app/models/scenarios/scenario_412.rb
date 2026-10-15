@@ -7,7 +7,7 @@ module Scenarios
     ALLIES = ["dut"].freeze
     AXIS = ["jap"].freeze
     STATUS = "p"
-    VERSION = "0.1"
+    VERSION = "0.2"
 
     DATE = [1942, 1, 11].freeze
     LAYOUT = [15, 23, "x"].freeze
@@ -51,7 +51,7 @@ module Scenarios
         [
           "Langoan Airfield was a strategic airbase located on the Manado
           Peninsula of Celebes Island.  Built prewar by the Dutch, it was a
-          key objective in Japan’s Eastern Offensive to capture the Dutch East
+          key objective in Japan's Eastern Offensive to capture the Dutch East
           Indies.",
           "The airfield was one of the main sites of the Battle of Manado, and
           was the first combat parachute drop ever performed by the Japanese.
@@ -77,11 +77,18 @@ module Scenarios
           allied_dir: 2.5,
           axis_dir: 5.5,
           victory_hexes: [
-            [6, 20, 1], [3, 19, 1], [6, 11, 1], [5, 15, 1], [4, 16, 1],
+            [6, 20, 1], [6, 11, 1], [5, 15, 1], [4, 16, 1], [4, 18, 1],
           ],
-          allied_setup: { "0" => [["*", "10-22"]] },
-          axis_setup: { "0" => [["*", "0-4"]] },
-          base_terrain: "g",
+          allied_setup: {
+            "0" => [
+              ["*", "10-22"],
+            ],
+          },
+          axis_setup: {
+            "0" => [
+              ["*", "0-4"],
+            ],
+          },
         }
       end
 
@@ -469,7 +476,7 @@ module Scenarios
             { t: "o" },
             { t: "d", d: 2 },
             { t: "o", r: { t: "d", d: [2, 5] } },
-            { t: "d", d: 2 },
+            { t: "j" },
             { t: "o" },
             { t: "o" },
             { t: "o" },
