@@ -8,10 +8,10 @@ module Api
       def index
         game_id = params[:game_id]&.to_i
         limit = params[:after_id]&.to_i
-        if limit
-          render json: GameAction.includes(:user).where(game_id:, id: (limit + 1)..)
-                                 .order(:sequence).map(&:body),
-                 status: :ok
+        if limit == -1
+          render json: GameAction.last_record(game_id), status: :ok
+        elsif limit
+          render json: GameAction.recent_records(game_id, limit + 1), status: :ok
         else
           render json: GameAction.includes(:user).where(game_id:).order(:sequence)
                                  .map(&:body), status: :ok

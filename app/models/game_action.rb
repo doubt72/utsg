@@ -27,6 +27,14 @@ class GameAction < ApplicationRecord
     GameAction.create!(params)
   end
 
+  def self.recent_records(game, after)
+    GameAction.includes(:user).where(game_id: game, id: after..).order(:sequence).map(&:body)
+  end
+
+  def self.last_record(game)
+    GameAction.includes(:user).where(game_id: game).order(:sequence).last.body
+  end
+
   def body
     {
       id:, sequence:, user: user&.username || User::UNKNOWN_USERNAME, player:, undone:,

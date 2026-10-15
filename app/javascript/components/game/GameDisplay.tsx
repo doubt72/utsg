@@ -23,6 +23,7 @@ import DesyncWindow from "./DesyncWindow";
 import { serverVersion } from "../../utilities/utilities";
 import SummaryDisplay from "./SummaryDisplay";
 import Scenario from "../../engine/Scenario";
+import GameAction from "../../engine/GameAction";
 
 export default function GameDisplay() {
   const { id } = useParams()
@@ -85,6 +86,8 @@ export default function GameDisplay() {
   const [, setTurnTimer] = useState<NodeJS.Timeout | undefined>()
   const [, setTurnSwitchTimer] = useState<NodeJS.Timeout | undefined>()
 
+  const [, setSyncCheckTimer] = useState<NodeJS.Timeout | undefined>()
+
   useEffect(() => {
     if (localStorage.getItem("validationNeeded")) {
       navigate("/verify_account", { replace: true });
@@ -102,6 +105,53 @@ export default function GameDisplay() {
       }
     }
   }, [game.k?.turn])
+
+  useEffect(() => {
+    if (!game.k) { return }
+    const internalCheckSync = (ms: number) => {
+      getAPI(`/api/v1/game_actions?game_id=${game.k?.id}&after_id=-1`, {
+        ok: response => response.json().then(json => {
+          const action = new GameAction(json, game.k as Game)
+          console.log(`checking action seq ${action.data.sequence} [${ms}]`)
+          setTimeout(() => {
+            if (!game.k?.actions.map(a => a.sequence).includes(action.data.sequence)) {
+              console.log(`couldn't find sequence ${action.data.sequence}`)
+              if (game.k) { game.k.syncActiveCheckFailed = true }
+              desynced()
+            } else {
+              game.k.syncActiveCheckFailed = false
+            }
+          }, 5000)
+        })
+      })
+    }
+
+    const checkSyncLoop = (ms: number) => {
+      setSyncCheckTimer(s => {
+        if (s) { clearTimeout(s) }
+        if (!game.k?.syncActiveCheckFailed) {
+          const timer = setTimeout(() => {
+            internalCheckSync(ms*2)
+            checkSyncLoop(ms*2)
+          }, ms*2)
+          return timer
+        } else {
+          return undefined
+        }
+      })
+    }
+
+    setSyncCheckTimer(s => {
+      if (s) { clearTimeout(s) }
+      const ms = 15000
+      const timer = setTimeout(() => {
+        internalCheckSync(ms)
+        checkSyncLoop(ms)
+      }, ms);
+      return timer
+    })
+
+  }, [game.k, game.k?.lastActionIndex])
 
   useEffect(() => {
     setControlClasses(`game-control${horizontalControls ? "" : "-vertical"}`)

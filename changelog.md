@@ -1,6 +1,8 @@
 # 0.167
 
 - Allow routing via caves (implied by "adjacency" phrasing)
+- Added (experimental) backup sync validation
+- Bug fix: fix collapsed stack spacing
 - Bug fix: fix join undo when teams had different status
 - Bug fix: eliminated units shouldn't ever show last selected
 - Bug fix: don't rotate sniper counter when rotating map

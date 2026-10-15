@@ -37,6 +37,15 @@ RSpec.describe Api::V1::GameActionsController do
       expect(json.first["id"]).to be == action2.id
     end
 
+    it "returns last action with after_id = -1" do
+      get :index, params: { game_id: game.id, after_id: -1 }
+
+      expect(response.status).to be == 200
+
+      json = JSON.parse(response.body)
+      expect(json["id"]).to be == action2.id
+    end
+
     it "returns no actions for bogus game id" do
       get :index, params: { game_id: 0 }
 

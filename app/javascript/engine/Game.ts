@@ -165,6 +165,8 @@ export default class Game {
 
   initialLoad: boolean = true;
 
+  syncActiveCheckFailed: boolean = false;
+
   constructor(data: GameData, refreshCallback: (g: Game, error?: [string, string, string?]) => void = () => {}) {
     this.id = data.id
     this.name = data.name
@@ -247,6 +249,7 @@ export default class Game {
           this.suppressNetwork = false
         }
         this.initialLoad = false
+        this.syncActiveCheckFailed = false
       })
     })
   }

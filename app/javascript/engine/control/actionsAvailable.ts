@@ -121,7 +121,9 @@ function setState(game: Game): void {
 }
 
 export default function actionsAvailable(game: Game, activePlayer: string, active: boolean = true): GameControl[] {
-  if (!game.fullySynced || game.needsRectify) { return [{ type: "sync" }] }
+  if (!game.fullySynced || game.needsRectify || game.syncActiveCheckFailed) {
+    return [{ type: "sync" }]
+  }
   if (game.state === "needs_player") {
     if (game.ownerName === activePlayer || !activePlayer) {
       return [{ type: "none", message: "waiting for player to join" }]

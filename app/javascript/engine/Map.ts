@@ -677,10 +677,10 @@ export default class Map {
       y2 += diff
     }
     let scale = 1
-    if (x2 - x1 > max.x - 32) {
-      scale = (max.x - 10*(size-1) + 34) / (x2 - x1)
-      const x2scale = max.x / (x2 - x1)
-      x2 = x2 * x2scale
+    if (x2 - x1 > max.x) {
+      scale = (max.x - 184) / ((size - 1) * (160 + outwidth))
+      x1 = 0
+      x2 = max.x
     }
     return {
       path: roundedRectangle(x1, y1, x2 - x1, y2 - y1, outwidth+4), x: x1 + 5, y: y1 + 7.5, y2: y2,

@@ -1,12 +1,8 @@
 Features/Bug Fixes
-  + Sniper marker needs to rotate
-  + Never show any selection for eliminated units
-  + Cave adjacent for routing
-  + Bug with combining exhausts squad when undone
-  - Big stack not quite right
+  + Big stack not quite right
+  + Periodically check sync
   - Make sure sub-counter closed with counter
   - Decoy next to hit revealed
-  - Periodically check sync
   - Save/play user scenarios / limit 1 - 3 - 5
   - Update tutorial (with tutorial scenario), video playthroughs (clash of steel)
   - Add Some Developer Notes
