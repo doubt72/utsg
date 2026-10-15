@@ -6,8 +6,8 @@ module Scenarios
     NAME = "At Mezzeh"
     ALLIES = ["ind"].freeze
     AXIS = ["vcf"].freeze
-    STATUS = "p"
-    VERSION = "0.1"
+    STATUS = "a"
+    VERSION = "0.2"
 
     DATE = [1941, 6, 19].freeze
     LAYOUT = [23, 23, "x"].freeze

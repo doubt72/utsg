@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Railway Station No. 1"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "p"
-    VERSION = "0.1"
+    STATUS = "a"
+    VERSION = "0.2"
 
     DATE = [1942, 9, 14].freeze
     LAYOUT = [15, 11, "x"].freeze

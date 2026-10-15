@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Waltzing Matildas"
     ALLIES = ["aus"].freeze
     AXIS = ["jap"].freeze
-    STATUS = "p"
-    VERSION = "0.1"
+    STATUS = "a"
+    VERSION = "0.2"
 
     DATE = [1943, 11, 24].freeze
     LAYOUT = [23, 23, "x"].freeze

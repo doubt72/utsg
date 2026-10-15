@@ -6,8 +6,8 @@ module Scenarios
     NAME = "No Safe Ground"
     ALLIES = ["usa"].freeze
     AXIS = ["jap"].freeze
-    STATUS = "p"
-    VERSION = "0.1"
+    STATUS = "a"
+    VERSION = "0.2"
 
     DATE = [1944, 2, 18].freeze
     LAYOUT = [23, 23, "x"].freeze

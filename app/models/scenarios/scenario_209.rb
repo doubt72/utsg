@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Avalanche by a Thread"
     ALLIES = ["uk"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "p"
-    VERSION = "0.2"
+    STATUS = "a"
+    VERSION = "0.3"
 
     DATE = [1943, 9, 9].freeze
     LAYOUT = [23, 23, "x"].freeze

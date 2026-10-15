@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Sarimbun Beach"
     ALLIES = ["aus"].freeze
     AXIS = ["jap"].freeze
-    STATUS = "p"
-    VERSION = "0.2"
+    STATUS = "a"
+    VERSION = "0.3"
 
     DATE = [1942, 2, 8].freeze
     LAYOUT = [23, 23, "x"].freeze

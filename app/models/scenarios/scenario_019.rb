@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Out of the Woods"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "p"
-    VERSION = "0.1"
+    STATUS = "a"
+    VERSION = "0.2"
 
     DATE = [1945, 5, 1].freeze
     LAYOUT = [15, 23, "x"].freeze

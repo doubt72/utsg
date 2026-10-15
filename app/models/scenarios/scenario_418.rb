@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Battle of the Ridges"
     ALLIES = ["usa"].freeze
     AXIS = ["jap"].freeze
-    STATUS = "p"
-    VERSION = "0.1"
+    STATUS = "a"
+    VERSION = "0.2"
 
     DATE = [1944, 12, 5].freeze
     LAYOUT = [15, 23, "x"].freeze

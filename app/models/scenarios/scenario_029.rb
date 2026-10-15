@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Italians on the Don"
     ALLIES = ["ussr"].freeze
     AXIS = ["ita"].freeze
-    STATUS = "p"
-    VERSION = "0.2"
+    STATUS = "a"
+    VERSION = "0.3"
 
     DATE = [1942, 8, 4].freeze
     LAYOUT = [15, 23, "x"].freeze

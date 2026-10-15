@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Ironclad"
     ALLIES = ["uk"].freeze
     AXIS = ["vcf"].freeze
-    STATUS = "p"
-    VERSION = "0.2"
+    STATUS = "a"
+    VERSION = "0.3"
 
     DATE = [1942, 5, 6].freeze
     LAYOUT = [23, 23, "x"].freeze

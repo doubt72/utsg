@@ -6,8 +6,8 @@ module Scenarios
     NAME = "The Last Charge"
     ALLIES = ["pol"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "p"
-    VERSION = "0.1"
+    STATUS = "a"
+    VERSION = "0.2"
 
     DATE = [1939, 9, 1].freeze
     LAYOUT = [23, 23, "x"].freeze

@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Fort Ében-Émael"
     ALLIES = ["bel"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "p"
-    VERSION = "0.2"
+    STATUS = "a"
+    VERSION = "0.3"
 
     DATE = [1940, 5, 10].freeze
     LAYOUT = [15, 23, "x"].freeze

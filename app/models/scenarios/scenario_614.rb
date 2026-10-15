@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Garrison Hill"
     ALLIES = ["uk"].freeze
     AXIS = ["jap"].freeze
-    STATUS = "p"
-    VERSION = "0.2"
+    STATUS = "a"
+    VERSION = "0.3"
 
     DATE = [1944, 4, 6].freeze
     LAYOUT = [15, 23, "x"].freeze

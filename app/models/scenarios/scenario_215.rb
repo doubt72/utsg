@@ -6,8 +6,8 @@ module Scenarios
     NAME = "No Passing Allowed"
     ALLIES = ["usa"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "p"
-    VERSION = "0.2"
+    STATUS = "a"
+    VERSION = "0.3"
 
     DATE = [1943, 9, 20].freeze
     LAYOUT = [15, 23, "x"].freeze

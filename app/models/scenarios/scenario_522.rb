@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Kollaa Kestää"
     ALLIES = ["ussr"].freeze
     AXIS = ["fin"].freeze
-    STATUS = "p"
-    VERSION = "0.1"
+    STATUS = "a"
+    VERSION = "0.2"
 
     DATE = [1940, 3, 2].freeze
     LAYOUT = [15, 23, "x"].freeze

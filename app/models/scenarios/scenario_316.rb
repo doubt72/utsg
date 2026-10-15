@@ -6,8 +6,8 @@ module Scenarios
     NAME = "A Bridge Too Far"
     ALLIES = ["uk"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "p"
-    VERSION = "0.1"
+    STATUS = "a"
+    VERSION = "0.2"
 
     DATE = [1944, 9, 18].freeze
     LAYOUT = [15, 23, "x"].freeze

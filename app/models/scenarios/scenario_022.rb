@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Enemy at the Gates"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "p"
-    VERSION = "0.1"
+    STATUS = "a"
+    VERSION = "0.2"
 
     DATE = [1942, 10, 15].freeze
     LAYOUT = [15, 23, "x"].freeze

@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Amal River"
     ALLIES = ["dut"].freeze
     AXIS = ["jap"].freeze
-    STATUS = "p"
-    VERSION = "0.1"
+    STATUS = "a"
+    VERSION = "0.2"
 
     DATE = [1942, 1, 11].freeze
     LAYOUT = [15, 23, "x"].freeze

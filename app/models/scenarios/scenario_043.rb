@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Out of the Frying Pan"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "p"
-    VERSION = "0.2"
+    STATUS = "a"
+    VERSION = "0.3"
 
     DATE = [1941, 8, 5].freeze
     LAYOUT = [32, 11, "x"].freeze

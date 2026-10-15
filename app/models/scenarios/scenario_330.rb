@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Pocket Polder"
     ALLIES = ["can"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "p"
-    VERSION = "0.1"
+    STATUS = "a"
+    VERSION = "0.2"
 
     DATE = [1944, 10, 28].freeze
     LAYOUT = [32, 23, "x"].freeze

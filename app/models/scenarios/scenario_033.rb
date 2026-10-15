@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Rolling Thunder"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "p"
-    VERSION = "0.2"
+    STATUS = "a"
+    VERSION = "0.3"
 
     DATE = [1943, 7, 5].freeze
     LAYOUT = [23, 36, "x"].freeze

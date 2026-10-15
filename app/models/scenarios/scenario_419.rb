@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Saddle Ridge"
     ALLIES = ["usa"].freeze
     AXIS = ["jap"].freeze
-    STATUS = "p"
-    VERSION = "0.2"
+    STATUS = "a"
+    VERSION = "0.3"
 
     DATE = [1942, 10, 26].freeze
     LAYOUT = [23, 11, "x"].freeze

@@ -6,8 +6,8 @@ module Scenarios
     NAME = "The Turning Tide"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "p"
-    VERSION = "0.2"
+    STATUS = "a"
+    VERSION = "0.3"
 
     DATE = [1943, 7, 15].freeze
     LAYOUT = [32, 23, "x"].freeze

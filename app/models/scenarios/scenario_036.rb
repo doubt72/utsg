@@ -6,8 +6,8 @@ module Scenarios
     NAME = "On the Edge"
     ALLIES = ["ussr"].freeze
     AXIS = ["slv"].freeze
-    STATUS = "p"
-    VERSION = "0.2"
+    STATUS = "a"
+    VERSION = "0.3"
 
     DATE = [1941, 7, 22].freeze
     LAYOUT = [15, 23, "x"].freeze

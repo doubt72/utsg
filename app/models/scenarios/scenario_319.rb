@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Grave Bridge"
     ALLIES = ["usa", "uk"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "p"
-    VERSION = "0.1"
+    STATUS = "a"
+    VERSION = "0.2"
 
     DATE = [1944, 9, 17].freeze
     LAYOUT = [23, 23, "x"].freeze

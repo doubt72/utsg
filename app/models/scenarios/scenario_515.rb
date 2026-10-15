@@ -6,8 +6,8 @@ module Scenarios
     NAME = "A Paper Wall"
     ALLIES = ["yug"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "p"
-    VERSION = "0.1"
+    STATUS = "a"
+    VERSION = "0.2"
 
     DATE = [1941, 4, 7].freeze
     LAYOUT = [32, 23, "x"].freeze

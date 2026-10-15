@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Tanne Ost"
     ALLIES = ["fin"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "p"
-    VERSION = "0.2"
+    STATUS = "a"
+    VERSION = "0.3"
 
     DATE = [1944, 9, 15].freeze
     LAYOUT = [15, 23, "x"].freeze

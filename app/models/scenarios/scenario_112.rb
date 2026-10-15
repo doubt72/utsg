@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Hills of Barka"
     ALLIES = ["uk"].freeze
     AXIS = ["ita"].freeze
-    STATUS = "p"
-    VERSION = "0.2"
+    STATUS = "a"
+    VERSION = "0.3"
 
     DATE = [1941, 1, 25].freeze
     LAYOUT = [32, 23, "x"].freeze

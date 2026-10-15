@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Konrad"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "p"
-    VERSION = "0.1"
+    STATUS = "a"
+    VERSION = "0.2"
 
     DATE = [1945, 1, 1].freeze
     LAYOUT = [23, 23, "x"].freeze

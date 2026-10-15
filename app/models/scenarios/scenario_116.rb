@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Jebel Sherif"
     ALLIES = ["nz"].freeze
     AXIS = ["ita"].freeze
-    STATUS = "p"
-    VERSION = "0.1"
+    STATUS = "a"
+    VERSION = "0.2"
 
     DATE = [1941, 1, 31].freeze
     LAYOUT = [23, 23, "x"].freeze

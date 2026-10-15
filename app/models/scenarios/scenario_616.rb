@@ -6,8 +6,8 @@ module Scenarios
     NAME = "A Savage Ground"
     ALLIES = ["chi"].freeze
     AXIS = ["jap"].freeze
-    STATUS = "p"
-    VERSION = "0.2"
+    STATUS = "a"
+    VERSION = "0.3"
 
     DATE = [1944, 6, 28].freeze
     LAYOUT = [23, 23, "x"].freeze

@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Arctic Fox"
     ALLIES = ["ussr"].freeze
     AXIS = ["fin"].freeze
-    STATUS = "p"
-    VERSION = "0.1"
+    STATUS = "a"
+    VERSION = "0.2"
 
     DATE = [1941, 8, 7].freeze
     LAYOUT = [15, 23, "x"].freeze

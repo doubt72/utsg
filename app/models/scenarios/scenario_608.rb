@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Marco Polo Bridge"
     ALLIES = ["chi"].freeze
     AXIS = ["jap"].freeze
-    STATUS = "p"
-    VERSION = "0.2"
+    STATUS = "a"
+    VERSION = "0.3"
 
     DATE = [1937, 7, 8].freeze
     LAYOUT = [23, 23, "x"].freeze

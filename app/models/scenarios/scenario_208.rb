@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Ayo Gorkhali"
     ALLIES = ["uk"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "p"
-    VERSION = "0.2"
+    STATUS = "a"
+    VERSION = "0.3"
 
     DATE = [1944, 2, 17].freeze
     LAYOUT = [15, 23, "x"].freeze

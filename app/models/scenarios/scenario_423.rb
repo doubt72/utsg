@@ -6,8 +6,8 @@ module Scenarios
     NAME = "No. 3 Airstrip"
     ALLIES = ["aus"].freeze
     AXIS = ["jap"].freeze
-    STATUS = "p"
-    VERSION = "0.1"
+    STATUS = "a"
+    VERSION = "0.2"
 
     DATE = [1942, 8, 31].freeze
     LAYOUT = [23, 11, "x"].freeze

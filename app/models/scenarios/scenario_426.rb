@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Bloody Nose Ridge"
     ALLIES = ["usa"].freeze
     AXIS = ["jap"].freeze
-    STATUS = "p"
-    VERSION = "0.1"
+    STATUS = "a"
+    VERSION = "0.2"
 
     DATE = [1944, 10, 30].freeze
     LAYOUT = [15, 23, "x"].freeze

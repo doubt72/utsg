@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Jumping at Shadows"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "p"
-    VERSION = "0.1"
+    STATUS = "a"
+    VERSION = "0.2"
 
     DATE = [1943, 7, 1].freeze
     LAYOUT = [32, 11, "x"].freeze

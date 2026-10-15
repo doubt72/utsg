@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Red October"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "p"
-    VERSION = "0.5"
+    STATUS = "a"
+    VERSION = "0.6"
 
     DATE = [1942, 10, 14].freeze
     LAYOUT = [15, 23, "x"].freeze

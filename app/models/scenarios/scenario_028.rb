@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Hungarian Redoubt"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "p"
-    VERSION = "0.2"
+    STATUS = "a"
+    VERSION = "0.3"
 
     DATE = [1945, 1, 9].freeze
     LAYOUT = [23, 23, "x"].freeze

@@ -6,8 +6,8 @@ module Scenarios
     NAME = "One Step Back"
     ALLIES = ["uk"].freeze
     AXIS = ["ita"].freeze
-    STATUS = "p"
-    VERSION = "0.2"
+    STATUS = "a"
+    VERSION = "0.3"
 
     DATE = [1940, 8, 11].freeze
     LAYOUT = [32, 23, "x"].freeze

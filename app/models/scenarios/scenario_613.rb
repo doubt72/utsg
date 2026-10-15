@@ -6,8 +6,8 @@ module Scenarios
     NAME = "The Last Road"
     ALLIES = ["aus"].freeze
     AXIS = ["jap"].freeze
-    STATUS = "p"
-    VERSION = "0.2"
+    STATUS = "a"
+    VERSION = "0.3"
 
     DATE = [1942, 1, 18].freeze
     LAYOUT = [23, 11, "x"].freeze

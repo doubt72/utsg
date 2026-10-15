@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Hampshire Farm"
     ALLIES = ["uk"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "p"
-    VERSION = "0.2"
+    STATUS = "a"
+    VERSION = "0.3"
 
     DATE = [1943, 2, 26].freeze
     LAYOUT = [23, 23, "x"].freeze

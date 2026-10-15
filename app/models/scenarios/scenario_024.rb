@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Karelian Crossroads"
     ALLIES = ["ussr"].freeze
     AXIS = ["fin"].freeze
-    STATUS = "p"
-    VERSION = "0.2"
+    STATUS = "a"
+    VERSION = "0.3"
 
     DATE = [1941, 9, 8].freeze
     LAYOUT = [15, 23, "x"].freeze

@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Guns in the Groves"
     ALLIES = ["usa"].freeze
     AXIS = ["ita"].freeze
-    STATUS = "p"
-    VERSION = "0.2"
+    STATUS = "a"
+    VERSION = "0.3"
 
     DATE = [1943, 7, 12].freeze
     LAYOUT = [23, 23, "x"].freeze

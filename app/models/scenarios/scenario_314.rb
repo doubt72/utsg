@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Push, Pull, Counter"
     ALLIES = ["usa"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "p"
-    VERSION = "0.2"
+    STATUS = "a"
+    VERSION = "0.3"
 
     DATE = [1944, 6, 12].freeze
     LAYOUT = [23, 23, "x"].freeze

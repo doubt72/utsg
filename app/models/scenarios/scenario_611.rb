@@ -6,8 +6,8 @@ module Scenarios
     NAME = "False Front"
     ALLIES = ["uk"].freeze
     AXIS = ["jap"].freeze
-    STATUS = "p"
-    VERSION = "0.1"
+    STATUS = "a"
+    VERSION = "0.2"
 
     DATE = [1942, 3, 6].freeze
     LAYOUT = [23, 23, "x"].freeze

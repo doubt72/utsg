@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Quai de Fécamp"
     ALLIES = ["usa"].freeze
     AXIS = ["vcf"].freeze
-    STATUS = "p"
-    VERSION = "0.1"
+    STATUS = "a"
+    VERSION = "0.2"
 
     DATE = [1942, 11, 8].freeze
     LAYOUT = [23, 23, "x"].freeze
