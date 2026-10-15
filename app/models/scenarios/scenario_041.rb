@@ -55,7 +55,7 @@ module Scenarios
           map_data:,
           allied_units:,
           axis_units:,
-          special_rules: ["allied_existance"],
+          special_rules: ["allied_existance", "axis_escape"],
         }
       end
 
