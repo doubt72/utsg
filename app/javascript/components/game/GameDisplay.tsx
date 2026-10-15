@@ -111,13 +111,14 @@ export default function GameDisplay() {
     const internalCheckSync = (ms: number) => {
       getAPI(`/api/v1/game_actions?game_id=${game.k?.id}&after_id=-1`, {
         ok: response => response.json().then(json => {
+          if (game.k?.syncActiveCheckFailed) { return }
           const action = new GameAction(json, game.k as Game)
           console.log(`checking action seq ${action.data.sequence} [${ms}]`)
           setTimeout(() => {
             if (!game.k?.actions.map(a => a.sequence).includes(action.data.sequence)) {
               console.log(`couldn't find sequence ${action.data.sequence}`)
               if (game.k) { game.k.syncActiveCheckFailed = true }
-              desynced()
+              setUpdate()
             } else {
               game.k.syncActiveCheckFailed = false
             }
@@ -129,15 +130,13 @@ export default function GameDisplay() {
     const checkSyncLoop = (ms: number) => {
       setSyncCheckTimer(s => {
         if (s) { clearTimeout(s) }
-        if (!game.k?.syncActiveCheckFailed) {
           const timer = setTimeout(() => {
+          if (!game.k?.syncActiveCheckFailed) {
             internalCheckSync(ms*2)
             checkSyncLoop(ms*2)
-          }, ms*2)
-          return timer
-        } else {
-          return undefined
-        }
+          }
+        }, ms*2)
+        return timer
       })
     }
 
@@ -145,8 +144,10 @@ export default function GameDisplay() {
       if (s) { clearTimeout(s) }
       const ms = 15000
       const timer = setTimeout(() => {
-        internalCheckSync(ms)
-        checkSyncLoop(ms)
+        if (!game.k?.syncActiveCheckFailed) {
+          internalCheckSync(ms)
+          checkSyncLoop(ms)
+        }
       }, ms);
       return timer
     })
@@ -570,7 +571,8 @@ export default function GameDisplay() {
     if (game.k.state === "ready") { status += " - waiting for game to start"}
     setTurn(<>{status}</>)
   }, [
-    game.k?.state, game.k?.lastAction?.undone, game.k?.lastAction?.id, horizontalControls,
+    game.k, game.k?.state, game.k?.lastAction?.undone, game.k?.lastAction?.id,
+    game.k?.syncActiveCheckFailed, horizontalControls,
   ])
 
   const actionNotification = (actionId?: number) => {

@@ -49,7 +49,7 @@ export default function GameControls({
   useEffect(() => {
     if (!game.id) { return }
     displayActions()
-  }, [game, game.lastActionIndex, internalUpdate, update])
+  }, [game, game.syncActiveCheckFailed, game.lastActionIndex, internalUpdate, update])
 
   useEffect(() => {
     if (!game.scenario || game.scenario.specialRules.length < 1) { return }

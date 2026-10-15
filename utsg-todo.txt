@@ -1,8 +1,7 @@
 Features/Bug Fixes
-  + Big stack not quite right
-  + Periodically check sync
   - Make sure sub-counter closed with counter
   - Decoy next to hit revealed
+  ? Reload GameDisplay after 2 moves / After desync
   - Save/play user scenarios / limit 1 - 3 - 5
   - Update tutorial (with tutorial scenario), video playthroughs (clash of steel)
   - Add Some Developer Notes
