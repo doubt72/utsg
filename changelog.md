@@ -1,5 +1,6 @@
 # 0.168
 
+- Partisans get movement of 5
 - Force reload on backup sync fail
 - Promoted all non-hypothetical prototypes to alpha
 - Updated numerous scenarios (all minor updates)

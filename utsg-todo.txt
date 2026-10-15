@@ -1,8 +1,8 @@
 Features/Bug Fixes
-  - Make sure sub-counter closed with counter
   - Decoy next to hit revealed
   ? Performance issues with animations on big maps
   ? Reload GameDisplay after 2 moves / After desync
+  ? Make sure sub-counter closed with counter
   - Update tutorial (with tutorial scenario), video playthroughs (clash of steel)
   - Save/play user scenarios / limit 1 - 3 - 5
   - Add Some Developer Notes
