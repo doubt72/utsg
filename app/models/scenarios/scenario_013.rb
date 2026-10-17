@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Fall of the King"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "b"
-    VERSION = "0.4"
+    STATUS = ""
+    VERSION = "1.0"
 
     DATE = [1944, 8, 11].freeze
     LAYOUT = [32, 23, "x"].freeze

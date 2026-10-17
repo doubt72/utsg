@@ -29,7 +29,7 @@ module Utility
         # ...Move this to minors? (anything > 5 scenarios = include here)
         { name: "Finnish", code: "fin", nations: ["fin"] },
         # { name: "Chinese", code: "chb", nations: ["chb2 chg"] },
-        # { name: "Communist", code: "com", nations: %w[ussr chc nk vie] },
+        { name: "Communist", code: "com", nations: %w[ussr chc nk vie] },
         # { name: "Nationalist", code: "nsp", nations: ["nsp"] },
         # ...Do we really need these? -- minors instead
         # { name: "Pakistani", code: "pak", nations: ["pak"] },

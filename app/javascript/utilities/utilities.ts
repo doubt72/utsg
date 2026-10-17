@@ -86,6 +86,9 @@ export function axisCodeToName(code: string): string {
     { name: "Syrian", code: "syr" },
     { name: "Jordanian", code: "jor" },
     { name: "Egyptian", code: "egy" },
+
+    // Hypothetical
+    { name: "Soviet", code: "ussr" },
   ]
 
   for (const rec of lookup) {
@@ -385,4 +388,4 @@ export const critHitDiff = 8
 export const critMorale = 4
 export const titleName = "A Hex Too Far"
 export const subtitleName = "Light Tactical Battle System"
-export const serverVersion = "0.168"
+export const serverVersion = "0.169"

@@ -1,3 +1,9 @@
+# 0.169
+
+- Calculate complexity (but need to move it to the back end and add to sort options)
+- Promoted 013
+- Added prototypes 903, 904, 905, 906, 907
+
 # 0.168
 
 - Added special markers for hypothetical/interwar/early cold war scenarios
