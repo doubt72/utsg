@@ -240,7 +240,7 @@ export default function ScenarioSummary({ data }: ScenarioSummaryProps) {
       <div className="scenario-description-row background-gray corner-round">
         <div className="red mr05em monospace">{scenario.code}:</div>
         <div className="green flex-fill">
-          {scenario.name} {scenario.status ?
+          {scenario.name} {scenario.code[0] === "9" ? "[Hypothetical]" : "" } {scenario.status ?
             <span className="red">{`[${scenario.statusName}]`}</span>  : ""}
         </div>
         <div className="red ml1em">{scenario.displayDate}</div>

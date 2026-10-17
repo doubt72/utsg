@@ -1,4 +1,5 @@
 Features/Bug Fixes
+  + Special hypo/cold/interwar symbols
   - Decoy next to hit revealed
   ? Performance issues with animations on big maps
   ? Reload GameDisplay after 2 moves / After desync

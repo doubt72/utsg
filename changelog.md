@@ -1,5 +1,6 @@
 # 0.168
 
+- Added special markers for hypothetical/interwar/early cold war scenarios
 - Partisans get movement of 5
 - Force reload on backup sync fail
 - Promoted all non-hypothetical prototypes to alpha
