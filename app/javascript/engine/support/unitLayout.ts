@@ -398,7 +398,7 @@ export function rangeLayout(counter: Counter): CounterLayout | false {
   if (counter.hasFeature) {
     color = "white"
   }
-  if (value === 0) {
+  if (value === 0 && !counter.unit.singleFire) {
     style.stroke = clearColor
     value = "-"
   }

@@ -86,6 +86,11 @@ export const testGSC: UnitData = {
   o: { x: 1, t: 1, e: 1 },
 }
 
+export const testJSC: UnitData = {
+  id: "j_sc", c: "jap", t: "sw", n: "Satchel Charge", y: 36, i: "explosive", f: 24, r: 1, v: 0,
+  o: { x: 1, t: 1, e: 1 },
+}
+
 export const testGMC: UnitData = {
   id: "g_mc", c: "ger", t: "sw", n: "Molotov Cocktail", y: 39, i: "explosive", f: 4, r: 1, v: 0,
   o: { i: 1, x: 1, t: 1, sn: 1, e: 1 },

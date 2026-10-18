@@ -211,6 +211,10 @@ module Utility
                 },
               }
             end
+            lu[:jap_suicide] = {
+              c: "jap", t: "sw", n: "Suicide Bomb", y: 45, i: "explosive", f: 64, r: 0, v: 0,
+              s: 1, o: { x: 1, t: 1, e: 1 },
+            }
             lu
           end
 

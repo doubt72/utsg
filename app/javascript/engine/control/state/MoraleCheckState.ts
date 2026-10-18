@@ -21,7 +21,7 @@ export default class MoraleCheckState extends BaseState {
     this.moraleCheck = {
       mod: modifiers.mod, why: modifiers.why, critical: check.critical,
       short: check.to.x !== counter.hex?.x || check.to.y !== counter.hex?.y,
-      cav: check.unit.isCavalry,
+      cav: check.unit.isCavalry, supercritical: !!check.supercritical,
     }
     if (!check.unit.selected) { this.map.select(check.unit) }
 

@@ -102,7 +102,7 @@ module Utility
         end
         multiplier *= 1.333 if vcheck
         metadata[:special_rules]&.each do |rule|
-          if %w[allied_escape axis_escape axis_cave_movement].include?(rule)
+          if %w[allied_escape axis_escape axis_cave_movement axis_suicide].include?(rule)
             multiplier *= 1.667
           elsif rule.to_s.include?("random_drop")
             multiplier *= 1.5

@@ -333,6 +333,10 @@ export default class Scenario {
         return `${axis} units can escape map for victory points`
       } else if (r === "axis_bonzai") {
         return `Elminited ${axis} units only award one victory point`
+      } else if (r === "axis_suicide") {
+        return `${axis} single-fire weapons can be fired in hex with opponent, even when exhausted;` +
+          " on critical hits in same hex from this kind of weapon, infantry units are eliminated " +
+          "instead of being broken on morale check failure"
       } else if (r === "axis_cave_movement") {
         return `${axis} units may consider any caves to be adjacent to other caves`
       } else if (r === "winter") {

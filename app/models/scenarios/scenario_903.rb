@@ -76,7 +76,7 @@ module Scenarios
           Soviets in most categories, even quick limited success from a
           surprise attack would have likely become a protacted war against
           difficult if not impossible odds, and unlikely to achieve even the
-          limited purpose of guaranteeing the freedom of Poland. Probably the
+          limited purpose of guaranteeing the freedom of Poland. Perhaps the
           craziest part of the plan would have been an attempt to remobilize
           already-demoralized German troops to fight with the western allies
           which would likely have been impractical for any number of

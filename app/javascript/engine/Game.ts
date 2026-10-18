@@ -77,6 +77,7 @@ export type SimpleHexCheck = {
 }
 export type ComplexCheck = {
   unit: Unit, from: Coordinate[], to: Coordinate, incendiary: boolean, critical: boolean,
+  supercritical?: boolean,
 }
 export type CloseCheck = {
   loc: Coordinate, state: CloseProgress, p1Reduce: number, p2Reduce: number,

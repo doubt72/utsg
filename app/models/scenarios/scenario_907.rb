@@ -84,11 +84,13 @@ module Scenarios
           map_data:,
           allied_units:,
           axis_units:,
+          special_rules: ["axis_bonzai"],
         }
       end
 
       def description
         [
+          "X-Day, southeastern Kyushu, XI Army Corps Sector.",
           "Operation Downfall was the proposed plan by United States and
           British Empire forces for the invasion of the Japanese home islands
           near the end of World War II. It had two parts, Operation Olympic
@@ -101,7 +103,8 @@ module Scenarios
           "Unlike the Germans, the Japanese were able to accurately predict
           the location and timing of the planned invasion even before the
           United States decided them, so the landings would come as no
-          surprise.",
+          surprise, and the Japanese would have been building up defensive
+          forces for some time.",
         ]
       end
 

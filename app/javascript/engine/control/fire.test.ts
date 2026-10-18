@@ -15,9 +15,9 @@ import { GameActionDiceResult, GameActionPath } from "../GameAction"
 import Feature from "../Feature"
 import {
   createBlankGame, createFireGame, testGAC, testGCrew, testGFT, testGGun, testGInf, testGLdr,
-  testGMC, testGMG, testGMortar, testGRadio, testGSC, testGTank, testGTruck, testITank, testPill,
-  testRBike, testRGun, testRHorse, testRHT, testRInf, testRLdr, testRMG, testRRadio, testRSPG,
-  testRTank, testRTD, testRTruck, testSmoke, testWire
+  testGMC, testGMG, testGMortar, testGRadio, testGSC, testGTank, testGTruck, testITank,
+  testJapSNLF, testJSC, testPill, testRBike, testRGun, testRHorse, testRHT, testRInf, testRLdr,
+  testRMG, testRRadio, testRSPG, testRTank, testRTD, testRTruck, testSmoke, testWire
 } from "./testHelpers"
 import FireState from "./state/FireState"
 import { StateSelection, stateType } from "./state/BaseState"
@@ -26,6 +26,7 @@ import { deHTML } from "../../utilities/graphics"
 import { fireHelpText, moraleHelpText } from "../support/help"
 import MoraleCheckState from "./state/MoraleCheckState"
 import { HexData } from "../Hex"
+import actionsAvailable from "./actionsAvailable"
 
 describe("ranged fire attacks", () => {
   describe("probability checks", () => {
@@ -5798,5 +5799,98 @@ describe("ranged fire attacks", () => {
           "unit breaks"
       )
     })
+  })
+
+  test("single fire weapons can be used with suicide bomb special rule", () => {
+    const game = createBlankGame()
+    game.scenario.axisFactions = ["jap"]
+    const map = game.scenario.map
+    const firing = new Unit(testJapSNLF)
+    firing.id = "firing1"
+    firing.exhaust()
+    const loc = new Coordinate(4, 2)
+    map.addCounter(loc, firing)
+    const firing2 = new Unit(testJSC)
+    firing2.baseRange = 0
+    firing2.id = "firing2"
+    firing2.exhaust()
+    map.addCounter(loc, firing2)
+    map.select(firing2)
+    organizeStacks(map)
+
+    expect(actionsAvailable(game, "two")).toStrictEqual(
+      [{ type: "unselect" }]
+    )
+
+    game.scenario.specialRules.push("axis_suicide")
+    expect(actionsAvailable(game, "two")).toStrictEqual(
+      [{ type: "unselect" }]
+    )
+
+    const target = new Unit(testRInf)
+    target.id = "target1"
+    map.addCounter(loc, target)
+    organizeStacks(map)
+    expect(actionsAvailable(game, "two")).toStrictEqual(
+      [
+        { type: "fire" },
+        { type: "unselect" },
+      ]
+    )
+
+    game.setGameState(new FireState(game, false))
+    expect(actionsAvailable(game, "two")).toStrictEqual(
+      [
+        { type: "none", message: "select target" },
+        { type: "cancel_action" },
+      ]
+    )
+
+    select(map, {
+      counter: map.countersAt(loc)[0],
+      target: { type: "map", xy: loc }
+    }, () => {})
+    expect(firing.targetSelected).toBe(true)
+    expect(target.targetSelected).toBe(true)
+    expect(actionsAvailable(game, "two")).toStrictEqual(
+      [
+        { type: "none", message: "select target" },
+        { type: "fire_finish" },
+        { type: "cancel_action" },
+      ]
+    )
+    const original = Math.random
+    vi.spyOn(Math, "random").mockReturnValue(0.99)
+    game.fireState.finish()
+    Math.random = original
+    expect(game.actions[0].stringValue).toBe(
+      "Japanese Satchel Charge at E3 fired at Soviet Rifle, SNLF at E3; targeting roll: " +
+        "target 0, rolled 100 [d10x10: 10 x 10]: hit; infantry effect roll: target 7, " +
+        "rolled 20 [2d10: 10 + 10]: passed (critical)"
+    )
+    expect(game.moraleChecksNeeded).toStrictEqual([
+      { critical: true, from: [loc], to: loc, unit: target, incendiary: false, supercritical: true },
+      { critical: true, from: [loc], to: loc, unit: firing, incendiary: false, supercritical: true },
+    ])
+
+    game.setGameState(new MoraleCheckState(game))
+    vi.spyOn(Math, "random").mockReturnValue(0.01)
+    game.fireState.finish()
+    Math.random = original
+    expect(game.actions[1].stringValue).toBe(
+      "Soviet morale check for Rifle (2d10): target 16, rolled 2 [2d10: 1 + 1], unit eliminated"
+    )
+
+    game.setGameState(new MoraleCheckState(game))
+    vi.spyOn(Math, "random").mockReturnValue(0.99)
+    game.fireState.finish()
+    Math.random = original
+    expect(game.actions[2].stringValue).toBe(
+      "Japanese morale check for SNLF (2d10): target 16, rolled 20 [2d10: 10 + 10], no effect"
+    )
+
+    expect(game.eliminatedUnits.length).toBe(2)
+    expect(game.eliminatedUnits[0].name).toBe("Satchel Charge")
+    expect(game.eliminatedUnits[1].name).toBe("Rifle")
   })
 })

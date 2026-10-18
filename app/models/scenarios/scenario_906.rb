@@ -73,7 +73,7 @@ module Scenarios
           started, in a final climactic battle over whatever was left of
           Berlin before both sides agree to a cease-fire with the parameters
           of the peace not ending up all that different from what ended up happening
-          anyway, just with far more death and destruction in the end.",
+          anyway, just with far more death and destruction along the way.",
         ]
       end
 

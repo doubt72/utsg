@@ -315,9 +315,14 @@ export default class FireAction extends BaseAction {
                   }</span>` }
                   for (const t of dTargets) {
                     if (t.counter.unit.canCarrySupport && !t.counter.unit.decoy) {
-                      this.game.addMoraleCheck({
+                      const supercritical = u0.singleFire && d.x === from.x && d.y === from.y && critical &&
+                        this.game.scenario.specialRules.includes("axis_suicide")
+                      this.game.addMoraleCheck(supercritical ? {
                         unit: t.counter.unit, from: [from], to: d, incendiary: u0.incendiary,
-                        critical,
+                        critical, supercritical
+                      } : {
+                        unit: t.counter.unit, from: [from], to: d, incendiary: u0.incendiary,
+                        critical
                       })
                     }
                   }

@@ -1,8 +1,10 @@
 # 0.169
 
 - Allow sorting by "complexity"
+- Japanese suicide bombing
+- A few additional weapons for hypothetical scenarios
 - Promoted 013
-- Added prototypes 903, 904, 905, 906, 907
+- Added prototypes 903, 904, 905, 906, 907, 908, 909, 910
 
 # 0.168
 

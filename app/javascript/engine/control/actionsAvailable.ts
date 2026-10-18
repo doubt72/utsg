@@ -576,8 +576,16 @@ function canJoin(unit: Unit, map: Map): boolean {
 
 function checkFire(unit: Unit, map: Map): boolean {
   if (unit.decoy) { return false }
-  if (unit.isExhausted || unit.isBroken || unit.isAbandoned) { return false }
   if (unit.currentFirepower <= 0) { return false }
+  if (unit.operated && !unit.parent) { return false }
+  if (unit.singleFire && map.game?.scenario.specialRules.includes("axis_suicide")) {
+    if (unit.isExhausted && !contact(unit.parent as Unit, map)) { return false }
+  } else {
+    if (unit.isExhausted) { return false }
+    if (contact(unit, map)) { return false }
+    if (unit.operated && unit.parent && contact(unit.parent, map)) { return false}
+  }
+  if (unit.isBroken || unit.isAbandoned) { return false }
   if (unit.jammed && !unit.sponson) { return false }
   if (unit.sponson && unit.jammed && unit.sponsonJammed) { return false }
   if (unit.children.length > 0 && unit.children[0].crewed) { return false }
@@ -585,9 +593,6 @@ function checkFire(unit: Unit, map: Map): boolean {
   if (unit.parent && unit.parent.isCavalry) { return true }
   if (unit.parent && unit.parent.isVehicle) { return false }
   if (unit.parent && unit.parent.parent && unit.parent.parent.isVehicle && !unit.offBoard) { return false }
-  if (unit.operated && unit.parent && contact(unit.parent, map)) { return false}
-  if (unit.operated && !unit.parent) { return false }
-  if (contact(unit, map)) { return false }
   return true
 }
 

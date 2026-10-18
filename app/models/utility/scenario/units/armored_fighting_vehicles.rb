@@ -55,7 +55,7 @@ module Utility
               ["jap", "Type 94", 34], ["jap", "Type 97 Te-Ke", 38],
               ["jap", "Type 97 Te-Ke MG", 30, { sn: 3 }], ["jap", "Type 95 Ha-Go", 33],
               ["jap", "Type 89 I-Go", 31], ["jap", "Type 97 Chi-Ha", 38],
-              ["jap", "Type 97 Kai", 39], ["jap", "Type 2 Ka-Mi", 41],
+              ["jap", "Type 97 Kai", 39], ["jap", "Type 2 Ka-Mi", 41], ["jap", "Type 3 Chi-Nu", 44],
 
               ["uk", "Light Tank Mk VI", 36, { sn: 1 }], ["uk", "Tetrarch", 38],
               ["uk", "Cruiser Mk I", 38], ["uk", "Cruiser Mk II", 40], ["uk", "Cruiser Mk III", 40],
@@ -132,7 +132,7 @@ module Utility
 
               ["usa", "M3A1 Stuart FT", 44], ["usa", "M4 Sherman Flame", 44, { sn: 3 }],
               ["usa", "M10", 42], ["usa", "M10A1", 43], ["usa", "M18 Hellcat", 43],
-              ["usa", "M8 Scott", 42], ["usa", "M36 Jackson", 44],
+              ["usa", "M8 Scott", 42], ["usa", "M36 Jackson", 44], ["usa", "M40 GMC", 45],
 
               ["ussr", "KhT-26", 33], ["ussr", "SU-76", 42], ["ussr", "SU-76M", 42],
               ["ussr", "SU-85", 43], ["ussr", "SU-100", 44], ["ussr", "SU-122", 42],
