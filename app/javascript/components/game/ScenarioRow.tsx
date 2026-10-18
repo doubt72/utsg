@@ -4,6 +4,7 @@ import { ScenarioListData } from "../../engine/Scenario";
 import { ratingStars } from "./ScenarioSummary";
 import { hexPath } from "../../utilities/graphics";
 import { Coordinate } from "../../utilities/commonTypes";
+import { OverlayTrigger, Tooltip, TooltipProps } from "react-bootstrap";
 
 interface ScenarioRowProps {
   onClick: (a: string) => void,
@@ -61,6 +62,18 @@ export default function ScenarioRow({ onClick, selected, data, small }: Scenario
     )
   }
 
+  const complexityTooltip = (props: TooltipProps) => (
+    <Tooltip className="tooltip-game" {...props}>
+      complexity
+    </Tooltip>
+  )
+
+  const balanceTooltip = (props: TooltipProps) => (
+    <Tooltip className="tooltip-game" {...props}>
+      player one wins
+    </Tooltip>
+  )
+
   return (
     <div className={ selected ? "scenario-row scenario-row-selected" : "scenario-row" }
       onClick={() => onClick(data.id)}>
@@ -69,8 +82,21 @@ export default function ScenarioRow({ onClick, selected, data, small }: Scenario
       <div className="green flex-fill">{data.name} {statusCode()}</div>
       { small ? "" : <div className="ml05em nowrap">{allies}</div> }
       { small ? "" : <div className="ml05em nowrap">{axis}</div> }
+      { small ? "" : <div className="ml05em nowrap monospace red">
+          <OverlayTrigger placement="bottom" overlay={complexityTooltip}
+                          delay={{ show: 0, hide: 0 }}>
+            <span>
+              {data.complexity.toFixed(1)}
+            </span>
+          </OverlayTrigger>
+        </div> }
       { small ? "" : <div className="ml05em nowrap scenario-row-percentage">
-        {Math.round(data.wins.one / (data.wins.one + data.wins.two) * 100)}%
+          <OverlayTrigger placement="bottom" overlay={balanceTooltip}
+                          delay={{ show: 0, hide: 0 }}>
+            <span>
+              {Math.round(data.wins.one / (data.wins.one + data.wins.two) * 100)}%
+            </span>
+          </OverlayTrigger>
       </div> }
       { small ? "" : <div className="ml05em nowrap">{ratingStars(data.rating.average)}</div> }
     </div>

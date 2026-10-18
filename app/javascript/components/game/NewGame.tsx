@@ -219,6 +219,7 @@ export default function NewGame() {
     { code: "r", name: "Rating"},
     { code: "n", name: "Scenario ID"},
     { code: "b", name: "Balance"},
+    { code: "c", name: "Complexity"},
     { code: "d", name: "Date"},
     { code: "m", name: "Map Size"},
     { code: "u", name: "Unit Count"},

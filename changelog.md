@@ -1,6 +1,6 @@
 # 0.169
 
-- Calculate complexity (but need to move it to the back end and add to sort options)
+- Allow sorting by "complexity"
 - Promoted 013
 - Added prototypes 903, 904, 905, 906, 907
 

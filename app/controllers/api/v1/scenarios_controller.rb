@@ -59,7 +59,11 @@ module Api
         count = data.length
         {
           data: data[(page * page_size)..((page_size * (page + 1)) - 1)]
-            .push(::Scenarios.const_get("Scenario000").index_record),
+            .push(::Scenarios.const_get("Scenario000")
+            .index_record.except(
+              :string, :date, :layout, :allied_units, :axis_units,
+              :init_allied_units, :init_axis_units
+            )),
           page:, more: count > page_size * (page + 1),
         }
       end

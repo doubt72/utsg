@@ -292,6 +292,42 @@ RSpec.describe Api::V1::ScenariosController do
         end
       end
     end
+
+    context "complexity sorting" do
+      it "gets data in correct order with default sorting" do
+        get :index, params: { status: "p*", sort: "c", sort_dir: "asc" }
+
+        expect(response.status).to be == 200
+        data = JSON.parse(response.body)["data"]
+
+        expect(data[0]["id"]).to be == "0TT"
+
+        last = 0
+        data.each do |d|
+          next if d["id"] == "000"
+
+          expect(d["complexity"]).to be >= last
+          last = d["complexity"]
+        end
+      end
+
+      it "gets data in correct order with reverse sorting" do
+        get :index, params: { status: "p*", sort: "c", sort_dir: "desc" }
+
+        expect(response.status).to be == 200
+        data = JSON.parse(response.body)["data"]
+
+        expect(data[0]["id"]).to be == "023"
+
+        last = 10
+        data.each do |d|
+          next if d["id"] == "000"
+
+          expect(d["complexity"]).to be <= last
+          last = d["complexity"]
+        end
+      end
+    end
   end
 
   describe "random" do

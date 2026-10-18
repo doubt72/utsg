@@ -173,6 +173,18 @@ RSpec.describe Utility::Scenario do
     end
   end
 
+  context "complexity" do
+    it "scenario 000" do
+      scenario = Utility::Scenario.scenario_by_id("000")
+      expect(Utility::Scenario.complexity(scenario)).to be_within(0.01).of(1.01)
+    end
+
+    it "scenario 023" do
+      scenario = Utility::Scenario.scenario_by_id("023")
+      expect(Utility::Scenario.complexity(scenario)).to be_within(0.01).of(9.32)
+    end
+  end
+
   context "checksum versioning" do
     it "has correct checksum/versions" do
       # This may seem tedious as hell, but this test will catch any changes to

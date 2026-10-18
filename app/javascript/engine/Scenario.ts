@@ -1,4 +1,4 @@
-import { baseTerrainType, Coordinate, Direction, featureType, MoraleRange, Player, sponsonType, weatherType } from "../utilities/commonTypes";
+import { Coordinate, Direction, MoraleRange, Player } from "../utilities/commonTypes";
 import {
   addSpecialArmorRules, alliedCodeToName, axisCodeToName, getFormattedDate, sortReinforcementList
 } from "../utilities/utilities";
@@ -40,6 +40,7 @@ export type ScenarioData = ScenarioBaseData & {
 }
 
 export type ScenarioListData = ScenarioBaseData & {
+  complexity: number,
   wins: { one: number, two: number }
   rating: { average: number, count: number }
 }
@@ -353,80 +354,5 @@ export default class Scenario {
       }
       return "unknown rule"
     })
-  }
-
-  get complexity(): number {
-    let points = this.turns * 3
-    let multiplier = 1
-
-    points += this.map.victoryHexes.length * 3
-    points += Math.sqrt(Math.pow(this.map.width, 2) + Math.pow(this.map.height, 2)) * 2
-    for (const u of this.alliedUnitList.concat(this.axisUnitList)) {
-      if (u.counter.isFeature) {
-        const feature = u.counter as Feature
-        if (feature.type === featureType.Sniper) {
-          multiplier *= 1.5
-        } else if ([featureType.Wire, featureType.Mines, featureType.Roadblock].includes(feature.type)) {
-          points += 3
-        } else if (feature.type === featureType.Bunker) {
-          points += 2
-        } else {
-          points += 1
-        }
-      } else if (!u.counter.isMarker) {
-        const unit = u.counter as Unit
-        if (unit.isVehicle && (unit.incendiary || unit.sponson?.type === sponsonType.Flame)) {
-          points += 5
-        } else if ((unit.isVehicle && (!unit.armored || unit.topOpen)) || unit.incendiary) {
-          points += 3
-        } else if (unit.isVehicle || unit.offBoard || unit.minimumRange || unit.crewed) {
-          points += 2
-        } else {
-          points += 1
-        }
-      }
-    }
-    if (this.map.windVariable) { multiplier *= 1.1 }
-    if (this.map.precipChance > 0) { multiplier *= 1.2 }
-    if (this.map.night) { multiplier *= 1.2 }
-    if (this.map.baseWeather !== weatherType.Dry) { multiplier *= 1.2 }
-    if (this.rawData.metadata.init_allied_units && this.rawData.metadata.init_allied_units.length > 0 ) {
-      multiplier *= 1.2
-    }
-    if (this.rawData.metadata.init_axis_units && this.rawData.metadata.init_axis_units.length > 0 ) {
-      multiplier *= 1.2
-    }
-    if ([baseTerrainType.Snow, baseTerrainType.Mud].includes(this.map.baseTerrain)) { multiplier *= 1.33 }
-    let vCheck = false
-    for (let y = 0; y < this.map.width; y++) {
-      for (let x = 0; x < this.map.width; x++) {
-        if ((this.map.hexAt(new Coordinate(x, y))?.elevation ?? 0) !== 0) {
-          vCheck = true
-          break
-        }
-      }
-      if (vCheck) { break }
-    }
-    if (vCheck) { multiplier *= 1.2 }
-    for (const s of this.specialRules) {
-      if (["allied_escape", "axis_escape", "axis_cave_movement"].includes(s)) {
-        multiplier *= 1.5
-      } else if ([
-            "allied_hidden_units", "axis_hidden_units", "allied_ignore_snow", "axis_ignore_snow",
-            "axis_bonzai"
-          ].includes(s)) {
-        multiplier *= 1.33
-      } else {
-        multiplier *= 1.2
-      }
-    }
-    for (let i = 1; i < Object.keys(this.rawData.metadata.allied_units).length; i++) {
-      multiplier *= 1.2
-    }
-    for (let i = 1; i < Object.keys(this.rawData.metadata.axis_units).length; i++) {
-      multiplier *= 1.2
-    }
-    console.log(`complexity ${points} ${multiplier} ${points * multiplier}`)
-    return Math.round(Math.pow(points * multiplier / 70, 0.5) * 10) / 10
   }
 }

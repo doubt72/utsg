@@ -2,7 +2,7 @@
 
 module Utility
   class Scenario
-    module Sort
+    module Sort # rubocop:disable Metrics/ModuleLength
       def sort(scenarios, sort, dir) # rubocop:disable Metrics/MethodLength
         case sort
         when "d"
@@ -15,6 +15,8 @@ module Utility
           sort_rating(scenarios, dir)
         when "b"
           sort_balance(scenarios, dir)
+        when "c"
+          sort_complexity(scenarios, dir)
         else
           sort_id(scenarios, dir)
         end
@@ -107,6 +109,18 @@ module Utility
           scenarios.sort do |a, b|
             ratio = balance(p1, p2, b[:id]) <=> balance(p1, p2, a[:id])
             ratio.zero? ? b[:id] <=> a[:id] : ratio
+          end
+        end
+      end
+
+      def sort_complexity(scenarios, dir)
+        if dir == "asc"
+          scenarios.sort do |a, b|
+            complexity(scenario_by_id(a[:id])) <=> complexity(scenario_by_id(b[:id]))
+          end
+        else
+          scenarios.sort do |a, b|
+            complexity(scenario_by_id(b[:id])) <=> complexity(scenario_by_id(a[:id]))
           end
         end
       end

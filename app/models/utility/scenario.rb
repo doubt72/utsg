@@ -3,10 +3,11 @@
 module Utility
   class Scenario
     class << self
+      include Utility::Scenario::Cache
       include Utility::Scenario::Definitions
+      include Utility::Scenario::Complexity
       include Utility::Scenario::Filter
       include Utility::Scenario::Sort
-      include Utility::Scenario::Cache
 
       def all_scenarios(options = {})
         scenarios = ::Scenarios.constants.reject do |k|
@@ -77,7 +78,7 @@ module Utility
         { one:, two: }
       end
 
-      def all_stats(data)
+      def all_stats(data) # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
         ids = data[:data].map { |s| s[:id] }
         p1 = Game.where(
           "player_one_id = winner_id AND player_one_id <> player_two_id AND scenario IN (?)", ids
@@ -87,7 +88,10 @@ module Utility
         ).group(:scenario).count
         {
           page: data[:page], more: data[:more], data: data[:data].map do |s|
-            s.merge(wins: { one: p1[s[:id]].to_i + 1, two: p2[s[:id]].to_i + 1 })
+            s.merge(
+              wins: { one: p1[s[:id]].to_i + 1, two: p2[s[:id]].to_i + 1 },
+              complexity: complexity(scenario_by_id(s[:id]))
+            )
           end,
         }
       end
