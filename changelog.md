@@ -4,7 +4,7 @@
 - Japanese suicide bombing
 - A few additional weapons for hypothetical scenarios
 - Promoted 013
-- Added prototypes 903, 904, 905, 906, 907, 908, 909, 910
+- Added prototypes 903, 904, 905, 906, 907, 908, 909, 910, 911
 
 # 0.168
 

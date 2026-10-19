@@ -280,7 +280,7 @@ export default function DesignerDataTab({ designStack, setDesignStack }: Designe
             <option value={"axis_existance"}>axis units exist</option>
             <option value={"allied_existance"}>allied units exist</option>
             <option value={"axis_bonzai"}>axis bonzai</option>
-            <option value={"axis_suicide"}>axis kamikaze bombers</option>
+            <option value={"axis_suicide"}>axis special attack units</option>
             <option value={"axis_cave_movement"}>axis cave movement</option>
             <option value={"winter"}>winter: no digging in, water as open for infantry</option>
             <option value={"retreat_301"}>allies rout up below 5, otherwise down, reverse for axis</option>

@@ -578,7 +578,8 @@ function checkFire(unit: Unit, map: Map): boolean {
   if (unit.decoy) { return false }
   if (unit.currentFirepower <= 0) { return false }
   if (unit.operated && !unit.parent) { return false }
-  if (unit.singleFire && map.game?.scenario.specialRules.includes("axis_suicide")) {
+  if (unit.singleFire && map.game?.scenario.specialRules.includes("axis_suicide") &&
+      unit.playerNation === map.game.playerTwoNation) {
     if (unit.isExhausted && !contact(unit.parent as Unit, map)) { return false }
   } else {
     if (unit.isExhausted) { return false }

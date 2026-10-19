@@ -115,7 +115,7 @@ module Utility
           end
         end
 
-        (((points * multiplier / 50.0)**0.333) * 3) - 2.8
+        (((points * multiplier / 50.0)**0.333) * 2.4) - 2.1
       end
       # rubocop:enable Metrics/MethodLength
       # rubocop:enable Metrics/AbcSize

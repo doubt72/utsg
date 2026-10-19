@@ -317,7 +317,7 @@ RSpec.describe Api::V1::ScenariosController do
         expect(response.status).to be == 200
         data = JSON.parse(response.body)["data"]
 
-        expect(data[0]["id"]).to be == "023"
+        expect(data[0]["id"]).to be == "911"
 
         last = 10
         data.each do |d|

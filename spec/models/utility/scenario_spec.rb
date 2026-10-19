@@ -176,12 +176,12 @@ RSpec.describe Utility::Scenario do
   context "complexity" do
     it "scenario 000" do
       scenario = Utility::Scenario.scenario_by_id("000")
-      expect(Utility::Scenario.complexity(scenario)).to be_within(0.01).of(1.01)
+      expect(Utility::Scenario.complexity(scenario)).to be_within(0.01).of(0.96)
     end
 
-    it "scenario 023" do
-      scenario = Utility::Scenario.scenario_by_id("023")
-      expect(Utility::Scenario.complexity(scenario)).to be_within(0.01).of(9.32)
+    it "scenario 911" do
+      scenario = Utility::Scenario.scenario_by_id("911")
+      expect(Utility::Scenario.complexity(scenario)).to be_within(0.01).of(9.56)
     end
   end
 
@@ -195,7 +195,7 @@ RSpec.describe Utility::Scenario do
       constants = Scenarios.constants.reject do |k|
         %i[Base Scenario999 Scenario0TT].include?(k)
       end
-      expect(constants.length).to be == 193
+      expect(constants.length).to be == 194
 
       # If any of these change, scenario MUST to be updated with a new version,
       # then update test with new version/checksum
@@ -399,7 +399,8 @@ RSpec.describe Utility::Scenario do
       expect(Utility::Scenario.checksum("907")).to be == "0.1p-32ae8059df18853a5a7a422b2d1d9744"
       expect(Utility::Scenario.checksum("908")).to be == "0.1p-ab60f879b3d75350199c9b97d55ef5b2"
       expect(Utility::Scenario.checksum("909")).to be == "0.1p-f09586cc29efdf0c865439af19a53e7c"
-      expect(Utility::Scenario.checksum("910")).to be == "0.1p-1d014a7014f29eaeea38569297f379a6"
+      expect(Utility::Scenario.checksum("910")).to be == "0.1p-4d6435cf02b46586f0c73f91353d9f86"
+      expect(Utility::Scenario.checksum("911")).to be == "0.1p-f648d87e585c6575d81d4650b741e7d7"
     end
   end
 end
