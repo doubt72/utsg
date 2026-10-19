@@ -583,7 +583,6 @@ function checkFire(unit: Unit, map: Map): boolean {
     if (unit.isExhausted && !contact(unit.parent as Unit, map)) { return false }
   } else {
     if (unit.isExhausted) { return false }
-    if (contact(unit, map)) { return false }
     if (unit.operated && unit.parent && contact(unit.parent, map)) { return false}
   }
   if (unit.isBroken || unit.isAbandoned) { return false }
@@ -594,6 +593,7 @@ function checkFire(unit: Unit, map: Map): boolean {
   if (unit.parent && unit.parent.isCavalry) { return true }
   if (unit.parent && unit.parent.isVehicle) { return false }
   if (unit.parent && unit.parent.parent && unit.parent.parent.isVehicle && !unit.offBoard) { return false }
+  if (contact(unit, map)) { return false }
   return true
 }
 
