@@ -18,7 +18,7 @@ module Scenarios
         [2, :chi_leader_3_1],
         [10, :chi_regular_s],
         [4, :chi_sc],
-        :chi_m1915_hotchkiss,
+        :chi_m1914_hotchkiss,
         :chi_type_24_maxim,
         :sniper5,
       ] },

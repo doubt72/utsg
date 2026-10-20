@@ -101,6 +101,10 @@ module Utility
               type_24_maxim: :mg_08_15,
               maxim_mg: :mg_08_15,
               type_triple_ten: :m1917_browning,
+              zb_26: :zb_vz__26,
+              zb_30: :zb_vz__30,
+              ckm_wz__30: :m1917_browning,
+              wz__28_bar: :m1918_bar,
               # Mortars
               "81mm_mortar": :brandt_m27_31,
               "81mm_tampella": :brandt_m27_31,
@@ -120,6 +124,7 @@ module Utility
               # AT Guns
               type_30_at: :"3_7cm_pak_36",
               "57mm_m1": :qf_6pdr_mk_iv,
+              "37mm_1_k": :"3_7cm_pak_36",
             }
           end
 
@@ -140,6 +145,7 @@ module Utility
               lt_vz__35: :pzkpfw_35t,
               lt_vz__38: :pzkpfw_38t_a_d,
               ferdinand: :elefant,
+              vickers_6_ton_b: :vickers_6_ton,
             }
           end
 
@@ -151,7 +157,7 @@ module Utility
               "ls_26": { fp: 4, rng: 5, mv: 0, ass: true, rpd: true, sz: 1 },
               "maxim_m_32_33": { fp: 8, rng: 10, mv: -1, rpd: true, sz: 1 },
               "m1915_chauchat": { fp: 2, rng: 5, mv: 0, ass: true, jam: 4, fix: 17, rpd: true, sz: 1 },
-              "m1915_hotchkiss": { fp: 5, rng: 10, mv: -1, rpd: true, sz: 1 },
+              "m1914_hotchkiss": { fp: 5, rng: 10, mv: -1, rpd: true, sz: 1 },
               "fm_24_29": { fp: 3, rng: 10, mv: 0, ass: true, rpd: true, sz: 1 },
               "mg_34": { fp: 5, rng: 8, mv: 0, ass: true, rpd: true, sz: 1 },
               "mg_42": { fp: 8, rng: 8, mv: 0, ass: true, rpd: true, sz: 1 },
@@ -475,6 +481,8 @@ module Utility
               "type_98_so_da": { sz: 3, mv: 5, trn: 2, ctw: true, arm: [1, 1, 1, -1] },
               "type_100_te_re": { sz: 3, mv: 5, trn: 1, arm: [0, 0, 0, -1] },
               "type_1_ho_ha": { sz: 3, mv: 6, wpn: :"type_99_lmg", trn: 3, ctw: true, arm: [0, 0, 0, -1] },
+              # Spanish Armored Vehicles
+              "trubia_a4": { sz: 3, mv: 4, wpn: :"m1914_hotchkiss", arm: [1, 1, 1], trt: [1, 1, 1] },
               # UK Armored Vehicles
               "sherman_firefly": { sz: 5, mv: 5, wpn: :"qf_17_pounder", arm: [5, 3, 3], trt: [6, 5, 5] },
               "light_tank_mk_vi": { sz: 3, mv: 6, wpn: :"vickers__50", arm: [1, 0, 0], trt: [1, 1, 1] },
@@ -499,6 +507,7 @@ module Utility
               "churchill_v_vi": { sz: 6, mv: 4, wpn: :"qf_95", arm: [7, 5, 4], trt: [6, 5, 5] },
               "churchill_vii_viii": { sz: 6, mv: 4, wpn: :"qf_75", arm: [9, 6, 4], trt: [9, 6, 6] },
               "vickers_6_ton": { sz: 3, mv: 5, wpn: :"oqf_3_pounder", arm: [1, 1, 1], trt: [1, 1, 1] },
+              "vickers_6_ton_a": { sz: 3, mv: 5, wpn: :"vickers_mg", arm: [1, 1, 1], trt: [1, 1, 1] },
               "churchill_crocodile": { sz: 6, mv: 4, wpn: :"qf_75", spn: :"ft_croc", arm: [9, 6, 4], trt: [9, 6, 6] },
               "cruiser_mk_i_cs": { sz: 3, mv: 5, wpn: :"qf_3_7_m", bd: 3, arm: [1, 1, 1], trt: [1, 1, 1] },
               "cruiser_mk_ii_cs": { sz: 3, mv: 4, wpn: :"qf_3_7_m", arm: [2, 2, 2], trt: [2, 2, 2] },

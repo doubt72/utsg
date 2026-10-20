@@ -910,8 +910,8 @@ RSpec.describe Utility::Scenario::Units do
               a: 1, i: 1, b: 4, e: 1,
             },
           }
-          expect(defs[:chi_m1915_hotchkiss]).to be == {
-            t: "sw", i: "mg", c: "chi", n: "M1915 Hotchkiss", y: 14, f: 5, r: 10, v: -1, s: 1, o: {
+          expect(defs[:chi_m1914_hotchkiss]).to be == {
+            t: "sw", i: "mg", c: "chi", n: "M1914 Hotchkiss", y: 14, f: 5, r: 10, v: -1, s: 1, o: {
               r: 1, j: 3, f: 16, sn: 1,
             },
           }
@@ -1060,8 +1060,8 @@ RSpec.describe Utility::Scenario::Units do
               a: 1, r: 1, j: 4, f: 17, sn: 1,
             },
           }
-          expect(defs[:fra_m1915_hotchkiss]).to be == {
-            t: "sw", i: "mg", c: "fra", n: "M1915 Hotchkiss", y: 14, f: 5, r: 10, v: -1, s: 1, o: {
+          expect(defs[:fra_m1914_hotchkiss]).to be == {
+            t: "sw", i: "mg", c: "fra", n: "M1914 Hotchkiss", y: 14, f: 5, r: 10, v: -1, s: 1, o: {
               r: 1, j: 3, f: 16, sn: 1,
             },
           }

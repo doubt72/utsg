@@ -3,7 +3,7 @@
 module Scenarios
   class Scenario908 < Base
     ID = "908"
-    NAME = "Operation Coronet"
+    NAME = "Coronet"
     ALLIES = ["usa"].freeze
     AXIS = ["jap"].freeze
     STATUS = "p"

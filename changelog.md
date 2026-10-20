@@ -1,8 +1,9 @@
 # 0.169
 
 - Allow sorting by "complexity"
-- Japanese suicide bombing
+- Japanese special attack units
 - A few additional weapons for hypothetical scenarios
+- New units, changes for upcoming interwar scenarios
 - Promoted 013
 - Added prototypes 903, 904, 905, 906, 907, 908, 909, 910, 911, 912, 913, 914, 915
 

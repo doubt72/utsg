@@ -32,7 +32,7 @@ module Scenarios
       "3": { list: [
         :vcf_leader_5_1,
         [3, :vcf_colonial_s],
-        :vcf_m1915_hotchkiss,
+        :vcf_m1914_hotchkiss,
         :vcf_somua_s35,
         [3, :vcf_renault_r35],
       ] },
@@ -41,7 +41,7 @@ module Scenarios
         :vcf_leader_4_1,
         [5, :vcf_colonial_s],
         [2, :vcf_fm_24_29],
-        :vcf_m1915_hotchkiss,
+        :vcf_m1914_hotchkiss,
       ] },
     }.freeze
 

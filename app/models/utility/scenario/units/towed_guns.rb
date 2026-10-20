@@ -34,6 +34,10 @@ module Utility
               ["jap", "Type 92 70mm", 32], ["jap", "Type 94 75mm", 35],
               ["jap", "Type 92 10cm", 32], ["jap", "Type 89 15cm", 29],
 
+              ["nsp", "Obice da 100/17", 36, { sn: 1 }], ["nsp", "75mm M1897", 36],
+
+              ["rsp", "37mm M1916", 36], ["rsp", "QF 4.5inch", 36], ["rsp", "75mm M1897", 36],
+
               ["uk", "QF 25-Pounder", 40], ["uk", "QF 25Pdr Short", 43], ["uk", "QF 4.5inch", 8],
 
               ["usa", "75mm M1 Pack", 27], ["usa", "75mm M1897", 40],
@@ -81,6 +85,10 @@ module Utility
 
               ["jap", "Type 94 37mm", 36], ["jap", "Type 1 37mm", 41], ["jap", "Type 1 47mm", 42],
               ["jap", "Type 90 75mm", 42],
+
+              ["nsp", "Bofors 37mm AT", 36, { sn: 1 }], ["nsp", "3.7cm Pak 36", 36],
+
+              ["rsp", "45mm 19-K", 36], ["rsp", "37mm 1-K", 36],
 
               ["uk", "QF 2-Pounder", 36], ["uk", "QF 6Pdr Mk II", 41], ["uk", "QF 6Pdr Mk IV", 41],
               ["uk", "QF 17-Pounder", 43],

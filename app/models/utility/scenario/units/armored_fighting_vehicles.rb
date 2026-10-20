@@ -14,7 +14,8 @@ module Utility
             lu = {}
             key = %i[c n y o]
             [
-              ["alm", "Renault FT", 26], ["alm", "Renault R35", 36],
+              ["alm", "Renault FT", 26], ["alm", "Renault R35", 36], ["alm", "Vickers 6-Ton A", 28],
+              ["alm", "Vickers 6-Ton B", 28],
 
               # Czech
               ["alm", "LT vz. 35", 35], ["alm", "LT vz. 38", 38],
@@ -56,6 +57,10 @@ module Utility
               ["jap", "Type 97 Te-Ke MG", 30, { sn: 3 }], ["jap", "Type 95 Ha-Go", 33],
               ["jap", "Type 89 I-Go", 31], ["jap", "Type 97 Chi-Ha", 38],
               ["jap", "Type 97 Kai", 39], ["jap", "Type 2 Ka-Mi", 41], ["jap", "Type 3 Chi-Nu", 44],
+
+              ["nsp", "PzKpfw I", 36], ["nsp", "Trubia A4", 36],
+
+              ["rsp", "BT-5", 36], ["rsp", "T-26", 36], ["rsp", "Renault FT", 36],
 
               ["uk", "Light Tank Mk VI", 36, { sn: 1 }], ["uk", "Tetrarch", 38],
               ["uk", "Cruiser Mk I", 38], ["uk", "Cruiser Mk II", 40], ["uk", "Cruiser Mk III", 40],
@@ -123,6 +128,8 @@ module Utility
 
               ["jap", "Type 97 Chi-Ha FT", 41, { sn: 3 }], ["jap", "Type 1 Ho-Ni I", 42],
               ["jap", "Type 1 Ho-Ni II", 43], ["jap", "Type 1 Ho-Ni III", 44],
+
+              ["nsp", "L3/33", 36], ["nsp", "L3/35", 36],
 
               ["uk", "Cruiser Mk I CS", 38], ["uk", "Cruiser Mk II CS", 40, { sn: 1 }],
               ["uk", "Crusader I CS", 41], ["uk", "Crusader II CS", 42],

@@ -172,12 +172,13 @@ export function nationalColorLookup(key: string): string {
     pol: "#BBF", bel: "#BBF", dut: "#BBF", nor: "#BBF", yug: "#BBF", gre: "#BBF",
     bul: "#E0D044", hun: "#E0D044", rom: "#E0D044", slv: "#E0D044", cro: "#E0D044",
 
-    rsp: "#BBF", eth: "#BBF", bol: "#BBF", chb: "#BBF",
-    nsp: "#E0D044", chc: "#E0D044", chg: "#E0D044", par: "#E0D044",
+    rsp: "#BBF", eth: "#BBF", bol: "#BBF",
+    nsp: "#E0D044", chc: "#E0D044",  chb: "#E0D044", chg: "#E0D044", par: "#E0D044",
 
     sk: "#BBF", un: "#BBF", doi: "#BBF", isr: "#BBF",
     com: "#E0D044", nk: "#E0D044", pak: "#E0D044", vie: "#E0D044",
     arl: "#E0D044", syr: "#E0D044", egy: "#E0D044", jor: "#E0D044",
+
     cze: "#BBF",
   }[key] ?? "#777"
   return {
@@ -189,12 +190,13 @@ export function nationalColorLookup(key: string): string {
     pol: "#FA9", bel: "#FA9", dut: "#FA9", nor: "#FA9", yug: "#FA9", gre: "#FA9",
     bul: "#8CD", hun: "#8CD", rom: "#8CD", slv: "#8CD", cro: "#8CD",
 
-    rsp: "#CAC", eth: "#FA9", bol: "#FA9", chb: "#ECF",
-    nsp: "#FC5", chc: "#F88", chg: "#8CD", par: "#8CD",
+    rsp: "#CAC", eth: "#FA9", bol: "#FA9",
+    nsp: "#FC5", chc: "#F88", chb: "#8CD", chg: "#8CD", par: "#8CD",
 
     sk: "#ACF", un: "#ACF", doi: "#FC9", isr: "#CCE",
     com: "#F88", nk: "#F88", pak: "#9DB", vie: "#F88",
     arl: "#9DB", syr: "#9DB", jor: "#9DB", egy: "#9DB",
+
     cze: "#FA9",
   }[key] ?? "#777"
 }
@@ -209,12 +211,13 @@ export function nationalControlLookup(key: string): string {
     pol: "#BBF", bel: "#BBF", dut: "#BBF", nor: "#BBF", yug: "#BBF", gre: "#BBF",
     bul: "#E0D044", hun: "#E0D044", rom: "#E0D044", slv: "#E0D044", cro: "#E0D044",
 
-    rsp: "#BBF", eth: "#BBF", bol: "#BBF", chb: "#BBF",
-    nsp: "#E0D044", chc: "#E0D044", chg: "#E0D044", par: "#E0D044",
+    rsp: "#BBF", eth: "#BBF", bol: "#BBF",
+    nsp: "#E0D044", chc: "#E0D044", chb: "#E0D044", chg: "#E0D044", par: "#E0D044",
 
     sk: "#BBF", un: "#BBF", doi: "#BBF", isr: "#BBF",
     com: "#E0D044", nk: "#E0D044", pak: "#E0D044", vie: "#E0D044",
     arl: "#E0D044", syr: "#E0D044", egy: "#E0D044", jor: "#E0D044",
+
     cze: "#BBF",
   }[key] ?? "#777"
   return {
@@ -232,6 +235,7 @@ export function nationalControlLookup(key: string): string {
     sk: "#EEE", un: "#07B", doi: "#EEE", isr: "#FFF",
     com: "#EEE", nk: "#D00", pak: "#EEE", vie: "#EEE",
     arl: "#EEE", syr: "#EEE", jor: "#EEE", egy: "#EEE",
+
     cze: "#EEE",
   }[key] ?? "#777"
 }

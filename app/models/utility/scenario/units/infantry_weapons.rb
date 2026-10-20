@@ -25,13 +25,13 @@ module Utility
 
               ["chi", "Type Triple-Ten", 21], ["chi", "Czeck LMG", 26],
               ["chi", "Type 24 Maxim", 24], ["chi", "FN M1930", 30], ["chi", "DP-27", 28],
-              ["chi", "Bren LMG", 35], ["chi", "M1915 Hotchkiss", 14, { sn: 1 }],
+              ["chi", "Bren LMG", 35], ["chi", "M1914 Hotchkiss", 14, { sn: 1 }],
 
               ["fin", "Vickers MG", 12], ["fin", "LS/26", 30], ["fin", "Maxim M/32-33", 33],
               ["fin", "MG 08/15", 24], ["fin", "DP-27", 40],
 
               ["fra", "Bren LMG", 41], ["fra", "M1918 BAR", 41],
-              ["fra", "M1915 Chauchat", 15, { sn: 1 }], ["fra", "M1915 Hotchkiss", 14, { sn: 1 }],
+              ["fra", "M1915 Chauchat", 15, { sn: 1 }], ["fra", "M1914 Hotchkiss", 14, { sn: 1 }],
               ["fra", "FM 24/29", 25],
 
               ["ger", "MG 34", 36], ["ger", "MG 30(t)", 39], ["ger", "MG 42", 42],
@@ -43,6 +43,14 @@ module Utility
               ["jap", "Type 11 LMG", 22], ["jap", "Type 96 LMG", 36], ["jap", "Type 99 LMG", 39],
               ["jap", "Type 3 HMG", 14], ["jap", "Type 92 HMG", 32],
 
+              ["nsp", "MG 08/15", 36], ["nsp", "M1914 Hotchkiss", 36, { sn: 1 }],
+              ["nsp", "M1915 Chauchat", 36, { sn: 1 }], ["nsp", "Fiat-Revelli 1935", 36, { sn: 1 }],
+
+              ["rsp", "MG 08/15", 36], ["rsp", "M1914 Hotchkiss", 36, { sn: 1 }],
+              ["rsp", "DP-27", 36], ["rsp", "PM M1910", 36], ["rsp", "Wz. 28 BAR", 36],
+              ["rsp", "ZB 26", 36], ["rsp", "ZB 30", 36], ["rsp", "Ckm wz. 30", 36],
+              ["rsp", "M1915 Chauchat", 36, { sn: 1 }], ["rsp", "Lewis Gun", 36],
+
               ["uk", "Bren LMG", 35], ["uk", "Lewis Gun", 14], ["uk", "Vickers MG", 12],
 
               ["usa", "M1918 BAR", 18], ["usa", "M1919 Browning", 19, { sn: 1 }],
@@ -51,7 +59,7 @@ module Utility
               ["ussr", "DP-27", 28], ["ussr", "SG-43", 43], ["ussr", "PM M1910", 10],
               ["ussr", "DShK", 38],
 
-              ["vcf", "M1915 Chauchat", 15, { sn: 1 }], ["vcf", "M1915 Hotchkiss", 14, { sn: 1 }],
+              ["vcf", "M1915 Chauchat", 15, { sn: 1 }], ["vcf", "M1914 Hotchkiss", 14, { sn: 1 }],
               ["vcf", "FM 24/29", 25],
             ].each do |unit|
               mg = { t: "sw", i: "mg" }
@@ -88,6 +96,10 @@ module Utility
               ["jap", "Type 10 Gren.L", 21], ["jap", "Type 89 Gren.L", 29],
               ["jap", "Type 97 81mm", 37], ["jap", "Type 97 90mm", 37], ["jap", "Type 94 90mm", 34],
               ["jap", "Type 2 12cm", 44], ["jap", "Type 97 150mm", 36],
+
+              ["nsp", "81mm Mortar", 36],
+
+              ["rsp", "81mm Mortar", 36],
 
               ["uk", "2inch Mortar", 37], ["uk", "ML 3inch Mortar", 33, { sn: 1 }],
               ["uk", "ML 4.2inch Mortar", 40, { sn: 3 }],
@@ -176,6 +188,10 @@ module Utility
 
               ["jap", "Radio 7.5cm", 36], ["jap", "Radio 10cm", 31], ["jap", "Radio 15cm", 37],
 
+              ["nsp", "Radio 7.5cm", 36], ["nsp", "Radio 10.5cm", 36], ["nsp", "Radio 15cm", 36],
+
+              ["rsp", "Radio 76mm", 36], ["rsp", "Radio 122mm", 36], ["rsp", "Radio 152mm", 36],
+
               ["uk", "Radio 88mm", 40], ["uk", "Radio 114mm", 38], ["uk", "Radio 140mm", 41],
               ["uk", "Radio 152mm", 16], ["uk", "Radio 183mm", 40],
 
@@ -220,7 +236,7 @@ module Utility
 
           def molotov_coctails
             lu = {}
-            %w[fin ussr].each do |c|
+            %w[fin nsp rsp ussr].each do |c|
               lu[:"#{c}_mc"] = {
                 c:, t: "sw", n: "Molotov Cocktail", y: 39, i: "explosive", f: 4, r: 1, v: 0,
                 s: 1, o: {

@@ -20,7 +20,7 @@ module Scenarios
         [3, :fra_colonial_s],
         [2, :fra_crew_t],
         :fra_fm_24_29,
-        :fra_m1915_hotchkiss,
+        :fra_m1914_hotchkiss,
         :fra_brandt_m27_31,
         :fra_75mm_m1897,
         :fra_47mm_apx,

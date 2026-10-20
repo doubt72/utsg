@@ -42,6 +42,10 @@ export default function DebugIndex() {
             [ <Link to={"/debug/stats/scenarios-p/chi"}>proto</Link> ]
           </li>
           <li>
+            <Link to={"/debug/stats/scenarios/rsp"}>spanish</Link>&nbsp;
+            [ <Link to={"/debug/stats/scenarios-p/rsp"}>proto</Link> ]
+          </li>
+          <li>
             <Link to={"/debug/stats/scenarios/alm"}>allied minors</Link>&nbsp;
             [ <Link to={"/debug/stats/scenarios-p/alm"}>proto</Link> ]
           </li>
@@ -64,8 +68,8 @@ export default function DebugIndex() {
             [ <Link to={"/debug/stats/scenarios-p/fin"}>proto</Link> ]
           </li>
           <li>
-            <Link to={"/debug/stats/scenarios/vcf"}>vichy french</Link>&nbsp;
-            [ <Link to={"/debug/stats/scenarios-p/vcf"}>proto</Link> ]
+            <Link to={"/debug/stats/scenarios/nsp"}>spain</Link>&nbsp;
+            [ <Link to={"/debug/stats/scenarios-p/nsp"}>proto</Link> ]
           </li>
           <li>
             <Link to={"/debug/stats/scenarios/axm"}>axis minors</Link>&nbsp;
@@ -85,6 +89,7 @@ export default function DebugIndex() {
           <li><Link to={"/debug/units/usa"}>american</Link></li>
           <li><Link to={"/debug/units/fra"}>french</Link></li>
           <li><Link to={"/debug/units/chi"}>chinese</Link></li>
+          <li><Link to={"/debug/units/rsp"}>spanish</Link></li>
           <li><Link to={"/debug/units/alm"}>allied minors</Link></li>
         </ul>
         <ul>
@@ -92,7 +97,7 @@ export default function DebugIndex() {
           <li><Link to={"/debug/units/ita"}>italian</Link></li>
           <li><Link to={"/debug/units/jap"}>japanese</Link></li>
           <li><Link to={"/debug/units/fin"}>finnish</Link></li>
-          <li><Link to={"/debug/units/vcf"}>vichy french</Link></li>
+          <li><Link to={"/debug/units/nsp"}>spanish</Link></li>
           <li><Link to={"/debug/units/axm"}>axis minors</Link></li>
         </ul>
       </div>
@@ -108,6 +113,7 @@ export default function DebugIndex() {
           <li><Link to={"/debug/units/year/usa"}>american</Link></li>
           <li><Link to={"/debug/units/year/fra"}>french</Link></li>
           <li><Link to={"/debug/units/year/chi"}>chinese</Link></li>
+          <li><Link to={"/debug/units/year/rsp"}>spanish</Link></li>
           <li><Link to={"/debug/units/year/alm"}>allied minors</Link></li>
         </ul>
         <ul>
@@ -115,7 +121,7 @@ export default function DebugIndex() {
           <li><Link to={"/debug/units/year/ita"}>italian</Link></li>
           <li><Link to={"/debug/units/year/jap"}>japanese</Link></li>
           <li><Link to={"/debug/units/year/fin"}>finnish</Link></li>
-          <li><Link to={"/debug/units/year/vcf"}>vichy french</Link></li>
+          <li><Link to={"/debug/units/year/nsp"}>spanish</Link></li>
           <li><Link to={"/debug/units/year/axm"}>axis minors</Link></li>
         </ul>
       </div>
@@ -163,6 +169,7 @@ export default function DebugIndex() {
           <li><Link to={"/debug/markers/usa"}>american</Link></li>
           <li><Link to={"/debug/markers/fra"}>french</Link></li>
           <li><Link to={"/debug/markers/chi"}>chinese</Link></li>
+          <li><Link to={"/debug/markers/rsp"}>spanish</Link></li>
           <li><Link to={"/debug/markers/alm"}>allied minors</Link></li>
         </ul>
         <ul>
@@ -170,7 +177,7 @@ export default function DebugIndex() {
           <li><Link to={"/debug/markers/ita"}>italian</Link></li>
           <li><Link to={"/debug/markers/jap"}>japanese</Link></li>
           <li><Link to={"/debug/markers/fin"}>finnish</Link></li>
-          <li><Link to={"/debug/markers/vcf"}>vichy french</Link></li>
+          <li><Link to={"/debug/markers/nsp"}>spanish</Link></li>
           <li><Link to={"/debug/markers/axm"}>axis minors</Link></li>
         </ul>
       </div>
@@ -205,6 +212,10 @@ export default function DebugIndex() {
             [ <Link to={"/debug/stats/units-p/chi"}>proto</Link> ]
           </li>
           <li>
+            <Link to={"/debug/stats/units/rsp"}>spanish</Link>&nbsp;
+            [ <Link to={"/debug/stats/units-p/rsp"}>proto</Link> ]
+          </li>
+          <li>
             <Link to={"/debug/stats/units/alm"}>allied minors</Link>&nbsp;
             [ <Link to={"/debug/stats/units-p/alm"}>proto</Link> ]
           </li>
@@ -227,8 +238,8 @@ export default function DebugIndex() {
             [ <Link to={"/debug/stats/units-p/fin"}>proto</Link> ]
           </li>
           <li>
-            <Link to={"/debug/stats/units/vcf"}>vichy french</Link>&nbsp;
-            [ <Link to={"/debug/stats/units-p/vcf"}>proto</Link> ]
+            <Link to={"/debug/stats/units/nsp"}>spanish</Link>&nbsp;
+            [ <Link to={"/debug/stats/units-p/nsp"}>proto</Link> ]
           </li>
           <li>
             <Link to={"/debug/stats/units/axm"}>axis minors</Link>&nbsp;

@@ -32,7 +32,7 @@ module Scenarios
         [6, :vcf_colonial_s],
         [2, :vcf_crew_t],
         [2, :vcf_75mm_m1897],
-        [4, :vcf_m1915_hotchkiss],
+        [4, :vcf_m1914_hotchkiss],
       ] },
     }.freeze
 

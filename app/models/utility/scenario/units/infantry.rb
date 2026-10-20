@@ -88,6 +88,15 @@ module Utility
               ["jap", "SNLF", 0, 3, 6, 4, 4, { a: 1 }],
               ["jap", "Conscript", 0, 2, 5, 3, 3, {}],
 
+              ["nsp", "Legionario", 36, 4, 7, 5, 5, { a: 1 }],
+              ["nsp", "Marroquí", 36, 4, 6, 4, 4, { a: 1 }],
+              ["nsp", "Regular", 36, 3, 6, 4, 4, {}],
+
+              ["rsp", "Internacional", 36, 3, 7, 4, 4, {}],
+              ["rsp", "Regular", 36, 3, 6, 4, 4, {}],
+              ["rsp", "Milicia", 36, 2, 6, 2, 3, {}],
+              ["rsp", "Guardia Civil", 36, 2, 6, 2, 4, {}],
+
               ["uk", "Engineer", 0, 4, 9, 5, 5, { a: 1, s: 1, eng: 1 }],
               ["uk", "Airborne", 42, 4, 8, 5, 5, { a: 1, s: 1 }],
               ["uk", "Gurkha", 0, 4, 7, 5, 5, { a: 1 }],

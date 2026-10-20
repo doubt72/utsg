@@ -3,7 +3,7 @@
 module Scenarios
   class Scenario912 < Base
     ID = "912"
-    NAME = "Over Seelöwe"
+    NAME = "S-Tag"
     ALLIES = ["uk"].freeze
     AXIS = ["ger"].freeze
     STATUS = "p"
@@ -46,7 +46,7 @@ module Scenarios
         [6, :ger_rifle_s],
         [3, :ger_mg_34],
         [2, :ger_sdkfz_251_1],
-        :ger_sdkfz_251_9,
+        [2, :ger_sdkfz_251_9],
       ] },
     }.freeze
 

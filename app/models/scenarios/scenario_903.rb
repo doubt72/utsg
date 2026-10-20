@@ -3,7 +3,7 @@
 module Scenarios
   class Scenario903 < Base
     ID = "903"
-    NAME = "Operation Unthinkable"
+    NAME = "Unthinkable"
     ALLIES = ["usa"].freeze
     AXIS = ["ussr"].freeze
     STATUS = "p"

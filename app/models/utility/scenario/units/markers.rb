@@ -50,8 +50,7 @@ module Utility
               turn23: { mk: 1, type: "turn", v: "chi", v2: "jap" },
               turn24: { mk: 1, type: "turn", v: "dut", v2: "jap" },
               turn25: { mk: 1, type: "turn", v: "rsp", v2: "nsp" },
-              turn26: { mk: 1, type: "turn", v: "ita", v2: "eth" },
-              turn27: { mk: 1, type: "turn", v: "chb", v2: "jap" },
+              turn26: { mk: 1, type: "turn", v: "eth", v2: "ita" },
               turn28: { mk: 1, type: "turn", v: "chi", v2: "chb" },
               turn29: { mk: 1, type: "turn", v: "chi", v2: "chc" },
               turn30: { mk: 1, type: "turn", v: "chi", v2: "chg" },
@@ -64,8 +63,9 @@ module Utility
               turn37: { mk: 1, type: "turn", v: "isr", v2: "syr" },
               turn38: { mk: 1, type: "turn", v: "isr", v2: "jor" },
               turn39: { mk: 1, type: "turn", v: "isr", v2: "egy" },
-              turn40: { mk: 1, type: "turn", v: "ger", v2: "cze" },
+              turn40: { mk: 1, type: "turn", v: "cze", v2: "ger" },
               turn41: { mk: 1, type: "turn", v: "usa", v2: "ussr" },
+              turn42: { mk: 1, type: "turn", v: "uk", v2: "ussr" },
               calm: { mk: 1, type: "wind", subtype: 1 },
               calm_variable: { mk: 1, type: "wind", subtype: 1, v: true },
               breezy: { mk: 1, type: "wind", subtype: 2 },
@@ -171,9 +171,8 @@ module Utility
                 lu[:nk_initiative] = { mk: 1, nation: "com", i: "nk", type: "initiative" }
                 lu[:vie_initiative] = { mk: 1, nation: "com", i: "vie", type: "initiative" }
               when "chi"
-                lu[:chb_initiative] = { mk: 1, nation: "chi", i: "chb", type: "initiative" }
                 lu[:chg_initiative] = { mk: 1, nation: "axm", i: "chg", type: "initiative" }
-                lu[:chb2_initiative] = { mk: 1, nation: "axm", i: "chb", type: "initiative" }
+                lu[:chb_initiative] = { mk: 1, nation: "axm", i: "chb", type: "initiative" }
               end
             end
             lu

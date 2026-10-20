@@ -7,7 +7,7 @@ module Scenarios
     ALLIES = ["fra"].freeze
     AXIS = ["ger"].freeze
     STATUS = ""
-    VERSION = "1.2"
+    VERSION = "1.3"
 
     DATE = [1940, 6, 8].freeze
     LAYOUT = [15, 11, "x"].freeze
@@ -18,7 +18,7 @@ module Scenarios
           [2, :fra_leader_4_1],
           [5, :fra_reservist_s],
           :fra_m1915_chauchat,
-          :fra_m1915_hotchkiss,
+          :fra_m1914_hotchkiss,
         ],
       },
     }.freeze
