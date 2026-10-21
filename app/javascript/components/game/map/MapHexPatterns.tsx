@@ -7,6 +7,7 @@ import CamoPatternUrban from "./patterns/CamoPatternUrban";
 import CamoPatternDesert from "./patterns/CamoPatternDesert";
 import CamoPatternMud from "./patterns/CamoPatternMud";
 import CamoPatternSnow from "./patterns/CamoPatternSnow";
+import CamoPatternArid from "./patterns/CamoPatternArid";
 
 interface MapHexPatternProps {
   map?: Map;
@@ -62,6 +63,7 @@ export default function MapHexPatterns({ map, rotated }: MapHexPatternProps) {
   return (
     <defs>
       { map?.baseTerrain === baseTerrainType.Grass ? <CamoPatternGrass /> : "" }
+      { map?.baseTerrain === baseTerrainType.Arid ? <CamoPatternArid /> : "" }
       { map?.baseTerrain === baseTerrainType.Urban ? <CamoPatternUrban /> : "" }
       { map?.baseTerrain === baseTerrainType.Desert || map?.baseTerrain === baseTerrainType.Beach ? <CamoPatternDesert /> : "" }
       { map?.baseTerrain === baseTerrainType.Mud ? <CamoPatternMud /> : "" }

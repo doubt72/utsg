@@ -109,7 +109,7 @@ module Scenarios
           axis_setup: {
             "0" => [["5-14", 1], ["10-14", 2], ["11-14", 3], ["12-14", 4], ["13-14", 5], ["*", 0]],
           },
-          base_terrain: "",
+          base_terrain: "a",
         }
       end
 

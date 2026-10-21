@@ -456,6 +456,7 @@ module Utility
               "p26_40": { sz: 5, mv: 5, wpn: :"c_75_34", arm: [4, 3, 3], trt: [4, 3, 3] },
               "l3_33": { sz: 3, mv: 6, wpn: :"fiat_revelli_1935", arm: [1, 1, -1] },
               "l3_35": { sz: 3, mv: 6, wpn: :"breda_m37", arm: [1, 1, -1] },
+              "l3_lf": { sz: 3, mv: 6, wpn: :"ft", arm: [1, 1, -1] },
               "l3_38": { sz: 3, mv: 6, wpn: :"hotchkiss_13_2mm", arm: [1, 1, -1] },
               "semovente_da_47_32": { sz: 3, mv: 4, wpn: :"cannone_da_47_32", arm: [3, 1, -1] },
               "semovente_da_75_18": { sz: 3, mv: 5, wpn: :"c_da_75_18", arm: [3, 2, 2] },

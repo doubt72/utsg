@@ -112,7 +112,7 @@ module Scenarios
             "3" => [[22, "16-21"], ["9-22", 22]],
             "4" => [[22, "*"]],
           },
-          base_terrain: "d",
+          base_terrain: "a",
         }
       end
 

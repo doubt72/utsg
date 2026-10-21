@@ -134,7 +134,7 @@ module Scenarios
             "4" => [["*", 0]],
             "5" => [["*", 0]],
           },
-          base_terrain: "g",
+          base_terrain: "a",
         }
       end
 

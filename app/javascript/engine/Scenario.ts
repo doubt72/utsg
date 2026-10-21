@@ -341,6 +341,8 @@ export default class Scenario {
         return `${axis} units may consider any caves to be adjacent to other caves`
       } else if (r === "winter") {
         return `Winter: no digging in, treat water/river hexes as open for infantry`
+      } else if (r === "extra_fire") {
+        return `Fire is more likely to start or spread (+2 to both thresholds)`
       } else if (r === "retreat_301") {
         return `${allied} units rout up below row 5, down otherwise; ${axis} rout in opposite direction`
       }

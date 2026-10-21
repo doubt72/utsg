@@ -190,7 +190,7 @@ export function nationalColorLookup(key: string): string {
     pol: "#FA9", bel: "#FA9", dut: "#FA9", nor: "#FA9", yug: "#FA9", gre: "#FA9",
     bul: "#8CD", hun: "#8CD", rom: "#8CD", slv: "#8CD", cro: "#8CD",
 
-    rsp: "#CAC", eth: "#FA9", bol: "#FA9",
+    rsp: "#DAD", eth: "#FA9", bol: "#FA9",
     nsp: "#FC5", chc: "#F88", chb: "#8CD", chg: "#8CD", par: "#8CD",
 
     sk: "#ACF", un: "#ACF", doi: "#FC9", isr: "#CCE",

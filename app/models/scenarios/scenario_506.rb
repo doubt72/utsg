@@ -7,7 +7,7 @@ module Scenarios
     ALLIES = ["gre"].freeze
     AXIS = ["ita"].freeze
     STATUS = ""
-    VERSION = "1.0"
+    VERSION = "1.1"
 
     DATE = [1940, 11, 2].freeze
     LAYOUT = [15, 23, "x"].freeze
@@ -97,6 +97,7 @@ module Scenarios
               [1, "11-13"], [2, "11-14"],
             ],
           },
+          base_terrain: "a",
         }
       end
 

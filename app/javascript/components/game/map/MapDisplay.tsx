@@ -971,6 +971,9 @@ export default function MapDisplay({
         { map.baseTerrain === baseTerrainType.Grass ?
             <path opacity={0.25} d={roundedRectangle(x, y, bWidth, bHeight, 10)}
                   style={{ fill: "url(#camo-grass-bg)" }} /> : "" }
+        { map.baseTerrain === baseTerrainType.Arid ?
+            <path opacity={0.25} d={roundedRectangle(x, y, bWidth, bHeight, 10)}
+                  style={{ fill: "url(#camo-arid-bg)" }} /> : "" }
         { map.baseTerrain === baseTerrainType.Urban ?
             <path opacity={0.25} d={roundedRectangle(x, y, bWidth, bHeight, 10)}
                   style={{ fill: "url(#camo-urban-bg)" }} /> : "" }

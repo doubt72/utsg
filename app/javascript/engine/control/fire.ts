@@ -671,5 +671,6 @@ export function fireStartTarget(
     if (vehicle) { check = 4 }
     if (incendiary) { check += 2 }
     if (vehicle && vehicle_incendiary) { check += 2 }
+    if (map.game?.scenario.specialRules.includes("extra_fire")) { check += 2 }
     return check
 }

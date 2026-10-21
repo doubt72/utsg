@@ -1,11 +1,13 @@
 # 0.169
 
+- Add special forest fire rule
+- Add "arid" base terrain
 - Allow sorting by "complexity"
 - Japanese special attack units
 - A few additional weapons for hypothetical scenarios
 - New units, changes for upcoming interwar scenarios
 - Promoted 013
-- Added prototypes 801, 802, 806, 903, 904, 905, 906, 907, 908, 909, 910, 911, 912, 913, 914, 915
+- Added prototypes 801, 802, 806, 808, 813, 814, 817, 818, 903, 904, 905, 906, 907, 908, 909, 910, 911, 912, 913, 914, 915
 
 # 0.168
 

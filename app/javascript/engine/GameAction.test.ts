@@ -130,7 +130,7 @@ describe("action integration test", () => {
         action: "phase", old_initiative: game.initiative,
         phase_data: {
           old_turn: 0, new_turn: 0, old_phase: gamePhaseType.Deploy, new_phase: gamePhaseType.Deploy,
-          new_player: 2, messages: ["game started, begin deployment"],
+          new_player: 2, messages: ["game started, begin deployment"], done: false, status_update: false,
         },
       },
     }

@@ -121,15 +121,15 @@ module Utility
               ["ger", "Jagdpanzer IV", 43], ["ger", "Hetzer", 44], ["ger", "Jagdpanther", 44],
               ["ger", "Jagdtiger", 44], ["ger", "Elefant", 44],
 
-              ["ita", "L3/33", 33], ["ita", "L3/35", 35], ["ita", "L3/38", 38],
-              ["ita", "Semovente da 47/32", 42, { sn: 4 }],
+              ["ita", "L3/33", 33], ["ita", "L3/35", 35], ["ita", "L3 Lf", 35],
+              ["ita", "L3/38", 38], ["ita", "Semovente da 47/32", 42, { sn: 4 }],
               ["ita", "Semovente da 75/18", 42, { sn: 4 }],
               ["ita", "Semovente da 90/53", 42, { sn: 4 }],
 
               ["jap", "Type 97 Chi-Ha FT", 41, { sn: 3 }], ["jap", "Type 1 Ho-Ni I", 42],
               ["jap", "Type 1 Ho-Ni II", 43], ["jap", "Type 1 Ho-Ni III", 44],
 
-              ["nsp", "L3/33", 36], ["nsp", "L3/35", 36],
+              ["nsp", "L3/33", 36], ["nsp", "L3/35", 36], ["nsp", "L3 Lf", 35],
 
               ["uk", "Cruiser Mk I CS", 38], ["uk", "Cruiser Mk II CS", 40, { sn: 1 }],
               ["uk", "Crusader I CS", 41], ["uk", "Crusader II CS", 42],

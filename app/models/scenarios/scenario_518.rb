@@ -91,6 +91,7 @@ module Scenarios
               ["0-16", 20], ["0-17", 21], ["0-19", 22],
             ],
           },
+          base_terrain: "a",
         }
       end
 

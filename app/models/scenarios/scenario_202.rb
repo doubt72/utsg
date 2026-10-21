@@ -7,7 +7,7 @@ module Scenarios
     ALLIES = ["usa"].freeze
     AXIS = ["ger"].freeze
     STATUS = ""
-    VERSION = "1.0"
+    VERSION = "1.1"
 
     DATE = [1943, 10, 18].freeze
     LAYOUT = [15, 23, "x"].freeze
@@ -106,7 +106,7 @@ module Scenarios
           axis_setup: { "0" => [
             ["*", "0-8"], ["4-14", 9], ["8-14", "10-11"], ["9-12", 12], ["9-11", "12-14"],
           ] },
-          base_terrain: "g",
+          base_terrain: "a",
         }
       end
 

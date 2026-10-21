@@ -16,8 +16,8 @@ module Scenarios
       "0": { list: [
         :rsp_leader_4_1,
         :rsp_leader_3_1,
-        [6, :rsp_milicia_s],
-        [2, :rsp_m1914_hotchkiss],
+        [7, :rsp_milicia_s],
+        :rsp_m1914_hotchkiss,
       ] },
       "3": { list: [
         :rsp_leader_4_1,
@@ -30,8 +30,8 @@ module Scenarios
       "0": { list: [
         :nsp_leader_5_1,
         [2, :nsp_leader_4_1],
-        [8, :nsp_ejercito_nacional_s],
-        [4, :nsp_m1915_chauchat],
+        [9, :nsp_ejercito_nacional_s],
+        [2, :nsp_m1915_chauchat],
         :nsp_m1914_hotchkiss,
         :nsp_81mm_mortar,
       ] },
@@ -60,10 +60,9 @@ module Scenarios
 
       def description
         [
-          "The Battle of Guadarrama (Batalla de Guadarrama), also known as the
-          Battle of Somosierra (Batalla de Somosierra), was a battle that
-          occurred in the Guadarrama Mountains (Sierra de Guadarrama) during
-          the Spanish Civil War.",
+          "The Battle of Guadarrama, also known as the Battle of Somosierra,
+          was a battle that occurred in the Guadarrama Mountains during the
+          Spanish Civil War.",
           "After the initial coup at the beginning of the war, the Nationalist
           leader, General Emilio Mola, realised that it would be difficult for
           the Nationalist rebellion to succeed if the capital Madrid was under
@@ -107,6 +106,7 @@ module Scenarios
               ["0-9", 0],
             ],
           },
+          base_terrain: "a",
         }
       end
 

@@ -102,6 +102,7 @@ module Scenarios
             ],
           },
           night: true,
+          base_terrain: "a",
         }
       end
 

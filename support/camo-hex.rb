@@ -32,6 +32,13 @@ def color_desert(from)
   "#DFCDB1"
 end
 
+def color_arid(from)
+  return "#A96" if from == color1
+  return "#AA8" if from == color2
+  return "#DB7" if from == color3
+  "#DCA"
+end
+
 def color_mud(from)
   return "#963" if from == color1
   return "#997" if from == color2
@@ -96,6 +103,7 @@ pixels = image.pixels
 
 types = [
   ["grass", color_grass(color1), color_grass(color2), color_grass(color3), color_grass(color4)],
+  ["arid", color_arid(color1), color_arid(color2), color_arid(color3), color_arid(color4)],
   ["urban", color_urban(color1), color_urban(color2), color_urban(color3), color_urban(color4)],
   ["desert", color_desert(color1), color_desert(color2), color_desert(color3), color_desert(color4)],
   ["snow", color_snow(color1), color_snow(color2), color_snow(color3), color_snow(color4)],

@@ -286,6 +286,7 @@ export default function DesignerDataTab({ designStack, setDesignStack }: Designe
             <option value={"axis_suicide"}>axis special attack units</option>
             <option value={"axis_cave_movement"}>axis cave movement</option>
             <option value={"winter"}>winter: no digging in, water as open for infantry</option>
+            <option value={"extra_fire"}>fires more likely to spread and start</option>
             <option value={"retreat_301"}>allies rout up below 5, otherwise down, reverse for axis</option>
           </select>
         </div>
@@ -303,6 +304,7 @@ export default function DesignerDataTab({ designStack, setDesignStack }: Designe
                     }}}, setDesignStack)
                   }>
             <option value={"g"}>grass</option>
+            <option value={"a"}>arid</option>
             <option value={"u"}>urban</option>
             <option value={"s"}>snow</option>
             <option value={"d"}>sand</option>

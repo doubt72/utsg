@@ -251,6 +251,7 @@ export default class Map {
   get baseTerrainColor(): string {
     return {
       g: "#D0EED0",
+      a: "#E7E7CF",
       d: "#EEB",
       b: "#EEB",
       s: "#EEE",
@@ -262,6 +263,7 @@ export default class Map {
   get mapBackgroundColor(): string {
     return {
       g: "#90AE90",
+      a: "#AFA797",
       d: "#BB7",
       b: "#BB7",
       s: "#BBB",
@@ -1061,6 +1063,7 @@ export default class Map {
       rc += 2
     }
     if (this.currentWeather === weatherType.Dust) { rc += 1 }
+    if (this.game?.scenario.specialRules.includes("extra_fire")) { rc += 2 }
     return rc
   }
 

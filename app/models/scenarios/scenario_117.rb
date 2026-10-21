@@ -102,7 +102,7 @@ module Scenarios
               ["10-16", 16], ["11-16", 17],
             ],
           },
-          base_terrain: "d",
+          base_terrain: "a",
         }
       end
 
