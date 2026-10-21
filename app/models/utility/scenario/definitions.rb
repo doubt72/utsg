@@ -10,7 +10,7 @@ module Utility
         { name: "American", code: "usa", nations: %w[usa bra] },
         { name: "French", code: "fra", nations: %w[fra frf] },
         { name: "Chinese", code: "chi", nations: %w[chi] },
-        # { name: "Spanish", code: "rsp", nations: ["rsp"] },
+        { name: "Spanish", code: "rsp", nations: ["rsp"] },
         # { name: "United Nations", code: "un", nations: %w[un sk] },
         # ...Do we really need these? -- minors instead
         # { name: "Indian (Dominion/Republic)", code: "doi", nations: ["doi"] },
@@ -27,7 +27,7 @@ module Utility
         { name: "Italian", code: "ita", nations: ["ita"] },
         { name: "Japanese", code: "jap", nations: ["jap"] },
         { name: "Finnish", code: "fin", nations: ["fin"] },
-        # { name: "Spanish", code: "nsp", nations: ["nsp"] },
+        { name: "Spanish", code: "nsp", nations: ["nsp"] },
         { name: "Communist", code: "com", nations: %w[chc nk vie ussr] }, # includes ussr
         # ...Do we really need these? -- minors instead
         # { name: "Pakistani", code: "pak", nations: ["pak"] },

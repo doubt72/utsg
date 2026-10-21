@@ -310,7 +310,7 @@ export default function NewGame() {
     { code: "5", name: "Europe Other"},
     { code: "6", name: "China/Asia"},
     // { code: "7", name: "Cold War"},
-    // { code: "8", name: "Interwar"},
+    { code: "8", name: "Interwar"},
     { code: "9", name: "Hypothetical"},
   ]
 

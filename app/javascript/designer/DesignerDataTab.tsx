@@ -163,7 +163,7 @@ export default function DesignerDataTab({ designStack, setDesignStack }: Designe
                   )} >
             { [
                 "ussr", "usa", "bra", "uk", "can", "aus", "nz", "ind", "sa", "fra", "frf", "chi",
-                "pol", "gre", "nor", "bel", "dut", "yug", "fin", "cze",
+                "pol", "gre", "nor", "bel", "dut", "yug", "rsp", "fin", "cze",
               ].map(n => <option key={n} value={n}>{alliedCodeToName(n)}</option>) }
           </select>
         </div>
@@ -190,7 +190,8 @@ export default function DesignerDataTab({ designStack, setDesignStack }: Designe
                     { ...data, axis: [target.value] }, setDesignStack
                   )} >
             { [
-                "ger", "ita", "jap", "fin", "hun", "bul", "rom", "slv", "cro", "vcf", "ussr",
+                "ger", "ita", "jap", "fin", "hun", "bul", "rom", "slv", "cro", "nsp", "vcf",
+                "ussr",
               ].map(n => <option key={n} value={n}>{axisCodeToName(n)}</option>) }
           </select>
         </div>

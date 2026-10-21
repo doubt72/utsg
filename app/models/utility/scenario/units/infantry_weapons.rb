@@ -49,7 +49,7 @@ module Utility
               ["rsp", "MG 08/15", 36], ["rsp", "M1914 Hotchkiss", 36, { sn: 1 }],
               ["rsp", "DP-27", 36], ["rsp", "PM M1910", 36], ["rsp", "Wz. 28 BAR", 36],
               ["rsp", "ZB 26", 36], ["rsp", "ZB 30", 36], ["rsp", "Ckm wz. 30", 36],
-              ["rsp", "M1915 Chauchat", 36, { sn: 1 }], ["rsp", "Lewis Gun", 36],
+              ["rsp", "M1915 Chauchat", 36, { sn: 1 }],
 
               ["uk", "Bren LMG", 35], ["uk", "Lewis Gun", 14], ["uk", "Vickers MG", 12],
 
