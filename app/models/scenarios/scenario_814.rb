@@ -74,12 +74,12 @@ module Scenarios
           he wasn't a Republican.",
           "Once the rebellion started, Aranda declared for the Republicans,
           and once the Republican forces left to deal with the Nationalist
-          rebellion elsewhere, Aranda turned around and declared for the
-          Nationalists and made his move to seize Oviedo and put his unlikely
+          rebellion elsewhere, Aranda renegged and declared for the
+          Nationalists instead and made his move to seize Oviedo and put his unlikely
           defense of the town into motion. Aranda held the not-particularly
           defensible town with a scratch force for months against a concerted
           seige by a much larger Republican force made up almost entirely of
-          militia and volunteers until finally relieved by Nationalist
+          militia and volunteers until finally relieved by more powerful Nationalist
           forces.",
         ]
       end

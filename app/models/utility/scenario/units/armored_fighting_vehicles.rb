@@ -129,7 +129,7 @@ module Utility
               ["jap", "Type 97 Chi-Ha FT", 41, { sn: 3 }], ["jap", "Type 1 Ho-Ni I", 42],
               ["jap", "Type 1 Ho-Ni II", 43], ["jap", "Type 1 Ho-Ni III", 44],
 
-              ["nsp", "L3/33", 36], ["nsp", "L3/35", 36], ["nsp", "L3 Lf", 35],
+              ["nsp", "L3/33", 36], ["nsp", "L3/35", 36], ["nsp", "L3 Lf", 36],
 
               ["uk", "Cruiser Mk I CS", 38], ["uk", "Cruiser Mk II CS", 40, { sn: 1 }],
               ["uk", "Crusader I CS", 41], ["uk", "Crusader II CS", 42],

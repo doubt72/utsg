@@ -82,7 +82,7 @@ module Scenarios
           Spain and Valencia on the eastern Coast. In addition, Teruel was a
           symbol of Nationalist power on the Aragon front.",
           "The Battle of Teruel then ended up being fought during the worst
-          Spanish winter in decades and ended up becoming one of the bloodiest
+          Spanish winter in decades and was one of the bloodiest
           actions of the war, with the city changing hands several times,
           first falling to the Republicans and eventually being retaken by the
           Nationalists due to their superiority in both men and material. In

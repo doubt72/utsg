@@ -92,6 +92,7 @@ module Utility
               ["nsp", "Regulares", 36, 4, 6, 4, 4, { a: 1 }],
               ["nsp", "Italianos", 0, 3, 6, 4, 4, {}],
               ["nsp", "Ejército Nacional", 36, 3, 6, 4, 4, { sn: 1 }],
+              ["nsp", "Milicia", 36, 2, 6, 2, 3, {}],
               ["nsp", "Guardia Civil", 36, 2, 6, 2, 4, {}],
               ["nsp", "Guardias de Asalto", 36, 3, 6, 3, 4, { a: 1, sn: 3 }],
 

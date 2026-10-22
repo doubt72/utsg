@@ -59,12 +59,13 @@ module Scenarios
           Santander, and Asturias from their source of arms and support in
           France.",
           "The French had closed the border and Nationalist ships bombarded
-          the town before the start of the battle proper, and faced a mixture
-          of line and elite Nationalist troops with poorly equipped and
-          trained militia and volunteers. The main fighting took place on the
-          Puntza ridge south of the town. The peak of the battle occurred at
-          the convent of San Marcial, which was defended by Asturian miners
-          who threw dynamite and rocks when they ran out of ammunition.",
+          Irún before the start of the battle proper, and a mixture of
+          line and elite Nationalist troops faced poorly equipped and trained
+          militia and volunteers defending the town. The main fighting took place
+          on the Puntza ridge to the south, and the peak of the battle
+          occurred at the convent of San Marcial, which was defended by
+          Asturian miners who threw dynamite and rocks when they ran out of
+          ammunition.",
         ]
       end
 

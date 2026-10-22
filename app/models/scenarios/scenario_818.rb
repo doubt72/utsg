@@ -65,23 +65,22 @@ module Scenarios
           Republicans were forced to retreat from Brunete after Nationalist
           counterattacks, and suffered devastating casualties from the
           battle.",
-          "The first attacks started already during the night, with Republican
-          forces in the cover of darkness penetrating deep into the thinly
-          held Nationalist lines. At daybreak the next day, the Republicans
-          bombarded the Nationalist positions using artillery and air power,
-          including the local Nationalist HQ at Navalcarnero in the rear.
-          Immediately after the bombardment, the Republicans encircled
-          Brunete. The Nationalist forces there were completely taken by
-          surprise, and it wasn't until the morning attacks started that they
-          realised the full extent of the Republican operation. Brunete fell
-          to the Republicans by noon.",
+          "The first attacks started during the night, with Republican forces
+          penetrating deep into the thinly held Nationalist lines under cover
+          of darkness. At daybreak the next day, the Republicans bombarded the
+          Nationalist positions using artillery and air power, including the
+          local Nationalist HQ at Navalcarnero in the rear. Immediately after
+          the bombardment, the Republicans encircled Brunete. The Nationalist
+          forces there were completely taken by surprise, and it wasn't until
+          the morning attacks started that they realised the full extent of
+          the Republican operation. Brunete fell to the Republicans by noon.",
           "Later that day the Republican attacks stalled upon meeting fierce
-          resistance by the Nationalists and forced a halt to the advance
+          resistance by the Nationalists and were forced to halt the advance
           south of Brunete. Attempts by the Republican forces to widen the gap
-          by attacking towards the west were also stopped in front of
-          Quijorna. The assault on Quijorna was then reinforced by tanks and
-          given the support of both artillery and air assets, but the
-          attackers were again repulsed.",
+          by attacking towards the west were also stopped near Quijorna. The
+          assault on Quijorna was then reinforced by tanks and given the
+          support of both artillery and air assets, but the attackers were
+          again repulsed.",
         ]
       end
 

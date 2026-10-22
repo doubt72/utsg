@@ -72,8 +72,8 @@ module Scenarios
           force of militiamen and soldiers from Madrid to stop them. Most of
           the fighting took place at Somosierra pass in the last week of July
           and in early August, but the Republicans succeeded in preventing the
-          Nationalists from crossing, holding the front at the Sierra de
-          Guadarrama for the remainder of the war.",
+          Nationalists from crossing, holding the mountain front for
+          the remainder of the war.",
         ]
       end
 
@@ -428,7 +428,7 @@ module Scenarios
             { t: "b", h: 1 },
             { t: "o", r: { t: "d", d: [3, 6] } },
             { t: "o", s: { t: "s", d: [3, 6] }, r: { t: "d", d: [2, 5] } },
-            { t: "o", st: { sh: "l", s: "f" }, d: 2 },
+            { t: "o", st: { sh: "l2", s: "f" }, d: 2 },
             { t: "b", h: 1 },
             { t: "o", h: 2 },
             { t: "b", h: 2 },

@@ -72,7 +72,7 @@ module Scenarios
           defeated. Finally, a Republican counter-offensive was launched,
           resulting in a Nationalist defeat. The battle was primarily decided
           by the superiority of Soviet armoured vehicles over Italian ones
-          over what unusually good tank terrain for Spain. Losses during the
+          in what was particularly good tank terrain for Spain. Losses during the
           battle were about 2:1 in favor of the Republicans, and as a result
           of the battle the Italian CTV was re-organized and given new
           leadership, improving its combat record after Guadalajara —
