@@ -108,6 +108,9 @@ module Utility
             lu = {}
             key = %i[c n y o]
             [
+              # Bolivian
+              ["alm", "Carden Loyd Mk IV", 27, { sn: 3 }],
+
               # Hungarian
               ["axm", "Fiat L3", 35],
 

@@ -34,7 +34,7 @@ module Utility
         # { name: "Arab League", code: "arl", nations: %w[syr jor egy] },
         {
           name: "Minor Powers", code: "axm",
-          nations: %w[hun bul rom slv cro nsp par chb chg vcf], # includes vcf
+          nations: %w[hun bul rom slv cro par chb chg vcf], # includes vcf
         },
       ].freeze
 

@@ -17,11 +17,12 @@ module Utility
             [
               ["alm", "M1915 Chauchat", 15, { sn: 1 }], ["alm", "Bren LMG", 35],
               ["alm", "Vickers MG", 12], ["alm", "Colt M/29", 17], ["alm", "12.7mm HMG", 17],
-              ["alm", "MG 08/15", 24], ["alm", "rkm wz. 28", 28], ["alm", "ZB vz. 30", 26],
-              ["alm", "Lewis Gun", 14], ["alm", "Maxim MG", 33],
+              ["alm", "MG 08/15", 24], ["alm", "rkm wz. 28", 28], ["alm", "ZB vz. 30", 30],
+              ["alm", "Lewis Gun", 14], ["alm", "Maxim MG", 33], ["alm", "Browning M38", 17],
 
               ["axm", "MG 08/15", 24], ["axm", "MG 30", 31], ["axm", "MG 34", 36],
-              ["axm", "MG 42", 42], ["axm", "ZB vz. 26", 26], ["axm", "ZB vz. 30", 26],
+              ["axm", "MG 42", 42], ["axm", "ZB vz. 26", 26], ["axm", "ZB vz. 30", 30],
+              ["axm", "Maxim MG", 33], ["axm", "Browning M38", 17],
 
               ["chi", "Type Triple-Ten", 21], ["chi", "Czeck LMG", 26],
               ["chi", "Type 24 Maxim", 24], ["chi", "FN M1930", 30], ["chi", "DP-27", 28],

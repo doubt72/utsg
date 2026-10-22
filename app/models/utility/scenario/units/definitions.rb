@@ -105,6 +105,7 @@ module Utility
               zb_30: :zb_vz__30,
               ckm_wz__30: :m1917_browning,
               wz__28_bar: :m1918_bar,
+              browning_m38: :m1917_browning,
               # Mortars
               "81mm_mortar": :brandt_m27_31,
               "81mm_tampella": :brandt_m27_31,
@@ -509,6 +510,7 @@ module Utility
               "churchill_vii_viii": { sz: 6, mv: 4, wpn: :"qf_75", arm: [9, 6, 4], trt: [9, 6, 6] },
               "vickers_6_ton": { sz: 3, mv: 5, wpn: :"oqf_3_pounder", arm: [1, 1, 1], trt: [1, 1, 1] },
               "vickers_6_ton_a": { sz: 3, mv: 5, wpn: :"vickers_mg", arm: [1, 1, 1], trt: [1, 1, 1] },
+              "carden_loyd_mk_iv": { sz: 3, mv: 5, wpn: :"vickers_mg", arm: [0, 0, 0, -1] },
               "churchill_crocodile": { sz: 6, mv: 4, wpn: :"qf_75", spn: :"ft_croc", arm: [9, 6, 4], trt: [9, 6, 6] },
               "cruiser_mk_i_cs": { sz: 3, mv: 5, wpn: :"qf_3_7_m", bd: 3, arm: [1, 1, 1], trt: [1, 1, 1] },
               "cruiser_mk_ii_cs": { sz: 3, mv: 4, wpn: :"qf_3_7_m", arm: [2, 2, 2], trt: [2, 2, 2] },

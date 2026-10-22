@@ -7,8 +7,10 @@ import { Coordinate, Direction, featureType, Player } from "./commonTypes"
 export function minorToMajor(code: string): string {
   const lookup: { [index: string]: string } = { bra: "usa", frf: "fra" }
   for (const m of ["can", "aus", "nz", "ind", "sa"]) { lookup[m] = "uk" }
-  for (const m of ["pol", "gre", "nor", "bel", "dut", "yug", "cze"]) { lookup[m] = "alm" }
-  for (const m of ["hun", "bul", "rom", "slv", "cro"]) { lookup[m] = "axm" }
+  for (const m of [
+    "pol", "gre", "nor", "bel", "dut", "yug", "bol", "cze"
+  ]) { lookup[m] = "alm" }
+  for (const m of ["hun", "bul", "rom", "slv", "cro", "par"]) { lookup[m] = "axm" }
   return lookup[code] ?? code
 }
 
