@@ -196,7 +196,7 @@ export default function MainPage() {
             done = true
             // Skip the following countries until we add scenarios
             const exclNations = [
-              "rsp", "nsp", "eth", "chb", "chg", "chc", "bol", "par", "un", "sk", "doi", "pak",
+              "un", "sk", "doi", "pak",
               "vie", "isr", "egy", "jor", "syr", "com", "arl"
             ]
             for (const d of s) {

@@ -3,7 +3,7 @@
 module Scenarios
   class Scenario826 < Base
     ID = "826"
-    NAME = "The Last Toll"
+    NAME = "The Final Toll"
     ALLIES = ["rsp"].freeze
     AXIS = ["nsp"].freeze
     STATUS = "p"

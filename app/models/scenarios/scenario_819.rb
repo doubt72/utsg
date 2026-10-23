@@ -68,21 +68,23 @@ module Scenarios
 
       def description
         [
-          "The Second Battle of Nanawa during the Chaco War was the last
-          Bolivian attempt to capture the heavily fortified Paraguayan
-          stronghold of Nanawa, a salient in the southern front. By capturing
+          "The Second Battle of Nanawa was a battle between Bolivia and
+          Paraguay during the Chaco War.  It was the last Bolivian attempt to
+          capture the heavily fortified Paraguayan stronghold of Nanawa,
+          thereby reducing a salient in the southern front. By capturing
           Nanawa the Bolivian army hoped to isolate Isla Poí, the Paraguayan
-          headquarters and main water supply point to the northeast, and
-          ultimately reach the city of Concepción, on the Paraguay River.
-          Nanawa (Enxet for carob tree forest) had been founded as a small
+          headquarters and main water supply point for the Paraguayan army to
+          the northeast, and ultimately reach the city of Concepción on the
+          Paraguay River.",
+          "Nanawa (Enxet for carob tree forest) had been founded as a small
           outpost in 1928. In December 1932 the Bolivian army took over a
-          number of Paraguayan outposts between Nanawa and the Pilcomayo
-          River, on the border with Argentina. Realising that a major
-          offensive was looming the Paraguayans built up a horseshoe-shaped
-          defense facing west around the old outpost. Earlier in the year,
-          Nanawa had been the target of a massive Bolivian assault, which
-          stalled after several days of heavy fighting and was eventually
-          beaten back by the Paraguayan garrison.",
+          number of Paraguayan outposts between Nanawa and the Pilcomayo River
+          on the border with Argentina. Realising that a major offensive was
+          looming, the Paraguayans built up significant defenses around the old
+          outpost. Earlier in the year, Nanawa had been the target of a
+          massive Bolivian assault which had stalled after several days of
+          heavy fighting and was eventually beaten back by the Paraguayan
+          garrison.",
           "Overall, the fighting over Nanawa was one of the bloodiest battles
           fought in South America in the 20th century, becoming known as the
           South American Verdun.",

@@ -65,7 +65,7 @@ export default class Terrain {
 
   get name(): string {
     if (this.hex.building) { return "building" }
-    if (this.baseAttr.name === "open" && !["u", "g", "a"].includes(this.hex.map.baseTerrain)) {
+    if (this.baseAttr.name === "open" && ["s", "m"].includes(this.hex.map.baseTerrain)) {
       return `open (${this.hex.map.baseTerrainName})`
     }
     return this.baseAttr.name
