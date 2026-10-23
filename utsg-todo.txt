@@ -1,8 +1,7 @@
 Features/Bug Fixes
-  - Should not be able to repair opponent's support weapons
   - Decoy next to hit revealed
   ? Improve animation performance
-  ? Reload GameDisplay after 2 moves / After desync
+  + Reload GameDisplay after 2 moves / After desync
   ? Make sure sub-counter closed with counter
   - Update tutorial (with tutorial scenario), video playthroughs (clash of steel)
   - Save/play user scenarios / limit 1 - 3 - 5

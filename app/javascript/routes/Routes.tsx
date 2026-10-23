@@ -15,7 +15,7 @@ import DeleteAccount from '../components/user/DeleteAccount';
 import NewGame from "../components/game/NewGame";
 import DebugUnits from "../debug/DebugUnits";
 import DebugMap from "../debug/DebugMap";
-import GameDisplay from "../components/game/GameDisplay";
+import GameDisplayPage from "../components/game/GameDisplayPage";
 import DebugMarkers from "../debug/DebugMarkers";
 import DebugUnitsByYear from "../debug/DebugUnitsByYear";
 import DebugIndex from "../debug/DebugIndex";
@@ -45,7 +45,7 @@ export default function Routes() {
     { path: "/recover_account", element: <RecoverAccount /> },
     { path: "/reset_password", element: <ResetPassword /> },
     { path: "/new_game", element: <NewGame /> },
-    { path: "/game/:id", element: <GameDisplay /> },
+    { path: "/game/:id", element: <GameDisplayPage /> },
     { path: "/game_replay/:id", element: <GameReplayDisplay /> },
 
     { path: "/help", element: <HelpDisplay /> },

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { getAPI } from "../../utilities/network";
 import Header from "../Header";
 import ChatDisplay from "../ChatDisplay";
@@ -25,8 +25,12 @@ import SummaryDisplay from "./SummaryDisplay";
 import Scenario from "../../engine/Scenario";
 import GameAction from "../../engine/GameAction";
 
-export default function GameDisplay() {
-  const { id } = useParams()
+interface GameDisplayProps {
+  id: string | undefined,
+  softDesynced: () => void,
+}
+
+export default function GameDisplay({ id, softDesynced }: GameDisplayProps) {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -89,18 +93,12 @@ export default function GameDisplay() {
   const [, setSyncCheckTimer] = useState<NodeJS.Timeout | undefined>()
 
   useEffect(() => {
-    if (localStorage.getItem("validationNeeded")) {
-      navigate("/verify_account", { replace: true });
-    }
-  }, []);
-
-  useEffect(() => {
     if (game.k) {
       const store = localStorage.getItem("gameturn")
       if (game.k.turn > Number(store)) {
         localStorage.setItem("gameturn", String(game.k.turn))
         if (!game.k.initialLoad) {
-          // window.location.reload()
+          // softDesynced()
         }
       }
     }
@@ -120,9 +118,8 @@ export default function GameDisplay() {
               if (game.k) { game.k.syncActiveCheckFailed = true }
               setUpdate()
               setTimeout(() => {
-                // At some point, maybe just reload the game instead.
-                if (game.k && game.k.syncActiveCheckFailed) { desynced() }
-              }, 20000)
+                if (game.k && game.k.syncActiveCheckFailed) { softDesynced() }
+              }, 2000)
             } else {
               game.k.syncActiveCheckFailed = false
             }
