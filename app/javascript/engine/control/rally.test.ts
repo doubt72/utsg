@@ -1,5 +1,5 @@
 import { describe, expect, test, vi } from "vitest";
-import { createBlankGame, testGInf, testGLdr, testGMG, testGTank, testITank } from "./testHelpers";
+import { createBlankGame, testGInf, testGLdr, testGMG, testGTank, testITank, testRMG } from "./testHelpers";
 import { Coordinate, unitStatus } from "../../utilities/commonTypes";
 import Unit from "../Unit";
 import RallyAction from "../actions/RallyAction";
@@ -8,6 +8,7 @@ import { gamePhaseType } from "../support/gamePhase";
 import organizeStacks from "../support/organizeStacks";
 import Counter from "../Counter";
 import { GameActionUnit } from "../GameAction";
+import select from "./select";
 
 describe("rallying", () => {
   test("skips if no broken units", () => {
@@ -506,5 +507,146 @@ describe("rallying", () => {
       "German passed additional rally checks"
     )
     expect(game.lastAction?.type).toBe("phase")
+  })
+
+  describe("other nation's weapons", () => {
+    test("can repair own weapons", () => {
+      const game = createBlankGame()
+      game.phase = gamePhaseType.PrepRally
+      game.setCurrentPlayer(2)
+      const map = game.scenario.map
+      const unit1 = new Unit(testGInf)
+      unit1.id = "test1"
+      const loc = new Coordinate(0,0)
+      map.addCounter(loc, unit1)
+      const unit2 = new Unit(testGMG)
+      unit2.id = "test2"
+      unit2.jammed = true
+      map.addCounter(loc, unit2)
+      organizeStacks(map)
+
+      expect(map.anyUnitsCanRally(2)).toBe(true)
+
+      game.setGameState(new RallyState(game))
+      expect(game.rallyState.openHex(0, 0)).toBe(true)
+      expect(game.rallyState.selectable({
+        counter: map.countersAt(loc)[1],
+        target: { type: "map", xy: loc },
+      })).toBe(true)
+
+      select(map, {
+        counter: map.countersAt(loc)[1],
+        target: { type: "map", xy: loc }
+      }, () => {})
+      expect(unit2.selected).toBe(true)
+    })
+
+    test("can't repair other nation weapons", () => {
+      const game = createBlankGame()
+      game.phase = gamePhaseType.PrepRally
+      game.setCurrentPlayer(2)
+      const map = game.scenario.map
+      const unit1 = new Unit(testGInf)
+      unit1.id = "test1"
+      const loc = new Coordinate(0,0)
+      map.addCounter(loc, unit1)
+      const unit2 = new Unit(testRMG)
+      unit2.playerNation = unit1.playerNation
+      unit2.id = "test2"
+      unit2.jammed = true
+      map.addCounter(loc, unit2)
+      organizeStacks(map)
+
+      expect(map.anyUnitsCanRally(2)).toBe(false)
+
+      game.setGameState(new RallyState(game))
+      game.setCurrentPlayer(2) // Total hack
+      expect(game.rallyState.openHex(0, 0)).toBe(false)
+      expect(game.rallyState.selectable({
+        counter: map.countersAt(loc)[1],
+        target: { type: "map", xy: loc },
+      })).toBe(false)
+
+      select(map, {
+        counter: map.countersAt(loc)[1],
+        target: { type: "map", xy: loc },
+      }, () => {})
+      expect(unit2.selected).toBe(false)
+    })
+
+    test("can repair own weapons when minor", () => {
+      const game = createBlankGame()
+      game.scenario.alliedFactions = ["bol"]
+      game.scenario.axisFactions = ["par"]
+      game.phase = gamePhaseType.PrepRally
+      game.setCurrentPlayer(2)
+      const map = game.scenario.map
+      const unit1 = new Unit(testGInf)
+      unit1.nation = "axm"
+      unit1.playerNation = "par"
+      unit1.id = "test1"
+      const loc = new Coordinate(0,0)
+      map.addCounter(loc, unit1)
+      const unit2 = new Unit(testGMG)
+      unit2.nation = "axm"
+      unit2.playerNation = "par"
+      unit2.id = "test2"
+      unit2.jammed = true
+      map.addCounter(loc, unit2)
+      organizeStacks(map)
+
+      expect(map.anyUnitsCanRally(2)).toBe(true)
+
+      game.setGameState(new RallyState(game))
+      expect(game.rallyState.openHex(0, 0)).toBe(true)
+      expect(game.rallyState.selectable({
+        counter: map.countersAt(loc)[1],
+        target: { type: "map", xy: loc },
+      })).toBe(true)
+
+      select(map, {
+        counter: map.countersAt(loc)[1],
+        target: { type: "map", xy: loc }
+      }, () => {})
+      expect(unit2.selected).toBe(true)
+    })
+
+    test("can't repair other weapons when minor", () => {
+      const game = createBlankGame()
+      game.scenario.alliedFactions = ["bol"]
+      game.scenario.axisFactions = ["par"]
+      game.phase = gamePhaseType.PrepRally
+      game.setCurrentPlayer(2)
+      const map = game.scenario.map
+      const unit1 = new Unit(testGInf)
+      unit1.nation = "axm"
+      unit1.playerNation = "par"
+      unit1.id = "test1"
+      const loc = new Coordinate(0,0)
+      map.addCounter(loc, unit1)
+      const unit2 = new Unit(testGMG)
+      unit2.nation = "alm"
+      unit2.playerNation = "par"
+      unit2.id = "test2"
+      unit2.jammed = true
+      map.addCounter(loc, unit2)
+      organizeStacks(map)
+
+      expect(map.anyUnitsCanRally(2)).toBe(false)
+
+      game.setGameState(new RallyState(game))
+      game.setCurrentPlayer(2) // Total hack
+      expect(game.rallyState.openHex(0, 0)).toBe(false)
+      expect(game.rallyState.selectable({
+        counter: map.countersAt(loc)[1],
+        target: { type: "map", xy: loc },
+      })).toBe(false)
+
+      select(map, {
+        counter: map.countersAt(loc)[1],
+        target: { type: "map", xy: loc },
+      }, () => {})
+      expect(unit2.selected).toBe(false)
+    })
   })
 })

@@ -1,5 +1,5 @@
 import { Coordinate, CounterSelectionTarget, Direction, hexOpenType, HexOpenType, Player } from "../../../utilities/commonTypes";
-import { neightborCoordinate, roll2d10 } from "../../../utilities/utilities";
+import { neightborCoordinate, replairPlayerForNation, roll2d10 } from "../../../utilities/utilities";
 import Counter from "../../Counter";
 import Game from "../../Game";
 import GameAction, { GameActionUnit } from "../../GameAction";
@@ -100,6 +100,11 @@ export default class RallyState extends BaseState {
       }
     }
     callback()
+  }
+  
+  samePlayer(target: Unit) {
+    const player = replairPlayerForNation(target, this.game)
+    return player === this.game.currentPlayer
   }
 
   selectable(selection: CounterSelectionTarget): boolean {

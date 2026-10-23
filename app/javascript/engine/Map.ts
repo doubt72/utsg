@@ -11,7 +11,7 @@ import {
 } from "../utilities/graphics";
 import { countersFromUnits, MapCounterData, sortStacks } from "./support/organizeStacks";
 import BaseAction from "./actions/BaseAction";
-import { neightborCoordinate, otherPlayer, playerForNation, stackLimit } from "../utilities/utilities";
+import { neightborCoordinate, otherPlayer, playerForNation, replairPlayerForNation, stackLimit } from "../utilities/utilities";
 import { GameActionUnit } from "./GameAction";
 import { alreadyRallied, leaderAtHex } from "./control/state/RallyState";
 import StackingActionError from "./actions/StackingActionError";
@@ -713,7 +713,7 @@ export default class Map {
         for (const c of this.countersAt(loc)) {
           const unit = c.unit as Unit
           if (!unit.isFeature) {
-            const unitPlayer = playerForNation(unit, this.game)
+            const unitPlayer = replairPlayerForNation(unit, this.game)
             if (player === unitPlayer) {
               if ((unit.isBroken || ((unit.jammed || unit.sponsonJammed) && !unit.isWreck))) {
                 if (alreadyRallied(this.game, unit.id)) { continue }

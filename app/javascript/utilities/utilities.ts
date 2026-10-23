@@ -8,9 +8,11 @@ export function minorToMajor(code: string): string {
   const lookup: { [index: string]: string } = { bra: "usa", frf: "fra" }
   for (const m of ["can", "aus", "nz", "ind", "sa"]) { lookup[m] = "uk" }
   for (const m of [
-    "pol", "gre", "nor", "bel", "dut", "yug", "bol", "cze"
+    "pol", "gre", "nor", "bel", "dut", "yug", "bol", "cze", "eth",
   ]) { lookup[m] = "alm" }
-  for (const m of ["hun", "bul", "rom", "slv", "cro", "par"]) { lookup[m] = "axm" }
+  for (const m of [
+    "hun", "bul", "rom", "slv", "cro", "par", "chb", "chg",
+  ]) { lookup[m] = "axm" }
   return lookup[code] ?? code
 }
 
@@ -100,6 +102,13 @@ export function axisCodeToName(code: string): string {
   }
 
   return "Unknown"
+}
+
+export function replairPlayerForNation(unit: Unit, game: Game): Player {
+  if (unit.uncrewedSW || unit.crewed) {
+    return minorToMajor(unit.nation) === minorToMajor(game.playerOneNation) ? 1 : 2
+  }
+  return unit.playerNation === game.playerOneNation ? 1 : 2
 }
 
 export function playerForNation(unit: Unit, game: Game): Player {

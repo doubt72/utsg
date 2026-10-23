@@ -29,7 +29,10 @@ export default function RallySection({ section }: SectionProps) {
         If the single check is used on a broken leader and succeeds, other broken units in the hex
         may subsequently make &quot;free&quot; rally checks.
       </p>
-      <p>Units may not attempt to rally (or repair) more than once per turn.</p>
+      <p>
+        Units may not attempt to rally (or repair) more than once per turn.
+        Units may not attempt to repair other faction&apos;s weapons.
+      </p>
       <div className={"flex mb1em"}>
         <div>
           <CounterDisplay unit={infantry} />

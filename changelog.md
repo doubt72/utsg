@@ -1,5 +1,6 @@
 # 0.169
 
+- Don't allow players to repair weapons from other faction
 - Add special forest fire rule
 - Add "arid" base terrain
 - Allow sorting by "complexity"
