@@ -19,6 +19,7 @@ module Scenarios
         :ussr_ampulomet,
         [3, :ussr_guards_rifle_s],
         [2, :ussr_guards_smg_s],
+        :sniper4,
       ] },
     }.freeze
 

@@ -3,7 +3,7 @@
 module Scenarios
   class Scenario907 < Base
     ID = "907"
-    NAME = "Olympic"
+    NAME = "Operation Olympic"
     ALLIES = ["usa"].freeze
     AXIS = ["jap"].freeze
     STATUS = "p"
@@ -105,6 +105,9 @@ module Scenarios
           United States decided them, so the landings would come as no
           surprise, and the Japanese would have been building up defensive
           forces for some time.",
+          "After the name of Operation Olympic was compromised by being sent
+          out in an unsecured code, the name was changed to Operation
+          Majestic.",
         ]
       end
 

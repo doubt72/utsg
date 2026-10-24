@@ -3,7 +3,7 @@
 module Scenarios
   class Scenario813 < Base
     ID = "813"
-    NAME = "Mudéjar Walls"
+    NAME = "Walls of Mudéjar"
     ALLIES = ["rsp"].freeze
     AXIS = ["nsp"].freeze
     STATUS = "p"

@@ -9,6 +9,7 @@
 - A few additional weapons for hypothetical scenarios
 - New units, changes for upcoming interwar scenarios
 - Promoted 013
+- Updated some names, added a couple snipers
 - Added a bunch of prototypes (Spanish Civil War, Chaco War, and hypothetical)
 
 # 0.168

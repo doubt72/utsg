@@ -3,7 +3,7 @@
 module Scenarios
   class Scenario814 < Base
     ID = "814"
-    NAME = "End Around"
+    NAME = "Shadows of Treachery"
     ALLIES = ["rsp"].freeze
     AXIS = ["nsp"].freeze
     STATUS = "p"

@@ -3,7 +3,7 @@
 module Scenarios
   class Scenario914 < Base
     ID = "914"
-    NAME = "Falling Bridges"
+    NAME = "London Bridges"
     ALLIES = ["uk"].freeze
     AXIS = ["ger"].freeze
     STATUS = "p"

@@ -3,7 +3,7 @@
 module Scenarios
   class Scenario913 < Base
     ID = "913"
-    NAME = "Summer Tide"
+    NAME = "Falling Tide"
     ALLIES = ["uk"].freeze
     AXIS = ["ger"].freeze
     STATUS = "p"

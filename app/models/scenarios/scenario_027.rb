@@ -22,6 +22,7 @@ module Scenarios
         :ussr_dshk,
         [2, :ussr_su_76m],
         [2, :ussr_su_85],
+        :sniper4,
       ] },
     }.freeze
 
@@ -39,6 +40,7 @@ module Scenarios
         [4, :ger_pzkpfw_iv_h_j],
         :ger_marder_iii,
         :ger_stuh_42,
+        :sniper4,
       ] },
     }.freeze
 

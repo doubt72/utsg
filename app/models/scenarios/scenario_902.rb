@@ -3,7 +3,7 @@
 module Scenarios
   class Scenario902 < Base
     ID = "902"
-    NAME = "Those Infernal Machines"
+    NAME = "Infernal Machines"
     ALLIES = ["cze"].freeze
     AXIS = ["ger"].freeze
     STATUS = "p"

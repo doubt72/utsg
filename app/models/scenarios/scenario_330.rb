@@ -3,7 +3,7 @@
 module Scenarios
   class Scenario330 < Base
     ID = "330"
-    NAME = "Pocket Polder"
+    NAME = "Polder Pocket"
     ALLIES = ["can"].freeze
     AXIS = ["ger"].freeze
     STATUS = "a"

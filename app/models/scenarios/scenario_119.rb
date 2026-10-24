@@ -3,7 +3,7 @@
 module Scenarios
   class Scenario119 < Base
     ID = "119"
-    NAME = "At Mezzeh"
+    NAME = "Lost at Mezzeh"
     ALLIES = ["ind"].freeze
     AXIS = ["vcf"].freeze
     STATUS = "a"

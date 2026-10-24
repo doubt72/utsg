@@ -3,7 +3,7 @@
 module Scenarios
   class Scenario801 < Base
     ID = "801"
-    NAME = "At the Pass"
+    NAME = "Somosierra Pass"
     ALLIES = ["rsp"].freeze
     AXIS = ["nsp"].freeze
     STATUS = "p"

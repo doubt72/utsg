@@ -41,6 +41,11 @@ module Utility
               ["alm", "Regular", 0, 3, 6, 4, 4, {}],
               ["alm", "Conscript", 0, 2, 6, 3, 3, {}],
 
+              # Ethiopian
+              ["alm", "Kebur Zabagna", 0, 4, 6, 4, 5, { a: 1 }],
+              ["alm", "Sefari", 0, 3, 5, 3, 4, {}],
+              ["alm", "Irregular", 0, 2, 5, 3, 3, {}],
+
               ["axm", "Engineer", 0, 4, 8, 3, 5, { a: 1, s: 1, eng: 1 }],
               ["axm", "Elite", 0, 4, 7, 5, 5, { a: 1, s: 1 }],
               ["axm", "Regular", 0, 3, 6, 4, 4, {}],
@@ -78,6 +83,7 @@ module Utility
               ["ita", "Paracadutisti", 40, 4, 6, 3, 5, { a: 1, s: 1 }],
               ["ita", "Fucilieri", 0, 3, 6, 4, 4, {}],
               ["ita", "Blackshirt", 23, 2, 5, 3, 3, {}],
+              ["ita", "Ascari", 0, 3, 6, 3, 4, {}],
               ["ita", "Bande", 0, 2, 5, 3, 3, {}],
 
               ["jap", "Kohei-ka", 0, 4, 8, 3, 5, { a: 1, eng: 1 }],

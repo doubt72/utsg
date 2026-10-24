@@ -3,7 +3,7 @@
 module Scenarios
   class Scenario411 < Base
     ID = "411"
-    NAME = "Back on Track"
+    NAME = "Turning Back"
     ALLIES = ["aus"].freeze
     AXIS = ["jap"].freeze
     STATUS = "a"

@@ -3,7 +3,7 @@
 module Scenarios
   class Scenario915 < Base
     ID = "915"
-    NAME = "Thunder Child"
+    NAME = "Operation Thunderchild"
     ALLIES = ["uk"].freeze
     AXIS = ["ger"].freeze
     STATUS = "p"

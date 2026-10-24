@@ -3,7 +3,7 @@
 module Scenarios
   class Scenario329 < Base
     ID = "329"
-    NAME = "Until the End"
+    NAME = "Ghosts on the Rhein"
     ALLIES = ["usa"].freeze
     AXIS = ["ger"].freeze
     STATUS = "a"
@@ -44,6 +44,7 @@ module Scenarios
         [3, :ger_stug_iv],
         [2, :mines8],
         [4, :wire],
+        :sniper4,
       ] },
     }.freeze
 

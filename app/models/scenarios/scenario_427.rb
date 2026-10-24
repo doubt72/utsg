@@ -3,7 +3,7 @@
 module Scenarios
   class Scenario427 < Base
     ID = "427"
-    NAME = "Backhander"
+    NAME = "Cartwheeling Back"
     ALLIES = ["usa"].freeze
     AXIS = ["jap"].freeze
     STATUS = "a"
