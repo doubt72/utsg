@@ -29,6 +29,8 @@ module Utility
               ["chi", "Type 24 Maxim", 24], ["chi", "FN M1930", 30], ["chi", "DP-27", 28],
               ["chi", "Bren LMG", 35], ["chi", "M1914 Hotchkiss", 14, { sn: 1 }],
 
+              ["com", "Czeck LMG", 26], ["com", "Type 24 Maxim", 24],
+
               ["fin", "Vickers MG", 12], ["fin", "LS/26", 30], ["fin", "Maxim M/32-33", 33],
               ["fin", "MG 08/15", 24], ["fin", "DP-27", 40],
 

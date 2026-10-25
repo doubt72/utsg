@@ -62,8 +62,8 @@ module Scenarios
           consisted of a failed counterattack by the Ethiopian forces under
           Emperor Haile Selassie making frontal assaults against prepared
           Italian defensive positions. The Ethiopian forces in the battle were
-          well-equipped — had Haile Selassie attacked a week earlier as he had
-          originally planned, things may have gone differently; many of the
+          well-equipped; had Haile Selassie attacked a week earlier as he had
+          originally planned, things may have gone differently — many of the
           Italians had only recently arrived after the fall of Amba Aradam.
           But with the time frittered away by the Ethiopians in war councils,
           banquets, and prayers, the Italians had time to strengthen their
@@ -75,11 +75,12 @@ module Scenarios
           lines were stabilized. The Ethiopians switched flanks, and despite
           heavy casualties started to make gains, but were stopped by poison
           gas. The Imperial guard were now sent in and virtually annihilated
-          the Eritrean defenders; in the end, the Italians stopped the attack
-          by calling down concentrated artillery fire onto their own overrun
-          positions.",
+          the Eritrean defenders after heavy and costly fighting; in the
+          end, the Italians stopped the attack by calling down concentrated
+          artillery fire onto their own overrun positions.",
           "After one more final push failed, the Ethiopians were pushed back and
-          forced to retreat, defeated.",
+          forced to retreat, defeated. Not long after, the Italians reached
+          Addis Ababa and the war was effectively over.",
         ]
       end
 

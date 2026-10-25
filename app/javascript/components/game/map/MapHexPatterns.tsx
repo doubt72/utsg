@@ -53,8 +53,8 @@ export default function MapHexPatterns({ map, rotated }: MapHexPatternProps) {
     "ger", "ita", "jap", "fin", "bul", "hun", "rom", "slv", "cro", "vcf",
     "uk", "usa", "ussr", "chi", "fra",
     "frf", "sa", "can", "aus", "nz", "ind", "bra", "pol", "bel", "dut", "nor", "yug", "gre",
-    "rsp", "eth", "bol", "chb",
-    "nsp", "chc", "chb2", "chg", "par",
+    "rsp", "eth", "bol", "kuo",
+    "nsp", "chc", "chb", "chg", "par",
     "sk", "un", "doi", "isr",
     "nk", "pak", "vie", "syr", "jor", "egy",
     "cze",
@@ -167,10 +167,12 @@ export default function MapHexPatterns({ map, rotated }: MapHexPatternProps) {
       <pattern id="soft-pattern" x="0" y="0" patternUnits="userSpaceOnUse"
                patternTransform={ rotated ? "rotate(90)" : "" }
                width="36" height="36" viewBox="0 0 16 16">
-        <circle cx="1" cy="1" r="1" style={darkStyle} />
-        <circle cx="4" cy="1" r="1" style={darkStyle} />
-        <circle cx="9" cy="9" r="1" style={darkStyle} />
-        <circle cx="12" cy="9" r="1" style={darkStyle} />
+        <circle cx="1" cy="1" r="1" style={darkerStyle} />
+        <circle cx="4" cy="1" r="1" style={darkerStyle} />
+        <circle cx="7" cy="1" r="1" style={darkerStyle} />
+        <circle cx="9" cy="9" r="1" style={darkerStyle} />
+        <circle cx="12" cy="9" r="1" style={darkerStyle} />
+        <circle cx="15" cy="9" r="1" style={darkerStyle} />
       </pattern>
       <pattern id="debris-pattern" x="0" y="0" patternUnits="userSpaceOnUse"
                width="40" height="40" viewBox="0 0 18 18">

@@ -51,9 +51,9 @@ module Utility
               turn24: { mk: 1, type: "turn", v: "dut", v2: "jap" },
               turn25: { mk: 1, type: "turn", v: "rsp", v2: "nsp" },
               turn26: { mk: 1, type: "turn", v: "eth", v2: "ita" },
-              turn28: { mk: 1, type: "turn", v: "chi", v2: "chb" },
-              turn29: { mk: 1, type: "turn", v: "chi", v2: "chc" },
-              turn30: { mk: 1, type: "turn", v: "chi", v2: "chg" },
+              turn28: { mk: 1, type: "turn", v: "kuo", v2: "chb" },
+              turn29: { mk: 1, type: "turn", v: "kuo", v2: "chc" },
+              turn30: { mk: 1, type: "turn", v: "kuo", v2: "chg" },
               turn31: { mk: 1, type: "turn", v: "bol", v2: "par" },
               turn32: { mk: 1, type: "turn", v: "sk", v2: "nk" },
               turn33: { mk: 1, type: "turn", v: "un", v2: "nk" },
@@ -121,7 +121,7 @@ module Utility
             }
           end
 
-          def initiative
+          def initiative # rubocop:disable Metrics/PerceivedComplexity
             lu = {}
             Units.all_factions.each do |nation| # rubocop:disable Metrics/BlockLength
               if nation == "alm"
@@ -151,6 +151,12 @@ module Utility
                 lu[:egy_initiative] = { mk: 1, nation: "arl", i: "egy", type: "initiative" }
                 next
               end
+              if nation == "com"
+                lu[:chc_initiative] = { mk: 1, nation: "chc", i: "chc", type: "initiative" }
+                lu[:nk_initiative] = { mk: 1, nation: "nk", i: "nk", type: "initiative" }
+                lu[:vie_initiative] = { mk: 1, nation: "vie", i: "vie", type: "initiative" }
+                next
+              end
               lu[:"#{nation}_initiative"] = {
                 mk: 1, nation:, i: nation == "ussr" ? "ussr2" : nation, type: "initiative",
               }
@@ -167,10 +173,8 @@ module Utility
                 lu[:sk_initiative] = { mk: 1, nation: "un", i: "sk", type: "initiative" }
               when "fra"
                 lu[:frf_initiative] = { mk: 1, nation: "frf", i: "frf", type: "initiative" }
-              when "chc"
-                lu[:nk_initiative] = { mk: 1, nation: "com", i: "nk", type: "initiative" }
-                lu[:vie_initiative] = { mk: 1, nation: "com", i: "vie", type: "initiative" }
               when "chi"
+                lu[:kuo_initiative] = { mk: 1, nation: "kuo", i: "kuo", type: "initiative" }
                 lu[:chg_initiative] = { mk: 1, nation: "axm", i: "chg", type: "initiative" }
                 lu[:chb_initiative] = { mk: 1, nation: "axm", i: "chb", type: "initiative" }
               end

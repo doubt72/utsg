@@ -17,7 +17,7 @@ module Scenarios
         :alm_leader_5_1,
         :alm_leader_4_1,
         [7, :alm_regular_s],
-        [2, :alm_vickers_mg],
+        :alm_vickers_mg,
         [2, :alm_zb_vz__30],
         [2, :alm_75mm_gun],
         [2, :alm_crew_t],

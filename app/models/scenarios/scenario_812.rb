@@ -15,7 +15,7 @@ module Scenarios
     ALLIED_UNITS = {
       "0": { list: [
         [2, :alm_leader_4_1],
-        [7, :alm_sefari_s],
+        [8, :alm_sefari_s],
         [2, :alm_m1914_hotchkiss],
         [2, :alm_81mm_mortar],
       ] },

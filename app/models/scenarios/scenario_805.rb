@@ -16,8 +16,8 @@ module Scenarios
       "0": { list: [
         :alm_leader_6_1,
         :alm_leader_4_1,
-        [9, :alm_sefari_s],
-        [2, :alm_vickers_mg],
+        [10, :alm_sefari_s],
+        :alm_vickers_mg,
       ] },
     }.freeze
 
@@ -62,8 +62,8 @@ module Scenarios
           along the Genale Doria River valley between Dolo and Negele Boran.
           The Ethiopians launched an offensive against the Italian forces in
           Italian Somaliland. However, the Italians carried an active
-          defense so vigorously that it became an offensive and the Ethiopians
-          were routed in the end.",
+          defense so vigorously that it became an offensive and in the end,
+          the Ethiopians were routed.",
         ]
       end
 

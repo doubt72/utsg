@@ -72,6 +72,10 @@ export default function DebugIndex() {
             [ <Link to={"/debug/stats/scenarios-p/nsp"}>proto</Link> ]
           </li>
           <li>
+            <Link to={"/debug/stats/scenarios/com"}>communist</Link>&nbsp;
+            [ <Link to={"/debug/stats/scenarios-p/com"}>proto</Link> ]
+          </li>
+          <li>
             <Link to={"/debug/stats/scenarios/axm"}>axis minors</Link>&nbsp;
             [ <Link to={"/debug/stats/scenarios-p/axm"}>proto</Link> ]
           </li>
@@ -98,6 +102,7 @@ export default function DebugIndex() {
           <li><Link to={"/debug/units/jap"}>japanese</Link></li>
           <li><Link to={"/debug/units/fin"}>finnish</Link></li>
           <li><Link to={"/debug/units/nsp"}>spanish</Link></li>
+          <li><Link to={"/debug/units/com"}>communist</Link></li>
           <li><Link to={"/debug/units/axm"}>axis minors</Link></li>
         </ul>
       </div>
@@ -122,6 +127,7 @@ export default function DebugIndex() {
           <li><Link to={"/debug/units/year/jap"}>japanese</Link></li>
           <li><Link to={"/debug/units/year/fin"}>finnish</Link></li>
           <li><Link to={"/debug/units/year/nsp"}>spanish</Link></li>
+          <li><Link to={"/debug/units/year/com"}>communist</Link></li>
           <li><Link to={"/debug/units/year/axm"}>axis minors</Link></li>
         </ul>
       </div>
@@ -178,6 +184,7 @@ export default function DebugIndex() {
           <li><Link to={"/debug/markers/jap"}>japanese</Link></li>
           <li><Link to={"/debug/markers/fin"}>finnish</Link></li>
           <li><Link to={"/debug/markers/nsp"}>spanish</Link></li>
+          <li><Link to={"/debug/markers/com"}>communist</Link></li>
           <li><Link to={"/debug/markers/axm"}>axis minors</Link></li>
         </ul>
       </div>
@@ -240,6 +247,10 @@ export default function DebugIndex() {
           <li>
             <Link to={"/debug/stats/units/nsp"}>spanish</Link>&nbsp;
             [ <Link to={"/debug/stats/units-p/nsp"}>proto</Link> ]
+          </li>
+          <li>
+            <Link to={"/debug/stats/units/com"}>communist</Link>&nbsp;
+            [ <Link to={"/debug/stats/units-p/com"}>proto</Link> ]
           </li>
           <li>
             <Link to={"/debug/stats/units/axm"}>axis minors</Link>&nbsp;

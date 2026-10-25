@@ -18,7 +18,7 @@ module Scenarios
         :alm_leader_4_1,
         [7, :alm_sefari_s],
         :alm_crew_t,
-        [2, :alm_vickers_mg],
+        :alm_vickers_mg,
         :alm_75mm_gun,
         [3, :trench],
       ] },
@@ -60,9 +60,9 @@ module Scenarios
           counterattacks by Italian forces and Ethiopian forces.  At the end,
           the Ethiopians retreated from the pass, but the Ethiopian forces
           were largely still intact and they still held the Tembien. However,
-          the threat on the flanks of the Italian advance from the high ground
-          had been neutralized, and the Ethiopians had taken significant
-          casualties and had lost much difficult to replace
+          the threat on the flanks of the Italian advance towards Addis Ababa
+          from the high ground had been neutralized, and the Ethiopians had
+          taken significant casualties and had lost much difficult to replace
           ammunition.",
         ]
       end

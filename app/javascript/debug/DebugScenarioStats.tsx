@@ -119,7 +119,7 @@ export default function DebugScenarioStats({ proto = false }: DebugScenarioStats
   const [countStreamPresent, setCountStreamPresent] = useState<StatLookup>({})
 
   const allied = (code: string): boolean => {
-    return ["ussr", "uk", "usa", "fra", "chi", "alm"].includes(code)
+    return ["ussr", "uk", "usa", "fra", "chi", "rsp", "alm"].includes(code)
   }
 
   const wdPct = {
@@ -136,7 +136,8 @@ export default function DebugScenarioStats({ proto = false }: DebugScenarioStats
     getAPI(url, {
       ok: response => {
         response.json().then(json => {
-          json.data.map((a: { id: string }) => {
+          json.data.forEach((a: { id: string }) => {
+            if (a.id === "000" && nation !== "ussr" && nation !== "ger") { return }
             const url = `/api/v1/scenarios/${a.id}`
             getAPI(url, {
               ok: response => {

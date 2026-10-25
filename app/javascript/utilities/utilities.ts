@@ -5,7 +5,7 @@ import Unit from "../engine/Unit"
 import { Coordinate, Direction, featureType, Player } from "./commonTypes"
 
 export function minorToMajor(code: string): string {
-  const lookup: { [index: string]: string } = { bra: "usa", frf: "fra" }
+  const lookup: { [index: string]: string } = { bra: "usa", frf: "fra", kuo: "chi" }
   for (const m of ["can", "aus", "nz", "ind", "sa"]) { lookup[m] = "uk" }
   for (const m of [
     "pol", "gre", "nor", "bel", "dut", "yug", "bol", "cze", "eth",
@@ -13,6 +13,8 @@ export function minorToMajor(code: string): string {
   for (const m of [
     "hun", "bul", "rom", "slv", "cro", "par", "chb", "chg",
   ]) { lookup[m] = "axm" }
+  for (const m of [ "chc", "nk", "vie" ]) { lookup[m] = "com" }
+  for (const m of [ "pak", "syr", "jor", "egy" ]) { lookup[m] = "arl" }
   return lookup[code] ?? code
 }
 
@@ -42,7 +44,7 @@ export function alliedCodeToName(code: string): string {
     { name: "Republican", code: "rsp" },
     { name: "Ethiopian", code: "eth" },
     { name: "Bolivian", code: "bol" },
-    { name: "Chinese", code: "chb" },
+    { name: "Kuomintang", code: "kuo" },
 
     // Cold War
     { name: "United Nations", code: "un" },
@@ -80,8 +82,8 @@ export function axisCodeToName(code: string): string {
     { name: "Nationalist", code: "nsp" },
     { name: "Communist", code: "chc" },
     { name: "Paraguayan", code: "par" },
-    { name: "Beiyang", code: "chb" },
-    { name: "Guanxi", code: "chg" },
+    { name: "Beiyang Army", code: "chb" },
+    { name: "Guanxi Army", code: "chg" },
 
     // Cold War
     { name: "North Korean", code: "nk" },

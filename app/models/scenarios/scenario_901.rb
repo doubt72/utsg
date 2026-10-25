@@ -90,7 +90,7 @@ module Scenarios
           "This put Czechoslovakia in an impossible position: either cede the
           Sudetenland to the Germans, where a large portion of Czechoslovak
           industry was located — not to mention all of the Czechoslovak border
-          defences and its most defensible terrain — or fight alone against
+          defenses and its most defensible terrain — or fight alone against
           the Wehrmacht. While Russia had offered military support, it was
           only on the condition that Romania or Poland allow the passage of
           Soviet troops, which they would not do — the Poles in

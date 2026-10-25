@@ -9,7 +9,7 @@ module Utility
         { name: "Commonwealth", code: "uk", nations: %w[uk can aus nz ind sa] },
         { name: "American", code: "usa", nations: %w[usa bra] },
         { name: "French", code: "fra", nations: %w[fra frf] },
-        { name: "Chinese", code: "chi", nations: %w[chi] },
+        { name: "Chinese", code: "chi", nations: %w[chi kuo] },
         { name: "Spanish", code: "rsp", nations: ["rsp"] },
         # { name: "United Nations", code: "un", nations: %w[un sk] },
         # ...Do we really need these? -- minors instead
@@ -63,7 +63,7 @@ module Utility
           "rsp" => "Republican Spain",
           "eth" => "Ethiopian",
           "bol" => "Bolivian",
-          "chb" => "Beiyang Chinese",
+          "kuo" => "Kuomintang;Nationalist Chinese",
 
           "un" => "United Nations",
           "sk" => "South Korean",

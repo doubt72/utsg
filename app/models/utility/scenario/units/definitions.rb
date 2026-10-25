@@ -358,6 +358,8 @@ module Utility
 
           def vehicle_data
             { # rubocop:disable Metric/CollectionLiteralLength
+              # Chinese Generic Armored Car
+              "armored_car": { sz: 3, mv: 5, wpn: :"vickers_mg", whl: true, arm: [0, 0, 0], trt: [0, 0, 0] },
               # French Armored Vehicles
               "char_b1": { sz: 5, mv: 3, wpn: :"47mm_sa_35", spn: :"75mm_gun", arm: [3, 3, 3], trt: [3, 3, 3] },
               "char_b1_bis": { sz: 5, mv: 3, wpn: :"47mm_sa_35", spn: :"75mm_gun", arm: [4, 4, 4], trt: [3, 3, 3] },

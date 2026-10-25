@@ -51,9 +51,14 @@ module Utility
               ["axm", "Regular", 0, 3, 6, 4, 4, {}],
               ["axm", "Conscript", 0, 2, 6, 3, 3, {}],
 
+              # Chinese
+              ["axm", "Chinese", 0, 3, 5, 4, 4, {}],
+
               ["chi", "Elite", 0, 4, 6, 4, 5, { a: 1 }],
               ["chi", "Regular", 0, 3, 5, 4, 4, {}],
               ["chi", "Conscript", 0, 2, 4, 3, 3, {}],
+
+              ["com", "Irregular", 0, 2, 5, 3, 3, {}],
 
               ["fin", "Elite", 0, 4, 7, 5, 5, { a: 1, s: 1 }],
               ["fin", "Regular", 0, 3, 6, 4, 4, {}],

@@ -176,7 +176,7 @@ module Utility
               # Slovak
               ["axm", "OA vz. 30", 38],
 
-              ["chi", "M3A1 Scout Car", 39, { sn: 1 }],
+              ["chi", "Armored Car", 29, {}], ["chi", "M3A1 Scout Car", 39, { sn: 1 }],
 
               ["fra", "AMC Schneider P16", 28, { sn: 4 }], ["fra", "White AM AC", 15],
               ["fra", "Panhard 178", 37], ["fra", "M8 Greyhound", 43],
