@@ -915,8 +915,8 @@ RSpec.describe Utility::Scenario::Units do
               r: 1, j: 3, f: 16, sn: 1,
             },
           }
-          expect(defs[:chi_m1_mortar]).to be == {
-            t: "sw", i: "mortar", c: "chi", n: "M1 Mortar", y: 42, f: 20, r: 24, v: -2, s: 1, o: {
+          expect(defs[:chi_m1_81mm]).to be == {
+            t: "sw", i: "mortar", c: "chi", n: "M1 81mm", y: 42, f: 20, r: 24, v: -2, s: 1, o: {
               s: 1, m: 3, t: 1, b: 3, e: 1,
             },
           }
@@ -925,13 +925,13 @@ RSpec.describe Utility::Scenario::Units do
               b: 4, t: 1, p: 1,
             },
           }
-          expect(defs[:chi_m2_4_2inch_mortar]).to be == {
-            t: "sw", i: "mortar", c: "chi", n: "M2 4.2inch Mortar", y: 43, f: 24, r: 28, v: 2, o: {
+          expect(defs[:chi_m2_4_2inch]).to be == {
+            t: "sw", i: "mortar", c: "chi", n: "M2 4.2inch", y: 43, f: 24, r: 28, v: 2, o: {
               sn: 3, s: 1, m: 5, c: 1, tow: 2, t: 1, b: 3, e: 1,
             }, s: 2,
           }
-          expect(defs[:chi_type_31_mortar]).to be == {
-            t: "sw", i: "mortar", c: "chi", n: "Type 31 Mortar", y: 42, f: 12, r: 16, v: -1, s: 1, o: {
+          expect(defs[:chi_type_31_60mm]).to be == {
+            t: "sw", i: "mortar", c: "chi", n: "Type 31 60mm", y: 42, f: 12, r: 16, v: -1, s: 1, o: {
               m: 2, t: 1, b: 3, e: 1,
             },
           }
@@ -940,13 +940,13 @@ RSpec.describe Utility::Scenario::Units do
               x: 1, t: 1, e: 1,
             },
           }
-          expect(defs[:chi_type_15_mortar]).to be == {
-            t: "sw", i: "mortar", c: "chi", n: "Type 15 Mortar", y: 33, f: 20, r: 24, v: -2, s: 1, o: {
+          expect(defs[:chi_type_15_82mm]).to be == {
+            t: "sw", i: "mortar", c: "chi", n: "Type 15 82mm", y: 33, f: 20, r: 24, v: -2, s: 1, o: {
               s: 1, m: 3, t: 1, b: 3, e: 1,
             },
           }
-          expect(defs[:chi_type_20_mortar]).to be == {
-            t: "sw", i: "mortar", c: "chi", n: "Type 20 Mortar", y: 27, f: 20, r: 17, v: -1, s: 1, o: {
+          expect(defs[:chi_type_20_81mm]).to be == {
+            t: "sw", i: "mortar", c: "chi", n: "Type 20 81mm", y: 27, f: 20, r: 17, v: -1, s: 1, o: {
               s: 1, m: 3, t: 1, b: 3, e: 1,
             },
           }
@@ -1045,8 +1045,8 @@ RSpec.describe Utility::Scenario::Units do
               a: 1, r: 1, j: 3, f: 16,
             },
           }
-          expect(defs[:fra_fm_24_29]).to be == {
-            t: "sw", i: "mg", c: "fra", n: "FM 24/29", y: 25, f: 3, r: 10, v: 0, s: 1, o: {
+          expect(defs[:fra_mac_fm_24_29]).to be == {
+            t: "sw", i: "mg", c: "fra", n: "MAC FM 24/29", y: 25, f: 3, r: 10, v: 0, s: 1, o: {
               a: 1, r: 1, j: 3, f: 16,
             },
           }
@@ -1326,8 +1326,8 @@ RSpec.describe Utility::Scenario::Units do
 
       context "united kingdom" do
         it "has static definitions" do
-          expect(defs[:uk_2inch_mortar]).to be == {
-            t: "sw", i: "mortar", c: "uk", n: "2inch Mortar", y: 37, f: 10, r: 15, v: 0, s: 1, o: {
+          expect(defs[:uk_sbml_2inch]).to be == {
+            t: "sw", i: "mortar", c: "uk", n: "SBML 2inch", y: 37, f: 10, r: 15, v: 0, s: 1, o: {
               m: 2, t: 1, b: 3, e: 1,
             },
           }
@@ -1351,13 +1351,13 @@ RSpec.describe Utility::Scenario::Units do
               r: 1, j: 3, f: 16,
             },
           }
-          expect(defs[:uk_ml_3inch_mortar]).to be == {
+          expect(defs[:uk_ml_3inch]).to be == {
             t: "sw", i: "mortar", c: "uk", n: "ML 3inch Mortar", y: 33, f: 20, r: 18, v: -1, s: 1, o: {
               s: 1, m: 3, t: 1, b: 3, e: 1, sn: 1,
             },
           }
-          expect(defs[:uk_ml_4_2inch_mortar]).to be == {
-            t: "sw", i: "mortar", c: "uk", n: "ML 4.2inch Mortar", y: 40, f: 24, r: 26, v: 2, o: {
+          expect(defs[:uk_ml_4_2inch]).to be == {
+            t: "sw", i: "mortar", c: "uk", n: "ML 4.2inch", y: 40, f: 24, r: 26, v: 2, o: {
               sn: 3, s: 1, m: 5, c: 1, tow: 2, t: 1, b: 3, e: 1,
             }, s: 2,
           }
@@ -1431,8 +1431,8 @@ RSpec.describe Utility::Scenario::Units do
               b: 5, t: 1, p: 1,
             },
           }
-          expect(defs[:usa_m1_mortar]).to be == {
-            t: "sw", i: "mortar", c: "usa", n: "M1 Mortar", y: 35, f: 20, r: 24, v: -2, s: 1, o: {
+          expect(defs[:usa_m1_81mm]).to be == {
+            t: "sw", i: "mortar", c: "usa", n: "M1 81mm", y: 35, f: 20, r: 24, v: -2, s: 1, o: {
               s: 1, m: 3, t: 1, b: 3, e: 1,
             },
           }
@@ -1441,8 +1441,8 @@ RSpec.describe Utility::Scenario::Units do
               b: 4, t: 1, p: 1,
             },
           }
-          expect(defs[:usa_m2_4_2inch_mortar]).to be == {
-            t: "sw", i: "mortar", c: "usa", n: "M2 4.2inch Mortar", y: 43, f: 24, r: 28, v: 2, o: {
+          expect(defs[:usa_m2_4_2inch]).to be == {
+            t: "sw", i: "mortar", c: "usa", n: "M2 4.2inch", y: 43, f: 24, r: 28, v: 2, o: {
               sn: 3, s: 1, m: 5, c: 1, tow: 2, t: 1, b: 3, e: 1,
             }, s: 2,
           }
@@ -1451,8 +1451,8 @@ RSpec.describe Utility::Scenario::Units do
               r: 1, j: 3, f: 16,
             },
           }
-          expect(defs[:usa_m2_mortar]).to be == {
-            t: "sw", i: "mortar", c: "usa", n: "M2 Mortar", y: 40, f: 12, r: 16, v: -1, s: 1, o: {
+          expect(defs[:usa_m2_60mm]).to be == {
+            t: "sw", i: "mortar", c: "usa", n: "M2 60mm", y: 40, f: 12, r: 16, v: -1, s: 1, o: {
               m: 2, t: 1, b: 3, e: 1,
             },
           }

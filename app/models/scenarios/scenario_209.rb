@@ -34,7 +34,7 @@ module Scenarios
         [2, :uk_leader_4_1],
         [4, :uk_line_s],
         :uk_bren_lmg,
-        :uk_2inch_mortar,
+        :uk_sbml_2inch,
         :uk_universal_carrier,
         :uk_u__carrier_6pdr,
       ] },

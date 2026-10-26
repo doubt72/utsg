@@ -17,7 +17,7 @@ module Scenarios
         [2, :chi_leader_5_1],
         [3, :chi_leader_4_1],
         [15, :chi_regular_s],
-        [2, :chi_type_20_mortar],
+        [2, :chi_type_20_81mm],
         [6, :chi_czeck_lmg],
         [2, :chi_type_24_maxim],
         [2, :chi_armored_car],

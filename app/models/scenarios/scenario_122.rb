@@ -19,7 +19,7 @@ module Scenarios
         [3, :uk_commando_s],
         [7, :uk_line_s],
         [5, :uk_bren_lmg],
-        :uk_2inch_mortar,
+        :uk_sbml_2inch,
         [2, :uk_valentine_i_vii],
         [2, :uk_tetrarch],
         [2, :uk_vickers_mg],

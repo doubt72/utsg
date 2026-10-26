@@ -28,7 +28,7 @@ module Scenarios
       "2": { list: [
         :usa_leader_4_1,
         [4, :usa_rifle_s],
-        :usa_m2_mortar,
+        :usa_m2_60mm,
         :usa_m1919_browning,
         :usa_ft,
       ] },

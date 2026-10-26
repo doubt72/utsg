@@ -18,7 +18,7 @@ module Scenarios
         [2, :fra_leader_5_1],
         [2, :fra_bar_s],
         [3, :fra_reservist_s],
-        [2, :fra_fm_24_29],
+        [2, :fra_mac_fm_24_29],
         [6, :fra_char_b1_bis],
       ] },
     }.freeze

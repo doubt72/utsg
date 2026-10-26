@@ -20,7 +20,7 @@ module Scenarios
         [7, :usa_rifle_s],
         [3, :usa_crew_t],
         [3, :usa_m1918_bar],
-        :usa_m2_mortar,
+        :usa_m2_60mm,
         [2, :usa_m1919_browning],
         [2, :usa_sc],
         :usa_radio_155mm,

@@ -36,7 +36,7 @@ module Utility
 
               ["fra", "Bren LMG", 41], ["fra", "M1918 BAR", 41],
               ["fra", "M1915 Chauchat", 15, { sn: 1 }], ["fra", "M1914 Hotchkiss", 14, { sn: 1 }],
-              ["fra", "FM 24/29", 25],
+              ["fra", "MAC FM 24/29", 25],
 
               ["ger", "MG 34", 36], ["ger", "MG 30(t)", 39], ["ger", "MG 42", 42],
               ["ger", "MG 08/15", 17],
@@ -64,7 +64,7 @@ module Utility
               ["ussr", "DShK", 38],
 
               ["vcf", "M1915 Chauchat", 15, { sn: 1 }], ["vcf", "M1914 Hotchkiss", 14, { sn: 1 }],
-              ["vcf", "FM 24/29", 25],
+              ["vcf", "MAC FM 24/29", 25],
             ].each do |unit|
               mg = { t: "sw", i: "mg" }
               unit.each_with_index do |v, i|
@@ -84,9 +84,9 @@ module Utility
 
               ["axm", "81mm Mortar", 27],
 
-              ["chi", "Type 15 Mortar", 33], ["chi", "Type 20 Mortar", 27],
-              ["chi", "M1 Mortar", 42], ["chi", "Type 31 Mortar", 42],
-              ["chi", "M2 4.2inch Mortar", 43, { sn: 3 }],
+              ["chi", "Type 15 82mm", 33], ["chi", "Type 20 81mm", 27],
+              ["chi", "M1 81mm", 42], ["chi", "Type 31 60mm", 42],
+              ["chi", "M2 4.2inch", 43],
 
               ["fin", "81mm Tampella", 27],
 
@@ -105,11 +105,11 @@ module Utility
 
               ["rsp", "81mm Mortar", 36],
 
-              ["uk", "2inch Mortar", 37], ["uk", "ML 3inch Mortar", 33, { sn: 1 }],
-              ["uk", "ML 4.2inch Mortar", 40, { sn: 3 }],
+              ["uk", "SBML 2inch", 37], ["uk", "ML 3inch", 33],
+              ["uk", "ML 4.2inch", 40],
 
-              ["usa", "M2 Mortar", 40], ["usa", "M1 Mortar", 35],
-              ["usa", "M2 4.2inch Mortar", 43, { sn: 3 }],
+              ["usa", "M2 60mm", 40], ["usa", "M1 81mm", 35],
+              ["usa", "M2 4.2inch", 43],
 
               ["ussr", "RM-38", 38], ["ussr", "82-BM-37", 37], ["ussr", "82-PM-41", 41],
               ["ussr", "120-PM-38", 39],

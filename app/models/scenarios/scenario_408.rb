@@ -19,7 +19,7 @@ module Scenarios
           :usa_leader_4_1,
           [8, :usa_rifle_s],
           [2, :usa_m2_browning],
-          [2, :usa_m1_mortar],
+          [2, :usa_m1_81mm],
           :usa_radio_105mm,
         ],
       },

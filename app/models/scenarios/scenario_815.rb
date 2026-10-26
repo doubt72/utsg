@@ -19,7 +19,7 @@ module Scenarios
         [10, :chi_regular_s],
         :chi_type_triple_ten,
         [3, :chi_czeck_lmg],
-        :chi_type_20_mortar,
+        :chi_type_20_81mm,
       ] },
     }.freeze
 

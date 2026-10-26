@@ -19,7 +19,7 @@ module Scenarios
         [16, :chi_elite_s],
         :chi_crew_t,
         [4, :chi_type_24_maxim],
-        [2, :chi_type_20_mortar],
+        [2, :chi_type_20_81mm],
         :chi_75mm_gun,
         :chi_vickers_6_ton,
         :sniper4,

@@ -26,7 +26,7 @@ RSpec.describe Game do
       id: game.id,
       name: game.name,
       scenario: game.scenario,
-      scenario_version: "1.4",
+      scenario_version: "1.5",
       state: game.state,
       owner: user1.username,
       player_one: user1.username,

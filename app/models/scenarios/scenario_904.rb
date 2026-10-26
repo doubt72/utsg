@@ -20,7 +20,7 @@ module Scenarios
         [4, :uk_elite_crew_t],
         [2, :uk_bren_lmg],
         [2, :uk_vickers_mg],
-        [2, :uk_ml_3inch_mortar],
+        [2, :uk_ml_3inch],
         [2, :uk_piat],
         :uk_radio_152mm,
         [2, :uk_qf_17_pounder],

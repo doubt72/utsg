@@ -19,7 +19,7 @@ module Scenarios
         [3, :uk_gurkha_s],
         [3, :uk_indian_s],
         [2, :uk_bren_lmg],
-        :uk_2inch_mortar,
+        :uk_sbml_2inch,
         :uk_ft,
       ] },
     }.freeze

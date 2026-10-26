@@ -18,7 +18,7 @@ module Scenarios
         [2, :usa_leader_4_1],
         [9, :usa_marine_rifle_s],
         [3, :usa_m1917_browning],
-        :usa_m2_mortar,
+        :usa_m2_60mm,
         [7, :foxhole],
       ] },
       "2": { list: [

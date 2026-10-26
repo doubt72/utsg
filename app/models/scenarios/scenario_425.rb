@@ -18,7 +18,7 @@ module Scenarios
         [8, :uk_line_s],
         [4, :uk_bren_lmg],
         :uk_vickers_mg,
-        :uk_ml_3inch_mortar,
+        :uk_ml_3inch,
         :uk_radio_114mm,
         [2, :uk_matilda_ii],
       ] },

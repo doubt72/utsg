@@ -18,7 +18,7 @@ module Scenarios
         [2, :uk_leader_5_1],
         [9, :uk_gurkha_s],
         [2, :uk_lewis_gun],
-        :uk_2inch_mortar,
+        :uk_sbml_2inch,
         :uk_radio_114mm,
       ] },
     }.freeze

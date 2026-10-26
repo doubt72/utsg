@@ -20,7 +20,7 @@ module Scenarios
         [2, :uk_engineer_s],
         [6, :uk_bren_lmg],
         [2, :uk_vickers_mg],
-        [2, :uk_2inch_mortar],
+        [2, :uk_sbml_2inch],
         :uk_radio_152mm,
         [5, :uk_m4_sherman],
         [2, :uk_churchill_vii_viii],

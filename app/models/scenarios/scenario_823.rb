@@ -19,7 +19,7 @@ module Scenarios
         [10, :chi_regular_s],
         [2, :chi_crew_t],
         [4, :chi_type_24_maxim],
-        [2, :chi_type_20_mortar],
+        [2, :chi_type_20_81mm],
         [2, :chi_75mm_gun],
         [3, :chi_armored_car],
         [3, :pillbox],

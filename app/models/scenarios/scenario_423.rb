@@ -21,7 +21,7 @@ module Scenarios
         [2, :uk_leader_4_1],
         [5, :uk_garrison_s],
         [2, :uk_vickers_mg],
-        :uk_ml_3inch_mortar,
+        :uk_ml_3inch,
         [2, :uk_sc],
         :uk_radio_88mm,
       ] },

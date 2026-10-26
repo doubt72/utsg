@@ -18,7 +18,7 @@ module Scenarios
         :uk_leader_4_1,
         [5, :uk_line_s],
         [2, :uk_vickers_mg],
-        [2, :uk_ml_3inch_mortar],
+        [2, :uk_ml_3inch],
         :uk_matilda_ii_cs,
         :uk_crew_t,
         :uk_qf_25_pounder,

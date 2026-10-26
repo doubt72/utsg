@@ -7,7 +7,7 @@ module Scenarios
     ALLIES = ["ussr"].freeze
     AXIS = ["jap"].freeze
     STATUS = ""
-    VERSION = "1.3"
+    VERSION = "1.4"
 
     DATE = [1939, 7, 7].freeze
     LAYOUT = [23, 23, "x"].freeze

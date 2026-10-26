@@ -462,7 +462,7 @@ RSpec.describe Api::V1::ScenariosController do
       expect(response.status).to be == 200
       json = JSON.parse(response.body)
       expect(json["name"]).to be == real_scenario_name
-      expect(json["version"]).to be == "1.4"
+      expect(json["version"]).to be == "1.5"
     end
 
     it "gets cached scenario" do

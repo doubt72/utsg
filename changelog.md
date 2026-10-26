@@ -1,5 +1,7 @@
 # 0.169
 
+- Rebalanced all the machine guns
+- Fix some mortar/MG names
 - Reload game on desync
 - Don't allow players to repair weapons from other faction
 - Add special forest fire rule

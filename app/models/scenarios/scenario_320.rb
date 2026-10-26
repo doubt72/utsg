@@ -20,7 +20,7 @@ module Scenarios
         :usa_m2_browning,
         [4, :usa_m1918_bar],
         :usa_m4105_sherman,
-        :usa_m1_mortar,
+        :usa_m1_81mm,
         [3, :usa_m3a1_half_track],
         :usa_radio_105mm,
         :usa_m10a1,

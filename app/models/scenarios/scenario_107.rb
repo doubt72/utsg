@@ -7,7 +7,7 @@ module Scenarios
     ALLIES = ["uk"].freeze
     AXIS = ["ger"].freeze
     STATUS = ""
-    VERSION = "1.0"
+    VERSION = "1.1"
 
     DATE = [1941, 6, 15].freeze
     LAYOUT = [15, 23, "x"].freeze
@@ -18,7 +18,7 @@ module Scenarios
         :uk_leader_4_1,
         [6, :uk_line_s],
         :uk_bren_lmg,
-        :uk_2inch_mortar,
+        :uk_sbml_2inch,
         [5, :uk_matilda_ii],
         [2, :uk_matilda_ii_cs],
       ] },

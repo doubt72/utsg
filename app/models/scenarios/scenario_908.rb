@@ -21,7 +21,7 @@ module Scenarios
         [12, :usa_marine_rifle_s],
         [6, :usa_m1918_bar],
         [3, :usa_m1917_browning],
-        [2, :usa_m1_mortar],
+        [2, :usa_m1_81mm],
         [4, :usa_sc],
         [2, :usa_radio_8inch],
         [2, :usa_lvta_1],

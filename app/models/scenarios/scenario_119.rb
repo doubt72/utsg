@@ -19,7 +19,7 @@ module Scenarios
         [7, :uk_indian_s],
         [3, :uk_bren_lmg],
         :uk_vickers_mg,
-        :uk_2inch_mortar,
+        :uk_sbml_2inch,
       ] },
     }.freeze
 
@@ -40,7 +40,7 @@ module Scenarios
         :vcf_leader_5_1,
         :vcf_leader_4_1,
         [5, :vcf_colonial_s],
-        [2, :vcf_fm_24_29],
+        [2, :vcf_mac_fm_24_29],
         :vcf_m1914_hotchkiss,
       ] },
     }.freeze

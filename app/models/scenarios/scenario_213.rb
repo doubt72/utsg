@@ -21,7 +21,7 @@ module Scenarios
         [9, :uk_line_s],
         [2, :uk_vickers_mg],
         [3, :uk_bren_lmg],
-        :uk_ml_3inch_mortar,
+        :uk_ml_3inch,
         :uk_radio_152mm,
         [4, :uk_churchill_vii_viii],
         [2, :uk_churchill_crocodile],

@@ -19,7 +19,7 @@ module Scenarios
         [6, :usa_veteran_s],
         [2, :usa_m1918_bar],
         :usa_m1919_browning,
-        :usa_m2_mortar,
+        :usa_m2_60mm,
         :usa_radio_155mm,
         [3, :usa_m4a176_sherman],
         [2, :usa_m26_pershing],

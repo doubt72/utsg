@@ -19,7 +19,7 @@ module Scenarios
         [2, :fra_bar_s],
         [5, :fra_chasseur_s],
         [3, :fra_crew_t],
-        [2, :fra_m1914_hotchkiss],
+        [2, :fra_mac_fm_24_29],
         :fra_brandt_m27_31,
         [2, :fra_25mm_hotchkiss],
         :fra_47mm_apx,

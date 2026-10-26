@@ -18,7 +18,7 @@ module Scenarios
         :chi_leader_5_1,
         [5, :chi_regular_s],
         [2, :chi_type_24_maxim],
-        :chi_type_20_mortar,
+        :chi_type_20_81mm,
       ] },
     }.freeze
 

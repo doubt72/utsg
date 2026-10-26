@@ -20,7 +20,7 @@ module Scenarios
         [7, :uk_line_s],
         [2, :uk_bren_lmg],
         [2, :uk_vickers_mg],
-        :uk_ml_3inch_mortar,
+        :uk_ml_3inch,
         [2, :uk_piat],
         :uk_radio_140mm,
         [3, :uk_m4_sherman],

@@ -7,7 +7,7 @@ module Scenarios
     ALLIES = ["usa"].freeze
     AXIS = ["ger"].freeze
     STATUS = ""
-    VERSION = "1.0"
+    VERSION = "1.1"
 
     DATE = [1944, 1, 24].freeze
     LAYOUT = [15, 23, "x"].freeze
@@ -18,7 +18,7 @@ module Scenarios
         [2, :usa_leader_4_1],
         [10, :usa_rifle_s],
         [4, :usa_m1918_bar],
-        :usa_m1_mortar,
+        :usa_m1_81mm,
         :usa_radio_155mm,
         [2, :usa_m3_gmc],
         [4, :usa_m4_sherman],

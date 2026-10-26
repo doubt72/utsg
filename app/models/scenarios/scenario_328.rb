@@ -20,7 +20,7 @@ module Scenarios
         [10, :uk_line_s],
         [4, :uk_bren_lmg],
         [2, :uk_vickers_mg],
-        [2, :uk_ml_3inch_mortar],
+        [2, :uk_ml_3inch],
         [2, :uk_sc],
         :uk_radio_152mm,
         [4, :uk_sherman_firefly],

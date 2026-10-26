@@ -18,7 +18,7 @@ module Scenarios
         :usa_leader_4_1,
         :usa_m1919_browning,
         :usa_m1917_browning,
-        :usa_m1_mortar,
+        :usa_m1_81mm,
         [2, :usa_rifle_s],
         [3, :usa_philippine_scouts_s],
       ] },

@@ -18,7 +18,7 @@ module Scenarios
         [5, :uk_airborne_s],
         [2, :uk_bren_lmg],
         :uk_vickers_mg,
-        :uk_2inch_mortar,
+        :uk_sbml_2inch,
       ] },
       "3": { list: [
         :uk_leader_5_1,

@@ -19,7 +19,7 @@ module Scenarios
           [2, :uk_leader_4_1],
           [8, :uk_line_s],
           [3, :uk_vickers_mg],
-          [2, :uk_ml_3inch_mortar],
+          [2, :uk_ml_3inch],
         ],
       },
     }.freeze

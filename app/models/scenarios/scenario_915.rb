@@ -19,7 +19,7 @@ module Scenarios
         [2, :uk_leader_4_1],
         [10, :uk_guard_s],
         [6, :uk_bren_lmg],
-        [2, :uk_2inch_mortar],
+        [2, :uk_sbml_2inch],
         :uk_radio_114mm,
         [3, :uk_crusader_i],
         [3, :uk_churchill_i_ii],

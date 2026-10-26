@@ -1,4 +1,5 @@
 Features/Bug Fixes
+  - Sherman Jumbo?
   - Decoy next to hit revealed
   ? Improve animation performance
   + Reload GameDisplay after 2 moves / After desync

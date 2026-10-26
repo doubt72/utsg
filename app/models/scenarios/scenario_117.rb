@@ -18,7 +18,7 @@ module Scenarios
         [6, :uk_garrison_s],
         [2, :uk_bren_lmg],
         :uk_vickers_mg,
-        :uk_ml_3inch_mortar,
+        :uk_ml_3inch,
         :uk_radio_88mm,
         [2, :uk_marmon_h_ac_iiia],
       ] },

@@ -19,7 +19,7 @@ module Scenarios
         [7, :usa_rifle_s],
         [2, :usa_m1917_browning],
         [2, :usa_m1918_bar],
-        :usa_m1_mortar,
+        :usa_m1_81mm,
         [2, :usa_m9_bazooka],
         :usa_radio_155mm,
         [3, :usa_m3a1_half_track],

@@ -18,7 +18,7 @@ module Scenarios
         [2, :chi_leader_4_1],
         [8, :chi_regular_s],
         [2, :chi_type_24_maxim],
-        :chi_type_15_mortar,
+        :chi_type_15_82mm,
         [2, :chi_armored_car],
       ] },
     }.freeze

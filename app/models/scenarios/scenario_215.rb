@@ -18,7 +18,7 @@ module Scenarios
         :usa_leader_5_1,
         [5, :usa_ranger_s],
         [2, :usa_m1918_bar],
-        :usa_m2_4_2inch_mortar,
+        :usa_m2_4_2inch,
         :usa_m1917_browning,
         :usa_m1a1_bazooka,
         [2, :usa_m3_gmc],

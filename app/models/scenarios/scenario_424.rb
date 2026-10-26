@@ -20,7 +20,7 @@ module Scenarios
         [2, :usa_leader_4_1],
         [2, :usa_engineer_s],
         [12, :usa_rifle_s],
-        [2, :usa_m1_mortar],
+        [2, :usa_m1_81mm],
         [6, :usa_m1918_bar],
         :usa_radio_155mm,
         [2, :usa_ft],

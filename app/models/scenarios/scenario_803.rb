@@ -17,7 +17,7 @@ module Scenarios
         :chi_leader_5_1,
         :chi_leader_4_1,
         [6, :chi_regular_s],
-        :chi_type_15_mortar,
+        :chi_type_15_82mm,
         :chi_type_24_maxim,
         [2, :foxhole],
       ] },

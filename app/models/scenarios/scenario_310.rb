@@ -18,7 +18,7 @@ module Scenarios
         :uk_leader_5_2,
         [5, :uk_guard_s],
         [2, :uk_bren_lmg],
-        :uk_ml_3inch_mortar,
+        :uk_ml_3inch,
         :uk_radio_152mm,
         [2, :uk_cromwell],
         [3, :uk_m4_sherman],

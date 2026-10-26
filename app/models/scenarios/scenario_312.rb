@@ -18,7 +18,7 @@ module Scenarios
         [2, :usa_leader_5_1],
         [8, :usa_paratroop_s],
         [3, :usa_m1918_bar],
-        :usa_m2_mortar,
+        :usa_m2_60mm,
         :usa_radio_155mm,
       ] },
     }.freeze
