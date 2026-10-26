@@ -18,7 +18,7 @@ const testUnitData: { [index: string]: string } = {
   usmort2: "usa_M1 81mm_sw", usmort3: "usa_M2 4.2inch_sw", usbaz: "usa_M1 Bazooka_sw",
   usgun: "usa_75mm M1 Pack_gun", usat: "usa_37mm M3_gun", usac: "usa_M3A1 Scout Car_ac",
   ustank: "usa_M4 Sherman_tank", ussg: "usa_M3 Lee_tank", usspg: "usa_M8 Scott_spg",
-  usspat: "usa_M18 Hellcat_spg", usftt: "usa_M3A1 Stuart FT_spg", usftt2: "usa_M4 Sherman Flame_spg",
+  usspat: "usa_M18 Hellcat_spg", usftt: "usa_M3A1 Stuart FT_spg", usftt2: "usa_M4 Sherman FT_spg",
   usht: "usa_M2 Half-track_ht", usht2: "usa_M3 GMC_ht", usht3: "usa_T19/M21 MMC_ht",
   usht4: "usa_LVT-1_ht", usht5: "usa_LVT-2_ht", usht6: "usa_LVT(A)-4_ht", ustruck: "usa_GMC CCKW_truck",
   ustruck2: "usa_GMC DUKW_truck", usjeep: "usa_Jeep_truck", usjeep2: "usa_Jeep .50 MG_truck",

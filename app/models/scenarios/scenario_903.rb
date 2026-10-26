@@ -30,7 +30,7 @@ module Scenarios
         :usa_m1918_bar,
         :usa_m20_greyhound,
         [3, :usa_m36_jackson],
-        [3, :usa_m4a176_sherman],
+        [3, :usa_m476_sherman],
       ] },
     }.freeze
 

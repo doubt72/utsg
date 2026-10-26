@@ -72,13 +72,13 @@ module Utility
               ["uk", "Churchill V-VI", 43], ["uk", "Churchill VII-VIII", 44, { sn: 1 }],
               ["uk", "M3 Stuart", 41], ["uk", "M22 Locust", 42], ["uk", "M24 Chaffee", 44],
               ["uk", "M3 Lee", 41], ["uk", "M3 Grant", 41], ["uk", "M4 Sherman", 42],
-              ["uk", "M4A1(76) Sherman", 43, { sn: 3 }], ["uk", "Sherman Firefly", 43],
+              ["uk", "M4(76) Sherman", 43, { sn: 1 }], ["uk", "Sherman Firefly", 43],
 
               ["usa", "M.-H. CTLS-4", 43], ["usa", "M2A4", 35], ["usa", "M3 Stuart", 41],
               ["usa", "M5 Stuart", 42], ["usa", "M24 Chaffee", 44], ["usa", "M3 Lee", 41],
               ["usa", "M4 Sherman", 42], ["usa", "M4(105) Sherman", 42, { sn: 2 }],
-              ["usa", "M4A1(76) Sherman", 43, { sn: 3 }], ["usa", "M4A3E2 Sherman", 44, { sn: 2 }],
-              ["usa", "M4A3E2(76) Sherman", 44, { sn: 5 }], ["usa", "M26 Pershing", 44],
+              ["usa", "M4(76) Sherman", 43, { sn: 1 }], ["usa", "Sherman Jumbo", 44],
+              ["usa", "M26 Pershing", 44],
 
               ["ussr", "BT-5", 32], ["ussr", "BT-7", 35], ["ussr", "T-26 M33", 33],
               ["ussr", "T-26 M38", 38], ["ussr", "T-26 M39", 39], ["ussr", "T-70", 42],
@@ -89,7 +89,7 @@ module Utility
               ["ussr", "IS-2", 44], ["ussr", "Matilda II", 41], ["ussr", "Valentine", 41],
               ["ussr", "Churchill II", 41], ["ussr", "Churchill III", 42],
               ["ussr", "M3 Stuart", 41, { bd: 4 }], ["ussr", "M3 Grant", 41, { bd: 4 }],
-              ["ussr", "M4 Sherman", 43], ["ussr", "M4A1(76) Sherman", 44, { sn: 3 }],
+              ["ussr", "M4 Sherman", 43], ["ussr", "M4(76) Sherman", 44, { sn: 1 }],
 
               ["vcf", "Renault FT", 40], ["vcf", "SOMUA S35", 40], ["vcf", "Renault R35", 40],
             ].each do |unit|
@@ -140,7 +140,7 @@ module Utility
               ["uk", "Valentine III CS", 40], ["uk", "Churchill Crocodile", 44, { sn: 3 }],
               ["uk", "M10 Achilles", 42], ["uk", "M10 Achilles C", 43],
 
-              ["usa", "M3A1 Stuart FT", 44], ["usa", "M4 Sherman Flame", 44, { sn: 3 }],
+              ["usa", "M3A1 Stuart FT", 44], ["usa", "M4 Sherman FT", 44],
               ["usa", "M10", 42], ["usa", "M10A1", 43], ["usa", "M18 Hellcat", 43],
               ["usa", "M8 Scott", 42], ["usa", "M36 Jackson", 44], ["usa", "M40 GMC", 45],
 

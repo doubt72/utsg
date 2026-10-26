@@ -25,7 +25,7 @@ module Scenarios
         [4, :usa_sc],
         [2, :usa_radio_155mm],
         [4, :usa_m26_pershing],
-        [3, :usa_m4_sherman_flame],
+        [3, :usa_m4_sherman_ft],
         [3, :usa_m40_gmc],
         [4, :usa_m3a1_half_track],
       ] },

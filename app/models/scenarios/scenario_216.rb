@@ -21,7 +21,7 @@ module Scenarios
         [4, :usa_m1918_bar],
         [2, :usa_m9_bazooka],
         :usa_radio_155mm,
-        [3, :usa_m4a3e2_sherman],
+        [3, :usa_sherman_jumbo],
         [3, :usa_m18_hellcat],
         [3, :usa_m3a1_half_track],
         :usa_m20_greyhound,

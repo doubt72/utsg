@@ -22,9 +22,9 @@ module Scenarios
         [2, :usa_ft],
         [4, :usa_sc],
         :usa_radio_155mm,
-        [2, :usa_m4a3e2_sherman],
-        [2, :usa_m4a3e276_sherman],
-        [2, :usa_m4_sherman_flame],
+        [2, :usa_sherman_jumbo],
+        [2, :usa_m476_sherman],
+        [2, :usa_m4_sherman_ft],
         [3, :usa_m3a1_half_track],
       ] },
     }.freeze

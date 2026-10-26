@@ -23,7 +23,7 @@ module Scenarios
         [2, :usa_ft],
         [2, :usa_sc],
         :usa_radio_155mm,
-        [3, :usa_m4a3e2_sherman],
+        [3, :usa_sherman_jumbo],
         :usa_m4105_sherman,
       ] },
       "2": { list: [
@@ -33,7 +33,7 @@ module Scenarios
         :usa_ft,
         :usa_sc,
         :usa_radio_8inch,
-        [2, :usa_m4_sherman_flame],
+        [2, :usa_m4_sherman_ft],
       ] },
       "5": { list: [
         :usa_leader_6_1,

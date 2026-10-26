@@ -22,7 +22,7 @@ module Scenarios
         [2, :usa_m1919_browning],
         :usa_radio_155mm,
         [4, :usa_m4_sherman],
-        [3, :usa_m4a3e2_sherman],
+        [3, :usa_sherman_jumbo],
         [3, :usa_m18_hellcat],
         [4, :usa_m3a1_half_track],
       ] },

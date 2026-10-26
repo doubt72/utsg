@@ -37,8 +37,8 @@ module Scenarios
         :usa_m2_browning,
         [2, :usa_ft],
         :usa_radio_8inch,
-        [3, :usa_m4a3e276_sherman],
-        [2, :usa_m4_sherman_flame],
+        [3, :usa_m476_sherman],
+        [2, :usa_m4_sherman_ft],
         [3, :usa_m3a1_half_track],
       ] },
     }.freeze

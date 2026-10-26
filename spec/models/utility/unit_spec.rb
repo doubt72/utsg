@@ -3591,8 +3591,8 @@ RSpec.describe Utility::Scenario::Units do
               }, e: 1, b: 4, k: 1,
             }, i: "spft",
           }
-          expect(defs[:usa_m4_sherman_flame]).to be == {
-            t: "spg", c: "usa", n: "M4 Sherman Flame", y: 44, s: 5, f: 24, r: 1, v: 5, o: {
+          expect(defs[:usa_m4_sherman_ft]).to be == {
+            t: "spg", c: "usa", n: "M4 Sherman FT", y: 44, s: 5, f: 24, r: 1, v: 5, o: {
               i: 1, ha: {
                 f: 5, s: 3, r: 3,
               }, ta: {

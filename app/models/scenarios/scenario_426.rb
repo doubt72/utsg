@@ -33,7 +33,7 @@ module Scenarios
         :usa_leader_4_1,
         [3, :usa_rifle_s],
         [2, :usa_m1918_bar],
-        [2, :usa_m4_sherman_flame],
+        [2, :usa_m4_sherman_ft],
       ] },
       "5": { list: [
         :usa_leader_5_1,

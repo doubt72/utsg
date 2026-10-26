@@ -21,7 +21,7 @@ module Scenarios
         [2, :usa_sc],
         [4, :usa_m1918_bar],
         :usa_radio_8inch,
-        [2, :usa_m4_sherman_flame],
+        [2, :usa_m4_sherman_ft],
       ] },
       "4": { list: [
         :usa_leader_6_1,
@@ -30,7 +30,7 @@ module Scenarios
         :usa_leader_5_1,
         :usa_ft,
         :usa_sc,
-        [2, :usa_m4a3e2_sherman],
+        [2, :usa_sherman_jumbo],
       ] },
     }.freeze
 
