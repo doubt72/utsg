@@ -46,6 +46,10 @@ export default function DebugIndex() {
             [ <Link to={"/debug/stats/scenarios-p/rsp"}>proto</Link> ]
           </li>
           <li>
+            <Link to={"/debug/stats/scenarios/un"}>united nations</Link>&nbsp;
+            [ <Link to={"/debug/stats/scenarios-p/un"}>proto</Link> ]
+          </li>
+          <li>
             <Link to={"/debug/stats/scenarios/alm"}>allied minors</Link>&nbsp;
             [ <Link to={"/debug/stats/scenarios-p/alm"}>proto</Link> ]
           </li>
@@ -94,6 +98,7 @@ export default function DebugIndex() {
           <li><Link to={"/debug/units/fra"}>french</Link></li>
           <li><Link to={"/debug/units/chi"}>chinese</Link></li>
           <li><Link to={"/debug/units/rsp"}>spanish</Link></li>
+          <li><Link to={"/debug/units/un"}>united nations</Link></li>
           <li><Link to={"/debug/units/alm"}>allied minors</Link></li>
         </ul>
         <ul>
@@ -119,6 +124,7 @@ export default function DebugIndex() {
           <li><Link to={"/debug/units/year/fra"}>french</Link></li>
           <li><Link to={"/debug/units/year/chi"}>chinese</Link></li>
           <li><Link to={"/debug/units/year/rsp"}>spanish</Link></li>
+          <li><Link to={"/debug/units/year/un"}>united nation</Link></li>
           <li><Link to={"/debug/units/year/alm"}>allied minors</Link></li>
         </ul>
         <ul>
@@ -176,6 +182,7 @@ export default function DebugIndex() {
           <li><Link to={"/debug/markers/fra"}>french</Link></li>
           <li><Link to={"/debug/markers/chi"}>chinese</Link></li>
           <li><Link to={"/debug/markers/rsp"}>spanish</Link></li>
+          <li><Link to={"/debug/markers/un"}>united nations</Link></li>
           <li><Link to={"/debug/markers/alm"}>allied minors</Link></li>
         </ul>
         <ul>
@@ -221,6 +228,10 @@ export default function DebugIndex() {
           <li>
             <Link to={"/debug/stats/units/rsp"}>spanish</Link>&nbsp;
             [ <Link to={"/debug/stats/units-p/rsp"}>proto</Link> ]
+          </li>
+          <li>
+            <Link to={"/debug/stats/units/un"}>united nations</Link>&nbsp;
+            [ <Link to={"/debug/stats/units-p/un"}>proto</Link> ]
           </li>
           <li>
             <Link to={"/debug/stats/units/alm"}>allied minors</Link>&nbsp;

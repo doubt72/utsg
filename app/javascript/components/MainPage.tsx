@@ -195,9 +195,9 @@ export default function MainPage() {
             }
             done = true
             // Skip the following countries until we add scenarios
-            const exclNations = [
-              "un", "sk", "doi", "pak",
-              "vie", "isr", "egy", "jor", "syr", "com", "arl"
+            const exclNations: string[] = [
+              // "un", "sk", "doi", "pak",
+              // "vie", "isr", "egy", "jor", "syr", "com", "arl"
             ]
             for (const d of s) {
               if (d.from === key || d.toward === key) { done = false }

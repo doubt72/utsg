@@ -35,8 +35,9 @@ module Utility
         end
 
         def all_factions
+          # not used: doi pak isr arl
           %w[
-            ger ita jap fin vcf axm ussr usa uk fra chi alm rsp nsp com un doi pak isr arl
+            ger ita jap fin vcf axm ussr usa uk fra chi alm rsp nsp com un
           ]
         end
 

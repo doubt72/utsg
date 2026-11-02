@@ -58,11 +58,11 @@ module Utility
               turn32: { mk: 1, type: "turn", v: "sk", v2: "nk" },
               turn33: { mk: 1, type: "turn", v: "un", v2: "nk" },
               turn34: { mk: 1, type: "turn", v: "un", v2: "chc" },
-              turn35: { mk: 1, type: "turn", v: "doi", v2: "pak" },
+              # turn35: { mk: 1, type: "turn", v: "doi", v2: "pak" },
               turn36: { mk: 1, type: "turn", v: "fra", v2: "vie" },
-              turn37: { mk: 1, type: "turn", v: "isr", v2: "syr" },
-              turn38: { mk: 1, type: "turn", v: "isr", v2: "jor" },
-              turn39: { mk: 1, type: "turn", v: "isr", v2: "egy" },
+              # turn37: { mk: 1, type: "turn", v: "isr", v2: "syr" },
+              # turn38: { mk: 1, type: "turn", v: "isr", v2: "jor" },
+              # turn39: { mk: 1, type: "turn", v: "isr", v2: "egy" },
               turn40: { mk: 1, type: "turn", v: "cze", v2: "ger" },
               turn41: { mk: 1, type: "turn", v: "usa", v2: "ussr" },
               turn42: { mk: 1, type: "turn", v: "uk", v2: "ussr" },
@@ -121,7 +121,7 @@ module Utility
             }
           end
 
-          def initiative # rubocop:disable Metrics/PerceivedComplexity
+          def initiative
             lu = {}
             Units.all_factions.each do |nation| # rubocop:disable Metrics/BlockLength
               if nation == "alm"
@@ -145,12 +145,12 @@ module Utility
                 lu[:par_initiative] = { mk: 1, nation: "axm", i: "par", type: "initiative" }
                 next
               end
-              if nation == "arl"
-                lu[:syr_initiative] = { mk: 1, nation: "arl", i: "syr", type: "initiative" }
-                lu[:jor_initiative] = { mk: 1, nation: "arl", i: "jor", type: "initiative" }
-                lu[:egy_initiative] = { mk: 1, nation: "arl", i: "egy", type: "initiative" }
-                next
-              end
+              # if nation == "arl"
+              #   lu[:syr_initiative] = { mk: 1, nation: "arl", i: "syr", type: "initiative" }
+              #   lu[:jor_initiative] = { mk: 1, nation: "arl", i: "jor", type: "initiative" }
+              #   lu[:egy_initiative] = { mk: 1, nation: "arl", i: "egy", type: "initiative" }
+              #   next
+              # end
               if nation == "com"
                 lu[:chc_initiative] = { mk: 1, nation: "chc", i: "chc", type: "initiative" }
                 lu[:nk_initiative] = { mk: 1, nation: "nk", i: "nk", type: "initiative" }
