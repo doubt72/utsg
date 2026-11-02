@@ -18,6 +18,8 @@ module Utility
             [
               ["chi", "M5 Half-track", 42],
 
+              ["com", "BTR-40", 50],
+
               ["fra", "Renault UE", 32], ["fra", "Lorraine 37L", 39], ["fra", "M9 Half-track", 41],
 
               ["ger", "SdKfz 250/1", 41], ["ger", "SdKfz 250/7", 41], ["ger", "SdKfz 250/8", 41],
@@ -33,6 +35,8 @@ module Utility
               ["uk", "U. Carrier Wasp", 44], ["uk", "M5 Half-track", 42],
               ["uk", "Kangaroo", 44],
 
+              ["un", "Universal Carrier", 37, { sn: 1 }], ["un", "M3A1 Half-track", 42],
+
               ["usa", "M2 Half-track", 41], ["usa", "M3 Half-track", 41],
               ["usa", "M3A1 Half-track", 42], ["usa", "M2 Half-track", 41], ["usa", "LVT-1", 41],
               ["usa", "LVT-2", 43], ["usa", "LVT-4", 44], ["usa", "LVT(A)-1", 43],
@@ -40,6 +44,7 @@ module Utility
               ["usa", "T19 HMC", 42], ["usa", "T19/M21 MMC", 42],
 
               ["ussr", "M5 Half-track", 42], ["ussr", "M9 Half-track", 41], ["ussr", "T48 GMC", 42],
+              ["ussr", "BTR-40", 50],
             ].each do |unit|
               ht = { t: "ht", i: "ht" }
               unit.each_with_index do |v, i|
@@ -61,6 +66,8 @@ module Utility
             key = %i[c n i y o]
             [
               ["alm", "Polski Fiat 621", "truck", 35],
+
+              ["com", "GAZ-67", "car", 43],
 
               ["fra", "Laffly S20", "truck", 37], ["fra", "Citroen U23", "truck", 35],
               ["fra", "Dodge WC-51", "truck", 41], ["fra", "Jeep", "car", 41],
@@ -87,6 +94,9 @@ module Utility
               ["uk", "AEC Mk I Deacon", "truck", 42, { sn: 1 }], ["uk", "Dodge WC-51", "truck", 41],
               ["uk", "Jeep", "car", 41], ["uk", "Jeep MG", "car", 41],
               ["uk", "Jeep Vickers .50", "car", 41, { sn: 1 }],
+
+              ["un", "GMC CCKW", "truck", 41], ["un", "Jeep", "car", 41],
+              ["un", "Jeep .50 MG", "car", 42], ["un", "Jeep Recoilless", "car", 46],
 
               ["usa", "Dodge VC G-505", "truck", 40, { sn: 1 }],
               ["usa", "Dodge WC-51", "truck", 41], ["usa", "GMC CCKW", "truck", 41],

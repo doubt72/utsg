@@ -29,14 +29,16 @@ module Utility
               ["chi", "Type 24 Maxim", 24], ["chi", "FN M1930", 30], ["chi", "DP-27", 28],
               ["chi", "Bren LMG", 35], ["chi", "M1914 Hotchkiss", 14, { sn: 1 }],
 
-              ["com", "Czeck LMG", 26], ["com", "Type 24 Maxim", 24],
+              ["com", "Czeck LMG", 26], ["com", "Type 24 Maxim", 24], ["com", "Type 99 LMG", 39],
+              ["com", "Type 92 HMG", 32], ["com", "DP-27", 28], ["com", "SG-43", 43],
+              ["com", "PM M1910", 10], ["com", "DShK", 38],
 
               ["fin", "Vickers MG", 12], ["fin", "LS/26", 30], ["fin", "Maxim M/32-33", 33],
               ["fin", "MG 08/15", 24], ["fin", "DP-27", 40],
 
               ["fra", "Bren LMG", 41], ["fra", "M1918 BAR", 41],
               ["fra", "M1915 Chauchat", 15, { sn: 1 }], ["fra", "M1914 Hotchkiss", 14, { sn: 1 }],
-              ["fra", "MAC FM 24/29", 25],
+              ["fra", "MAC FM 24/29", 25], ["fra", "AA-52", 52],
 
               ["ger", "MG 34", 36], ["ger", "MG 30(t)", 39], ["ger", "MG 42", 42],
               ["ger", "MG 08/15", 17],
@@ -57,8 +59,15 @@ module Utility
 
               ["uk", "Bren LMG", 35], ["uk", "Lewis Gun", 14], ["uk", "Vickers MG", 12],
 
+              ["un", "MAC FM 24/29", 25], ["un", "AA-52", 52], ["un", "Bren LMG", 35],
+              ["un", "Vickers MG", 12], ["un", "Type 99 LMG", 39], ["un", "Type 92 HMG", 32],
+              ["un", "M1918 BAR", 18], ["un", "M1919 Browning", 19, { sn: 1 }],
+              ["un", "M1917 Browning", 17, { sn: 1 }], ["un", "M2 Browning", 33],
+              ["un", "M1941 Johnson", 41],
+
               ["usa", "M1918 BAR", 18], ["usa", "M1919 Browning", 19, { sn: 1 }],
               ["usa", "M1917 Browning", 17, { sn: 1 }], ["usa", "M2 Browning", 33],
+              ["usa", "M1941 Johnson", 41],
 
               ["ussr", "DP-27", 28], ["ussr", "SG-43", 43], ["ussr", "PM M1910", 10],
               ["ussr", "DShK", 38],
@@ -88,6 +97,8 @@ module Utility
               ["chi", "M1 81mm", 42], ["chi", "Type 31 60mm", 42],
               ["chi", "M2 4.2inch", 43],
 
+              ["com", "82-PM-41", 41], ["com", "120-PM-43", 43], ["com", "Type 31 60mm", 42],
+
               ["fin", "81mm Tampella", 27],
 
               ["fra", "Brandt M1935", 35], ["fra", "Brandt M27/31", 27], ["fra", "M1917 Fabry", 18],
@@ -108,11 +119,14 @@ module Utility
               ["uk", "SBML 2inch", 37], ["uk", "ML 3inch", 33],
               ["uk", "ML 4.2inch", 40],
 
+              ["un", "SBML 2inch", 37], ["un", "ML 3inch", 33], ["un", "ML 4.2inch", 40],
+              ["un", "M2 60mm", 40], ["un", "M1 81mm", 35], ["un", "M2 4.2inch", 43],
+
               ["usa", "M2 60mm", 40], ["usa", "M1 81mm", 35],
               ["usa", "M2 4.2inch", 43],
 
               ["ussr", "RM-38", 38], ["ussr", "82-BM-37", 37], ["ussr", "82-PM-41", 41],
-              ["ussr", "120-PM-38", 39],
+              ["ussr", "120-PM-38", 39], ["ussr", "120-PM-43", 43],
             ].each do |unit|
               mortar = { t: "sw", i: "mortar" }
               unit.each_with_index do |v, i|
@@ -126,11 +140,13 @@ module Utility
 
           def support_weapons
             lu = {}
-            key = %i[c n y]
+            key = %i[c n y o]
             [
               ["alm", "PIAT", 42],
 
               ["chi", "M1A1 Bazooka", 43],
+
+              ["com", "90mm Rocket", 46], ["com", "57mm Recoilless", 46, { sn: 1 }],
 
               ["fin", "Panzerfaust", 43], ["fin", "Panzerschreck", 43],
 
@@ -140,7 +156,13 @@ module Utility
 
               ["uk", "PIAT", 42],
 
+              ["un", "M9A1 Bazooka", 45], ["un", "57mm Recoilless", 46, { sn: 1 }],
+              ["un", "75mm Recoilless", 46, { sn: 1 }], ["un", "Super Bazooka", 46],
+
               ["usa", "M1 Bazooka", 42], ["usa", "M1A1 Bazooka", 43], ["usa", "M9 Bazooka", 43],
+              ["usa", "M9A1 Bazooka", 45], ["usa", "57mm Recoilless", 46, { sn: 1 }],
+              ["usa", "75mm Recoilless", 46, { sn: 1 }], ["usa", "Super Bazooka", 46],
+
               ["ussr", "Ampulomet", 41],
             ].each do |unit|
               rocket = { t: "sw", i: "rocket", s: 1 }
@@ -183,6 +205,8 @@ module Utility
 
               ["axm", "Radio 10.5cm", 36],
 
+              ["com", "Radio 10.5cm", 43], ["com", "Radio 122mm", 39], ["com", "Radio 152mm", 37],
+
               ["fra", "Radio 105mm", 13], ["fra", "Radio 155mm", 17],
 
               ["ger", "Radio 10.5cm", 35], ["ger", "Radio 15cm", 34], ["ger", "Radio 17cm", 41],
@@ -199,8 +223,11 @@ module Utility
               ["uk", "Radio 88mm", 40], ["uk", "Radio 114mm", 38], ["uk", "Radio 140mm", 41],
               ["uk", "Radio 152mm", 16], ["uk", "Radio 183mm", 40],
 
+              ["un", "Radio 105mm", 41], ["un", "Radio 155mm", 42], ["un", "Radio 140mm", 42],
+              ["un", "Radio 203mm", 46],
+
               ["usa", "Radio 75mm", 32], ["usa", "Radio 105mm", 41], ["usa", "Radio 155mm", 42],
-              ["usa", "Radio 8inch", 42],
+              ["usa", "Radio 8inch", 42], ["usa", "Radio 203mm", 46],
 
               ["ussr", "Radio 76mm", 37], ["ussr", "Radio 85mm", 43], ["ussr", "Radio 122mm", 39],
               ["ussr", "Radio 152mm", 37],

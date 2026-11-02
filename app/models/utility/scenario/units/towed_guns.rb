@@ -20,6 +20,8 @@ module Utility
 
               ["chi", "Bofors 75mm", 23], ["chi", "75mm M1 Pack", 42], ["chi", "75mm Gun", 32],
 
+              ["com", "76mm ZiS-3", 28],
+
               ["fin", "75mm Gun", 32],
 
               ["fra", "75mm M1897", 0], ["fra", "37mm M1916", 16],
@@ -40,7 +42,10 @@ module Utility
 
               ["uk", "QF 25-Pounder", 40], ["uk", "QF 25Pdr Short", 43], ["uk", "QF 4.5inch", 8],
 
-              ["usa", "75mm M1 Pack", 27], ["usa", "75mm M1897", 40],
+              ["un", "75mm M1 Pack", 27], ["un", "105mm M101", 40], ["un", "QF 25-Pounder", 40],
+              ["un", "Type 94 75mm", 35],
+
+              ["usa", "75mm M1 Pack", 27], ["usa", "75mm M1897", 40], ["usa", "105mm M101", 40],
 
               ["ussr", "76mm ZiS-3", 28],
 
@@ -65,6 +70,9 @@ module Utility
               ["alm", "4.7cm KPUV vz. 38", 36, { sn: 3 }],
 
               ["axm", "Bofors 37mm AT", 35, { sn: 1 }], ["axm", "3.7cm Pak 36", 36],
+
+              ["com", "45mm M-42", 42], ["com", "57mm ZiS-2", 41], ["com", "100mm BS-3", 44],
+              ["com", "100mm KS-19", 47], ["com", "85mm 52-K", 39],
 
               ["chi", "Type 30 AT", 36], ["chi", "45mm 19-K", 34], ["chi", "37mm M3", 42],
 
@@ -93,10 +101,14 @@ module Utility
               ["uk", "QF 2-Pounder", 36], ["uk", "QF 6Pdr Mk II", 41], ["uk", "QF 6Pdr Mk IV", 41],
               ["uk", "QF 17-Pounder", 43],
 
+              ["un", "QF 17-Pounder", 43], ["un", "90mm M2", 45],
+
               ["usa", "37mm M3", 38], ["usa", "57mm M1", 42], ["usa", "3inch M5", 43],
+              ["usa", "90mm M2", 45],
 
               ["ussr", "45mm 19-K", 34], ["ussr", "45mm 53-K", 37], ["ussr", "45mm M-42", 42],
               ["ussr", "57mm ZiS-2", 41], ["ussr", "76mm F-22", 37], ["ussr", "100mm BS-3", 44],
+              ["ussr", "100mm KS-19", 47], ["ussr", "85mm 52-K", 39],
 
               ["vcf", "25mm Hotchkiss", 34, { sn: 1 }], ["vcf", "47mm APX", 39],
             ].each do |unit|

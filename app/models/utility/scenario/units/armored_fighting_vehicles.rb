@@ -29,6 +29,8 @@ module Utility
               # Slovak
               ["axm", "LT vz. 35", 38], ["axm", "LT vz. 38", 38],
 
+              ["com", "IS-2", 44], ["com", "T-34-85 M44", 44],
+
               ["chi", "T-26", 38], ["chi", "Vickers 6-Ton", 34], ["chi", "M3 Stuart", 42],
               ["chi", "M4 Sherman", 43],
 
@@ -73,12 +75,19 @@ module Utility
               ["uk", "M3 Stuart", 41], ["uk", "M22 Locust", 42], ["uk", "M24 Chaffee", 44],
               ["uk", "M3 Lee", 41], ["uk", "M3 Grant", 41], ["uk", "M4 Sherman", 42],
               ["uk", "M4(76) Sherman", 43, { sn: 1 }], ["uk", "Sherman Firefly", 43],
+              ["uk", "Centurion III", 47],
+
+              ["un", "Cromwell", 44], ["un", "Comet", 44],
+              ["un", "Churchill VII-VIII", 44, { sn: 1 }], ["un", "M4 Sherman", 42],
+              ["un", "Centurion III", 47], ["un", "M5 Stuart", 42], ["un", "M24 Chaffee", 44],
+              ["un", "M4(76) Sherman", 43, { sn: 1 }], ["un", "Sherman Jumbo", 44],
+              ["un", "M26 Pershing", 44], ["un", "M46 Patton", 49],
 
               ["usa", "M.-H. CTLS-4", 43], ["usa", "M2A4", 35], ["usa", "M3 Stuart", 41],
               ["usa", "M5 Stuart", 42], ["usa", "M24 Chaffee", 44], ["usa", "M3 Lee", 41],
               ["usa", "M4 Sherman", 42], ["usa", "M4(105) Sherman", 42, { sn: 2 }],
               ["usa", "M4(76) Sherman", 43, { sn: 1 }], ["usa", "Sherman Jumbo", 44],
-              ["usa", "M26 Pershing", 44],
+              ["usa", "M26 Pershing", 44], ["usa", "M46 Patton", 49],
 
               ["ussr", "BT-5", 32], ["ussr", "BT-7", 35], ["ussr", "T-26 M33", 33],
               ["ussr", "T-26 M38", 38], ["ussr", "T-26 M39", 39], ["ussr", "T-70", 42],
@@ -114,6 +123,8 @@ module Utility
               # Hungarian
               ["axm", "Fiat L3", 35],
 
+              ["com", "SU-76M", 42], ["com", "ISU-152", 43],
+
               ["fra", "AMR 35 ZT3", 36], ["fra", "M10", 43],
 
               ["ger", "PzKpfw II Flamm", 40, { sn: 1 }], ["ger", "StuG III-A", 40],
@@ -140,9 +151,13 @@ module Utility
               ["uk", "Valentine III CS", 40], ["uk", "Churchill Crocodile", 44, { sn: 3 }],
               ["uk", "M10 Achilles", 42], ["uk", "M10 Achilles C", 43],
 
+              ["un", "M10 Achilles C", 43], ["un", "M36 Jackson", 44], ["un", "M40 GMC", 45],
+              ["un", "M42B5 Sherman", 46], ["un", "M43 GMC", 46],
+
               ["usa", "M3A1 Stuart FT", 44], ["usa", "M4 Sherman FT", 44],
               ["usa", "M10", 42], ["usa", "M10A1", 43], ["usa", "M18 Hellcat", 43],
               ["usa", "M8 Scott", 42], ["usa", "M36 Jackson", 44], ["usa", "M40 GMC", 45],
+              ["usa", "M42B5 Sherman", 46], ["usa", "M7 Priest", 42], ["usa", "M43 GMC", 46],
 
               ["ussr", "KhT-26", 33], ["ussr", "SU-76", 42], ["ussr", "SU-76M", 42],
               ["ussr", "SU-85", 43], ["ussr", "SU-100", 44], ["ussr", "SU-122", 42],
@@ -178,6 +193,8 @@ module Utility
 
               ["chi", "Armored Car", 29, {}], ["chi", "M3A1 Scout Car", 39, { sn: 1 }],
 
+              ["com", "BA-64", 42],
+
               ["fra", "AMC Schneider P16", 28, { sn: 4 }], ["fra", "White AM AC", 15],
               ["fra", "Panhard 178", 37], ["fra", "M8 Greyhound", 43],
 
@@ -194,6 +211,9 @@ module Utility
               ["uk", "Humber LRC", 40], ["uk", "White Scout Car", 39, { sn: 1 }],
               ["uk", "M8 Greyhound", 43], ["uk", "Marmon-H AC IIIA", 41, { sn: 2 }],
               ["uk", "Marmon-H AC IV", 43, { sn: 1 }], ["uk", "Marmon-H AC IVF", 43, { sn: 2 }],
+
+              ["un", "Daimler AC", 41], ["un", "AEC AC II", 42], ["un", "M8 Greyhound", 43],
+              ["un", "M20 Greyhound", 43, { sn: 1 }],
 
               ["usa", "M3A1 Scout Car", 39, { sn: 1 }], ["usa", "M8 Greyhound", 43],
               ["usa", "M20 Greyhound", 43, { sn: 1 }],

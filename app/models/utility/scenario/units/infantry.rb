@@ -7,7 +7,7 @@ module Utility
         class << self
           # rubocop:disable Metrics/MethodLength
           def infantry
-            leaders.merge(squads_and_teams).merge(crews)
+            leaders.merge(squads_and_teams).merge(ecw_squads_and_teams).merge(crews)
           end
 
           # These are purely generated
@@ -155,6 +155,50 @@ module Utility
               squad[:o][:bv] = squad[:v] if squad[:v] < 4
 
               name = "#{squad[:c]}_#{Units.sanitize(squad[:n])}"
+              lu[:"#{name}_s"] = squad
+            end
+            lu
+          end
+
+          # These are fairly arbitrary and may change
+          def ecw_squads_and_teams
+            lu = {}
+            key = %i[c n y m f r v o]
+            [
+              ["chi", "Elite", 46, 4, 12, 4, 5, { a: 1 }],
+              ["chi", "Regular", 46, 3, 10, 4, 4, {}],
+              ["chi", "Conscript", 46, 2, 8, 3, 3, {}],
+
+              ["com", "Irregular", 46, 2, 8, 3, 3, {}],
+              ["com", "Viet Minh", 46, 4, 10, 4, 5, { a: 1 }],
+              ["com", "PVA", 46, 3, 10, 4, 4, {}],
+              ["com", "PLA", 46, 3, 10, 4, 4, {}],
+              ["com", "KPA", 46, 3, 10, 4, 4, {}],
+
+              ["fra", "Génie", 46, 4, 16, 3, 5, { a: 1, s: 1, eng: 1 }],
+              ["fra", "Legionnaire", 46, 4, 12, 5, 5, { s: 1 }],
+              ["fra", "Tirailleur", 46, 4, 12, 5, 5, { a: 1 }],
+              ["fra", "Colonial", 46, 2, 10, 3, 3, {}],
+
+              ["un", "Engineer", 46, 4, 16, 3, 5, { a: 1, s: 1, eng: 1 }],
+              ["un", "Paratroop", 46, 4, 12, 4, 5, { a: 1, s: 1 }],
+              ["un", "Ranger", 46, 4, 12, 4, 5, { a: 1, s: 1 }],
+              ["un", "Marine", 46, 4, 12, 6, 5, { a: 1, s: 1 }],
+              ["un", "Veteran", 46, 4, 12, 6, 4, { s: 1 }],
+              ["un", "Army", 46, 3, 12, 6, 4, { s: 1 }],
+              ["un", "Line", 46, 3, 12, 4, 4, { s: 1 }],
+              ["un", "Gurkha", 46, 4, 12, 5, 5, { a: 1 }],
+              ["un", "Green", 46, 2, 10, 4, 3, {}],
+              ["un", "ROK Army", 46, 2, 10, 4, 4, {}],
+            ].each do |unit|
+              squad = { t: "sqd", i: "squad", s: 6 }
+              unit.each_with_index do |v, i|
+                squad[key[i]] = v
+              end
+
+              squad[:o][:bv] = squad[:v] if squad[:v] < 4
+
+              name = "#{squad[:c]}_ecw_#{Units.sanitize(squad[:n])}"
               lu[:"#{name}_s"] = squad
             end
             lu

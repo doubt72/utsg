@@ -112,6 +112,10 @@ module Utility
               type_20_81mm: :brandt_m27_31,
               type_15_82mm: :"82_bm_37",
               type_31_60mm: :m2_60mm,
+              "120_pm_43": :"120_pm_38",
+              # HE AT
+              m9a1_bazooka: :m9_bazooka,
+              "90mm_rocket": :super_bazooka,
               # AT Rifles
               "14mm_pst_kiv_37": :boys_at_rifle,
               "8mm_pst_kiv_38": :wz__35_at_rifle,
@@ -119,6 +123,7 @@ module Utility
               radio_7_5cm: :radio_75mm,
               radio_10cm: :radio_100mm,
               radio_10_5cm: :radio_105mm,
+              radio_203mm: :radio_8inch,
               # Field Guns
               "75mm_gun": :"75mm_m1897",
               "gpf_155mm_k418": :"15cm_sig_33",
@@ -184,6 +189,8 @@ module Utility
               "dp_27": { fp: 6, rng: 8, mv: 0, ass: true, rpd: true, sz: 1 },
               "sg_43": { fp: 8, rng: 10, mv: -1, rpd: true, sz: 1 },
               "dshk": { fp: 24, rng: 12, mv: -2, rpd: true, sz: 1 },
+              "m1941_johnson": { fp: 8, rng: 6, mv: 0, ass: true, rpd: true, sz: 1 },
+              "aa_52": { fp: 12, rng: 12, mv: -1, rpd: true, sz: 1 },
               # Mortars
               "brandt_m1935": { fp: 20, rng: 15, mrng: 3, mv: -1, smk: true, tgt: true, brk: 3, area: true, sz: 1 },
               "brandt_m27_31": { fp: 20, rng: 17, mrng: 3, mv: -1, smk: true, tgt: true, brk: 3, area: true, sz: 1 },
@@ -219,6 +226,9 @@ module Utility
               "m1a1_bazooka": { fp: 10, rng: 4, mv: 0, tgt: true, sz: 1, brk: 4, at: true },
               "m9_bazooka": { fp: 10, rng: 4, mv: 0, tgt: true, sz: 1, brk: 4, at: true },
               "ampulomet": { fp: 16, rng: 7, mv: -1, tgt: true, sz: 1, brk: 5, flm: true, area: true },
+              "75mm_recoilless": { fp: 16, rng: 18, mv: 2, tgt: true, sz: 2, brk: 4, at: true },
+              "57mm_recoilless": { fp: 10, rng: 15, mv: -2, tgt: true, sz: 1, brk: 4, at: true },
+              "super_bazooka": { fp: 16, rng: 7, mv: -1, tgt: true, sz: 1, brk: 4, at: true },
               # AT Rifles
               "boys_at_rifle": { fp: 3, rng: 4, mv: -1, tgt: true, at: true, fix: 18, sz: 1 },
               "s_18_100": { fp: 3, rng: 6, mv: -2, tgt: true, at: true, fix: 18, sz: 1 },
@@ -263,6 +273,7 @@ module Utility
               "qf_4_5inch": { fp: 32, rng: 24, mv: 1, tgt: true, fix: 18, gun: true, smk: true, crw: true, sz: 3, twsz: 3 },
               "75mm_m1_pack": { fp: 16, rng: 20, mv: 1, tgt: true, fix: 18, gun: true, smk: true, crw: true, sz: 3, twsz: 3 },
               "76mm_zis_3": { fp: 16, rng: 28, mv: 1, tgt: true, fix: 18, gun: true, smk: true, crw: true, sz: 3, twsz: 3 },
+              "105mm_m101": { fp: 24, rng: 20, mv: 1, tgt: true, fix: 18, gun: true, smk: true, crw: true, sz: 3, twsz: 3 },
               # AT Guns
               "3_7cm_kpuv_vz__37": { fp: 6, rng: 12, mv: 2, tgt: true, fix: 18, at: true, crw: true, sz: 2, twsz: 2 },
               "4_7cm_kpuv_vz__38": { fp: 10, rng: 12, mv: 1, tgt: true, fix: 18, at: true, crw: true, sz: 3, twsz: 3 },
@@ -297,6 +308,9 @@ module Utility
               "76mm_f_22": { fp: 20, rng: 24, mv: 1, tgt: true, fix: 18, at: true, crw: true, sz: 3, twsz: 4 },
               "100mm_bs_3": { fp: 64, rng: 40, mv: 1, tgt: true, fix: 18, at: true, crw: true, sz: 3, twsz: 4 },
               "bofors_37mm_at": { fp: 8, rng: 12, mv: 2, tgt: true, fix: 18, at: true, crw: true, sz: 2, twsz: 2 },
+              "100mm_ks_19": { fp: 80, rng: 40, mv: 1, tgt: true, fix: 18, at: true, crw: true, sz: 3, twsz: 4 },
+              "85mm_52_k": { fp: 32, rng: 24, mv: 1, tgt: true, fix: 18, at: true, crw: true, sz: 3, twsz: 3 },
+              "90mm_m2": { fp: 40, rng: 32, mv: 1, tgt: true, fix: 18, at: true, crw: true, sz: 3, twsz: 4 },
               # Tank Weapons
               "hotchkiss_13_2mm": { fp: 16, rng: 12, mv: 0, rpd: true, sz: 1 },
               "mac_m1931": { fp: 6, rng: 10, mv: 0, rpd: true, sz: 1 },
@@ -353,6 +367,8 @@ module Utility
               "zis_s_53": { fp: 32, rng: 32, tgt: true, fix: 18, at: true },
               "a_19": { fp: 80, rng: 40, tgt: true, fix: 18, at: true },
               "d_10s": { fp: 80, rng: 40, tgt: true, fix: 18, at: true },
+              "203mm_m115": { fp: 80, rng: 32, tgt: true, fix: 18, gun: true, smk: true },
+              "qf_20pdr": { fp: 96, rng: 40, tgt: true, fix: 18, at: true },
             }
           end
 
@@ -540,6 +556,7 @@ module Utility
               "u__carrier_6pdr": { sz: 3, mv: 7, wpn: :"qf_6_pounder", arm: [0, 0, 0, -1] },
               "u__carrier_wasp": { sz: 3, mv: 7, wpn: :"ft", arm: [0, 0, 0, -1] },
               "kangaroo": { sz: 4, mv: 5, wpn: :"m2_browning", trn: 3, arm: [5, 3, 3, -1] },
+              "centurion_iii": { sz: 7, mv: 5, wpn: :"qf_20pdr", arm: [7, 4, 4], trt: [9, 6, 6] },
               # US Armored Vehicles
               "m2a4": { sz: 3, mv: 7, wpn: :"37mm_m3", arm: [2, 2, 2], trt: [2, 2, 2] },
               "m3_stuart": { sz: 3, mv: 5, wpn: :"37mm_m3", arm: [3, 2, 2], trt: [4, 3, 3] },
@@ -579,6 +596,10 @@ module Utility
               "lvta_1": { sz: 4, mv: 5, wpn: :"37mm_m3", amp: true, bd: 4, trn: 3, arm: [1, 0, 0], trt: [4, 3, 3] },
               "lvta_2": { sz: 4, mv: 5, wpn: :"m2_browning", amp: true, bd: 3, trn: 3, arm: [1, 0, 0, -1] },
               "lvta_4": { sz: 5, mv: 5, wpn: :"75mm_m2_m3", amp: true, bd: 3, trn: 3, arm: [1, 0, 0], trt: [4, 3, 3, -1] },
+              "m42b5_sherman": { sz: 5, mv: 5, wpn: :"105mm_m4", spn: :"ft_croc", arm: [4, 3, 3], trt: [5, 4, 4] },
+              "m46_patton": { sz: 7, mv: 6, wpn: :"90mm_m3", arm: [5, 5, 5], trt: [7, 5, 5] },
+              "m7_priest": { sz: 6, mv: 4, wpn: :"105mm_m4", arm: [4, 1, 1, -1] },
+              "m43_gmc": { sz: 6, mv: 5, wpn: :"203mm_m115", arm: [1, 1, 1, -1] },
               # USSR Armored Vehicles
               "bt_5": { sz: 3, mv: 9, wpn: :"45mm_19_k", arm: [1, 1, 1], trt: [1, 1, 1] },
               "bt_7": { sz: 3, mv: 9, wpn: :"45mm_19_k", arm: [1, 1, 1], trt: [1, 1, 1] },
@@ -611,6 +632,7 @@ module Utility
               "ba_10": { sz: 3, mv: 3, wpn: :"45mm_19_k", whl: true, bd: 3, trn: 1, arm: [1, 0, 0], trt: [1, 1, 1] },
               "ba_20": { sz: 3, mv: 5, wpn: :"dp_27", whl: true, trn: 1, arm: [0, 0, 0], trt: [0, 0, 0] },
               "ba_64": { sz: 3, mv: 5, wpn: :"dp_27", whl: true, trn: 1, arm: [1, 0, 0], trt: [0, 0, 0] },
+              "btr_40": { sz: 3, mv: 5, wpn: :"sg_43", trn: 3, ctw: true, arm: [0, 0, 0, -1] },
               # Unarmored Vehicles
               "laffly_s20": { sz: 4, mv: 5, whl: true, trn: 3, ctw: true },
               "citroen_u23": { sz: 3, mv: 5, whl: true, trn: 3, ctw: true },
@@ -664,6 +686,7 @@ module Utility
               "gaz_aaa": { sz: 4, mv: 5, whl: true, trn: 3, ctw: true },
               "gaz_mm": { sz: 3, mv: 5, whl: true, trn: 3, ctw: true },
               "zis_5": { sz: 4, mv: 5, whl: true, trn: 3, ctw: true },
+              "jeep_recoilless": { sz: 2, mv: 5, wpn: :"57mm_recoilless", whl: true, ctw: true },
               # Cavalry
               "bmw_r75": { sz: 3, mv: 6, whl: true, trn: 3 },
               "zundapp_ks_750": { sz: 3, mv: 6, whl: true, trn: 3 },
