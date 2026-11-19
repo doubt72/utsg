@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Falling Tide"
     ALLIES = ["uk"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "p"
-    VERSION = "0.1"
+    STATUS = "a"
+    VERSION = "0.2"
 
     DATE = [1940, 9, 8].freeze
     LAYOUT = [32, 23, "x"].freeze

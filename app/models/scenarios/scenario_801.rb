@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Somosierra Pass"
     ALLIES = ["rsp"].freeze
     AXIS = ["nsp"].freeze
-    STATUS = "p"
-    VERSION = "0.1"
+    STATUS = "a"
+    VERSION = "0.2"
 
     DATE = [1936, 7, 29].freeze
     LAYOUT = [15, 23, "x"].freeze

@@ -6,8 +6,8 @@ module Scenarios
     NAME = "S-Tag"
     ALLIES = ["uk"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "p"
-    VERSION = "0.1"
+    STATUS = "a"
+    VERSION = "0.2"
 
     DATE = [1940, 9, 8].freeze
     LAYOUT = [23, 36, "x"].freeze

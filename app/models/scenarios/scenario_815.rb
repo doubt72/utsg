@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Nenjiang Bridge"
     ALLIES = ["chi"].freeze
     AXIS = ["jap"].freeze
-    STATUS = "p"
-    VERSION = "0.1"
+    STATUS = "a"
+    VERSION = "0.2"
 
     DATE = [1931, 11, 4].freeze
     LAYOUT = [15, 23, "x"].freeze

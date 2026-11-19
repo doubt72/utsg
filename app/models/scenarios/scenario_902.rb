@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Infernal Machines"
     ALLIES = ["cze"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "p"
-    VERSION = "0.1"
+    STATUS = "a"
+    VERSION = "0.2"
 
     DATE = [1938, 10, 3].freeze
     LAYOUT = [23, 23, "x"].freeze

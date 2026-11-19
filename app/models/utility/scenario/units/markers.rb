@@ -57,7 +57,7 @@ module Utility
               turn31: { mk: 1, type: "turn", v: "bol", v2: "par" },
               turn32: { mk: 1, type: "turn", v: "sk", v2: "nk" },
               turn33: { mk: 1, type: "turn", v: "un", v2: "nk" },
-              turn34: { mk: 1, type: "turn", v: "un", v2: "chc" },
+              turn34: { mk: 1, type: "turn", v: "un", v2: "pva" },
               # turn35: { mk: 1, type: "turn", v: "doi", v2: "pak" },
               turn36: { mk: 1, type: "turn", v: "fra", v2: "vie" },
               # turn37: { mk: 1, type: "turn", v: "isr", v2: "syr" },
@@ -153,6 +153,7 @@ module Utility
               # end
               if nation == "com"
                 lu[:chc_initiative] = { mk: 1, nation: "chc", i: "chc", type: "initiative" }
+                lu[:pva_initiative] = { mk: 1, nation: "pva", i: "pva", type: "initiative" }
                 lu[:nk_initiative] = { mk: 1, nation: "nk", i: "nk", type: "initiative" }
                 lu[:vie_initiative] = { mk: 1, nation: "vie", i: "vie", type: "initiative" }
                 next

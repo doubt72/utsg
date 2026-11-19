@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Ketsugō"
     ALLIES = ["usa"].freeze
     AXIS = ["jap"].freeze
-    STATUS = "p"
-    VERSION = "0.1"
+    STATUS = "a"
+    VERSION = "0.2"
 
     DATE = [1946, 5, 15].freeze
     LAYOUT = [23, 36, "x"].freeze

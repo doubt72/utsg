@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Operation Coronet"
     ALLIES = ["usa"].freeze
     AXIS = ["jap"].freeze
-    STATUS = "p"
-    VERSION = "0.1"
+    STATUS = "a"
+    VERSION = "0.2"
 
     DATE = [1946, 4, 1].freeze
     LAYOUT = [32, 23, "x"].freeze

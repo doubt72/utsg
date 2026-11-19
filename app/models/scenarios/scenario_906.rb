@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Twilight of the Gods"
     ALLIES = ["usa"].freeze
     AXIS = ["ussr"].freeze
-    STATUS = "p"
-    VERSION = "0.1"
+    STATUS = "a"
+    VERSION = "0.2"
 
     DATE = [1946, 5, 9].freeze
     LAYOUT = [23, 23, "x"].freeze

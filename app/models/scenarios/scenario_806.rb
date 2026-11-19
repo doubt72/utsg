@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Arganda Crossing"
     ALLIES = ["rsp"].freeze
     AXIS = ["nsp"].freeze
-    STATUS = "p"
-    VERSION = "0.1"
+    STATUS = "a"
+    VERSION = "0.2"
 
     DATE = [1937, 2, 11].freeze
     LAYOUT = [23, 23, "x"].freeze

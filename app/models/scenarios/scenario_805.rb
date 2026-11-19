@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Ganale Doria"
     ALLIES = ["eth"].freeze
     AXIS = ["ita"].freeze
-    STATUS = "p"
-    VERSION = "0.1"
+    STATUS = "a"
+    VERSION = "0.2"
 
     DATE = [1936, 1, 12].freeze
     LAYOUT = [23, 23, "x"].freeze

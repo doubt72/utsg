@@ -101,7 +101,7 @@ module Utility
               ["uk", "QF 2-Pounder", 36], ["uk", "QF 6Pdr Mk II", 41], ["uk", "QF 6Pdr Mk IV", 41],
               ["uk", "QF 17-Pounder", 43],
 
-              ["un", "QF 17-Pounder", 43], ["un", "90mm M2", 45],
+              ["un", "QF 17-Pounder", 43], ["un", "57mm M1", 42], ["un", "90mm M2", 45],
 
               ["usa", "37mm M3", 38], ["usa", "57mm M1", 42], ["usa", "3inch M5", 43],
               ["usa", "90mm M2", 45],

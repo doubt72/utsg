@@ -6,8 +6,8 @@ module Scenarios
     NAME = "No Roads to Madrid"
     ALLIES = ["rsp"].freeze
     AXIS = ["nsp"].freeze
-    STATUS = "p"
-    VERSION = "0.1"
+    STATUS = "a"
+    VERSION = "0.2"
 
     DATE = [1937, 3, 13].freeze
     LAYOUT = [23, 36, "x"].freeze

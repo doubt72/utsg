@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Patton's Charge"
     ALLIES = ["usa"].freeze
     AXIS = ["ussr"].freeze
-    STATUS = "p"
-    VERSION = "0.1"
+    STATUS = "a"
+    VERSION = "0.2"
 
     DATE = [1945, 8, 29].freeze
     LAYOUT = [32, 23, "x"].freeze

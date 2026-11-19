@@ -6,8 +6,8 @@ module Scenarios
     NAME = "London Bridges"
     ALLIES = ["uk"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "p"
-    VERSION = "0.1"
+    STATUS = "a"
+    VERSION = "0.2"
 
     DATE = [1940, 10, 25].freeze
     LAYOUT = [23, 23, "x"].freeze

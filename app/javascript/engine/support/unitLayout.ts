@@ -293,6 +293,10 @@ export function firepowerLayout(counter: Counter): CounterLayout | false {
     if (counter.unit.offBoard) {
       path = hexPath(loc.yDelta(+0.5), 11, false)
       size = 12.5
+    } else if (counter.unit.canCarrySupport) {
+      if (!counter.unit.assault) {
+        size = 16
+      }
     }
     if (counter.unit.antiTank || counter.unit.assault || counter.unit.offBoard) {
       style.stroke = "black"

@@ -29,7 +29,7 @@ module Utility
         { name: "Japanese", code: "jap", nations: ["jap"] },
         { name: "Finnish", code: "fin", nations: ["fin"] },
         { name: "Spanish", code: "nsp", nations: ["nsp"] },
-        { name: "Communist", code: "com", nations: %w[chc nk vie ussr] }, # includes ussr
+        { name: "Communist", code: "com", nations: %w[chc pva nk vie ussr] }, # includes ussr
         # ...Do we really need these? -- minors instead
         # Not going to use these after all
         # { name: "Pakistani", code: "pak", nations: ["pak"] },
@@ -90,6 +90,7 @@ module Utility
           "chg" => "Beiyang Chinese",
 
           "nk" => "North Korean",
+          "pva" => "Communist Chinese",
           "vie" => "Viet Minh;Vietminh;Vietnamese",
           "pak" => "Pakistani",
           "syr" => "Syrian",

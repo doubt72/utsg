@@ -6,8 +6,8 @@ module Scenarios
     NAME = "The Last Storm"
     ALLIES = ["ussr"].freeze
     AXIS = ["jap"].freeze
-    STATUS = "p"
-    VERSION = "0.1"
+    STATUS = "a"
+    VERSION = "0.2"
 
     DATE = [1945, 7, 14].freeze
     LAYOUT = [23, 23, "x"].freeze

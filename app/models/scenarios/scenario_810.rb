@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Regimiento 13 Tuyutí"
     ALLIES = ["bol"].freeze
     AXIS = ["par"].freeze
-    STATUS = "p"
-    VERSION = "0.1"
+    STATUS = "a"
+    VERSION = "0.2"
 
     DATE = [1933, 1, 20].freeze
     LAYOUT = [23, 23, "x"].freeze

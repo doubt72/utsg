@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Operation Olympic"
     ALLIES = ["usa"].freeze
     AXIS = ["jap"].freeze
-    STATUS = "p"
-    VERSION = "0.1"
+    STATUS = "a"
+    VERSION = "0.2"
 
     DATE = [1945, 11, 1].freeze
     LAYOUT = [23, 36, "x"].freeze

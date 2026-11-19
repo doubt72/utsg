@@ -56,7 +56,7 @@ export default function MapHexPatterns({ map, rotated }: MapHexPatternProps) {
     "rsp", "eth", "bol", "kuo",
     "nsp", "chc", "chb", "chg", "par",
     "sk", "un", "doi", "isr",
-    "nk", "pak", "vie", "syr", "jor", "egy",
+    "nk", "pva", "pak", "vie", "syr", "jor", "egy",
     "cze",
   ]
 

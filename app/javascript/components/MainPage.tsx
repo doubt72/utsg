@@ -84,6 +84,13 @@ const sampleUnitData: { [index: string]: boolean } = {
   ussr_su_76m: true,
   ussr_isu_122: true,
   vcf_renault_ft: true,
+  rsp_internacionales_s: true,
+  nsp_tercios_s: true,
+  alm_kebur_zabagna_s: true,
+  com_ecw_viet_minh_s: true,
+  com_ecw_pla_s: true,
+  un_57mm_recoilless: true,
+  un_centurion_iii: true,
 }
 
 type CounterDisplay = {
@@ -101,7 +108,7 @@ export default function MainPage() {
   const [counterDisplay, setCounterDisplay] = useState<JSX.Element | undefined>()
   const [update, setUpdate] = useState<number>(0)
 
-  const counterCount = 6
+  const counterCount = 7
 
   useEffect(() => {
     getAPI("/api/v1/scenarios/all_units", {
@@ -110,9 +117,10 @@ export default function MainPage() {
         setCounters([
           {from: "wire", toward: "usa_ranger_s", opacity: 1},
           {from: "wire", toward: "ger_stug_iii_f_g", opacity: 1},
-          {from: "wire", toward: "uk_sherman_firefly", opacity: 1},
-          {from: "wire", toward: "jap_snlf_s", opacity: 1},
           {from: "wire", toward: "ussr_t_34_85", opacity: 1},
+          {from: "wire", toward: "jap_snlf_s", opacity: 1},
+          {from: "wire", toward: "uk_sherman_firefly", opacity: 1},
+          {from: "wire", toward: "ussr_militia_s", opacity: 1},
           {from: "wire", toward: "ger_tiger_ii", opacity: 1},
         ])
       })
@@ -196,8 +204,7 @@ export default function MainPage() {
             done = true
             // Skip the following countries until we add scenarios
             const exclNations: string[] = [
-              // "un", "sk", "doi", "pak",
-              // "vie", "isr", "egy", "jor", "syr", "com", "arl"
+              // "doi", "pak", "isr", "egy", "jor", "syr", "arl"
             ]
             for (const d of s) {
               if (d.from === key || d.toward === key) { done = false }

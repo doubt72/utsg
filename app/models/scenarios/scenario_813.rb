@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Walls of Mudéjar"
     ALLIES = ["rsp"].freeze
     AXIS = ["nsp"].freeze
-    STATUS = "p"
-    VERSION = "0.1"
+    STATUS = "a"
+    VERSION = "0.2"
 
     DATE = [1937, 12, 20].freeze
     LAYOUT = [23, 23, "x"].freeze

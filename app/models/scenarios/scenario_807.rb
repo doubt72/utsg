@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Out of the Block"
     ALLIES = ["kuo"].freeze
     AXIS = ["chc"].freeze
-    STATUS = "p"
-    VERSION = "0.1"
+    STATUS = "a"
+    VERSION = "0.2"
 
     DATE = [1934, 10, 16].freeze
     LAYOUT = [15, 23, "x"].freeze

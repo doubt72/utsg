@@ -6,8 +6,8 @@ module Scenarios
     NAME = "An Hour Past Hope"
     ALLIES = ["eth"].freeze
     AXIS = ["ita"].freeze
-    STATUS = "p"
-    VERSION = "0.1"
+    STATUS = "a"
+    VERSION = "0.2"
 
     DATE = [1936, 3, 31].freeze
     LAYOUT = [15, 23, "x"].freeze

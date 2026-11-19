@@ -1,3 +1,10 @@
+# 0.170
+
+- Split PVA from PLA
+- Scenario designer support for SK, PVA
+- Promoted interwar/hypothetical scenarios to alpha
+- Added prototype 701
+
 # 0.169
 
 - Rebalanced all the machine guns

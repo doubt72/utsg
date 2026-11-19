@@ -6,8 +6,8 @@ module Scenarios
     NAME = "North by North"
     ALLIES = ["kuo"].freeze
     AXIS = ["chb"].freeze
-    STATUS = "p"
-    VERSION = "0.1"
+    STATUS = "a"
+    VERSION = "0.2"
 
     DATE = [1928, 5, 17].freeze
     LAYOUT = [23, 23, "x"].freeze

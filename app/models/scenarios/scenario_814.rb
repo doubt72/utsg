@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Shadows of Treachery"
     ALLIES = ["rsp"].freeze
     AXIS = ["nsp"].freeze
-    STATUS = "p"
-    VERSION = "0.1"
+    STATUS = "a"
+    VERSION = "0.2"
 
     DATE = [1936, 10, 4].freeze
     LAYOUT = [15, 23, "x"].freeze

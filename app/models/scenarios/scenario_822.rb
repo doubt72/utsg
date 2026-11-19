@@ -6,8 +6,8 @@ module Scenarios
     NAME = "No Eches las Campanas"
     ALLIES = ["rsp"].freeze
     AXIS = ["nsp"].freeze
-    STATUS = "p"
-    VERSION = "0.1"
+    STATUS = "a"
+    VERSION = "0.2"
 
     DATE = [1936, 8, 29].freeze
     LAYOUT = [23, 23, "x"].freeze

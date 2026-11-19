@@ -5,7 +5,7 @@ import Unit from "../engine/Unit"
 import { Coordinate, Direction, featureType, Player } from "./commonTypes"
 
 export function minorToMajor(code: string): string {
-  const lookup: { [index: string]: string } = { bra: "usa", frf: "fra", kuo: "chi" }
+  const lookup: { [index: string]: string } = { bra: "usa", frf: "fra", kuo: "chi", sk: "un" }
   for (const m of ["can", "aus", "nz", "ind", "sa"]) { lookup[m] = "uk" }
   for (const m of [
     "pol", "gre", "nor", "bel", "dut", "yug", "bol", "cze", "eth",
@@ -13,7 +13,7 @@ export function minorToMajor(code: string): string {
   for (const m of [
     "hun", "bul", "rom", "slv", "cro", "par", "chb", "chg",
   ]) { lookup[m] = "axm" }
-  for (const m of [ "chc", "nk", "vie" ]) { lookup[m] = "com" }
+  for (const m of [ "chc", "pva", "nk", "vie" ]) { lookup[m] = "com" }
   for (const m of [ "pak", "syr", "jor", "egy" ]) { lookup[m] = "arl" }
   return lookup[code] ?? code
 }
@@ -87,6 +87,7 @@ export function axisCodeToName(code: string): string {
 
     // Cold War
     { name: "North Korean", code: "nk" },
+    { name: "Chinese", code: "pva" },
     { name: "Viet Minh", code: "vie" },
     { name: "Pakistani", code: "pak" },
     { name: "Syrian", code: "syr" },
@@ -401,4 +402,4 @@ export const critHitDiff = 8
 export const critMorale = 4
 export const titleName = "A Hex Too Far"
 export const subtitleName = "Light Tactical Battle System"
-export const serverVersion = "0.169"
+export const serverVersion = "0.170"

@@ -173,7 +173,7 @@ export function nationalColorLookup(key: string): string {
     bul: "#E0D044", hun: "#E0D044", rom: "#E0D044", slv: "#E0D044", cro: "#E0D044",
 
     rsp: "#BBF", eth: "#BBF", bol: "#BBF", kuo: "#BBF",
-    nsp: "#E0D044", chc: "#E0D044",  chb: "#E0D044", chg: "#E0D044", par: "#E0D044",
+    nsp: "#E0D044", chc: "#E0D044",  pva: "#E0D044", chb: "#E0D044", chg: "#E0D044", par: "#E0D044",
 
     sk: "#BBF", un: "#BBF", doi: "#BBF", isr: "#BBF",
     com: "#E0D044", nk: "#E0D044", pak: "#E0D044", vie: "#E0D044",
@@ -191,7 +191,7 @@ export function nationalColorLookup(key: string): string {
     bul: "#8CD", hun: "#8CD", rom: "#8CD", slv: "#8CD", cro: "#8CD",
 
     rsp: "#DAD", eth: "#FA9", bol: "#FA9", kuo: "#ECF",
-    nsp: "#FC5", chc: "#F9A", chb: "#8CD", chg: "#8CD", par: "#8CD",
+    nsp: "#FC5", chc: "#F9A", pva: "#F9A", chb: "#8CD", chg: "#8CD", par: "#8CD",
 
     sk: "#ACF", un: "#ACF", doi: "#FC9", isr: "#CCE",
     com: "#F9A", nk: "#F9A", pak: "#9DB", vie: "#F9A",
@@ -212,7 +212,7 @@ export function nationalControlLookup(key: string): string {
     bul: "#E0D044", hun: "#E0D044", rom: "#E0D044", slv: "#E0D044", cro: "#E0D044",
 
     rsp: "#BBF", eth: "#BBF", bol: "#BBF", kuo: "#BBF",
-    nsp: "#E0D044", chc: "#E0D044", chb: "#E0D044", chg: "#E0D044", par: "#E0D044",
+    nsp: "#E0D044", chc: "#E0D044", pva: "#E0D044", chb: "#E0D044", chg: "#E0D044", par: "#E0D044",
 
     sk: "#BBF", un: "#BBF", doi: "#BBF", isr: "#BBF",
     com: "#E0D044", nk: "#E0D044", pak: "#E0D044", vie: "#E0D044",
@@ -230,7 +230,7 @@ export function nationalControlLookup(key: string): string {
     bul: "#BBB", hun: "#BBB", rom: "#BBB", slv: "#BBB", cro: "#BBB",
 
     rsp: "#5D0080", eth: "#EEE", bol: "#EEE", kuo: "#EEE",
-    nsp: "#FFC400", chc: "#B00", chb: "#EEE", chg: "#D00", par: "#EEE",
+    nsp: "#FFC400", chc: "#B00", pva: "#B00", chb: "#EEE", chg: "#D00", par: "#EEE",
 
     sk: "#EEE", un: "#07B", doi: "#EEE", isr: "#FFF",
     com: "#EEE", nk: "#D00", pak: "#EEE", vie: "#EEE",

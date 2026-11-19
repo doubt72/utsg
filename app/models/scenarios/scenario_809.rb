@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Southern Pivot"
     ALLIES = ["kuo"].freeze
     AXIS = ["chg"].freeze
-    STATUS = "p"
-    VERSION = "0.1"
+    STATUS = "a"
+    VERSION = "0.2"
 
     DATE = [1930, 7, 15].freeze
     LAYOUT = [15, 23, "x"].freeze
