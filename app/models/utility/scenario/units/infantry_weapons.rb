@@ -206,6 +206,8 @@ module Utility
 
               ["axm", "Radio 10.5cm", 36],
 
+              ["chi", "Radio 75mm", 43], ["chi", "Radio 105mm", 39], ["chi", "Radio 155mm", 37],
+
               ["com", "Radio 10.5cm", 43], ["com", "Radio 122mm", 39], ["com", "Radio 152mm", 37],
 
               ["fra", "Radio 105mm", 13], ["fra", "Radio 155mm", 17],

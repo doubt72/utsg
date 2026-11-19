@@ -29,7 +29,7 @@ module Utility
               # Slovak
               ["axm", "LT vz. 35", 38], ["axm", "LT vz. 38", 38],
 
-              ["com", "IS-2", 44], ["com", "T-34-85 M44", 44],
+              ["com", "IS-2", 44], ["com", "T-34-85 M44", 44], ["com", "M5 Stuart", 46],
 
               ["chi", "T-26", 38], ["chi", "Vickers 6-Ton", 34], ["chi", "M3 Stuart", 42],
               ["chi", "M4 Sherman", 43],
