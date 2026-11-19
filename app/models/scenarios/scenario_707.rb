@@ -35,6 +35,8 @@ module Scenarios
         :com_radio_10_5cm,
         [2, :com_76mm_zis_3],
         [2, :pillbox],
+        [3, :wire],
+        [3, :mines8],
       ] },
       "2": { list: [
         :com_leader_5_1,

@@ -3,7 +3,7 @@
 - Split PVA from PLA
 - Scenario designer support for SK, PVA
 - Promoted interwar/hypothetical scenarios to alpha
-- Added prototype 701, 702, 703, 704, 705, 706 (direct to alpha)
+- Added prototype 701, 702, 703, 704, 705, 706, 707, 711, 718 (direct to alpha)
 
 # 0.169
 
