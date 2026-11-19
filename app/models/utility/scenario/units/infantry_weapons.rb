@@ -98,6 +98,7 @@ module Utility
               ["chi", "M2 4.2inch", 43],
 
               ["com", "82-PM-41", 41], ["com", "120-PM-43", 43], ["com", "Type 31 60mm", 42],
+              ["com", "81mm Mortar", 46], ["com", "120mm Mortar", 46], ["com", "150mm Mortar", 46],
 
               ["fin", "81mm Tampella", 27],
 

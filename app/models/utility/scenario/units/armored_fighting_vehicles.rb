@@ -196,7 +196,7 @@ module Utility
               ["com", "BA-64", 42],
 
               ["fra", "AMC Schneider P16", 28, { sn: 4 }], ["fra", "White AM AC", 15],
-              ["fra", "Panhard 178", 37], ["fra", "M8 Greyhound", 43],
+              ["fra", "Panhard 178", 37], ["fra", "M8 Greyhound", 43], ["fra", "M20 Greyhound", 43],
 
               ["ger", "SdKfz 221", 35], ["ger", "SdKfz 222", 37], ["ger", "SdKfz 234/1", 43],
               ["ger", "SdKfz 234/2", 43], ["ger", "SdKfz 234/3", 44], ["ger", "SdKfz 234/4", 44],

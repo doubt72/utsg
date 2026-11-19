@@ -108,6 +108,8 @@ module Utility
               browning_m38: :m1917_browning,
               # Mortars
               "81mm_mortar": :brandt_m27_31,
+              "120mm_mortar": :type_2_12cm,
+              "150mm_mortar": :type_97_150mm,
               "81mm_tampella": :brandt_m27_31,
               type_20_81mm: :brandt_m27_31,
               type_15_82mm: :"82_bm_37",
@@ -226,7 +228,7 @@ module Utility
               "m1a1_bazooka": { fp: 10, rng: 4, mv: 0, tgt: true, sz: 1, brk: 4, at: true },
               "m9_bazooka": { fp: 10, rng: 4, mv: 0, tgt: true, sz: 1, brk: 4, at: true },
               "ampulomet": { fp: 16, rng: 7, mv: -1, tgt: true, sz: 1, brk: 5, flm: true, area: true },
-              "75mm_recoilless": { fp: 16, rng: 18, mv: 2, tgt: true, sz: 2, brk: 4, at: true },
+              "75mm_recoilless": { fp: 16, rng: 18, mv: 2, tgt: true, sz: 2, brk: 4, at: true, crw: true, twsz: 2 },
               "57mm_recoilless": { fp: 10, rng: 15, mv: -2, tgt: true, sz: 1, brk: 4, at: true },
               "super_bazooka": { fp: 16, rng: 7, mv: -1, tgt: true, sz: 1, brk: 4, at: true },
               # AT Rifles

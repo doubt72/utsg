@@ -33,7 +33,7 @@ export default function ScenarioRow({ onClick, selected, data, small }: Scenario
     }
     if (data.id[0] === "7") {
       char = "C"
-      bg = "#ACF"
+      bg = "#CDF"
       fg = "#000"
     }
     if (char === "") { return "" }
