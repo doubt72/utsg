@@ -32,7 +32,7 @@ module Utility
               ["com", "IS-2", 44], ["com", "T-34-85 M44", 44], ["com", "M5 Stuart", 46],
 
               ["chi", "T-26", 38], ["chi", "Vickers 6-Ton", 34], ["chi", "M3 Stuart", 42],
-              ["chi", "M4 Sherman", 43],
+              ["chi", "M4 Sherman", 43], ["chi", "M5 Stuart", 42],
 
               ["fra", "Char B1", 35], ["fra", "Char B1 bis", 37], ["fra", "AMR 33", 33],
               ["fra", "AMR 35 (7.5MG)", 36, { sn: 1 }], ["fra", "AMR 35 (13.2MG)", 36, { sn: 2 }],

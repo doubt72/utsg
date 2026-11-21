@@ -147,17 +147,19 @@ function collapseRows(hexes: DeployHexes): DeployHexes {
   })
   const rc1: DeployHexes = []
   let len = 0
-  let start = rc0[0][1]
-  let nn = rc0[0]
-  for (let i = 1; i < rc0.length; i++) {
-    len += 1
-    if (rc0[i][0] === nn[0] && typeof nn[1] === "number" && typeof rc0[i-1][1] === "number" &&
-        rc0[i][1] === (rc0[i-1][1] as number) + 1) { continue }
-    rc1.push([nn[0], len < 2 ? nn[1] : `${start}-${rc0[i - 1][1]}`])
-    start = rc0[i][1]
-    nn = rc0[i]
-    len = 0
+  if (rc0.length > 0) {
+    let start = rc0[0][1]
+    let nn = rc0[0]
+    for (let i = 1; i < rc0.length; i++) {
+      len += 1
+      if (rc0[i][0] === nn[0] && typeof nn[1] === "number" && typeof rc0[i-1][1] === "number" &&
+          rc0[i][1] === (rc0[i-1][1] as number) + 1) { continue }
+      rc1.push([nn[0], len < 2 ? nn[1] : `${start}-${rc0[i - 1][1]}`])
+      start = rc0[i][1]
+      nn = rc0[i]
+      len = 0
+    }
+    rc1.push([nn[0], len < 1 ? nn[1] : `${start}-${rc0[rc0.length - 1][1]}`])
   }
-  rc1.push([nn[0], len < 1 ? nn[1] : `${start}-${rc0[rc0.length - 1][1]}`])
   return rc1
 }

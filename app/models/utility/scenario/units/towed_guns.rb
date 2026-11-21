@@ -20,7 +20,7 @@ module Utility
 
               ["chi", "Bofors 75mm", 23], ["chi", "75mm M1 Pack", 42], ["chi", "75mm Gun", 32],
 
-              ["com", "76mm ZiS-3", 28],
+              ["com", "76mm ZiS-3", 28], ["com", "75mm Mountain", 46], ["com", "105mm Gun", 46],
 
               ["fin", "75mm Gun", 32],
 
