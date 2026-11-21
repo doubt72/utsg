@@ -171,13 +171,13 @@ module Utility
 
               ["com", "Irregular", 46, 2, 8, 3, 3, {}],
               ["com", "Viet Minh", 46, 4, 10, 4, 5, { a: 1 }],
-              ["com", "Sapper", 46, 4, 9, 3, 5, { a: 1, eng: 1 }],
+              ["com", "Sapper", 46, 4, 8, 3, 5, { eng: 1 }],
               ["com", "PVA", 46, 3, 10, 4, 4, {}],
               ["com", "PLA", 46, 3, 10, 4, 4, {}],
               ["com", "KPA", 46, 3, 10, 4, 4, {}],
 
               ["fra", "Génie", 46, 4, 16, 3, 5, { a: 1, s: 1, eng: 1 }],
-              ["fra", "Legionnaire", 46, 4, 12, 5, 5, { s: 1 }],
+              ["fra", "Legionnaire", 46, 4, 12, 5, 5, { s: 1, a: 1 }],
               ["fra", "Tirailleur", 46, 4, 12, 5, 5, { a: 1 }],
               ["fra", "Colonial", 46, 2, 10, 3, 3, {}],
 

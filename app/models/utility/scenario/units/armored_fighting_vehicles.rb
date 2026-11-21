@@ -39,6 +39,7 @@ module Utility
               ["fra", "AMR 35 ZT2", 36], ["fra", "FCM 36", 38], ["fra", "Hotchkiss H35", 36],
               ["fra", "Renault R35", 36], ["fra", "Renault R40", 36], ["fra", "AMC 35", 38],
               ["fra", "Char D2", 36], ["fra", "SOMUA S35", 35], ["fra", "M4 Sherman", 43],
+              ["fra", "M24 Chaffee", 46],
 
               ["ger", "PzKpfw I", 34], ["ger", "PzKpfw II-A/E", 37], ["ger", "PzKpfw II-F", 41],
               ["ger", "PzKpfw II Luchs", 43], ["ger", "PzKpfw 35(t)", 38],

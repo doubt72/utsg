@@ -24,7 +24,7 @@ module Utility
 
               ["fin", "75mm Gun", 32],
 
-              ["fra", "75mm M1897", 0], ["fra", "37mm M1916", 16],
+              ["fra", "75mm M1897", 0], ["fra", "37mm M1916", 16], ["fra", "105mm Gun", 46],
 
               ["ger", "7.5cm leIG 18", 32], ["ger", "7.5cm GebG 36", 38],
               ["ger", "10.5cm GebH 40", 42, { sn: 1 }], ["ger", "15cm sIG 33", 36],
