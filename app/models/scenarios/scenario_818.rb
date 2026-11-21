@@ -19,9 +19,9 @@ module Scenarios
         [9, :rsp_ejercito_popular_s],
         [2, :rsp_pm_m1910],
         [3, :rsp_dp_27],
+        :rsp_radio_122mm,
         [4, :rsp_t_26],
         [2, :rsp_bt_5],
-        :rsp_radio_122mm,
       ] },
     }.freeze
 
@@ -31,9 +31,10 @@ module Scenarios
         :nsp_leader_5_1,
         :nsp_leader_4_1,
         [6, :nsp_ejercito_nacional_s],
-        [3, :nsp_mg_08_15],
-        [3, :nsp_m1915_chauchat],
         [4, :nsp_crew_t],
+        [2, :nsp_mg_08_15],
+        [3, :nsp_m1915_chauchat],
+        :nsp_81mm_mortar,
         [2, :nsp_3_7cm_pak_36],
         [2, :nsp_75mm_m1897],
         [4, :foxhole],
