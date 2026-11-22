@@ -1,10 +1,11 @@
 # 0.170
 
 - Split PVA from PLA
-- Scenario designer support for SK, PVA
+- Scenario designer support for SK, PVA, additional units as needed (plus tweaks)
+- Added special rule for weapons breaking in extreme cold
 - Promoted interwar/hypothetical scenarios to alpha
 - Updated 028, 518, 818
-- Added prototype 701, 702, 703, 704, 705, 706, 707, 708, 709, 711, 713, 716, 718, 721, 723 (direct to alpha)
+- Added prototype early Cold War scenarios (direct to alpha)
 
 # 0.169
 

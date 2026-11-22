@@ -271,6 +271,7 @@ export default function DesignerDataTab({ designStack, setDesignStack }: Designe
             <option value={"axis_elite_armor"}>elite axis armor</option>
             <option value={"allied_fragile_vehicles"}>increased allied breakdowns</option>
             <option value={"axis_fragile_vehicles"}>increased axis breakdowns</option>
+            <option value={"extreme_cold"}>extreme cold jamming weapons</option>
             <option value={"allied_ignore_snow"}>no snow movement penalties for allies</option>
             <option value={"axis_ignore_snow"}>no snow movement penalties for axis</option>
             <option value={"allied_hidden_units"}>allied hidden units</option>

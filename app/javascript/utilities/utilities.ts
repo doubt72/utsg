@@ -197,7 +197,7 @@ export function nowUTCString(): string {
   return `${year}-${mon}-${day}T${hour}:${min}:${sec}Z`
 }
 
-export function addSpecialArmorRules(unit: Unit, scenario: Scenario) {
+export function addSpecialUnitRules(unit: Unit, scenario: Scenario) {
   // playerNation may or may not be set; takes priority if it is, failover to axm if no matches
   if (scenario.axisFactions.includes(unit.playerNation) || scenario.axisFactions.includes(unit.nation) ||
       unit.nation === "axm" ) {
@@ -224,6 +224,9 @@ export function addSpecialArmorRules(unit: Unit, scenario: Scenario) {
         unit.breakdownRoll = unit.breakdownRoll ? unit.breakdownRoll + 1 : 3
       }
     }
+  }
+  if (scenario.specialRules.includes("extreme_cold") && unit.rawBreakWeaponRoll) {
+    unit.rawBreakWeaponRoll += 1
   }
 }
 

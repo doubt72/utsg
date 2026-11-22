@@ -3,7 +3,7 @@
 module Scenarios
   class Scenario723 < Base
     ID = "723"
-    NAME = "The Last Tide"
+    NAME = "The Final Tide"
     ALLIES = ["kuo"].freeze
     AXIS = ["chc"].freeze
     STATUS = "a"

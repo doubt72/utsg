@@ -1,6 +1,6 @@
 import { Coordinate, Direction, MoraleRange, Player } from "../utilities/commonTypes";
 import {
-  addSpecialArmorRules, alliedCodeToName, axisCodeToName, getFormattedDate, sortReinforcementList
+  addSpecialUnitRules, alliedCodeToName, axisCodeToName, getFormattedDate, sortReinforcementList
 } from "../utilities/utilities";
 import { hiddenInfantryMoraleLookup, hiddenLeaderMoraleLookup, randomDropLookup } from "./control/randomDrop";
 import Feature, { FeatureData } from "./Feature";
@@ -152,7 +152,7 @@ export default class Scenario {
         const x = counterData.x || 1
         const id = counterData.id
         const counter = counterData.ft ? new Feature(counterData) : new Unit(counterData)
-        if (!counter.isFeature) { addSpecialArmorRules(counter as Unit, this) }
+        if (!counter.isFeature) { addSpecialUnitRules(counter as Unit, this) }
         turnCounters[id] = {x, used: 0, id, counter}
       }
       converted[turn] = turnCounters
@@ -315,6 +315,8 @@ export default class Scenario {
         return `${allied} vehicle crews are elite (get a bonus to targeting rolls)`
       } else if (r === "allied_fragile_vehicles") {
         return `${allied} vehicles are more likely to break down`
+      } else if (r === "extreme_cold") {
+        return `Extreme cold: weapons are more likely to jam`
       } else if (r === "allied_ignore_snow") {
         return `${allied} units ignore penalties for moving through snow`
       } else if (r === "axis_ignore_snow") {

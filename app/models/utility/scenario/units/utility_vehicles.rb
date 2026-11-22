@@ -18,7 +18,7 @@ module Utility
             [
               ["chi", "M5 Half-track", 42],
 
-              ["com", "BTR-40", 50],
+              ["com", "BTR-40", 50], ["com", "M9 Half-track", 41],
 
               ["fra", "Renault UE", 32], ["fra", "Lorraine 37L", 39], ["fra", "M9 Half-track", 41],
 

@@ -15,14 +15,14 @@ module Scenarios
     ALLIED_UNITS = {
       "0": { list: [
         :un_leader_5_1,
-        [3, :un_ecw_army_s],
+        [3, :un_ecw_us_army_s],
         [2, :un_m1917_browning],
         :un_m1_81mm,
         [2, :foxhole],
       ] },
       "3": { list: [
         [2, :un_leader_5_1],
-        [6, :un_ecw_army_s],
+        [6, :un_ecw_us_army_s],
         [4, :un_m1918_bar],
         :un_radio_155mm,
         [4, :un_m476_sherman],

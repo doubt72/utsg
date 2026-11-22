@@ -122,6 +122,7 @@ module Utility
 
               ["un", "SBML 2inch", 37], ["un", "ML 3inch", 33], ["un", "ML 4.2inch", 40],
               ["un", "M2 60mm", 40], ["un", "M1 81mm", 35], ["un", "M2 4.2inch", 43],
+              ["un", "81mm Mortar", 46],
 
               ["usa", "M2 60mm", 40], ["usa", "M1 81mm", 35],
               ["usa", "M2 4.2inch", 43],

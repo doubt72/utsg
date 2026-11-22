@@ -43,7 +43,7 @@ module Utility
               ["uk", "QF 25-Pounder", 40], ["uk", "QF 25Pdr Short", 43], ["uk", "QF 4.5inch", 8],
 
               ["un", "75mm M1 Pack", 27], ["un", "105mm M101", 40], ["un", "QF 25-Pounder", 40],
-              ["un", "Type 94 75mm", 35],
+              ["un", "Type 94 75mm", 35], ["un", "75mm Mountain", 46],
 
               ["usa", "75mm M1 Pack", 27], ["usa", "75mm M1897", 40], ["usa", "105mm M101", 40],
 
