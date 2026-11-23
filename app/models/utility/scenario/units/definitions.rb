@@ -257,6 +257,8 @@ module Utility
               "radio_183mm": { fp: 64, rng: 99, mv: 0, smk: true, off: true, area: true, fix: 18, sz: 1 },
               "radio_8inch": { fp: 80, rng: 99, mv: 0, smk: true, off: true, area: true, fix: 18, sz: 1 },
               "radio_21cm": { fp: 80, rng: 99, mv: 0, smk: true, off: true, area: true, fix: 18, sz: 1 },
+              "radio_air_strike": { fp: 16, rng: 99, mv: 0, off: true, tgt: true, area: true, at: true, fix: 18, sz: 1 },
+              "radio_napalm": { fp: 12, rng: 99, mv: 0, off: true, tgt: true, area: true, flm: true, fix: 18, sz: 1 },
               # Field Guns
               "bofors_75mm": { fp: 16, rng: 20, mv: 1, tgt: true, fix: 18, gun: true, smk: true, crw: true, sz: 3, twsz: 3 },
               "75mm_m1897": { fp: 16, rng: 24, mv: 1, tgt: true, fix: 18, gun: true, smk: true, crw: true, sz: 3, twsz: 3 },

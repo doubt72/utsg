@@ -21,6 +21,7 @@ module Scenarios
         [6, :uk_bren_lmg],
         [2, :uk_sbml_2inch],
         :uk_radio_114mm,
+        :uk_radio_air_strike,
         [3, :uk_crusader_i],
         [3, :uk_churchill_i_ii],
         [2, :uk_valentine_iii_cs],

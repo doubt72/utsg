@@ -21,6 +21,7 @@ module Scenarios
         [2, :un_ml_3inch],
         [2, :un_m9a1_bazooka],
         :un_radio_155mm,
+        :un_radio_napalm,
         [5, :un_m476_sherman],
         [3, :un_kangaroo],
       ] },

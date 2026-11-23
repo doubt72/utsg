@@ -20,6 +20,7 @@ module Scenarios
         [4, :un_m1919_browning],
         [2, :un_m2_browning],
         :un_radio_155mm,
+        :un_radio_napalm,
         [4, :trench],
       ] },
     }.freeze

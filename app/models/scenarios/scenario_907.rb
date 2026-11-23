@@ -24,6 +24,7 @@ module Scenarios
         [2, :usa_m1917_browning],
         [4, :usa_sc],
         :usa_radio_8inch,
+        :usa_radio_napalm,
         [2, :usa_lvta_1],
         [2, :usa_lvta_2],
         [2, :usa_lvta_4],

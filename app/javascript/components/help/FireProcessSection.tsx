@@ -81,18 +81,19 @@ export default function FireProcessSection({ section }: SectionProps) {
         side from +1 to +2.
       </p>
       <p>
-        The following types of units are eligible for spotting bonuses: radios, all targeted vehicle
-        weapons (i.e., guns but not machine guns or flamethrowers), and all crewed weapons (guns or
-        mortars). Uncrewed mortars do not get spotting bonuses, and hull guns are tracked separately
-        from turret-mounted weapons if a vehicle has both.
+        The following types of units are eligible for spotting bonuses: radios (except air support),
+        all targeted vehicle weapons (i.e., guns but not machine guns or flamethrowers, also not
+        mortars), and all crewed weapons (except mortars). Uncrewed weapons do not get spotting
+        bonuses, and hull guns are tracked separately from turret-mounted weapons if a vehicle has
+        both.
       </p>
       <p>
         Moving or assault moving a unit with a bonus will cancel it, as will be being displaced by a
         blaze. Crewed weapons lose the bonus if the crew is broken or pinned, as will abandoning a
         vehicle. A broken weapon loses the bonus and does not get it back if it&apos;s repaired
-        until firing again. Weapons in jammed turrets cannot gain a spotting bonus, and lose it when
-        the turret james. Likewise, hull weapons in immobilized vehicles cannot gain it and lose it
-        when the vehicle is immobilized.
+        until firing again. Weapons in jammed turrets cannot gain a spotting bonus, and lose it if
+        the turret jams. Likewise, hull weapons in immobilized vehicles cannot gain it and lose it
+        if the vehicle is immobilized.
       </p>
       <h3>{section}.3. Weapons Breaking (Targeted Fire)</h3>
       <p>

@@ -212,29 +212,33 @@ module Utility
               ["com", "Radio 10.5cm", 43], ["com", "Radio 122mm", 39], ["com", "Radio 152mm", 37],
 
               ["fra", "Radio 105mm", 13], ["fra", "Radio 155mm", 17],
+              ["fra", "Radio Air Strike", 36],
 
               ["ger", "Radio 10.5cm", 35], ["ger", "Radio 15cm", 34], ["ger", "Radio 17cm", 41],
-              ["ger", "Radio 21cm", 39],
+              ["ger", "Radio 21cm", 39], ["ger", "Radio Air Strike", 36],
 
               ["ita", "Radio 75mm", 37], ["ita", "Radio 100mm", 14], ["ita", "Radio 149mm", 14],
+              ["ita", "Radio Air Strike", 36],
 
               ["jap", "Radio 7.5cm", 36], ["jap", "Radio 10cm", 31], ["jap", "Radio 15cm", 37],
+              ["jap", "Radio Air Strike", 36], ["jap", "Radio Napalm", 44],
 
               ["nsp", "Radio 7.5cm", 36], ["nsp", "Radio 10.5cm", 36], ["nsp", "Radio 15cm", 36],
 
               ["rsp", "Radio 76mm", 36], ["rsp", "Radio 122mm", 36], ["rsp", "Radio 152mm", 36],
 
               ["uk", "Radio 88mm", 40], ["uk", "Radio 114mm", 38], ["uk", "Radio 140mm", 41],
-              ["uk", "Radio 152mm", 16], ["uk", "Radio 183mm", 40],
+              ["uk", "Radio 152mm", 16], ["uk", "Radio 183mm", 40], ["uk", "Radio Air Strike", 36],
 
               ["un", "Radio 105mm", 41], ["un", "Radio 155mm", 42], ["un", "Radio 140mm", 42],
-              ["un", "Radio 203mm", 46],
+              ["un", "Radio 203mm", 46], ["un", "Radio Air Strike", 36], ["un", "Radio Napalm", 44],
 
               ["usa", "Radio 75mm", 32], ["usa", "Radio 105mm", 41], ["usa", "Radio 155mm", 42],
               ["usa", "Radio 8inch", 42], ["usa", "Radio 203mm", 46],
+              ["usa", "Radio Air Strike", 36], ["usa", "Radio Napalm", 44],
 
               ["ussr", "Radio 76mm", 37], ["ussr", "Radio 85mm", 43], ["ussr", "Radio 122mm", 39],
-              ["ussr", "Radio 152mm", 37],
+              ["ussr", "Radio 152mm", 37], ["ussr", "Radio Air Strike", 36],
             ].each do |unit|
               radio = { t: "sw", i: "radio" }
               unit.each_with_index do |v, i|

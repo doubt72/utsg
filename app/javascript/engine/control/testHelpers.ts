@@ -112,6 +112,16 @@ export const testGRadio: UnitData = {
   o: { s: 1, o: 1, j: 3, f: 18, e: 1 },
 }
 
+export const testGRadioAS: UnitData = {
+  id: "g_radio", t: "sw", i: "radio", c: "ger", n: "Radio Air Strike", y: 35, f: 16, r: 99, v: 0,
+  o: { p: 1, o: 1, j: 3, f: 18, e: 1, t: 1 },
+}
+
+export const testGRadioNapalm: UnitData = {
+  id: "g_radio", t: "sw", i: "radio", c: "ger", n: "Radio Napalm", y: 35, f: 12, r: 99, v: 0,
+  o: { i: 1, o: 1, j: 3, f: 18, e: 1, t: 1 },
+}
+
 export const testRRadio: UnitData = {
   id: "r_radio", t: "sw", i: "radio", c: "ussr", n: "Radio 122mm", y: 35, f: 24, r: 99, v: 0,
   o: { s: 1, o: 1, j: 3, f: 18, e: 1 },

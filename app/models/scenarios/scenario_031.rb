@@ -36,6 +36,7 @@ module Scenarios
         [2, :ger_leader_4_1],
         [6, :ger_rifle_s],
         [3, :ger_mg_34],
+        :ger_radio_air_strike,
         [2, :ger_pzkpfw_iv_f1],
         [4, :ger_pzkpfw_iii_j],
         [2, :ger_stug_iii_b_e],

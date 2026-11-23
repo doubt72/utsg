@@ -38,6 +38,7 @@ module Scenarios
         [2, :jap_ft],
         [4, :jap_sc],
         :jap_radio_10cm,
+        :jap_radio_napalm,
       ] },
     }.freeze
 

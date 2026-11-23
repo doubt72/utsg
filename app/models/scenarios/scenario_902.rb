@@ -32,6 +32,7 @@ module Scenarios
         [2, :ger_mg_34],
         :ger_mg_08_15,
         :ger_3_7cm_pak_36,
+        :ger_radio_air_strike,
         [2, :ger_pzkpfw_i],
         [5, :ger_pzkpfw_ii_a_e],
         [2, :ger_sdkfz_221],

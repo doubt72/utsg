@@ -199,6 +199,7 @@ export default class FireAction extends BaseAction {
         if (!u0.turreted && u0.isImmobilized) { spotting = false }
         if (!sponson && u0.isTurretJammed) { spotting = false }
       }
+      if (u0.noBonus) { spotting = false }
     }
     if (tRange || oBoard) {
       const rotated = this.path.length > 1

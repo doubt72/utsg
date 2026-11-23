@@ -24,6 +24,7 @@ module Scenarios
         [2, :usa_m1_81mm],
         [4, :usa_sc],
         [2, :usa_radio_8inch],
+        :usa_radio_napalm,
         [2, :usa_lvta_1],
         [4, :usa_lvta_2],
         [2, :usa_lvta_4],

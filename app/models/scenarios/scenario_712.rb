@@ -26,6 +26,7 @@ module Scenarios
         [2, :un_ft],
         [4, :un_sc],
         :un_radio_155mm,
+        :un_radio_napalm,
         [2, :un_75mm_m1_pack],
         [2, :un_sherman_jumbo],
         [4, :un_m476_sherman],

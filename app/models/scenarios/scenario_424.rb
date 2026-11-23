@@ -23,6 +23,7 @@ module Scenarios
         [2, :usa_m1_81mm],
         [6, :usa_m1918_bar],
         :usa_radio_155mm,
+        :usa_radio_napalm,
         [2, :usa_ft],
         [2, :usa_sc],
         [2, :usa_m20_greyhound],
@@ -74,14 +75,14 @@ module Scenarios
           Southern Luzon.",
           "Japanese forces created a network of tunnels and artillery sites
           with strong points at Mounts Oro, Pacawagan, Mataba, and Yabang. The
-          tunnels and caves had retractable 105mm and 155mm artillery pieces
-          which would cover the Marikina Valley and lower hills, supported by
-          machine gun nests.  The American and Philippine forces relied on
-          aerial and ground assaults on these strong points. US Army Air Force
-          skip bombed these tunnels by releasing napalm bombs at a low
-          altitude, bouncing the bombs into the cave entrances, and ground
-          troops followed up these attacks with explosive shells, white
-          phosphorus mortars, and flamethrower units.",
+          tunnels and caves had retractable artillery pieces which would cover
+          the Marikina Valley and lower hills, supported by machine gun nests.
+          The American and Philippine forces relied on aerial and ground
+          assaults on these strong points. US Army Air Force skip bombed these
+          tunnels by releasing napalm bombs at a low altitude, bouncing the
+          bombs into the cave entrances, and ground troops followed up these
+          attacks with explosive shells, white phosphorus mortars, and
+          flamethrower units.",
           "The 6th Division began their assault on Japanese positions from the
           low-lying areas near Montalban, and focused on the capture of Mount
           Pacawagan and Mount Mataba. The former would provide a commanding

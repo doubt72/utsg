@@ -3,6 +3,8 @@
 - Split PVA from PLA
 - Scenario designer support for SK, PVA, additional units as needed (plus tweaks)
 - Added special rule for weapons breaking in extreme cold
+- Added air support/napalm
+- Removed spotting bonus from crewed/vehicle mortars (combine with no crew bonus)
 - Promoted interwar/hypothetical scenarios to alpha
 - Updated 028, 518, 818, 823
 - Numerous scenario description fixes

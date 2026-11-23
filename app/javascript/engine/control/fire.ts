@@ -1,4 +1,6 @@
-import { baseTerrainType, Coordinate, Direction, featureType, sponsonType, terrainType, unitType, weatherType } from "../../utilities/commonTypes";
+import {
+  baseTerrainType, Coordinate, Direction, featureType, sponsonType, terrainType, weatherType
+} from "../../utilities/commonTypes";
 import { los, losHexPath } from "../../utilities/los";
 import { hexDistance, normalDir } from "../../utilities/utilities";
 import MoveAction from "../actions/MoveAction";
@@ -213,7 +215,7 @@ export function firepower(
       fp = Math.floor(fp/2)
       why.push("- halved: antitank vs. soft target")
     }
-    if (target.armored && (sunit.fieldGun || sunit.areaFire) && !sunit.incendiary) {
+    if (target.armored && (sunit.fieldGun || (sunit.areaFire && !sunit.antiTank)) && !sunit.incendiary) {
       fp = Math.floor(fp/2)
       why.push("- halved: high-explosive vs. armor")
     }
@@ -331,18 +333,17 @@ export function rangeMultiplier(
   reaction: boolean
 ): { mult: number, why: string[] } {
   const why: string[] = []
-  let mult = source.unit.type === unitType.SupportWeapon && source.unit.targetedRange ? 3 : 4
+  let mult = source.unit.noBonus ? 3 : 4
   why.push(`- base multiplier ${mult}`)
   if (source.unit.offBoard) {
     mult = 5
     why[why.length - 1] = "- base multiplier 5 (radio)"
     const leadership = source.unit.parent?.leadership ? source.unit.parent.leadership : undefined
-    if (leadership) {
+    if (leadership && !source.unit.noBonus) {
       mult -= leadership
       why.push(`- minus leadership ${leadership}`)
     }
-  } else if (!(source.unit.type === unitType.SupportWeapon && source.unit.targetedRange) &&
-              source.unit.crewed) {
+  } else if (!source.unit.noBonus && source.unit.crewed) {
     const handling = source.unit.parent?.gunHandling ? source.unit.parent.gunHandling : undefined
     if (handling) {
       mult -= handling

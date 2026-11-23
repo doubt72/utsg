@@ -207,7 +207,7 @@ export default function CounterSection({ section }: SectionProps) {
     } else if (!unit.isWreck && !unit.isBroken && !unit.jammed) {
       if (unit.rapidFire) { add.push("(rapid fire)"); y2 = 117 }
       if (unit.targetedRange || unit.offBoard) { add.push("(targeted range)"); y2 = 117 }
-      if (unit.type === "sw" && unit.targetedRange) { add.push("(no crew bonus)") }
+      if (unit.noBonus) { add.push("(no crew or spotting bonus)") }
       if (unit.turreted) { add.push("(turret mounted)") }
       if (unit.rotatingVehicleMount) { add.push("(unarmored rotating mount)") }
       if (unit.backwardsMount) { add.push("(backwards firing)") }

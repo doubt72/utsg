@@ -1,6 +1,7 @@
 import { describe, expect, test, vi } from "vitest"
 import {
-  createBlankGame, createFireGame, testGGun, testGHMortar, testGInf, testGMortar, testGRadio,
+  createBlankGame, createFireGame, testGGun, testGHMortar, testGInf, testGLdr, testGMortar, testGRadio,
+  testGRadioAS,
   testGTank, testGTD, testITank, testRInf, testRTank
 } from "./testHelpers";
 import Unit from "../Unit";
@@ -32,11 +33,62 @@ describe("spotting", () => {
   test("firing radio adds spotting", () => {
     const game = createFireGame()
     const map = game.scenario.map
-    const firing = new Unit(testGInf)
+    const firing = new Unit(testGLdr)
     firing.id = "firing1"
     const floc = new Coordinate(3, 2)
     map.addCounter(floc, firing)
     const firing2 = new Unit(testGRadio)
+    firing2.id = "firing2"
+    map.addCounter(floc, firing2)
+    map.select(firing2)
+
+    const target = new Unit(testRInf)
+    target.id = "target1"
+    const tloc = new Coordinate(4, 0)
+    map.addCounter(tloc, target)
+    organizeStacks(map)
+
+    game.setGameState(new FireState(game, false))
+
+    select(map, {
+      counter: map.countersAt(tloc)[0],
+      target: { type: "map", xy: tloc }
+    }, () => {})
+    expect(target.targetSelected).toBe(true)
+
+    const mult = rangeMultiplier(
+      map, makeAction(game, ["firing2"])[0].counter, tloc, false, false, false
+    )
+    expect(mult.mult).toBe(3)
+    expect(mult.why.length).toBe(2)
+    expect(mult.why[0]).toBe("- base multiplier 5 (radio)")
+    expect(mult.why[1]).toBe("- minus leadership 2")
+
+    const original = Math.random
+    vi.spyOn(Math, "random").mockReturnValue(0.99)
+    game.gameState?.finish()
+    Math.random = original
+
+    expect(game.actions[0].stringValue).toBe(
+      "German Radio 10.5cm at D3 fired at Soviet Rifle at E1; targeting roll: target 6, " +
+        "rolled 100 [d10x10: 10 x 10]: hit; infantry effect roll at E1: target 7, " +
+        "rolled 20 [2d10: 10 + 10]: passed (critical)"
+    )
+
+    expect(firing2.spotting).toBe("A")
+    expect(game.spottingStatus).toStrictEqual([{
+      ref: "A", target: tloc, level: 1, unit: firing2, sponson: false,
+    }])
+  })
+
+  test("calling in air strike doesn't add spotting (or have leader bonus)", () => {
+    const game = createFireGame()
+    const map = game.scenario.map
+    const firing = new Unit(testGLdr)
+    firing.id = "firing1"
+    const floc = new Coordinate(3, 2)
+    map.addCounter(floc, firing)
+    const firing2 = new Unit(testGRadioAS)
     firing2.id = "firing2"
     map.addCounter(floc, firing2)
     map.select(firing2)
@@ -68,15 +120,12 @@ describe("spotting", () => {
     Math.random = original
 
     expect(game.actions[0].stringValue).toBe(
-      "German Radio 10.5cm at D3 fired at Soviet Rifle at E1; targeting roll: target 10, " +
-        "rolled 100 [d10x10: 10 x 10]: hit; infantry effect roll at E1: target 7, " +
+      "German Radio Air Strike at D3 fired at Soviet Rifle at E1; targeting roll: target 10, " +
+        "rolled 100 [d10x10: 10 x 10]: hit; infantry effect roll at E1: target 12, " +
         "rolled 20 [2d10: 10 + 10]: passed (critical)"
     )
 
-    expect(firing2.spotting).toBe("A")
-    expect(game.spottingStatus).toStrictEqual([{
-      ref: "A", target: tloc, level: 1, unit: firing2, sponson: false,
-    }])
+    expect(firing2.spotting).toBe(undefined)
   })
 
   test("firing tank adds spotting", () => {
@@ -228,7 +277,7 @@ describe("spotting", () => {
     }])
   })
 
-  test("firing crewed mortar adds spotting", () => {
+  test("firing crewed mortar doesn't add spotting", () => {
     const game = createFireGame()
     const map = game.scenario.map
     const firing = new Unit(testGInf)
@@ -272,10 +321,7 @@ describe("spotting", () => {
         "rolled 20 [2d10: 10 + 10]: passed (critical)"
     )
 
-    expect(firing2.spotting).toBe("A")
-    expect(game.spottingStatus).toStrictEqual([{
-      ref: "A", target: tloc, level: 1, unit: firing2, sponson: false,
-    }])
+    expect(firing2.spotting).toBe(undefined)
   })
 
   test("firing non-crewed mortar doesn't add spotting", () => {

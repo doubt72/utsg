@@ -294,7 +294,7 @@ export function unitHelpText(unit: Unit): string[] {
       text.push("- mounted rear")
     }
     if ((unit.minimumRange || unit.type === "sw") && unit.targetedRange) {
-      text.push("- no crew targeting bonus")
+      text.push("- no targeting/spotting bonus")
     }
   }
   if (unit.isBroken) {

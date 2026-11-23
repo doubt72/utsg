@@ -20,7 +20,7 @@ export default function FireSection({ section }: SectionProps) {
         crewed weapons may not fire (the crewed weapon must be fired instead, until and unless the
         crew unmans the weapon). Crews will be activated when the weapon is fired. Units being
         carried or towed by vehicles may not fire <strong>except</strong> radios being carried by
-        infantry may call in artillery.
+        infantry may call in fire.
       </p>
       <h3>{section}.2. Targeting Infantry Weapons and Crewed Weapons</h3>
       <p>

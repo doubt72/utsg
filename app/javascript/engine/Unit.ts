@@ -423,6 +423,12 @@ export default class Unit {
        ((includeHandle ?? true) && this.canHandle && unit.crewed)))
   }
 
+  get noBonus(): boolean {
+    if (this.type === "sw" && this.targetedRange) { return true }
+    if (this.minimumRange) { return true }
+    return false
+  }
+
   get lowestArmor(): number {
     let armor = 99
     if (!this.armored) { return -1 }

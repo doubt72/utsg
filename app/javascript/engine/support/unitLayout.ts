@@ -1,4 +1,4 @@
-import { Coordinate, Direction, featureType, sponsonType, SponsonType, unitType } from "../../utilities/commonTypes"
+import { Coordinate, Direction, featureType, sponsonType, SponsonType } from "../../utilities/commonTypes"
 import {
   circlePath, clearColor, counterElite, counterGreen, CounterLayout,
   counterRed,
@@ -389,7 +389,7 @@ export function rangeLayout(counter: Counter): CounterLayout | false {
   } else if (counter.hasUnit) {
     if (counter.unit.targetedRange || counter.unit.offBoard) { path = circlePath(loc, 10) }
     if (counter.unit.targetedRange || counter.unit.rapidFire) { style.stroke = "black" }
-    if (counter.unit.type === unitType.SupportWeapon && counter.unit.targetedRange) {
+    if (counter.unit.noBonus) {
       style.stroke = "black"
       style.fill = "black"
       color = "white"

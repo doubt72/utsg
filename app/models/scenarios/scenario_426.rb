@@ -21,12 +21,13 @@ module Scenarios
         [2, :usa_m1919_browning],
         [2, :usa_ft],
         [2, :usa_sc],
+        :usa_radio_155mm,
+        :usa_radio_napalm,
       ] },
       "2": { list: [
         :usa_leader_4_1,
         [3, :usa_rifle_s],
         [2, :usa_m1918_bar],
-        :usa_radio_155mm,
         [2, :usa_m4_sherman],
       ] },
       "3": { list: [

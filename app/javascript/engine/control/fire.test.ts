@@ -15,9 +15,9 @@ import { GameActionDiceResult, GameActionPath } from "../GameAction"
 import Feature from "../Feature"
 import {
   createBlankGame, createFireGame, testGAC, testGCrew, testGFT, testGGun, testGInf, testGLdr,
-  testGMC, testGMG, testGMortar, testGRadio, testGSC, testGTank, testGTruck, testITank,
-  testJapSNLF, testJSC, testPill, testRBike, testRGun, testRHorse, testRHT, testRInf, testRLdr,
-  testRMG, testRRadio, testRSPG, testRTank, testRTD, testRTruck, testSmoke, testWire
+  testGMC, testGMG, testGMortar, testGRadio, testGRadioAS, testGRadioNapalm, testGSC, testGTank,
+  testGTruck, testITank, testJapSNLF, testJSC, testPill, testRBike, testRGun, testRHorse, testRHT,
+  testRInf, testRLdr, testRMG, testRRadio, testRSPG, testRTank, testRTD, testRTruck, testSmoke, testWire
 } from "./testHelpers"
 import FireState from "./state/FireState"
 import { StateSelection, stateType } from "./state/BaseState"
@@ -2505,6 +2505,247 @@ describe("ranged fire attacks", () => {
           "on 3 or less, rolled 20 [2d10: 10 + 10]: no effect, checking to see if blaze " +
           "starts in E2: on 3 or less, rolled 20 [2d10: 10 + 10]: no effect, checking to " +
           "see if blaze starts in D2: on 2 or less, rolled 20 [2d10: 10 + 10]: no effect"
+      )
+    })
+
+    test("air strike", () => {
+      const game = createBlankGame([
+        [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o", d: 1, st: { s: "f", sh: "t" } }, { t: "o" }],
+        [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "f" }],
+        [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+        [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+        [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      ])
+      const map = game.scenario.map
+      const firing = new Unit(testGInf)
+      firing.id = "firing1"
+      const floc = new Coordinate(3, 2)
+      map.addCounter(floc, firing)
+      const firing2 = new Unit(testGRadioAS)
+      firing2.id = "firing2"
+      map.addCounter(floc, firing2)
+      map.select(firing2)
+
+      const target = new Unit(testRInf)
+      target.id = "target1"
+      const tloc = new Coordinate(4, 0)
+      map.addCounter(tloc, target)
+      const target2 = new Unit(testRInf)
+      target2.id = "target2"
+      map.addCounter(tloc, target2)
+      const target3 = new Unit(testRTank)
+      target3.id = "target3"
+      map.addCounter(tloc, target3)
+      organizeStacks(map)
+
+      game.setGameState(new FireState(game, false))
+
+      const fire = game.gameState as FireState
+      expect(fire.doneSelect).toBe(true)
+
+      select(map, {
+        counter: map.countersAt(tloc)[0],
+        target: { type: "map", xy: tloc }
+      }, () => {})
+      expect(target.targetSelected).toBe(true)
+      expect(target2.targetSelected).toBe(true)
+      expect(target3.targetSelected).toBe(true)
+      expect(fire.doneSelect).toBe(true)
+
+      const fp = firepower(game, makeAction(game, ["firing2"]), target, tloc, false, [false])
+      expect(fp.fp).toBe(8)
+      expect(fp.why.length).toBe(2)
+      expect(fp.why[1]).toBe("- halved: antitank vs. soft target")
+      expect(baseToHit(fp.fp)).toBe(12)
+
+      const fp2 = firepower(game, makeAction(game, ["firing2"]), target3, tloc, false, [false])
+      expect(fp2.fp).toBe(16)
+      expect(fp2.why.length).toBe(1)
+      expect(baseToHit(fp2.fp)).toBe(9)
+
+      const mult = rangeMultiplier(
+        map, makeAction(game, ["firing2"])[0].counter, tloc, false, false, false
+      )
+      expect(mult.mult).toBe(5)
+      expect(mult.why.length).toBe(1)
+
+      expect(fireHindrance(game, makeAction(game, ["firing1"]), tloc)).toBe(0)
+      expect(game.playerTwoScore).toBe(10)
+
+      const original = Math.random
+      vi.spyOn(Math, "random").mockReturnValue(0.99)
+      game.gameState?.finish()
+      Math.random = original
+
+      expect(game.actions[0].stringValue).toBe(
+        "German Radio Air Strike at D3 fired at Soviet Rifle, Rifle, T-34 M40 at E1; targeting roll: " +
+          "target 10, rolled 100 [d10x10: 10 x 10]: hit; infantry effect roll at E1: target 12, " +
+          "rolled 20 [2d10: 10 + 10]: passed (critical); penetration roll for T-34 M40 at E1: " +
+          "target 12, rolled 20 [2d10: 10 + 10]: passed, vehicle destroyed"
+      )
+
+      expect(game.moraleChecksNeeded).toStrictEqual([
+        { unit: target, from: [floc], to: tloc, incendiary: false, critical: true },
+        { unit: target2, from: [floc], to: tloc, incendiary: false, critical: true },
+      ])
+      expect(target3.isWreck).toBe(true)
+      expect(game.playerTwoScore).toBe(15)
+
+      expect(game.fireStartCheckNeeded).toStrictEqual([
+        {
+          loc: new Coordinate(4, 0), vehicle: true, incendiary: false,
+          nation: "ussr", player_nation: "ussr", tank: true, vehicle_incendiary: false,
+        },
+        {
+          loc: new Coordinate(3, 0), vehicle: false, incendiary: false,
+          vehicle_incendiary: false,
+        },
+        {
+          loc: new Coordinate(4, 1), vehicle: false, incendiary: false,
+          vehicle_incendiary: false,
+        },
+        {
+          loc: new Coordinate(3, 1), vehicle: false, incendiary: false,
+          vehicle_incendiary: false,
+        },
+      ])
+
+      game.setGameState(new FireStartState(game))
+      vi.spyOn(Math, "random").mockReturnValue(0.99)
+      game.gameState?.finish()
+      Math.random = original
+
+      expect(map.hexAt(new Coordinate(3, 0))?.building).toBe(true)
+      expect(map.hexAt(new Coordinate(3, 1))?.baseTerrain).toBe(terrainType.Open)
+      expect(map.hexAt(new Coordinate(4, 0))?.baseTerrain).toBe(terrainType.Open)
+      expect(map.hexAt(new Coordinate(4, 1))?.baseTerrain).toBe(terrainType.Forest)
+      expect(game.actions.length).toBe(2)
+      expect(game.actions[1].stringValue).toBe(
+        "checking to see if blaze starts in E1: on 4 or less (crew escapes on 7 or less), " +
+          "rolled 20 [2d10: 10 + 10]: no effect, checking to see if blaze starts in D1: " +
+          "on 3 or less, rolled 20 [2d10: 10 + 10]: no effect, checking to see if blaze " +
+          "starts in E2: on 3 or less, rolled 20 [2d10: 10 + 10]: no effect, checking to " +
+          "see if blaze starts in D2: on 2 or less, rolled 20 [2d10: 10 + 10]: no effect"
+      )
+    })
+
+    test("napalm strike", () => {
+      const game = createBlankGame([
+        [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o", d: 1, st: { s: "f", sh: "t" } }, { t: "o" }],
+        [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "f" }],
+        [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+        [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+        [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      ])
+      const map = game.scenario.map
+      const firing = new Unit(testGInf)
+      firing.id = "firing1"
+      const floc = new Coordinate(3, 2)
+      map.addCounter(floc, firing)
+      const firing2 = new Unit(testGRadioNapalm)
+      firing2.id = "firing2"
+      map.addCounter(floc, firing2)
+      map.select(firing2)
+
+      const target = new Unit(testRInf)
+      target.id = "target1"
+      const tloc = new Coordinate(4, 0)
+      map.addCounter(tloc, target)
+      const target2 = new Unit(testRInf)
+      target2.id = "target2"
+      map.addCounter(tloc, target2)
+      const target3 = new Unit(testRTank)
+      target3.id = "target3"
+      map.addCounter(tloc, target3)
+      organizeStacks(map)
+
+      game.setGameState(new FireState(game, false))
+
+      const fire = game.gameState as FireState
+      expect(fire.doneSelect).toBe(true)
+
+      select(map, {
+        counter: map.countersAt(tloc)[0],
+        target: { type: "map", xy: tloc }
+      }, () => {})
+      expect(target.targetSelected).toBe(true)
+      expect(target2.targetSelected).toBe(true)
+      expect(target3.targetSelected).toBe(true)
+      expect(fire.doneSelect).toBe(true)
+
+      const fp = firepower(game, makeAction(game, ["firing2"]), target, tloc, false, [false])
+      expect(fp.fp).toBe(12)
+      expect(fp.why.length).toBe(1)
+      expect(baseToHit(fp.fp)).toBe(10)
+
+      const fp2 = firepower(game, makeAction(game, ["firing2"]), target3, tloc, false, [false])
+      expect(fp2.fp).toBe(12)
+      expect(fp2.why.length).toBe(1)
+      expect(baseToHit(fp2.fp)).toBe(10)
+
+      const mult = rangeMultiplier(
+        map, makeAction(game, ["firing2"])[0].counter, tloc, false, false, false
+      )
+      expect(mult.mult).toBe(5)
+      expect(mult.why.length).toBe(1)
+
+      expect(fireHindrance(game, makeAction(game, ["firing1"]), tloc)).toBe(0)
+      expect(game.playerTwoScore).toBe(10)
+
+      const original = Math.random
+      vi.spyOn(Math, "random").mockReturnValue(0.99)
+      game.gameState?.finish()
+      Math.random = original
+
+      expect(game.actions[0].stringValue).toBe(
+        "German Radio Napalm at D3 fired at Soviet Rifle, Rifle, T-34 M40 at E1; targeting roll: " +
+          "target 10, rolled 100 [d10x10: 10 x 10]: hit; infantry effect roll at E1: target 10, " +
+          "rolled 20 [2d10: 10 + 10]: passed (critical); penetration roll for T-34 M40 at E1: " +
+          "target 10, rolled 20 [2d10: 10 + 10]: passed, vehicle destroyed"
+      )
+
+      expect(game.moraleChecksNeeded).toStrictEqual([
+        { unit: target, from: [floc], to: tloc, incendiary: true, critical: true },
+        { unit: target2, from: [floc], to: tloc, incendiary: true, critical: true },
+      ])
+      expect(target3.isWreck).toBe(true)
+      expect(game.playerTwoScore).toBe(15)
+
+      expect(game.fireStartCheckNeeded).toStrictEqual([
+        {
+          loc: new Coordinate(4, 0), vehicle: true, incendiary: true,
+          nation: "ussr", player_nation: "ussr", tank: true, vehicle_incendiary: false,
+        },
+        {
+          loc: new Coordinate(3, 0), vehicle: false, incendiary: true,
+          vehicle_incendiary: false,
+        },
+        {
+          loc: new Coordinate(4, 1), vehicle: false, incendiary: true,
+          vehicle_incendiary: false,
+        },
+        {
+          loc: new Coordinate(3, 1), vehicle: false, incendiary: true,
+          vehicle_incendiary: false,
+        },
+      ])
+
+      game.setGameState(new FireStartState(game))
+      vi.spyOn(Math, "random").mockReturnValue(0.99)
+      game.gameState?.finish()
+      Math.random = original
+
+      expect(map.hexAt(new Coordinate(3, 0))?.building).toBe(true)
+      expect(map.hexAt(new Coordinate(3, 1))?.baseTerrain).toBe(terrainType.Open)
+      expect(map.hexAt(new Coordinate(4, 0))?.baseTerrain).toBe(terrainType.Open)
+      expect(map.hexAt(new Coordinate(4, 1))?.baseTerrain).toBe(terrainType.Forest)
+      expect(game.actions.length).toBe(2)
+      expect(game.actions[1].stringValue).toBe(
+        "checking to see if blaze starts in E1: on 6 or less (crew escapes on 7 or less), " +
+          "rolled 20 [2d10: 10 + 10]: no effect, checking to see if blaze starts in D1: " +
+          "on 5 or less, rolled 20 [2d10: 10 + 10]: no effect, checking to see if blaze " +
+          "starts in E2: on 5 or less, rolled 20 [2d10: 10 + 10]: no effect, checking to " +
+          "see if blaze starts in D2: on 4 or less, rolled 20 [2d10: 10 + 10]: no effect"
       )
     })
 

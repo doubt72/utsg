@@ -29,6 +29,7 @@ module Scenarios
       "0": { list: [
         [2, :ger_leader_5_1],
         [4, :ger_fallschirmjager_s],
+        :ger_radio_air_strike,
         [2, :ger_mg_42],
         [3, :ger_pzkpfw_iii_n],
         [3, :ger_pzkpfw_iv_f2],
