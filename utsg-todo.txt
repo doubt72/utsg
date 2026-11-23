@@ -1,4 +1,7 @@
 Features/Bug Fixes
+  - Napalm 426, 719
+  - More Korean Close Air Support?
+  - Other Air Support?
   - Decoy next to hit revealed
   ? Improve animation performance
   ? Make sure sub-counter closed with counter

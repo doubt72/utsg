@@ -91,7 +91,7 @@ module Scenarios
           "The Battle of Carentan was battle between airborne forces of the
           United States and the Germandy during the Battle of Normandy. The
           objective of the attacking American forces was consolidation of the
-          U.S. beachheads and establishment of a continuous defensive line
+          U.S. beachheads and the establishment of a continuous defensive line
           against expected German counterattacks. The defending German force
           attempted to hold the town long enough to allow reinforcements en
           route from the south to arrive, prevent or delay the linking of the
@@ -105,7 +105,7 @@ module Scenarios
           Division, landed by parachute as part of the American airborne
           landings in Normandy, was ordered to seize control of Carentan.",
           "In the ensuing battle, the 101st attacked across the causeway into
-          Carentan where forced the German forces to withdraw. The
+          Carentan where they forced the German forces to withdraw. The
           panzergrenadiers counter-attacked the next day. Initially
           successful, its attack was thrown back by Combat Command A of the
           U.S. 2nd Armored Division.",

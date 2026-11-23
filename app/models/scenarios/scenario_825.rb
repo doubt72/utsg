@@ -43,7 +43,7 @@ module Scenarios
           first_deploy: 1,
           first_action: 2,
           date:,
-          location: "nowhere",
+          location: "Luis Calvo, Bolivia",
           author: "The Establishment",
           description:,
           map_data:,

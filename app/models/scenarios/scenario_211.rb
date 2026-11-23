@@ -63,13 +63,13 @@ module Scenarios
           consisting substantially of reclaimed marshland and surrounded by
           mountains, depended on surprise and if the invaders could build up
           strength and move inland before the defenders could occupy the
-          mountains the landing force. The initial landing achieved complete
-          surprise with no opposition and a jeep patrol even made it as far as
-          the outskirts of Rome. However Major General Lucas, commander of the
-          invading force, had little confidence in the operation as planned
-          and failed to capitalize on the element of surprise and delayed his
-          advance until he judged his position was sufficiently
-          consolidated.",
+          mountains overlooking the landing force. The initial landing
+          achieved complete surprise with no opposition and a jeep patrol even
+          made it as far as the outskirts of Rome. However Major General
+          Lucas, commander of the invading force, had little confidence in the
+          operation as planned and failed to capitalize on the element of
+          surprise and delayed his advance until he judged his position was
+          sufficiently consolidated.",
           "In that time Field Marshal Albert Kesselring, the German commander
           in the Italian theatre, moved every unit he could spare into a
           defensive ring around the beachhead. His artillery units had a clear

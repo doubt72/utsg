@@ -51,8 +51,7 @@ module Scenarios
 
       def description
         [
-          "The Finnish invasion of East Karelia was part of the Continuation
-          War. For over a month after the outbreak of the Continuation war,
+          "For over a month after the outbreak of the Continuation war,
           the Finnish Karelian Army reinforced and prepared while Soviet
           encirclements near Lake Ladoga and the invation of the Karelian
           Isthmus were resoved; once that was finished, the Finns began to

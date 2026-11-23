@@ -76,7 +76,7 @@ module Scenarios
           assaulted the fortress and disabled the garrison and the artillery
           pieces inside it, others simultaneously captured two bridges over
           the canal.",
-          "Having disabled the fortress, the airborne troops were then ordered
+          "Having neutralized the fortress, the airborne troops were then ordered
           to protect the bridges against Belgian counter-attacks until they
           linked up with the rest of the German Army.",
         ]

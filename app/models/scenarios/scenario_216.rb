@@ -100,7 +100,7 @@ module Scenarios
           attack leaving the 3rd Infantry Division to continue towards
           Valmontone without it. Truscott was shocked; to say the change was
           controversial is an understatement, being described \"as militarily
-          stupid as it was insubordinate,\" and possibly added a year to the
+          stupid as it was insubordinate,\" and may have added as much as a year to the
           fighting in Italy as the German forces were allowed to escape.",
         ]
       end

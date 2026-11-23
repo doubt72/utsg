@@ -60,10 +60,10 @@ module Scenarios
           "The Slovak Republic was a puppet state established by Germany after
           it annexed Czechoslovakia. It possessed a small army of its own,
           largely made up of parts inherited from the old Czechoslovak Army
-          and the took part in the German invasion of Poland. When the Slovak
-          government was informed about the invasion of Russia, as the regime
+          and took part in the German invasion of Poland. When the Slovak
+          government was informed about the invasion of Russia, the regime
           sought to demonstrate that its loyalty was greater than that of
-          Hungary it offered to participate, and the Slovak Army was called up
+          Hungary and offered to participate, and the Slovak Army was called up
           for the invasion.",
           "The Battle of Lypovec was an armed clash fought between the Slovak
           Mobile Brigade (Slovenská rýchla brigáda) and troops of the Red Army

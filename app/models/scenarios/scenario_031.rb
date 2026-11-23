@@ -72,7 +72,7 @@ module Scenarios
           forces, they were outmaneuvered and suffered enormous losses in
           tanks due to poor Soviet logistics, German air supremacy, and a
           total breakdown in Red Army command and control.",
-          "At the the German tanks involved were older models (many Czech
+          "At the battle the German tanks involved were older models (many Czech
           tanks), though there were also a significant minority of newer
           Panzer III and IVs. The Soviet tanks were predominantly older BT-7
           and T-26 models, though the Germans were shocked to encounter the

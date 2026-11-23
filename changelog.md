@@ -5,6 +5,7 @@
 - Added special rule for weapons breaking in extreme cold
 - Promoted interwar/hypothetical scenarios to alpha
 - Updated 028, 518, 818, 823
+- Numerous scenario description fixes
 - Added prototype early Cold War scenarios (direct to alpha)
 
 # 0.169

@@ -57,11 +57,11 @@ module Scenarios
           Kassala in Sudan was ordered to withdraw in mid-January, the British
           decided to launch the invasion immediately.",
           "Agordat was an excellent defensive position and the British advance
-          was slowed by delaying actions and mined roads (as depicted here).
-          The attack on the northern flank was initially repulsed, and
-          fighting continued on the hills and plain below until the end of
-          January, when British armored units arrived and easily pushed aside
-          the much lighter Italian armored defenders.",
+          was slowed by delaying actions and mined roads. The attack on the
+          northern flank was initially repulsed, and fighting continued on the
+          hills and plain below until the end of January, when British armored
+          units arrived and easily pushed aside the much lighter Italian
+          armored defenders.",
         ]
       end
 

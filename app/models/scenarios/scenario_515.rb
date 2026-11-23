@@ -69,15 +69,7 @@ module Scenarios
           "On the 6th of April, 1941 Germany, Italy, and Hungary invaded the
           Kingdom of Yugoslavia. Belgrade was bombed by the German Luftwaffe
           on the same day. The conflict, known as the April War, lasted eleven
-          days, ending with the unconditional surrender. Approximately 344,000
-          Yugoslav officers and troops were taken prisoner, roughly half the
-          armed forces. After most Croats and Macedonians were released,
-          between 200,000 and 300,000, mostly Serbs, were transferred to camps
-          in Germany and Italy. A further 300,000, again largely Serbs,
-          escaped capture by disregarding the capitulation order. The early
-          withdrawal of crack German units for Operation Barbarossa from
-          Yugoslavia in late April prevented the Wehrmacht from fully securing
-          the occupied territory.",
+          days, ending with the unconditional surrender of Yugoslavia.",
           "The Yugoslav army's resistance was undermined by structural
           weaknesses in organization, training, and national cohesion.
           Mobilization had been deliberately delayed to avoid provoking Hitler

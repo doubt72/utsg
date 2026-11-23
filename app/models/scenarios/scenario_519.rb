@@ -56,16 +56,17 @@ module Scenarios
 
       def description
         [
-          "Petsamo was Finland's only ice-free port in the Arctic, but the
-          Finns were greatly outnumbered (two Soviet divisions against three
-          Finnish companies), and the area was treeless, windy, and low, with
-          little defensible terrain. The Finns were forced to abandon the city
-          and fight delaying actions instead. In the end, despite being
-          reinforced to battalion strength and managing to temporarily push
-          back the invading Soviet troops at one point, the Finns were forced
-          back to Nautsi near Lake Inari, where they held. At that point the
-          Soviets paused their attacks — permanently. The troops stayed there
-          until the end of the war.",
+          "When the Soviets attacked Petsamo (Finland's only ice-free port in
+          the Arctic) during the Winter War, the Finns were greatly
+          outnumbered (two Soviet divisions against three Finnish companies),
+          and the area was treeless, windy, and low, with little defensible
+          terrain. The Finns were forced to abandon the city and fight
+          delaying actions instead. In the end, despite being reinforced to
+          battalion strength and managing to temporarily push back the
+          invading Soviet troops at one point, the Finns were forced back to
+          Nautsi near Lake Inari, where they held. At that point the Soviets
+          paused their attacks — permanently. The troops stayed there until
+          the end of the war.",
         ]
       end
 

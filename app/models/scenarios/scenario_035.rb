@@ -67,7 +67,7 @@ module Scenarios
           Isthmus and East Karelia fronts of the Continuation War. The Soviet
           forces captured East Karelia and Vyborg/Viipuri, but after that the
           fighting reached a stalemate.",
-          "The Finnish Army started dug in and in a well-fortified position,
+          "The Finnish Army started in a dug in and well-fortified position,
           but the Soviet air attacks surprised the defending forces and the
           initial defensive line of trenches and fortifications were quickly
           overrun and destroyed in the breakthrough sector. The second line of

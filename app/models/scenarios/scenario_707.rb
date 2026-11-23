@@ -66,16 +66,15 @@ module Scenarios
         [
           "The Battle of Tashan was fought in the western part of Northeast
           China, between forces of the Kuomintang National Revolutionary Army
-          and the Communist People's Liberation Army, and resulted in a
-          Communist victory. The battle was critical in determining the
-          outcome of the Battle of Jinzhou and hence the entire Liaoshen
-          Campaign. The battle is also known as the blocking battle at Tashan,
-          and is widely regarded by the communists as the first of the three
-          most crucial blocking operations (along with the Battle of Heishan a
-          week later and the Battle of Xudong from the Huaihai Campaign)
-          during the Chinese Civil War.",
+          and the Communist People's Liberation Army. The battle was critical
+          in determining the outcome of the Battle of Jinzhou and hence the
+          entire Liaoshen Campaign. The battle is also known as the blocking
+          battle at Tashan, and is widely regarded by the communists as the
+          first of the three most crucial blocking operations (along with the
+          Battle of Heishan a week later and the Battle of Xudong from the
+          Huaihai Campaign) during the Chinese Civil War.",
           "The name Tashan, meaning Pagoda Mountain, was short for Tashanbao
-          (meaning Pagoda Mountain Fort). Contrary to its name, there were
+          (meaning Pagoda Mountain Fort). Despite the name, there were
           neither pagoda nor mountains and the only defensive bunkers were the
           ones hastily built by the communists temporarily for the upcoming
           battle. The place was actually a village of a hundred or so

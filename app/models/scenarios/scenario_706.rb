@@ -61,13 +61,12 @@ module Scenarios
       def description
         [
           "Having been pushed back to the Pusan Perimeter by the Korean
-          People's Army, the Americans held.  A number of simultaneous battles
+          People's Army, the Americans held, at which point a number of battles
           were fought along the perimeter including one along the Naktong
-          River near Yeongsan. The battle at the Naktong Bulge eventually
-          ended in a victory for the UN.",
+          River near Yeongsan.",
           "The attack by the North Koreans there was an attempt to cut UN
           supply lines to the north as well as to gain a bridgehead into the
-          Pusan Perimeter. The US and KPA forces fought a bloody series of
+          Pusan Perimeter. The US and North Korean forces fought a bloody series of
           engagements over two weeks, inflicting heavy casualties on one
           another in a confusing series of attacks and counterattacks, but
           neither side was able to gain the upper hand. In the end, the US

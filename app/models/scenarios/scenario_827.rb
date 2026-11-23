@@ -73,7 +73,7 @@ module Scenarios
           military consequences but also for how it reshaped the Communist
           Party's internal leadership and strategic doctrine in the years that
           followed.",
-          "The Battle of Guangchange occurred in the midst of this campaign as
+          "The Battle of Guangchang occurred in the midst of this campaign as
           eleven divisions of the NRA commenced a major offensive against the
           town of Guangchang, a strategic stronghold considered the northern
           gateway to the Jiangxi Soviet. In response, the Red Army

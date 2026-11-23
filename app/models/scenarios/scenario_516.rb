@@ -77,7 +77,8 @@ module Scenarios
           Despite media reports of the time, particularly in respect of the
           Battle of Krojanty, no cavalry charges were made by the Polish
           Cavalry against German tanks. The Polish cavalry, however, was
-          successful against the German tanks in the Battle of Mokra.",
+          successful as mobile infantry against the German tanks in the Battle
+          of Mokra.",
         ]
       end
 

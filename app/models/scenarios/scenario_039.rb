@@ -60,9 +60,9 @@ module Scenarios
 
       def description
         [
-          "The Siege of Budapest or Battle of Budapest, was a major battle
-          fought between Soviet and Romanian forces and Hungarian and German
-          forces for the Hungarian capital of Budapest, near the end of World
+          "The Battle (or Siege) of Budapest, was a major battle
+          fought between Soviet and Romanian forces against the Hungarian and German
+          forces for the Hungarian capital of Budapest near the end of World
           War II. During the seige, the Germans made several attempts
           (collectively referred to as Operation Konrad) to aid the defenders
           who were in an increasingly desperate situation. However, on none of

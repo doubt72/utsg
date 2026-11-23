@@ -65,12 +65,12 @@ module Scenarios
       def description
         [
           "Just after the 3rd Armored Division had entered the city of
-          Cologne, a Panther tank on the street in the front of Cologne
-          Cathedral was lying in wait for the American tanks. Two M4 Shermans
-          supporting advancing infantry came up on the same street as the
-          Panther. They ended up stopping just before the Cathedral because of
-          rubble in the street and did not see the enemy Panther which then
-          knocked out the lead Sherman.  A T26E3 (the prototype model
+          Cologne, a famous tank duel occurred.  In the street in front of
+          Cologne Cathedral, a Panther tank was lying in wait for the
+          Americans. When two M4 Shermans supporting advancing infantry came
+          up on the same street and stopped just before the Cathedral because
+          of rubble in the street, they did not see the enemy Panther which
+          then knocked out the lead Sherman.  A T26E3 (the prototype model
           designation was changed to the final M26 Pershing designation at
           about this time) was in the next street over and was called over to
           engage the Panther.",

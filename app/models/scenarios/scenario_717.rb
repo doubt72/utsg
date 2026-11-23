@@ -82,7 +82,7 @@ module Scenarios
           preparing for an assault crossing of the Han after daylight. After a
           heavy artillery preparation against Hill 125, they began the assault
           crossing at dawn the next day. Enemy fire from automatic weapons and
-          small arms on Hill 125 caused rather heavy casualties, but it
+          small arms on Hill 125 caused heavy casualties, but they
           secured the hill three hours later.",
         ]
       end

@@ -99,10 +99,10 @@ module Scenarios
           Escarpment, later known as Hacksaw Ridge, a flat-topped ridge with a
           sheer cliff face running diagonally across the island for several
           thousand yards. The ridge was honeycombed with tunnels and
-          interconnected bunkers. It took two weeks for the Americans to clear
-          the ridge as they repeatedly scaled and assaulted Japanese position,
-          only to be repulsed with heavy casualties, before the position was
-          finally taken.",
+          interconnected bunkers. It took two weeks for the Americans to
+          finally clear the ridge and take the position as they repeatedly
+          scaled and assaulted Japanese position only to be repulsed with
+          heavy casualties.",
         ]
       end
 

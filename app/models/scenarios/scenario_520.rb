@@ -57,8 +57,8 @@ module Scenarios
       def description
         [
           "When the Germans invaded Poland, units from the German puppet state
-          of Slovakia participated in the southern part of the invasion. The
-          most of the Slovak division were either held in reserve or covering
+          of Slovakia participated in the southern part of the invasion.
+          Most of the Slovak divisions were either held in reserve or covering
           the border, but the Slovak 1st Division quickly crossed the the
           Polish border and occupied Javorina and Zakopane, continuing toward
           Nowy Targ to cover the German 2nd Mountain Division's left Flank.

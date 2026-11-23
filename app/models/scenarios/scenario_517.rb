@@ -74,7 +74,7 @@ module Scenarios
           with the Schlieffen Plan in World War I. When the Allied armies
           advanced into Belgium, they would be tied down and flanked, and the
           Germans could thrust towards the English Channel and encircle and
-          destroy the Allied forces.",
+          destroy them.",
           "The plan largely worked; though the French defeated several German
           attacks (at the cost of heavy casualties) near Hannut and the
           Germans failed to completely neutralize the French First Army, the

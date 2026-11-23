@@ -354,11 +354,11 @@ export default class Scenario {
       }
       const lmlu = hiddenLeaderMoraleLookup(r)
       if (lmlu) {
-        return `${lmlu[0] === 1 ? allied : axis} leader decoy morale ${lmlu[1]}`
+        return `For the purposes of the drop, ${lmlu[0] === 1 ? allied : axis} leader decoys have a morale of ${lmlu[1]}`
       }
       const imlu = hiddenInfantryMoraleLookup(r)
       if (imlu) {
-        return `${imlu[0] === 1 ? allied : axis} squad or team decoy morale ${imlu[1]}`
+        return `For the purposes of the drop, ${imlu[0] === 1 ? allied : axis} squad or team decoys have a morale of ${imlu[1]}`
       }
       return "unknown rule"
     })

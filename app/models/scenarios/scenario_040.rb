@@ -71,7 +71,7 @@ module Scenarios
           of the escalating military situation in Central Russia, the Germans
           were unwilling to assign more units and stopped their advance. With
           the Finns unwilling to continue the attack on their own, Arctic Fox
-          ended and both sides dug in at their current positions.",
+          ended and both sides dug in at their final positions.",
         ]
       end
 

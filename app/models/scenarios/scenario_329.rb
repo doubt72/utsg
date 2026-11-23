@@ -3,7 +3,7 @@
 module Scenarios
   class Scenario329 < Base
     ID = "329"
-    NAME = "Ghosts on the Rhein"
+    NAME = "Spearhead on the Rhein"
     ALLIES = ["usa"].freeze
     AXIS = ["ger"].freeze
     STATUS = "a"

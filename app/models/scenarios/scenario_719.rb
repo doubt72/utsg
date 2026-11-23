@@ -3,7 +3,7 @@
 module Scenarios
   class Scenario719 < Base
     ID = "719"
-    NAME = "Before the Hammer Falls"
+    NAME = "Hammer to Fall"
     ALLIES = ["un"].freeze
     AXIS = ["nk"].freeze
     STATUS = "a"
@@ -21,7 +21,8 @@ module Scenarios
         [2, :un_ml_3inch],
         [2, :un_m9a1_bazooka],
         :un_radio_155mm,
-        [6, :un_m476_sherman],
+        [5, :un_m476_sherman],
+        [3, :un_kangaroo],
       ] },
     }.freeze
 
@@ -32,8 +33,8 @@ module Scenarios
         [2, :com_dp_27],
         :com_sg_43,
         :com_82_pm_41,
-        [3, :com_t_34_85_m44],
-        [3, :com_su_76m],
+        [4, :com_t_34_85_m44],
+        [4, :com_su_76m],
       ] },
     }.freeze
 
@@ -79,7 +80,7 @@ module Scenarios
           start_weather: "dry",
           base_weather: "dry",
           precip: [0, "rain"],
-          wind: [1, 4, false],
+          wind: [1, 4, true],
           hexes:,
           layout:,
           allied_dir: 2.5,

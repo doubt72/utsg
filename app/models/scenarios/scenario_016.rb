@@ -89,13 +89,14 @@ module Scenarios
       def description
         [
           "After slowly advancing against strong Soviet resistance, the
-          fighting shifted north to the industrial district where the Germans
-          now faced the three giant factories of Stalingrad: the Stalingrad
-          Tractor Factory, the Barrikady Arms Factory, and the Red October
-          Steel Factory.  It took a few days for them to prepare for the most
-          biggest offensive yet.  Exceptionally intense shelling and bombing
-          preceded the first German assault groups; General Chuikov considered
-          this to be the worst day of the battle.",
+          fighting in Stalingrad shifted north to the industrial district
+          where the Germans now faced the three giant factories of Stalingrad:
+          the Stalingrad Tractor Factory, the Barrikady Arms Factory, and the
+          Red October Steel Factory.  It took a few days for them to prepare
+          for what would become the biggest offensive yet.  Exceptionally
+          intense shelling and bombing preceded the first German assault
+          groups; General Chuikov considered this to be the worst day of the
+          battle.",
           "The German onslaught crushed the 37th Guards Rifle Division and in
           the afternoon the forward assault group reached the tractor factory
           before arriving at the Volga River, splitting the 62nd Army into
@@ -106,7 +107,7 @@ module Scenarios
           "The fighting in the Red October Plant went on for weeks, it had
           become a hell of shell and mortar fire, tank and air attacks, and
           hand-to-hand fighting where they fought for a workshop or half a
-          workshop or for the end of a drain pipe.",
+          workshop or the end of a drain pipe.",
         ]
       end
 

@@ -87,7 +87,7 @@ module Scenarios
           "While the tactic was successful this time, General Võ Nguyên Giáp and the
           Việt Minh learned hard lessons that would later be used to turn the
           tables in the larger battle of Điện Biên Phủ, and the French soon
-          abandoned the position anyway for strategic reasons.",
+          abandoned Nà Sản anyway for strategic reasons.",
         ]
       end
 

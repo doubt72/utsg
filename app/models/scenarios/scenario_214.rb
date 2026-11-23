@@ -80,7 +80,7 @@ module Scenarios
           the city itself with its strategically vital docks as a prelude to
           the full-scale invasion of Sicily.",
           "From the start, everything went wrong. Sixty-five gliders were
-          released too early and crashed into the see, drowning 252 men. Many
+          released too early and crashed into the sea, drowning 252 men. Many
           others landed in the wrong place, 40km away, or were shot down or
           failed to release and returned to the staging airfields in Tunesia.
           Only one glider with a single platoon of infantry landed near the
