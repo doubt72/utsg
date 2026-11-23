@@ -158,8 +158,8 @@ module Scenarios
           ],
           [
             { t: "o" },
-            { t: "o" },
-            { t: "o" },
+            { t: "b" },
+            { t: "b" },
             { t: "o" },
             { t: "o" },
             { t: "o", st: { sh: "h", s: "f" }, d: 2 },

@@ -6,8 +6,8 @@ module Scenarios
     NAME = "The Bowling Alley"
     ALLIES = ["un"].freeze
     AXIS = ["nk"].freeze
-    STATUS = "p"
-    VERSION = "0.1"
+    STATUS = "a"
+    VERSION = "0.2"
 
     DATE = [1950, 8, 21].freeze
     LAYOUT = [23, 36, "x"].freeze
