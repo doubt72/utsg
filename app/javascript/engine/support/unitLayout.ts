@@ -111,8 +111,12 @@ export function canTowLayout(counter: Counter): CounterLayout | false {
   if (!counter.hasUnit || !counter.unit.canTow || counter.unit.isWreck) { return false }
   if (!counter.unit.visible) { return false }
   const x = counter.x + 66
-  const y = counter.y + 30.5
-  const size = 5
+  let y = counter.y + 30.5
+  let size = 5
+  if (counter.unit.armored && !counter.unit.topOpen) {
+    size = 4
+    y -= 0.5
+  }
   const path = `M ${x - size} ${y} L ${x + size} ${y}`
   const color = counter.unit.eliteCrew > 0 ? "white" : "black"
   return { x, y, size, path, style: { stroke: color, strokeWidth: 1 } }

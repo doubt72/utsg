@@ -639,6 +639,8 @@ module Utility
               "ba_20": { sz: 3, mv: 5, wpn: :"dp_27", whl: true, trn: 1, arm: [0, 0, 0], trt: [0, 0, 0] },
               "ba_64": { sz: 3, mv: 5, wpn: :"dp_27", whl: true, trn: 1, arm: [1, 0, 0], trt: [0, 0, 0] },
               "btr_40": { sz: 3, mv: 4, wpn: :"sg_43", whl: true, trn: 3, ctw: true, arm: [0, 0, 0, -1] },
+              "m75": { sz: 4, mv: 6, wpn: :"m2_browning", trn: 3, ctw: true, arm: [3, 3, 3] },
+              "m39": { sz: 3, mv: 7, wpn: :"m2_browning", trn: 2, ctw: true, arm: [1, 1, 1, -1] },
               # Unarmored Vehicles
               "laffly_s20": { sz: 4, mv: 5, whl: true, trn: 3, ctw: true },
               "citroen_u23": { sz: 3, mv: 5, whl: true, trn: 3, ctw: true },

@@ -37,7 +37,7 @@ module Utility
 
               ["un", "Universal Carrier", 37, { sn: 1 }], ["un", "M3A1 Half-track", 42],
               ["un", "LVT(A)-1", 43], ["un", "LVT(A)-2", 43], ["un", "LVT(A)-4", 44],
-              ["un", "Kangaroo", 44],
+              ["un", "Kangaroo", 44], ["un", "M39", 49], ["un", "M75", 52],
 
               ["usa", "M2 Half-track", 41], ["usa", "M3 Half-track", 41],
               ["usa", "M3A1 Half-track", 42], ["usa", "M2 Half-track", 41], ["usa", "LVT-1", 41],
