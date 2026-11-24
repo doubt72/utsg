@@ -153,7 +153,7 @@ module Utility
               ["uk", "M10 Achilles", 42], ["uk", "M10 Achilles C", 43],
 
               ["un", "M10 Achilles C", 43], ["un", "M36 Jackson", 44], ["un", "M40 GMC", 45],
-              ["un", "M42B5 Sherman", 46], ["un", "M43 GMC", 46],
+              ["un", "M42B5 Sherman", 46, { sn: 1 }], ["un", "M43 GMC", 46],
 
               ["usa", "M3A1 Stuart FT", 44], ["usa", "M4 Sherman FT", 44],
               ["usa", "M10", 42], ["usa", "M10A1", 43], ["usa", "M18 Hellcat", 43],

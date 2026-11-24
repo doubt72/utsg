@@ -2566,8 +2566,9 @@ describe("ranged fire attacks", () => {
       const mult = rangeMultiplier(
         map, makeAction(game, ["firing2"])[0].counter, tloc, false, false, false
       )
-      expect(mult.mult).toBe(5)
+      expect(mult.mult).toBe(4)
       expect(mult.why.length).toBe(1)
+      expect(mult.why[0]).toBe("- base multiplier 4 (air strike)")
 
       expect(fireHindrance(game, makeAction(game, ["firing1"]), tloc)).toBe(0)
       expect(game.playerTwoScore).toBe(10)
@@ -2579,7 +2580,7 @@ describe("ranged fire attacks", () => {
 
       expect(game.actions[0].stringValue).toBe(
         "German Radio Air Strike at D3 fired at Soviet Rifle, Rifle, T-34 M40 at E1; targeting roll: " +
-          "target 10, rolled 100 [d10x10: 10 x 10]: hit; infantry effect roll at E1: target 12, " +
+          "target 8, rolled 100 [d10x10: 10 x 10]: hit; infantry effect roll at E1: target 12, " +
           "rolled 20 [2d10: 10 + 10]: passed (critical); penetration roll for T-34 M40 at E1: " +
           "target 12, rolled 20 [2d10: 10 + 10]: passed, vehicle destroyed"
       )
@@ -2686,7 +2687,7 @@ describe("ranged fire attacks", () => {
       const mult = rangeMultiplier(
         map, makeAction(game, ["firing2"])[0].counter, tloc, false, false, false
       )
-      expect(mult.mult).toBe(5)
+      expect(mult.mult).toBe(4)
       expect(mult.why.length).toBe(1)
 
       expect(fireHindrance(game, makeAction(game, ["firing1"]), tloc)).toBe(0)
@@ -2699,7 +2700,7 @@ describe("ranged fire attacks", () => {
 
       expect(game.actions[0].stringValue).toBe(
         "German Radio Napalm at D3 fired at Soviet Rifle, Rifle, T-34 M40 at E1; targeting roll: " +
-          "target 10, rolled 100 [d10x10: 10 x 10]: hit; infantry effect roll at E1: target 10, " +
+          "target 8, rolled 100 [d10x10: 10 x 10]: hit; infantry effect roll at E1: target 10, " +
           "rolled 20 [2d10: 10 + 10]: passed (critical); penetration roll for T-34 M40 at E1: " +
           "target 10, rolled 20 [2d10: 10 + 10]: passed, vehicle destroyed"
       )

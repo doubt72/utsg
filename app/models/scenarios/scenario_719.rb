@@ -3,7 +3,7 @@
 module Scenarios
   class Scenario719 < Base
     ID = "719"
-    NAME = "Hammer to Fall"
+    NAME = "Thunder on the Ridge"
     ALLIES = ["un"].freeze
     AXIS = ["nk"].freeze
     STATUS = "a"

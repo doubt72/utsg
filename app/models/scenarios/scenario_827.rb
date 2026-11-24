@@ -32,6 +32,7 @@ module Scenarios
         [3, :com_czeck_lmg],
         :com_type_24_maxim,
         [2, :com_sc],
+        :sniper4,
       ] },
     }.freeze
 

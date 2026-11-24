@@ -110,9 +110,9 @@ describe("spotting", () => {
     const mult = rangeMultiplier(
       map, makeAction(game, ["firing2"])[0].counter, tloc, false, false, false
     )
-    expect(mult.mult).toBe(5)
+    expect(mult.mult).toBe(4)
     expect(mult.why.length).toBe(1)
-    expect(mult.why[0]).toBe("- base multiplier 5 (radio)")
+    expect(mult.why[0]).toBe("- base multiplier 4 (air strike)")
 
     const original = Math.random
     vi.spyOn(Math, "random").mockReturnValue(0.99)
@@ -120,7 +120,7 @@ describe("spotting", () => {
     Math.random = original
 
     expect(game.actions[0].stringValue).toBe(
-      "German Radio Air Strike at D3 fired at Soviet Rifle at E1; targeting roll: target 10, " +
+      "German Radio Air Strike at D3 fired at Soviet Rifle at E1; targeting roll: target 8, " +
         "rolled 100 [d10x10: 10 x 10]: hit; infantry effect roll at E1: target 12, " +
         "rolled 20 [2d10: 10 + 10]: passed (critical)"
     )

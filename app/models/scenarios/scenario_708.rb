@@ -3,7 +3,7 @@
 module Scenarios
   class Scenario708 < Base
     ID = "708"
-    NAME = "Second Contact"
+    NAME = "Hammer to Fall"
     ALLIES = ["sk"].freeze
     AXIS = ["pva"].freeze
     STATUS = "a"

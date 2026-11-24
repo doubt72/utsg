@@ -343,6 +343,10 @@ export function rangeMultiplier(
       mult -= leadership
       why.push(`- minus leadership ${leadership}`)
     }
+    if (source.unit.noBonus) {
+      mult = 4
+      why[why.length - 1] = "- base multiplier 4 (air strike)"
+    }
   } else if (!source.unit.noBonus && source.unit.crewed) {
     const handling = source.unit.parent?.gunHandling ? source.unit.parent.gunHandling : undefined
     if (handling) {

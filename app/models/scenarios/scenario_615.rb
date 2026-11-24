@@ -30,6 +30,7 @@ module Scenarios
         :jap_type_92_hmg,
         [4, :jap_sc],
         [2, :jap_type_92_70mm],
+        :sniper3,
       ] },
     }.freeze
 

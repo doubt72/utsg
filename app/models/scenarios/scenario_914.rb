@@ -26,6 +26,7 @@ module Scenarios
         [4, :trench],
         [4, :mines8],
         [6, :wire],
+        :sniper4,
       ] },
       "3": { list: [
         :uk_leader_5_1,

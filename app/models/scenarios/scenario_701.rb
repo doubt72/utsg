@@ -3,7 +3,7 @@
 module Scenarios
   class Scenario701 < Base
     ID = "701"
-    NAME = "Off the Edge"
+    NAME = "Closer to the Edge"
     ALLIES = ["sk"].freeze
     AXIS = ["nk"].freeze
     STATUS = "a"

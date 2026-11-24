@@ -3,7 +3,7 @@
 module Scenarios
   class Scenario718 < Base
     ID = "718"
-    NAME = "Train Games"
+    NAME = "Last Train to Tianjin"
     ALLIES = ["kuo"].freeze
     AXIS = ["chc"].freeze
     STATUS = "a"

@@ -24,6 +24,7 @@ module Scenarios
         [3, :chi_armored_car],
         [3, :pillbox],
         [4, :wire],
+        :sniper4,
       ] },
     }.freeze
 
@@ -39,6 +40,7 @@ module Scenarios
         :jap_radio_10cm,
         [2, :jap_sc],
         [2, :jap_type_89_i_go],
+        :sniper3,
       ] },
     }.freeze
 
