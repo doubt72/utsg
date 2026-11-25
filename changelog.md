@@ -1,5 +1,6 @@
 # 0.170
 
+- New announcement
 - Split PVA from PLA
 - Scenario designer support for SK, PVA, additional units as needed (plus tweaks)
 - Added special rule for weapons breaking in extreme cold

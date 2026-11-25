@@ -11,35 +11,39 @@ export default function About() {
   const location = useLocation();
 
   useEffect(() => {
-    history.pushState(null, "", location.pathname)
-    const handlePopState = () => { history.pushState(null, "", location.pathname) }
-    window.addEventListener('popstate', handlePopState)
+    history.pushState(null, "", location.pathname);
+    const handlePopState = () => {
+      history.pushState(null, "", location.pathname);
+    };
+    window.addEventListener("popstate", handlePopState);
     return () => {
-      window.removeEventListener("popstate", handlePopState)
-    }
-  }, [navigate, location])
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, [navigate, location]);
 
-  const id = useParams().id
+  const id = useParams().id;
 
   useEffect(() => {
-    if (!id) { return }
-    const element = document.getElementById(id)
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-      setTimeout(() => {
-        element.style.opacity = "0.33"
-      }, 800)
-      setTimeout(() => {
-        element.style.opacity = "1"
-      }, 900)
-      setTimeout(() => {
-        element.style.opacity = "0.33"
-      }, 1000)
-      setTimeout(() => {
-        element.style.opacity = "1"
-      }, 1100)
+    if (!id) {
+      return;
     }
-  }, [])
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+      setTimeout(() => {
+        element.style.opacity = "0.33";
+      }, 800);
+      setTimeout(() => {
+        element.style.opacity = "1";
+      }, 900);
+      setTimeout(() => {
+        element.style.opacity = "0.33";
+      }, 1000);
+      setTimeout(() => {
+        element.style.opacity = "1";
+      }, 1100);
+    }
+  }, []);
 
   return (
     <div>
@@ -61,8 +65,10 @@ export default function About() {
             tactical combat. It is intended to model land engagements of the Second World War, using
             a streamlined system designed to cover all major theaters and phases of the war, from
             China, Poland, or Finland at the end of the 30&apos;s to the final battles in Germany
-            and the Pacific. The system supports small infantry formations (squads and teams) and
-            their support weapons, as well as individual vehicles (armored and otherwise) in
+            and the Pacific. It also supports conflicts from the mid-to-late interwar years, and
+            early Cold War conflicts before technology started to completely transform the
+            battlefield. The system models small infantry formations (squads and teams) and their
+            support weapons, as well as individual vehicles (armored and otherwise) in
             semi-turn-based engagements, and is meant to strike a balance between historical
             authenticity and simplicity, though with the greater emphasis on simplicity.
           </p>
@@ -77,9 +83,10 @@ export default function About() {
             engagement indended as a tutorial scenario, with no tanks or artillery or wires or
             mines, and no elevation or crazy weather or any of the more fiddly rules to worry about.
             From there, there are lots of choices: in particular, pay attention to the map size and
-            what units are included in the scenario descriptions. Note that playing as the attacker
-            is can be much more difficult for beginners than defending, and that&apos;s true to a
-            greater or lesser extent depending on the scenario.
+            what units are included in the scenario descriptions (scenarios also have a complexity
+            rating to give a rough idea of how difficult scenarios might be to play). Note that
+            playing as the attacker is can be much more difficult for beginners than defending, and
+            that&apos;s true to a greater or lesser extent depending on the scenario.
           </p>
           <p>
             There is also a video{" "}
@@ -99,30 +106,39 @@ export default function About() {
           <p>
             <strong>Recent Announcements:</strong>
           </p>
-          <div id="a20261002" className="about-announcement">
+          <div id="a20261124" className="about-announcement">
             <p>
-              <span className="about-announcement-header">A Belated Update</span>
+              <span className="about-announcement-header">Probable Release Soon-ish</span>
             </p>
             <p>
-              <strong>02 Oct 2026</strong>: I really need to do these more often.
+              <strong>24 Nov 2026</strong>: another long-delayed announcement.
             </p>
             <p>
-              At any rate, almost all the recent work has been filling out the scenarios. There are
-              now 50 scenarios have been playtested and are (basically) ready, and at this point a
-              bit more than another ~130 scenarios have been created but not playtested covering the
-              full range of scenario ideas I wanted to cover (I do plan to make a handful more, but
-              they&apos;ll all be hypothetical or non-WW2. Beyond that, who knows). Along with the
-              new scenarios have come a bunch more special rules (hidden units and decoys, random
-              paradrops, cavalry, cave movement, and some rules for exiting the map or partisans) as
-              well as a handful of new units and such. Also added spotting for (non-infantry) ranged
-              weapons and revamped artillery. Other than that, the rest of the work has been tweaks
-              or bug fixes.
+              After taking a break for a few weeks, the non-WW2 scenarios are also done: interwar,
+              early Cold War, and some hypothetical scenarios, with a few more special rules and new
+              units. Still, only a bit under a quarter of all the scenarios have actually been
+              playtested (mostly the simpler ones, and the machine gun rebalancing may have thrown
+              off the balance of some, which isn&apos;t ideal, but, well). That&apos;s, um... 248
+              scenarios. Probably enough for now. &gt;_&gt;
             </p>
             <p>
-              At this point, things are basically stable, although adding new rules has thrown some
-              testing wildcards into the mix, but basically what&apos;s left on the roadmap is a
-              handful of tweaks, as well as foregrounding the scenario editor, and whatever else
-              playtesting reveals.
+              The main features added since the last announcement include max stacking limits
+              during close combat, fallback sync validation (it&apos;s an ugly hack, but websockets
+              just aren&apos;t that reliable), a rough scenario complexity rating, a new arid base
+              terrain (purely for cosmetic reasons), some cleaned up some unit names (for
+              consistency) and rebalanced machine guns across the board, and added radio units for
+              air strikes (AT and napalm). That doesn&apos;t include some new units for the new
+              scenarios (particularly a slew of new infantry for early Cold War scenarios as
+              infantry small arms increased in effectiveness &mdash; well, really everything
+              on the battlefield got nastier) and a handful of scenario-specific special rules
+              (partisan rules, special attack units, forest fires, extreme cold).
+            </p>
+            <p>
+              The game is mostly stable, just need to make sure things aren&apos;t broken and verify
+              that all the new special rules work, finish off a few subsidiary features (i.e.,
+              expose the scenario editor and support playing non-system scenarios), keep testing
+              scenarios, and then I&apos;m probably going to call it good and give it a
+              &quot;final&quot; release, maybe around New Years or so.
             </p>
           </div>
           <p>

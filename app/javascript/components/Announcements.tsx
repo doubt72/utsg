@@ -12,6 +12,32 @@ export default function Announcements() {
           <p>
             <strong>Previous Announcements:</strong>
           </p>
+          <div id="a20261002" className="about-announcement">
+            <p>
+              <span className="about-announcement-header">A Belated Update</span>
+            </p>
+            <p>
+              <strong>02 Oct 2026</strong>: I really need to do these more often.
+            </p>
+            <p>
+              At any rate, almost all the recent work has been filling out the scenarios. There are
+              now 50 scenarios have been playtested and are (basically) ready, and at this point a
+              bit more than another ~130 scenarios have been created but not playtested covering the
+              full range of scenario ideas I wanted to cover (I do plan to make a handful more, but
+              they&apos;ll all be hypothetical or non-WW2. Beyond that, who knows). Along with the
+              new scenarios have come a bunch more special rules (hidden units and decoys, random
+              paradrops, cavalry, cave movement, and some rules for exiting the map or partisans) as
+              well as a handful of new units and such. Also added spotting for (non-infantry) ranged
+              weapons and revamped artillery. Other than that, the rest of the work has been tweaks
+              or bug fixes.
+            </p>
+            <p>
+              At this point, things are basically stable, although adding new rules has thrown some
+              testing wildcards into the mix, but basically what&apos;s left on the roadmap is a
+              handful of tweaks, as well as foregrounding the scenario editor, and whatever else
+              playtesting reveals.
+            </p>
+          </div>
           <div id="a20260813" className="about-announcement">
             <p>
               <span className="about-announcement-header">More Progress</span>

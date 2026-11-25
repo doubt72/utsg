@@ -24,11 +24,12 @@ export default function IntroSection() {
         small unit tactical combat. It is intended to model land engagements during the
         mid-twentieth century, primarily the Second World War, using a streamlined system designed
         to cover all major theaters and phases of the war, from China, Poland, or Finland at the end
-        of the 30&apos;s to the final battles in Germany or the Pacific. The system supports small
-        infantry formations (squads and teams) and their support weapons, as well as individual
-        vehicles (armored and otherwise) in semi-turn-based engagements, and is meant to strike a
-        balance between historical authenticity and simplicity, though with the greater emphasis on
-        simplicity.
+        of the 30&apos;s to the final battles in Germany or the Pacific. It also supports conflicts
+        from the mid-to-late interwar years, and early Cold War conflicts before technology started
+        to completely transform the battlefield. The system models small infantry formations
+        (squads and teams) and their support weapons, as well as individual vehicles (armored and
+        otherwise) in semi-turn-based engagements, and is meant to strike a balance between
+        historical authenticity and simplicity, though with the greater emphasis on simplicity.
       </p>
       <p>
         The game system as implemented is meant to be suitable both for tabletop and online play.
