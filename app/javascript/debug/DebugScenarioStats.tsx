@@ -4,8 +4,8 @@ import Scenario from "../engine/Scenario";
 import { useParams } from "react-router-dom";
 import { alliedCodeToName, axisCodeToName } from "../utilities/utilities";
 import { hexBuildingNames } from "../utilities/hexBuilding";
-import { failRed, nationalTextColor, passBlue, passGreen } from "../utilities/graphics";
-import { statAddMany, statAddOne, statIncrementAllOne, StatLookup } from "./statHelpers";
+import { clearColor, failRed, nationalTextColor, passBlue, passGreen } from "../utilities/graphics";
+import { monthAddOne, MonthLookup, statAddMany, statAddOne, statIncrementAllOne, StatLookup } from "./statHelpers";
 
 // Yes, I could have put all this on the backend, but (1) the backend is largely
 // a big dumb JSON blob store WRT to any game logic, and (2) while this is super
@@ -13,6 +13,71 @@ import { statAddMany, statAddOne, statIncrementAllOne, StatLookup } from "./stat
 // a whole new API for it.  And I wanted it on the web side, to make "casual
 // analysis" easier, not as some sort of text report (plus it uses the same
 // code/text conversions as the engine uses for help/etc).
+
+function displayYears( years: StatLookup, months: MonthLookup) {
+  let width = 2.5
+  Object.values(years).forEach(v => {
+    if (v > 99 && width < 3) { width = 3 }
+    if (v > 999 && width < 3.5) { width = 3.5 }
+    if (v > 9999 && width < 4) { width = 4 }
+  })
+  const items: JSX.Element[] = []
+  for (const k of Object.keys(years).sort((a, b) => {
+      return a.localeCompare(b)
+    }
+  )) {
+    if (k === "all") { continue }
+    const rawPct = years[k] / years["all"]
+    const pct = Math.round(rawPct * 100)
+    items.push(
+      <div className="flex" key={k}>
+        <div style={{
+          background: "#F00", width: `${years[k]/years["all"] * 80}px`, height: "16px",
+          marginTop: "4px"
+        }}></div>
+        <div style={{
+          background: "#DDD", width: `${(1 - years[k]/years["all"]) * 80}px`, height: "16px",
+          marginTop: "4px"
+        }}></div>
+        <div style={{ marginLeft: "0.5em", width: "2.5em" }}>
+          {pct}%
+        </div>
+        <div style={{ marginLeft: "0.5em", width: `${width}em` }}>
+          ({years[k]})
+        </div>
+        <div className="flex">
+          <div style={{width: "2.5em"}}>{k}</div>
+          { [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(m => {
+            const cnt = months[k][m] ?? 0
+            let color = clearColor
+            if (cnt === 1) { color = "rgba(0,0,0,0.05)" }
+            if (cnt === 2) { color = "rgba(41,0,0,0.075)" }
+            if (cnt === 3) { color = "rgba(83,0,0,0.1)" }
+            if (cnt === 4) { color = "rgba(127,0,0,0.125)" }
+            if (cnt === 5) { color = "rgba(168,0,0,0.15)" }
+            if (cnt > 6) { color = "rgba(210,0,0,0.175)" }
+            if (cnt > 9) { color = "rgba(255,0,0,0.2)" }
+            return (
+              <div key={`${k}-${m}`}
+                   style={{
+                     width: "20px", textAlign: "end", background: color,
+                     marginLeft: "2px", paddingRight: "2px", fontSize: "0.9em",
+                     marginBottom: "2px",
+                   }}>
+                {cnt > 0 ? cnt : ""}
+              </div>
+            )
+          }) }
+        </div>
+      </div>
+    )
+  }
+  return (
+    <div>
+      {items}
+    </div>
+  )
+}
 
 export function displayStat(
   data: StatLookup, key: { [ index: string]: string }, sort: string = "value",
@@ -85,7 +150,7 @@ export default function DebugScenarioStats({ proto = false }: DebugScenarioStats
   const [countAllies, setCountAllies] = useState<StatLookup>({})
   const [countAxis, setCountAxis] = useState<StatLookup>({})
   const [countYears, setCountYears] = useState<StatLookup>({})
-  const [countMonths, setCountMonths] = useState<StatLookup>({})
+  const [countMonths, setCountMonths] = useState<MonthLookup>({})
   const [countTurns, setCountTurns] = useState<StatLookup>({})
   const [countLayout, setCountLayout] = useState<StatLookup>({})
   const [countVictoryCount, setCountVictoryCount] = useState<StatLookup>({})
@@ -157,7 +222,7 @@ export default function DebugScenarioStats({ proto = false }: DebugScenarioStats
     const cal: StatLookup = { all: 0 }
     const cax: StatLookup = { all: 0 }
     const cy: StatLookup = { all: 0 }
-    const cm: StatLookup = { all: 0 }
+    const cm: MonthLookup = { }
     const ctn: StatLookup = { all: 0 }
     const cl: StatLookup = { all: 0 }
     const cv: StatLookup = { all: 0 }
@@ -190,7 +255,7 @@ export default function DebugScenarioStats({ proto = false }: DebugScenarioStats
     const csp: StatLookup = { all: 0 }
     for (const s of scenarios) {
       statIncrementAllOne([
-        cst, cal, cax, cy, cm, ctn, cl, cv, calu, caxu, csr, cbt, cn, csw, cbw, cp, cpp, cwt, cwd, cwv,
+        cst, cal, cax, cy, ctn, cl, cv, calu, caxu, csr, cbt, cn, csw, cbw, cp, cpp, cwt, cwd, cwv,
         ctp, cep, crp, crrp, cbp, cbdp, csp
       ])
       statAddOne(cst, s.status)
@@ -201,7 +266,7 @@ export default function DebugScenarioStats({ proto = false }: DebugScenarioStats
         statAddOne(cax, a)
       }
       statAddOne(cy, String(s.date[0]))
-      statAddOne(cm, `${s.date[0]}/${s.date[1] > 9 ? s.date[1] : `0${s.date[1]}`}`)
+      monthAddOne(cm, `${s.date[0]}`, `${s.date[1]}`)
       statAddOne(ctn, String(s.turns))
       statAddOne(cl, `${s.map.width}x${s.map.height}`)
       statAddOne(cv, String(s.map.victoryHexes.length))
@@ -338,20 +403,20 @@ export default function DebugScenarioStats({ proto = false }: DebugScenarioStats
         )}
         Turns:
         {displayStat(countTurns, {}, "num")}
+      </div>
+      <div className="p1em">
         Victory Points:
         {displayStat(countVictoryCount, {}, "num")}
+        Years:
+        {displayYears(countYears, countMonths)}
         Special Rules:
         {displayStat(countSpecialRules, {})}
       </div>
       <div className="p1em">
-        Years:
-        {displayStat(countYears, {}, "key")}
-        Months:
-        {displayStat(countMonths, {}, "key")}
-      </div>
-      <div className="p1em">
         Allied Unit Counts:
         {displayStat(countAlliedUnitCount, {}, "num")}
+      </div>
+      <div className="p1em">
         Axis Unit Counts:
         {displayStat(countAxisUnitCount, {}, "num")}
       </div>
@@ -394,22 +459,20 @@ export default function DebugScenarioStats({ proto = false }: DebugScenarioStats
         {displayStat(countRailroad, {})}
         Railroad Present:
         {displayStat(countRailroadPresent, {})}
+        Border Count:
+        {displayStat(countBorder, {})}
+        Border Present:
+        {displayStat(countBorderPresent, {})}
       </div>
       <div className="p1em">
         Stream Count:
         {displayStat(countStream, {})}
         Stream Present:
         {displayStat(countStreamPresent, {})}
-        Border Count:
-        {displayStat(countBorder, {})}
-        Border Present:
-        {displayStat(countBorderPresent, {})}
         Elevation:
         {displayStat(countElevation, {})}
         Elevation Present:
         {displayStat(countElevationPresent, {})}
-      </div>
-      <div className="p1em">
         Building Count:
         {displayStat(countBuilding, {})}
         Building Present:

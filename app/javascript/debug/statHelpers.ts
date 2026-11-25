@@ -1,4 +1,7 @@
 export type StatLookup = { [index: string]: number }
+export type MonthLookup = {
+  [index: string]: { [index]: number }
+}
 
 export type StatUserData = {
   username: string,
@@ -20,6 +23,11 @@ export function statIncrementAllOne(arrays: StatLookup[]) {
 
 export function statAddOne(array: StatLookup, key: string) {
   array[key] !== undefined ? array[key]++ : array[key] = 1
+}
+
+export function monthAddOne(array: MonthLookup, year: string, month: string) {
+  if (!array[year]) { array[year] = {} }
+  array[year][month] !== undefined ? array[year][month]++ : array[year][month] = 1
 }
 
 export function statAddMany(array: StatLookup, key: string, count: number) {
