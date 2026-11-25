@@ -1,28 +1,17 @@
 Features/Bug Fixes
-  - Decoy next to hit revealed
-  ? Improve animation performance
-  ? Make sure sub-counter closed with counter
+  - Train AI opponent
   - Update tutorial (with tutorial scenario), video playthroughs (clash of steel)
-  - Save/play user scenarios / limit 1 - 3 - 5
+  - Save/play user scenarios
+    - Limit 1 / 3 for finished (not resigned) one game / 5 for ten games
   - Add Some Developer Notes
   - Strategy notes
 
-  - Promote games 187, 188
-
-  - 319 Test playing multiple factions
-  - 524 Test Finns on the other side
-
-Nice to Have Eventually:
-  ? Better rollback of smoke on reaction fire
-
 Keep an Eye out for:
+  ? Decoy next to hit revealed
+  ? Improve animation performance
+  ? Make sure sub-counter closed with counter
   ? Problematic Game Controls performance (excessive refreshes still)
   ? Monitor memory usage
+
 Probably not:
   ? Filter bad words
-  ? KV and French single-man turrets?
-
-Special Rules/Scenarios
-  - Cumulative VPs (last stand/rush)
-  - Win by certain number of points
-  - Random weapons yeeting soviets across the river in Stalingrad

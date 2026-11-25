@@ -62,11 +62,11 @@ module Scenarios
         [
           "During the Belgorod-Kharkov offensive operation the Soviets
           successfully liberated Belgorod and Kharkov, and attempted to
-          destroy Nazi German forces of the 4th Panzer Army and Army
-          Detachment Kempf. The operation was codenamed Operation General
-          Rumyantsev and was conducted by the Voronezh and Steppe Fronts (army
-          groups) in the southern sector of the Kursk Bulge. The battle was
-          referred to as the Fourth Battle of Kharkov.",
+          destroy the 4th Panzer Army and Army Detachment Kempf. The operation
+          was codenamed Operation General Rumyantsev and was conducted by the
+          Voronezh and Steppe Fronts (army groups) in the southern sector of
+          the Kursk Bulge. The battle was referred to as the Fourth Battle of
+          Kharkov.",
           "The operation began on 3 August 1943, and was intended to build
           upon the successful Soviet defense in the Battle of Kursk. The main
           effort was against the German Army Group South's northern flank, and

@@ -436,7 +436,10 @@ export default function DebugScenarioStats({ proto = false }: DebugScenarioStats
         Precip Type:
         {displayStat(countPrecip, {})}
         Precip Chance:
-        {displayStat(countPrecipPercent, { 0: "none", 1: "10%", 2: "20%", 3: "30%", 4: "40%" })}
+        {displayStat(countPrecipPercent, {
+            0: "none", 1: "10%", 2: "20%", 3: "30%", 4: "40%", 5: "50%", 6: "60%",
+            7: "70%", 8: "80%", 9: "90%",
+          })}
         Wind Strength:
         {displayStat(
             countWindType, { 1: "calm", 2: "breeze", 3: "moderate", 4: "strong" }, "value", false, wsPct
