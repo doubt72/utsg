@@ -129,21 +129,6 @@ describe("movement flow", () => {
     expect(showDropMove(game)).toBe(false)
     expect(showLoadMove(game)).toBe(false)
 
-    select(map, {
-      counter: map.countersAt(loc)[1],
-      target: { type: "map", xy: loc }
-    }, () => {})
-    expect(test2.selected).toBe(true)
-    expect(game.moveState.selection.length).toBe(2)
-    expect(actionsAvailable(game, "two")).toStrictEqual(
-      [
-        { type: "none", message: "select additional units or select hex to move" },
-        { type: "move_smoke_toggle" },
-        { type: "cancel_action" },
-      ]
-    )
-    expect(game.moveState.doneSelect).toBe(false)
-
     game.moveState.move(3, 2)
     expect(movementPastCost(map, test1)).toBe(1)
     expect(game.moveState.doneSelect).toBe(true)
@@ -509,21 +494,6 @@ describe("movement flow", () => {
     expect(showDropMove(game)).toBe(false)
     expect(showLoadMove(game)).toBe(false)
 
-    select(map, {
-      counter: map.countersAt(loc)[1],
-      target: { type: "map", xy: loc }
-    }, () => {})
-    expect(test2.selected).toBe(true)
-    expect(game.moveState.selection.length).toBe(2)
-    expect(actionsAvailable(game, "two")).toStrictEqual(
-      [
-        { type: "none", message: "select additional units or select hex to move" },
-        { type: "move_smoke_toggle" },
-        { type: "cancel_action" },
-      ]
-    )
-    expect(game.moveState.doneSelect).toBe(false)
-
     game.moveState.move(3, 2)
     expect(movementPastCost(map, test1)).toBe(1)
     expect(game.moveState.loading).toBe(false)
@@ -638,21 +608,6 @@ describe("movement flow", () => {
     expect(showDropMove(game)).toBe(false)
     expect(showLoadMove(game)).toBe(false)
 
-    select(map, {
-      counter: map.countersAt(loc)[1],
-      target: { type: "map", xy: loc }
-    }, () => {})
-    expect(test2.selected).toBe(true)
-    expect(game.moveState.selection.length).toBe(2)
-    expect(actionsAvailable(game, "two")).toStrictEqual(
-      [
-        { type: "none", message: "select additional units or select hex to move" },
-        { type: "move_smoke_toggle" },
-        { type: "cancel_action" },
-      ]
-    )
-    expect(game.moveState.doneSelect).toBe(false)
-
     game.moveState.move(3, 2)
     expect(movementPastCost(map, test1)).toBe(1)
     expect(game.moveState.loading).toBe(false)
@@ -759,21 +714,6 @@ describe("movement flow", () => {
     expect(showLaySmoke(game)).toBe(true)
     expect(showDropMove(game)).toBe(false)
     expect(showLoadMove(game)).toBe(false)
-
-    select(map, {
-      counter: map.countersAt(loc)[1],
-      target: { type: "map", xy: loc }
-    }, () => {})
-    expect(test2.selected).toBe(true)
-    expect(game.moveState.selection.length).toBe(2)
-    expect(actionsAvailable(game, "two")).toStrictEqual(
-      [
-        { type: "none", message: "select additional units or select hex to move" },
-        { type: "move_smoke_toggle" },
-        { type: "cancel_action" },
-      ]
-    )
-    expect(game.moveState.doneSelect).toBe(false)
 
     game.moveState.move(3, 2)
     expect(movementPastCost(map, test1)).toBe(1)
@@ -1044,11 +984,12 @@ describe("movement flow", () => {
 
     game.setGameState(new MoveState(game))
 
+    expect(game.moveState.selection.length).toBe(2)
+
     expect(actionsAvailable(game, "two")).toStrictEqual(
       [
         { type: "none", message: "select additional units or select hex to move" },
         { type: "move_smoke_toggle" },
-        { type: "move_load_toggle" },
         { type: "cancel_action" },
       ]
     )
@@ -1059,18 +1000,19 @@ describe("movement flow", () => {
     expect(game.moveState.loading).toBe(false)
     expect(showLaySmoke(game)).toBe(true)
     expect(showDropMove(game)).toBe(false)
-    expect(showLoadMove(game)).toBe(true)
+    expect(showLoadMove(game)).toBe(false)
 
     select(map, {
       counter: map.countersAt(loc)[2],
       target: { type: "map", xy: loc }
     }, () => {})
-    expect(test2.selected).toBe(true)
-    expect(game.moveState.selection.length).toBe(2)
+    expect(test2.selected).toBe(false)
+    expect(game.moveState.selection.length).toBe(1)
     expect(actionsAvailable(game, "two")).toStrictEqual(
       [
         { type: "none", message: "select additional units or select hex to move" },
         { type: "move_smoke_toggle" },
+        { type: "move_load_toggle" },
         { type: "cancel_action" },
       ]
     )
@@ -1172,6 +1114,7 @@ describe("movement flow", () => {
       [
         { type: "none", message: "select additional units or select hex to move" },
         { type: "move_smoke_toggle" },
+        { type: "move_shortdrop_toggle" },
         { type: "cancel_action" },
       ]
     )
@@ -1181,24 +1124,8 @@ describe("movement flow", () => {
     expect(game.moveState.dropping).toBe(false)
     expect(game.moveState.loading).toBe(false)
     expect(showLaySmoke(game)).toBe(true)
-    expect(showDropMove(game)).toBe(false)
+    expect(showDropMove(game)).toBe(true)
     expect(showLoadMove(game)).toBe(false)
-
-    select(map, {
-      counter: map.countersAt(loc)[1],
-      target: { type: "map", xy: loc }
-    }, () => {})
-    expect(test2.selected).toBe(true)
-    expect(game.moveState.selection.length).toBe(3)
-    expect(actionsAvailable(game, "two")).toStrictEqual(
-      [
-        { type: "none", message: "select additional units or select hex to move" },
-        { type: "move_smoke_toggle" },
-        { type: "move_shortdrop_toggle" },
-        { type: "cancel_action" },
-      ]
-    )
-    expect(game.moveState.doneSelect).toBe(false)
 
     game.moveState.move(3, 2)
     expect(movementPastCost(map, test1)).toBe(1)

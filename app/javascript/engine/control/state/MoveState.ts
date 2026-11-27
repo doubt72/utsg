@@ -55,7 +55,6 @@ export default class MoveState extends BaseState {
     for (const c of children) {
       for (const cc of c.children) { units.push(cc) }
     }
-    units.forEach(c => this.map.select(c.unit))
     let canSelect = selection.unit.canCarrySupport && (units.length < 1 || !units[0].unit.crewed)
     if (canSelect) {
       let check = false
@@ -74,10 +73,28 @@ export default class MoveState extends BaseState {
       x: loc.x, y: loc.y, id: selection.unit.id, name: selection.unit.name, counter: selection }
     ]
     units.forEach(u => {
-      const hex = u.hex as Coordinate
-      allSelection.push({ x: hex.x, y: hex.y, id: u.unit.id, name: u.unit.name, counter: u })
       initialSelection.push({ x: hex.x, y: hex.y, id: u.unit.id, name: u.unit.name, counter: u })
     })
+    if (selection.unit.canCarrySupport && selection.unit.parent === undefined) {
+      for (const c of this.map.countersAt(hex)) {
+        if (!c.hasUnit || !c.unit.canCarrySupport || c.unit.parent !== undefined) { continue }
+        let found = selection.unit.id === c.unit.id
+        for (const u of units) {
+          if (u.unit.id === c.unit.id) {
+            found = true
+            break
+          }
+        }
+        if (!found) {
+          units.push(c)
+          for (const cc of c.children) { units.push(cc) }
+        }
+      }
+    }
+    units.forEach(u => {
+      allSelection.push({ x: hex.x, y: hex.y, id: u.unit.id, name: u.unit.name, counter: u })
+    })
+    units.forEach(c => this.map.select(c.unit))
     this.selection = allSelection
     this.initialSelection = initialSelection
     this.addActions = []

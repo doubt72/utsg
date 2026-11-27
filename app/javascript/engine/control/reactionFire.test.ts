@@ -656,10 +656,6 @@ describe("reaction fire attacks", () => {
 
     game.setGameState(new MoveState(game))
 
-    select(map, {
-      counter: map.countersAt(new Coordinate(4, 2))[1],
-      target: { type: "map", xy: new Coordinate(4, 2) }
-    }, () => {})
     expect(unit2.selected).toBe(true)
 
     game.moveState.move(3, 2)
@@ -751,10 +747,6 @@ describe("reaction fire attacks", () => {
 
     game.setGameState(new MoveState(game))
 
-    select(map, {
-      counter: map.countersAt(new Coordinate(4, 2))[1],
-      target: { type: "map", xy: new Coordinate(4, 2) }
-    }, () => {})
     expect(unit2.selected).toBe(true)
 
     game.moveState.move(3, 2)
@@ -1365,10 +1357,7 @@ describe("reaction fire attacks", () => {
     organizeStacks(map)
 
     game.setGameState(new MoveState(game))
-    select(map, {
-      counter: map.countersAt(loc)[1],
-      target: { type: "map", xy: loc }
-    }, () => {})
+
     expect(unit1.selected).toBe(true)
     expect(unit2.selected).toBe(true)
     game.moveState.move(3, 2)
@@ -1662,10 +1651,6 @@ describe("reaction fire attacks", () => {
 
     game.setGameState(new MoveState(game))
 
-    select(map, {
-      counter: map.countersAt(loc)[1],
-      target: { type: "map", xy: loc }
-    }, () => {})
     expect(game.gameState?.selection.length).toBe(2)
     expect(game.moveState.doneSelect).toBe(false)
     game.moveState.move(3, 2)

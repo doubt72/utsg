@@ -170,10 +170,6 @@ describe("rush movement", () => {
 
     game.setGameState(new MoveState(game))
 
-    select(map, {
-      counter: map.countersAt(loc)[1],
-      target: { type: "map", xy: loc }
-    }, () => {})
     expect(game.gameState?.selection.length).toBe(2)
     expect(game.moveState.doneSelect).toBe(false)
 
@@ -243,11 +239,6 @@ describe("rush movement", () => {
     expect(game.moveState.smoke).toBe(false)
     expect(game.moveState.dropping).toBe(false)
     expect(game.moveState.loading).toBe(false)
-
-    select(map, {
-      counter: map.countersAt(loc)[1],
-      target: { type: "map", xy: loc }
-    }, () => {})
     expect(game.gameState?.selection.length).toBe(2)
     expect(game.moveState.doneSelect).toBe(false)
 
@@ -318,10 +309,6 @@ describe("rush movement", () => {
 
     game.setGameState(new MoveState(game))
 
-    select(map, {
-      counter: map.countersAt(loc)[1],
-      target: { type: "map", xy: loc }
-    }, () => {})
     expect(game.gameState?.selection.length).toBe(2)
 
     expect(mapSelectMovement(game, false)).toBe(3)

@@ -55,7 +55,7 @@ export function clearUnrangedSelection(game: Game) {
 }
 
 export function removeStateSelection(game: Game, x: number, y: number, id: string) {
-  if (game?.gameState?.selection) {
+  if (game.gameState?.selection) {
     const selection = game.gameState.selection.filter(s =>
       s.x !== x || s.y !== y || s.id !== id
     )

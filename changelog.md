@@ -1,5 +1,6 @@
 # 0.171
 
+- Default to selecting stacks on movement
 - Link for scenarios
 - Promoted 309
 - Updated/promoted 507
