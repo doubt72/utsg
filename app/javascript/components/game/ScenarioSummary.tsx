@@ -8,6 +8,7 @@ import { clearColor, starPath } from "../../utilities/graphics";
 import { Coordinate } from "../../utilities/commonTypes";
 import { getAPI, postAPI } from "../../utilities/network";
 import MapDeployDisplay from "./map/MapDeployDisplay";
+import { Link45deg } from "react-bootstrap-icons";
 
 export function ratingStars(rating: number) {
   const stars: number[] = []
@@ -245,6 +246,7 @@ export default function ScenarioSummary({ data }: ScenarioSummaryProps) {
         </div>
         <div className="red ml1em">{scenario.displayDate}</div>
         <div className="green ml1em"> {scenario.location}</div>
+        <div><a className="user-link ml025em" href={`/new_game/${scenario.code}`}><Link45deg /></a></div>
       </div>
       <div className="scenario-description-row">
         { oneDisplay }

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { getAPI, postAPI } from "../../utilities/network";
 import Header from "../Header";
 import { CreateGameButton, CustomCheckbox, NavDown, NavUp } from "../utilities/buttons";
@@ -11,6 +11,8 @@ import { ScenarioData, ScenarioListData } from "../../engine/Scenario";
 import { alliedCodeToName, axisCodeToName } from "../../utilities/utilities";
 
 export default function NewGame() {
+  const scenarioID: string | undefined = useParams().id
+
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -23,8 +25,10 @@ export default function NewGame() {
     }
   }, [navigate, location])
 
-  const [first, setFirst] = useState<boolean>(true)
-  const [formInput, setFormInput] = useState({ name: "", player: 1, scenario: "" })
+  const [first, setFirst] = useState<boolean>(scenarioID === undefined ? true : false)
+  const [formInput, setFormInput] = useState({
+    name: "", player: 1, scenario: scenarioID !== undefined ? scenarioID : ""
+  })
   const [formErrors, setFormErrors] = useState({ name: "" , scenario: "" })
   const [players, setPlayers] = useState({ one: "player one" , two: "player two" })
 
@@ -96,7 +100,8 @@ export default function NewGame() {
       getAPI(url, {
         ok: response => {
           response.json().then(json => { setScenarioData(json) })
-        }
+        },
+      other: () => { setScenario("") }
       })
     } else {
       setScenarioData(undefined)

@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Hell's Highway"
     ALLIES = ["uk"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "a"
-    VERSION = "0.4"
+    STATUS = "b"
+    VERSION = "0.5"
 
     DATE = [1944, 9, 18].freeze
     LAYOUT = [15, 36, "x"].freeze
@@ -94,7 +94,7 @@ module Scenarios
           support tactical vehicle movement and there were numerous dikes and
           drainage ditches. Dikes tended to be topped by trees or large
           bushes, and roads and paths were lined with trees, making flanking
-          attacks impossible and allowing numerous positions available for
+          attacks impossible and providing numerous positions for
           ambushes.",
         ]
       end

@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Rat Patrol"
     ALLIES = ["nz"].freeze
     AXIS = ["ita"].freeze
-    STATUS = "a"
-    VERSION = "0.4"
+    STATUS = "b"
+    VERSION = "0.5"
 
     DATE = [1941, 1, 11].freeze
     LAYOUT = [15, 23, "x"].freeze
@@ -15,7 +15,7 @@ module Scenarios
     ALLIED_UNITS = {
       "0": { list: [
         :uk_leader_6_2,
-        [5, :uk_line_s],
+        [2, :uk_line_s],
         [2, :uk_jeep_mg],
         [4, :uk_chevy_c30_mg],
         :uk_chevy_c30_at,

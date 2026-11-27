@@ -45,6 +45,7 @@ export default function Routes() {
     { path: "/recover_account", element: <RecoverAccount /> },
     { path: "/reset_password", element: <ResetPassword /> },
     { path: "/new_game", element: <NewGame /> },
+    { path: "/new_game/:id", element: <NewGame /> },
     { path: "/game/:id", element: <GameDisplayPage /> },
     { path: "/game_replay/:id", element: <GameReplayDisplay /> },
 

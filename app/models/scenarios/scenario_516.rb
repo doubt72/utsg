@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Sabre Dance"
     ALLIES = ["pol"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "a"
-    VERSION = "0.2"
+    STATUS = "b"
+    VERSION = "0.3"
 
     DATE = [1939, 9, 1].freeze
     LAYOUT = [23, 23, "x"].freeze
@@ -15,10 +15,10 @@ module Scenarios
     ALLIED_UNITS = {
       "0": { list: [
         [2, :alm_leader_5_1],
+        [6, :alm_regular_s],
         [2, :alm_wz__35_at_rifle],
         [2, :alm_12_7mm_hmg],
         [4, :alm_horse],
-        [5, :alm_regular_s],
         :alm_elite_crew_t,
         :alm_bofors_37mm_at,
       ] },
@@ -34,9 +34,9 @@ module Scenarios
     AXIS_UNITS = {
       "0": { list: [
         :ger_leader_5_1,
-        :ger_leader_4_1,
-        [5, :ger_rifle_s],
-        [3, :ger_mg_34],
+        [2, :ger_leader_4_1],
+        [8, :ger_rifle_s],
+        [5, :ger_mg_34],
         :ger_8cm_grw_34,
         [2, :ger_pzkpfw_i],
         [4, :ger_pzkpfw_35t],

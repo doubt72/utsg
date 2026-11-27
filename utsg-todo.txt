@@ -1,4 +1,6 @@
 Features/Bug Fixes
+  - Change the startup hexes, add one turn
+  - Load a scenario by URL
   - Train AI opponent
   - Update tutorial (with tutorial scenario), video playthroughs (clash of steel)
   - Save/play user scenarios

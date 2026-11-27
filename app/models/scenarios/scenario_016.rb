@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Red October"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "a"
-    VERSION = "0.6"
+    STATUS = "b"
+    VERSION = "0.7"
 
     DATE = [1942, 10, 14].freeze
     LAYOUT = [15, 23, "x"].freeze
@@ -32,16 +32,16 @@ module Scenarios
         [2, :ussr_smg_s],
         [2, :ussr_sc],
         :ussr_decoy_leader6,
-        [8, :ussr_decoy_squad4_s],
+        [6, :ussr_decoy_squad4_s],
         [2, :ussr_decoy_weapon0],
       ] },
       "4": { list: [
         :ussr_leader_4_1,
         [4, :ussr_rifle_s],
-        [4, :ussr_smg_s],
+        [2, :ussr_smg_s],
         [2, :ussr_sc],
         :ussr_decoy_leader6,
-        [8, :ussr_decoy_squad4_s],
+        [6, :ussr_decoy_squad4_s],
         [2, :ussr_decoy_weapon0],
       ] },
     }.freeze
@@ -95,8 +95,7 @@ module Scenarios
           Red October Steel Factory.  It took a few days for them to prepare
           for what would become the biggest offensive yet.  Exceptionally
           intense shelling and bombing preceded the first German assault
-          groups; General Chuikov considered this to be the worst day of the
-          battle.",
+          groups.",
           "The German onslaught crushed the 37th Guards Rifle Division and in
           the afternoon the forward assault group reached the tractor factory
           before arriving at the Volga River, splitting the 62nd Army into
