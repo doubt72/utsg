@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Closer to the Edge"
     ALLIES = ["sk"].freeze
     AXIS = ["nk"].freeze
-    STATUS = "a"
-    VERSION = "0.2"
+    STATUS = "b"
+    VERSION = "0.3"
 
     DATE = [1950, 6, 25].freeze
     LAYOUT = [23, 23, "x"].freeze

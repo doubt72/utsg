@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Czechoslovakia Stands"
     ALLIES = ["cze"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "a"
-    VERSION = "0.2"
+    STATUS = "b"
+    VERSION = "0.3"
 
     DATE = [1938, 10, 1].freeze
     LAYOUT = [23, 23, "x"].freeze

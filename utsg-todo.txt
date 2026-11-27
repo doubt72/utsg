@@ -1,5 +1,4 @@
 Features/Bug Fixes
-  - Infantry units to move stack by default
   - Train AI opponent
   - Update tutorial (with tutorial scenario), video playthroughs (clash of steel)
   - Save/play user scenarios

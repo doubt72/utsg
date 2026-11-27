@@ -4,7 +4,7 @@
 - Link for scenarios
 - Promoted 309
 - Updated/promoted 507
-- Promoted 016, 110, 310, 311, 408, 407 to beta
+- Promoted 016, 110, 310, 311, 408, 407, 701, 801, 901 to beta
 
 # 0.170
 
